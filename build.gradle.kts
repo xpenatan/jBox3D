@@ -1,0 +1,39 @@
+plugins {
+    id("java")
+    id("maven-publish")
+    id("signing")
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    val kotlinVersion = "2.3.20"
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.12.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        maven { url = uri("https://central.sonatype.com/repository/maven-snapshots/") }
+        maven {
+            url = uri("http://teavm.org/maven/repository/")
+            isAllowInsecureProtocol = true
+        }
+    }
+
+    configurations.configureEach {
+        // Check for updates every sync
+        resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+    }
+}
+
+apply(plugin = "publish")
