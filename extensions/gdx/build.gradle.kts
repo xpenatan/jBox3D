@@ -1,0 +1,35 @@
+plugins {
+    id("java-library")
+}
+
+val moduleName = "gdx"
+
+base {
+    archivesName.set(moduleName)
+}
+
+dependencies {
+    compileOnly(project(":box3d:core"))
+    api("com.badlogicgames.gdx:gdx:${LibExt.gdxVersion}")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+    targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = moduleName
+            groupId = LibExt.groupId
+            version = LibExt.libVersion
+            from(components["java"])
+        }
+    }
+}

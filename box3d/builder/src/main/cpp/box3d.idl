@@ -1,0 +1,886 @@
+[Prefix="JBox3D::"]
+interface B3Vec3 {
+    void B3Vec3();
+    void B3Vec3(float x, float y, float z);
+    float GetX();
+    float GetY();
+    float GetZ();
+    void SetX(float x);
+    void SetY(float y);
+    void SetZ(float z);
+    void Set(float x, float y, float z);
+};
+
+[Prefix="JBox3D::"]
+interface B3Quat {
+    void B3Quat();
+    void B3Quat(float x, float y, float z, float w);
+    [Value] B3Vec3 GetV();
+    void SetV([Const, Ref] B3Vec3 value);
+    float GetS();
+    void SetS(float s);
+    void Set(float x, float y, float z, float w);
+};
+
+[Prefix="JBox3D::"]
+interface B3Transform {
+    void B3Transform();
+    void B3Transform([Const, Ref] B3Vec3 position, [Const, Ref] B3Quat rotation);
+    [Value] B3Vec3 GetP();
+    void SetP([Const, Ref] B3Vec3 position);
+    [Value] B3Quat GetQ();
+    void SetQ([Const, Ref] B3Quat rotation);
+};
+
+[Prefix="JBox3D::"]
+interface B3AABB {
+    void B3AABB();
+    void B3AABB([Const, Ref] B3Vec3 lowerBound, [Const, Ref] B3Vec3 upperBound);
+    [Value] B3Vec3 GetLowerBound();
+    void SetLowerBound([Const, Ref] B3Vec3 lowerBound);
+    [Value] B3Vec3 GetUpperBound();
+    void SetUpperBound([Const, Ref] B3Vec3 upperBound);
+};
+
+[Prefix="JBox3D::"]
+interface B3Sphere {
+    void B3Sphere();
+    void B3Sphere([Const, Ref] B3Vec3 center, float radius);
+    [Value] B3Vec3 GetCenter();
+    void SetCenter([Const, Ref] B3Vec3 center);
+    float GetRadius();
+    void SetRadius(float radius);
+};
+
+[Prefix="JBox3D::"]
+interface B3Capsule {
+    void B3Capsule();
+    void B3Capsule([Const, Ref] B3Vec3 center1, [Const, Ref] B3Vec3 center2, float radius);
+    [Value] B3Vec3 GetCenter1();
+    void SetCenter1([Const, Ref] B3Vec3 center);
+    [Value] B3Vec3 GetCenter2();
+    void SetCenter2([Const, Ref] B3Vec3 center);
+    float GetRadius();
+    void SetRadius(float radius);
+};
+
+[Prefix="JBox3D::"]
+interface B3MotionLocks {
+    void B3MotionLocks();
+    boolean GetLinearX();
+    void SetLinearX(boolean locked);
+    boolean GetLinearY();
+    void SetLinearY(boolean locked);
+    boolean GetLinearZ();
+    void SetLinearZ(boolean locked);
+    boolean GetAngularX();
+    void SetAngularX(boolean locked);
+    boolean GetAngularY();
+    void SetAngularY(boolean locked);
+    boolean GetAngularZ();
+    void SetAngularZ(boolean locked);
+};
+
+[Prefix="JBox3D::"]
+interface B3DistanceJointDef {
+    void B3DistanceJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    float GetConstraintHertz();
+    void SetConstraintHertz(float hertz);
+    float GetConstraintDampingRatio();
+    void SetConstraintDampingRatio(float ratio);
+    float GetLength();
+    void SetLength(float length);
+    boolean GetEnableSpring();
+    void SetEnableSpring(boolean enabled);
+    float GetLowerSpringForce();
+    void SetLowerSpringForce(float force);
+    float GetUpperSpringForce();
+    void SetUpperSpringForce(float force);
+    float GetHertz();
+    void SetHertz(float hertz);
+    float GetDampingRatio();
+    void SetDampingRatio(float ratio);
+    boolean GetEnableLimit();
+    void SetEnableLimit(boolean enabled);
+    float GetMinLength();
+    void SetMinLength(float length);
+    float GetMaxLength();
+    void SetMaxLength(float length);
+    boolean GetEnableMotor();
+    void SetEnableMotor(boolean enabled);
+    float GetMaxMotorForce();
+    void SetMaxMotorForce(float force);
+    float GetMotorSpeed();
+    void SetMotorSpeed(float speed);
+};
+
+[Prefix="JBox3D::"]
+interface B3MotorJointDef {
+    void B3MotorJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    [Value] B3Vec3 GetLinearVelocity();
+    void SetLinearVelocity([Const, Ref] B3Vec3 velocity);
+    float GetMaxVelocityForce();
+    void SetMaxVelocityForce(float force);
+    [Value] B3Vec3 GetAngularVelocity();
+    void SetAngularVelocity([Const, Ref] B3Vec3 velocity);
+    float GetMaxVelocityTorque();
+    void SetMaxVelocityTorque(float torque);
+    float GetLinearHertz();
+    void SetLinearHertz(float hertz);
+    float GetLinearDampingRatio();
+    void SetLinearDampingRatio(float ratio);
+    float GetMaxSpringForce();
+    void SetMaxSpringForce(float force);
+    float GetAngularHertz();
+    void SetAngularHertz(float hertz);
+    float GetAngularDampingRatio();
+    void SetAngularDampingRatio(float ratio);
+    float GetMaxSpringTorque();
+    void SetMaxSpringTorque(float torque);
+};
+
+[Prefix="JBox3D::"]
+interface B3ParallelJointDef {
+    void B3ParallelJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    float GetHertz();
+    void SetHertz(float hertz);
+    float GetDampingRatio();
+    void SetDampingRatio(float ratio);
+    float GetMaxTorque();
+    void SetMaxTorque(float torque);
+};
+
+[Prefix="JBox3D::"]
+interface B3PrismaticJointDef {
+    void B3PrismaticJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    boolean GetEnableSpring();
+    void SetEnableSpring(boolean enabled);
+    float GetHertz();
+    void SetHertz(float hertz);
+    float GetDampingRatio();
+    void SetDampingRatio(float ratio);
+    float GetTargetTranslation();
+    void SetTargetTranslation(float translation);
+    boolean GetEnableLimit();
+    void SetEnableLimit(boolean enabled);
+    float GetLowerTranslation();
+    void SetLowerTranslation(float translation);
+    float GetUpperTranslation();
+    void SetUpperTranslation(float translation);
+    boolean GetEnableMotor();
+    void SetEnableMotor(boolean enabled);
+    float GetMaxMotorForce();
+    void SetMaxMotorForce(float force);
+    float GetMotorSpeed();
+    void SetMotorSpeed(float speed);
+};
+
+[Prefix="JBox3D::"]
+interface B3SphericalJointDef {
+    void B3SphericalJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    float GetConstraintHertz();
+    void SetConstraintHertz(float hertz);
+    float GetConstraintDampingRatio();
+    void SetConstraintDampingRatio(float ratio);
+    boolean GetEnableSpring();
+    void SetEnableSpring(boolean enabled);
+    float GetHertz();
+    void SetHertz(float hertz);
+    float GetDampingRatio();
+    void SetDampingRatio(float ratio);
+    boolean GetEnableMotor();
+    void SetEnableMotor(boolean enabled);
+    float GetMaxMotorTorque();
+    void SetMaxMotorTorque(float torque);
+    [Value] B3Vec3 GetMotorVelocity();
+    void SetMotorVelocity([Const, Ref] B3Vec3 velocity);
+};
+
+[Prefix="JBox3D::"]
+interface B3RevoluteJointDef {
+    void B3RevoluteJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    float GetConstraintHertz();
+    void SetConstraintHertz(float hertz);
+    float GetConstraintDampingRatio();
+    void SetConstraintDampingRatio(float ratio);
+    float GetTargetAngle();
+    void SetTargetAngle(float radians);
+    boolean GetEnableSpring();
+    void SetEnableSpring(boolean enabled);
+    float GetHertz();
+    void SetHertz(float hertz);
+    float GetDampingRatio();
+    void SetDampingRatio(float ratio);
+    boolean GetEnableLimit();
+    void SetEnableLimit(boolean enabled);
+    float GetLowerAngle();
+    void SetLowerAngle(float radians);
+    float GetUpperAngle();
+    void SetUpperAngle(float radians);
+    boolean GetEnableMotor();
+    void SetEnableMotor(boolean enabled);
+    float GetMaxMotorTorque();
+    void SetMaxMotorTorque(float torque);
+    float GetMotorSpeed();
+    void SetMotorSpeed(float speed);
+};
+
+[Prefix="JBox3D::"]
+interface B3WeldJointDef {
+    void B3WeldJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    float GetConstraintHertz();
+    void SetConstraintHertz(float hertz);
+    float GetConstraintDampingRatio();
+    void SetConstraintDampingRatio(float ratio);
+    float GetLinearHertz();
+    void SetLinearHertz(float hertz);
+    float GetAngularHertz();
+    void SetAngularHertz(float hertz);
+    float GetLinearDampingRatio();
+    void SetLinearDampingRatio(float ratio);
+    float GetAngularDampingRatio();
+    void SetAngularDampingRatio(float ratio);
+};
+
+[Prefix="JBox3D::"]
+interface B3FilterJointDef {
+    void B3FilterJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+};
+
+[Prefix="JBox3D::"]
+interface B3WheelJointDef {
+    void B3WheelJointDef();
+    long long GetBodyIdA();
+    void SetBodyIdA(long long bodyId);
+    long long GetBodyIdB();
+    void SetBodyIdB(long long bodyId);
+    [Value] B3Transform GetLocalFrameA();
+    void SetLocalFrameA([Const, Ref] B3Transform transform);
+    [Value] B3Transform GetLocalFrameB();
+    void SetLocalFrameB([Const, Ref] B3Transform transform);
+    void SetLocalPositionA([Const, Ref] B3Vec3 position);
+    void SetLocalPositionB([Const, Ref] B3Vec3 position);
+    float GetDrawScale();
+    void SetDrawScale(float scale);
+    boolean GetCollideConnected();
+    void SetCollideConnected(boolean collide);
+    boolean GetEnableSuspensionSpring();
+    void SetEnableSuspensionSpring(boolean enabled);
+    float GetSuspensionHertz();
+    void SetSuspensionHertz(float hertz);
+    float GetSuspensionDampingRatio();
+    void SetSuspensionDampingRatio(float ratio);
+    boolean GetEnableSuspensionLimit();
+    void SetEnableSuspensionLimit(boolean enabled);
+    float GetLowerSuspensionLimit();
+    void SetLowerSuspensionLimit(float limit);
+    float GetUpperSuspensionLimit();
+    void SetUpperSuspensionLimit(float limit);
+    boolean GetEnableSpinMotor();
+    void SetEnableSpinMotor(boolean enabled);
+    float GetMaxSpinTorque();
+    void SetMaxSpinTorque(float torque);
+    float GetSpinSpeed();
+    void SetSpinSpeed(float speed);
+    boolean GetEnableSteering();
+    void SetEnableSteering(boolean enabled);
+    float GetSteeringHertz();
+    void SetSteeringHertz(float hertz);
+    float GetSteeringDampingRatio();
+    void SetSteeringDampingRatio(float ratio);
+    float GetTargetSteeringAngle();
+    void SetTargetSteeringAngle(float radians);
+    float GetMaxSteeringTorque();
+    void SetMaxSteeringTorque(float torque);
+    boolean GetEnableSteeringLimit();
+    void SetEnableSteeringLimit(boolean enabled);
+    float GetLowerSteeringLimit();
+    void SetLowerSteeringLimit(float radians);
+    float GetUpperSteeringLimit();
+    void SetUpperSteeringLimit(float radians);
+};
+
+[Prefix="JBox3D::"]
+interface B3DebugShape {
+    void B3DebugShape();
+    long long GetShapeId();
+    long GetType();
+    [Value] B3Sphere GetSphere();
+    [Value] B3Capsule GetCapsule();
+    long GetHullEdgeCount();
+    [Value] B3Vec3 GetHullEdgeVertex0(long index);
+    [Value] B3Vec3 GetHullEdgeVertex1(long index);
+    long GetSphereCount();
+    [Value] B3Sphere GetSphereAt(long index);
+    long GetCapsuleCount();
+    [Value] B3Capsule GetCapsuleAt(long index);
+    long GetTriangleCount();
+    [Value] B3Vec3 GetTriangleVertex0(long index);
+    [Value] B3Vec3 GetTriangleVertex1(long index);
+    [Value] B3Vec3 GetTriangleVertex2(long index);
+    [Value] B3Vec3 GetTriangleNormal(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3Filter {
+    void B3Filter();
+    long long GetCategoryBits();
+    void SetCategoryBits(long long categoryBits);
+    long long GetMaskBits();
+    void SetMaskBits(long long maskBits);
+    long GetGroupIndex();
+    void SetGroupIndex(long groupIndex);
+};
+
+[Prefix="JBox3D::"]
+interface B3QueryFilter {
+    void B3QueryFilter();
+    long long GetCategoryBits();
+    void SetCategoryBits(long long categoryBits);
+    long long GetMaskBits();
+    void SetMaskBits(long long maskBits);
+    long long GetId();
+    void SetId(long long id);
+};
+
+[Prefix="JBox3D::"]
+interface B3SurfaceMaterial {
+    void B3SurfaceMaterial();
+    float GetFriction();
+    void SetFriction(float friction);
+    float GetRestitution();
+    void SetRestitution(float restitution);
+    float GetRollingResistance();
+    void SetRollingResistance(float rollingResistance);
+    [Value] B3Vec3 GetTangentVelocity();
+    void SetTangentVelocity([Const, Ref] B3Vec3 tangentVelocity);
+    long long GetUserMaterialId();
+    void SetUserMaterialId(long long userMaterialId);
+    long GetCustomColor();
+    void SetCustomColor(long customColor);
+};
+
+[Prefix="JBox3D::"]
+interface B3WorldDef {
+    void B3WorldDef();
+    [Value] B3Vec3 GetGravity();
+    void SetGravity([Const, Ref] B3Vec3 gravity);
+    float GetRestitutionThreshold();
+    void SetRestitutionThreshold(float threshold);
+    float GetHitEventThreshold();
+    void SetHitEventThreshold(float threshold);
+    float GetContactHertz();
+    void SetContactHertz(float hertz);
+    float GetContactDampingRatio();
+    void SetContactDampingRatio(float ratio);
+    float GetContactSpeed();
+    void SetContactSpeed(float speed);
+    float GetMaximumLinearSpeed();
+    void SetMaximumLinearSpeed(float speed);
+    boolean GetEnableSleep();
+    void SetEnableSleep(boolean enabled);
+    boolean GetEnableContinuous();
+    void SetEnableContinuous(boolean enabled);
+    long GetWorkerCount();
+    void SetWorkerCount(long workerCount);
+};
+
+[Prefix="JBox3D::"]
+interface B3BodyDef {
+    void B3BodyDef();
+    long GetType();
+    void SetType(long type);
+    [Value] B3Vec3 GetPosition();
+    void SetPosition([Const, Ref] B3Vec3 position);
+    [Value] B3Quat GetRotation();
+    void SetRotation([Const, Ref] B3Quat rotation);
+    [Value] B3Vec3 GetLinearVelocity();
+    void SetLinearVelocity([Const, Ref] B3Vec3 velocity);
+    [Value] B3Vec3 GetAngularVelocity();
+    void SetAngularVelocity([Const, Ref] B3Vec3 velocity);
+    float GetLinearDamping();
+    void SetLinearDamping(float damping);
+    float GetAngularDamping();
+    void SetAngularDamping(float damping);
+    float GetGravityScale();
+    void SetGravityScale(float scale);
+    float GetSleepThreshold();
+    void SetSleepThreshold(float threshold);
+    [Value] B3MotionLocks GetMotionLocks();
+    void SetMotionLocks([Const, Ref] B3MotionLocks locks);
+    boolean GetEnableSleep();
+    void SetEnableSleep(boolean enabled);
+    boolean GetIsAwake();
+    void SetIsAwake(boolean awake);
+    boolean GetIsBullet();
+    void SetIsBullet(boolean bullet);
+    boolean GetIsEnabled();
+    void SetIsEnabled(boolean enabled);
+    boolean GetAllowFastRotation();
+    void SetAllowFastRotation(boolean allowFastRotation);
+    boolean GetEnableContactRecycling();
+    void SetEnableContactRecycling(boolean enableContactRecycling);
+};
+
+[Prefix="JBox3D::"]
+interface B3ShapeDef {
+    void B3ShapeDef();
+    [Value] B3SurfaceMaterial GetBaseMaterial();
+    void SetBaseMaterial([Const, Ref] B3SurfaceMaterial material);
+    float GetDensity();
+    void SetDensity(float density);
+    float GetExplosionScale();
+    void SetExplosionScale(float scale);
+    [Value] B3Filter GetFilter();
+    void SetFilter([Const, Ref] B3Filter filter);
+    boolean GetEnableCustomFiltering();
+    void SetEnableCustomFiltering(boolean enabled);
+    boolean GetIsSensor();
+    void SetIsSensor(boolean sensor);
+    boolean GetEnableSensorEvents();
+    void SetEnableSensorEvents(boolean enabled);
+    boolean GetEnableContactEvents();
+    void SetEnableContactEvents(boolean enabled);
+    boolean GetEnableHitEvents();
+    void SetEnableHitEvents(boolean enabled);
+    boolean GetEnablePreSolveEvents();
+    void SetEnablePreSolveEvents(boolean enabled);
+    boolean GetInvokeContactCreation();
+    void SetInvokeContactCreation(boolean invokeContactCreation);
+    boolean GetUpdateBodyMass();
+    void SetUpdateBodyMass(boolean updateBodyMass);
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactId {
+    void B3ContactId();
+    void B3ContactId(long value0, long value1, long value2);
+    long GetValue0();
+    long GetValue1();
+    long GetValue2();
+    boolean IsNull();
+};
+
+[Prefix="JBox3D::"]
+interface B3RayResult {
+    void B3RayResult();
+    long long GetShapeId();
+    [Value] B3Vec3 GetPoint();
+    [Value] B3Vec3 GetNormal();
+    long long GetUserMaterialId();
+    float GetFraction();
+    long GetTriangleIndex();
+    long GetChildIndex();
+    long GetNodeVisits();
+    long GetLeafVisits();
+    boolean GetHit();
+};
+
+[Prefix="JBox3D::"]
+interface B3BodyMoveEvent {
+    void B3BodyMoveEvent();
+    long long GetBodyId();
+    [Value] B3Transform GetTransform();
+    boolean GetFellAsleep();
+};
+
+[Prefix="JBox3D::"]
+interface B3BodyEvents {
+    void B3BodyEvents();
+    long GetMoveCount();
+    [Value] B3BodyMoveEvent GetMoveEvent(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3SensorBeginTouchEvent {
+    void B3SensorBeginTouchEvent();
+    long long GetSensorShapeId();
+    long long GetVisitorShapeId();
+};
+
+[Prefix="JBox3D::"]
+interface B3SensorEndTouchEvent {
+    void B3SensorEndTouchEvent();
+    long long GetSensorShapeId();
+    long long GetVisitorShapeId();
+};
+
+[Prefix="JBox3D::"]
+interface B3SensorEvents {
+    void B3SensorEvents();
+    long GetBeginCount();
+    [Value] B3SensorBeginTouchEvent GetBeginEvent(long index);
+    long GetEndCount();
+    [Value] B3SensorEndTouchEvent GetEndEvent(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactBeginTouchEvent {
+    void B3ContactBeginTouchEvent();
+    long long GetShapeIdA();
+    long long GetShapeIdB();
+    [Value] B3ContactId GetContactId();
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactEndTouchEvent {
+    void B3ContactEndTouchEvent();
+    long long GetShapeIdA();
+    long long GetShapeIdB();
+    [Value] B3ContactId GetContactId();
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactHitEvent {
+    void B3ContactHitEvent();
+    long long GetShapeIdA();
+    long long GetShapeIdB();
+    [Value] B3ContactId GetContactId();
+    [Value] B3Vec3 GetPoint();
+    [Value] B3Vec3 GetNormal();
+    float GetApproachSpeed();
+    long long GetUserMaterialIdA();
+    long long GetUserMaterialIdB();
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactEvents {
+    void B3ContactEvents();
+    long GetBeginCount();
+    [Value] B3ContactBeginTouchEvent GetBeginEvent(long index);
+    long GetEndCount();
+    [Value] B3ContactEndTouchEvent GetEndEvent(long index);
+    long GetHitCount();
+    [Value] B3ContactHitEvent GetHitEvent(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3Hull {
+    void B3Hull();
+    static B3Hull CreateBox(float hx, float hy, float hz);
+    static B3Hull CreateOffsetBox(float hx, float hy, float hz, [Const, Ref] B3Vec3 offset);
+    static B3Hull CreateTransformedBox(float hx, float hy, float hz, [Const, Ref] B3Transform transform);
+    static B3Hull CreateScaledBox([Const, Ref] B3Vec3 halfWidths, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 postScale);
+    static B3Hull CreateCube(float halfWidth);
+    static B3Hull CreateCylinder(float height, float radius, float yOffset, long sides);
+    static B3Hull CreateCone(float height, float radius1, float radius2, long slices);
+    static B3Hull CreateRock(float radius);
+    boolean IsValid();
+    void Destroy();
+    long GetVertexCount();
+    long GetFaceCount();
+};
+
+[Prefix="JBox3D::"]
+interface B3Body {
+    void B3Body();
+    void B3Body(long long bodyId);
+    long long GetId();
+    boolean IsValid();
+    void Destroy();
+    long GetType();
+    void SetType(long type);
+    [Value] B3Vec3 GetPosition();
+    [Value] B3Quat GetRotation();
+    [Value] B3Transform GetTransform();
+    void SetTransform([Const, Ref] B3Vec3 position, [Const, Ref] B3Quat rotation);
+    void SetTargetTransform([Const, Ref] B3Vec3 position, [Const, Ref] B3Quat rotation, float timeStep, boolean wake);
+    [Value] B3Vec3 GetLinearVelocity();
+    void SetLinearVelocity([Const, Ref] B3Vec3 velocity);
+    [Value] B3Vec3 GetAngularVelocity();
+    void SetAngularVelocity([Const, Ref] B3Vec3 velocity);
+    void ApplyForce([Const, Ref] B3Vec3 force, [Const, Ref] B3Vec3 point, boolean wake);
+    void ApplyForceToCenter([Const, Ref] B3Vec3 force, boolean wake);
+    void ApplyTorque([Const, Ref] B3Vec3 torque, boolean wake);
+    void ApplyLinearImpulse([Const, Ref] B3Vec3 impulse, [Const, Ref] B3Vec3 point, boolean wake);
+    void ApplyLinearImpulseToCenter([Const, Ref] B3Vec3 impulse, boolean wake);
+    void ApplyAngularImpulse([Const, Ref] B3Vec3 impulse, boolean wake);
+    float GetMass();
+    float GetInverseMass();
+    void ApplyMassFromShapes();
+    float GetLinearDamping();
+    void SetLinearDamping(float damping);
+    float GetAngularDamping();
+    void SetAngularDamping(float damping);
+    float GetGravityScale();
+    void SetGravityScale(float scale);
+    boolean IsAwake();
+    void SetAwake(boolean awake);
+    boolean IsEnabled();
+    void Disable();
+    void Enable();
+    [Value] B3MotionLocks GetMotionLocks();
+    void SetMotionLocks([Const, Ref] B3MotionLocks locks);
+    boolean IsBullet();
+    void SetBullet(boolean bullet);
+    long GetShapeCount();
+    [Value] B3AABB ComputeAABB();
+    B3Shape CreateSphereShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Sphere sphere);
+    B3Shape CreateCapsuleShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Capsule capsule);
+    B3Shape CreateHullShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Hull hull);
+};
+
+[Prefix="JBox3D::"]
+interface B3Joint {
+    void B3Joint();
+    void B3Joint(long long jointId);
+    long long GetId();
+    boolean IsValid();
+    void Destroy(boolean wakeAttached);
+    long long GetBodyIdA();
+    long long GetBodyIdB();
+    void WakeBodies();
+    float GetLinearSeparation();
+    void SetRevoluteTargetAngle(float radians);
+};
+
+[Prefix="JBox3D::"]
+interface B3Shape {
+    void B3Shape();
+    void B3Shape(long long shapeId);
+    long long GetId();
+    boolean IsValid();
+    void Destroy(boolean updateBodyMass);
+    long GetType();
+    long long GetBodyId();
+    boolean IsSensor();
+    float GetDensity();
+    void SetDensity(float density, boolean updateBodyMass);
+    float GetFriction();
+    void SetFriction(float friction);
+    float GetRestitution();
+    void SetRestitution(float restitution);
+    [Value] B3Filter GetFilter();
+    void SetFilter([Const, Ref] B3Filter filter, boolean invokeContacts);
+    void EnableSensorEvents(boolean enabled);
+    boolean AreSensorEventsEnabled();
+    void EnableContactEvents(boolean enabled);
+    boolean AreContactEventsEnabled();
+    void EnableHitEvents(boolean enabled);
+    boolean AreHitEventsEnabled();
+    [Value] B3RayResult RayCast([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation);
+    [Value] B3Sphere GetSphere();
+    void SetSphere([Const, Ref] B3Sphere sphere);
+    [Value] B3Capsule GetCapsule();
+    void SetCapsule([Const, Ref] B3Capsule capsule);
+    [Value] B3AABB GetAABB();
+    [Value] B3Vec3 GetClosestPoint([Const, Ref] B3Vec3 target);
+    void ApplyWind([Const, Ref] B3Vec3 wind, float drag, float lift, float maxSpeed, boolean wake);
+};
+
+[Prefix="JBox3D::"]
+interface B3World {
+    void B3World();
+    void B3World([Const, Ref] B3WorldDef def);
+    long long GetId();
+    boolean IsValid();
+    void Destroy();
+    void Step(float timeStep, long subStepCount);
+    [Value] B3AABB GetBounds();
+    [Value] B3Vec3 GetGravity();
+    void SetGravity([Const, Ref] B3Vec3 gravity);
+    boolean IsSleepingEnabled();
+    void EnableSleeping(boolean enabled);
+    boolean IsWarmStartingEnabled();
+    void EnableWarmStarting(boolean enabled);
+    boolean IsContinuousEnabled();
+    void EnableContinuous(boolean enabled);
+    float GetContactRecycleDistance();
+    void SetContactRecycleDistance(float recycleDistance);
+    void SetContactTuning(float hertz, float dampingRatio, float contactSpeed);
+    long GetWorkerCount();
+    void SetWorkerCount(long workerCount);
+    long GetAwakeBodyCount();
+    B3Body CreateBody([Const, Ref] B3BodyDef def);
+    B3Joint CreateDistanceJoint([Const, Ref] B3DistanceJointDef def);
+    B3Joint CreateMotorJoint([Const, Ref] B3MotorJointDef def);
+    B3Joint CreateParallelJoint([Const, Ref] B3ParallelJointDef def);
+    B3Joint CreatePrismaticJoint([Const, Ref] B3PrismaticJointDef def);
+    B3Joint CreateSphericalJoint([Const, Ref] B3SphericalJointDef def);
+    B3Joint CreateRevoluteJoint([Const, Ref] B3RevoluteJointDef def);
+    B3Joint CreateWeldJoint([Const, Ref] B3WeldJointDef def);
+    B3Joint CreateFilterJoint([Const, Ref] B3FilterJointDef def);
+    B3Joint CreateWheelJoint([Const, Ref] B3WheelJointDef def);
+    B3BodyEvents GetBodyEvents();
+    B3SensorEvents GetSensorEvents();
+    B3ContactEvents GetContactEvents();
+    [Value] B3RayResult CastRayClosest([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
+};
+
+[Prefix="JBox3D::"]
+interface B3DebugDrawEm {
+    void DrawWorld(B3World world, long long maskBits);
+    void SetDrawingBounds([Const, Ref] B3AABB bounds);
+    [Value] B3AABB GetDrawingBounds();
+    void SetForceScale(float scale);
+    float GetForceScale();
+    void SetJointScale(float scale);
+    float GetJointScale();
+    void SetDrawShapes(boolean enabled);
+    boolean GetDrawShapes();
+    void SetDrawJoints(boolean enabled);
+    boolean GetDrawJoints();
+    void SetDrawJointExtras(boolean enabled);
+    boolean GetDrawJointExtras();
+    void SetDrawBounds(boolean enabled);
+    boolean GetDrawBounds();
+    void SetDrawMass(boolean enabled);
+    boolean GetDrawMass();
+    void SetDrawBodyNames(boolean enabled);
+    boolean GetDrawBodyNames();
+    void SetDrawContacts(boolean enabled);
+    boolean GetDrawContacts();
+    void SetDrawAnchorA(boolean enabled);
+    boolean GetDrawAnchorA();
+    void SetDrawGraphColors(boolean enabled);
+    boolean GetDrawGraphColors();
+    void SetDrawContactFeatures(boolean enabled);
+    boolean GetDrawContactFeatures();
+    void SetDrawContactNormals(boolean enabled);
+    boolean GetDrawContactNormals();
+    void SetDrawContactForces(boolean enabled);
+    boolean GetDrawContactForces();
+    void SetDrawFrictionForces(boolean enabled);
+    boolean GetDrawFrictionForces();
+    void SetDrawIslands(boolean enabled);
+    boolean GetDrawIslands();
+};
+
+[JSImplementation="B3DebugDrawEm"]
+interface B3DebugDrawImplCustom : B3DebugDrawEm {
+    void B3DebugDrawImplCustom();
+    boolean DrawShape(B3DebugShape shape, [Const, Ref] B3Transform transform, long color);
+    void DrawSegment([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, long color);
+    void DrawTransform([Const, Ref] B3Transform transform);
+    void DrawPoint([Const, Ref] B3Vec3 p, float size, long color);
+    void DrawSphere([Const, Ref] B3Vec3 p, float radius, long color, float alpha);
+    void DrawCapsule([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, float radius, long color, float alpha);
+    void DrawBounds([Const, Ref] B3AABB aabb, long color);
+    void DrawBox([Const, Ref] B3Vec3 extents, [Const, Ref] B3Transform transform, long color);
+};
+
+[Prefix="JBox3D::"]
+interface B3 {
+    static long StaticBody();
+    static long KinematicBody();
+    static long DynamicBody();
+    static long CapsuleShape();
+    static long CompoundShape();
+    static long HeightShape();
+    static long HullShape();
+    static long MeshShape();
+    static long SphereShape();
+    static long GetWorldCount();
+    static long GetMaxWorldCount();
+    static long long DefaultMaskBits();
+};

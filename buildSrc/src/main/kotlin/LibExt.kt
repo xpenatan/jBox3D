@@ -15,8 +15,17 @@ object LibExt {
     const val javaFFMTarget = "25"
 
     // Library dependencies
+    const val box3dVersion = "0.1.0"
     const val jParserVersion = "-SNAPSHOT"
     const val teaVMVersion = "0.15.0"
+    const val fdxGroup = "io.github.libfdx"
+    const val fdxVersion = "-SNAPSHOT"
+    const val gdxVersion = "1.14.2"
+    const val gdxTeaVMVersion = "-SNAPSHOT"
+
+    // Sample dependencies
+    const val sampleVersion = "-SNAPSHOT"
+    const val useRepoLibs = false
 
     // Test dependencies
     const val jUnitVersion = "4.12"

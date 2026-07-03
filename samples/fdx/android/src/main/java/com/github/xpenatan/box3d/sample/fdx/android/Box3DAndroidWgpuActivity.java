@@ -1,0 +1,8 @@
+package com.github.xpenatan.box3d.sample.fdx.android;
+
+public final class Box3DAndroidWgpuActivity extends Box3DAndroidActivity {
+    @Override
+    protected String graphicsName() {
+        return "wgpu";
+    }
+}

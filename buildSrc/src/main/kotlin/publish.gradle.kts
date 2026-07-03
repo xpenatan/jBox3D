@@ -3,11 +3,17 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 var libProjects = mutableSetOf(
-    project(":box3d:box3d-core"),
-    project(":box3d:box3d-jni"),
-    project(":box3d:box3d-ffm"),
-    project(":box3d:box3d-web"),
-    project(":box3d:box3d-android"),
+    project(":box3d:core"),
+    project(":box3d:shared:jni"),
+    project(":box3d:shared:c"),
+    project(":box3d:desktop:jni"),
+    project(":box3d:desktop:ffm"),
+    project(":box3d:desktop:c"),
+    project(":box3d:web:wasm"),
+    project(":box3d:android:jni"),
+    project(":box3d:android:c"),
+    project(":extensions:gdx"),
+    project(":extensions:fdx"),
 )
 
 val taskNames = gradle.startParameter.taskNames

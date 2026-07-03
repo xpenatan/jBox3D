@@ -1,4 +1,21 @@
 pluginManagement {
+    val jParserPluginVersion = "-SNAPSHOT"
+    val gdxTeaVMPluginVersion = "-SNAPSHOT"
+
+    resolutionStrategy {
+        eachPlugin {
+            if(requested.id.id == "com.github.xpenatan.jparser") {
+                useModule("com.github.xpenatan.jParser:jparser-gradle-plugin:$jParserPluginVersion")
+            }
+        }
+    }
+
+    plugins {
+        id("com.github.xpenatan.jparser") version jParserPluginVersion
+        id("com.github.xpenatan.gdx-teavm") version gdxTeaVMPluginVersion
+        id("io.github.libfdx") version "-SNAPSHOT"
+    }
+
     repositories {
         google()
         mavenCentral()
@@ -15,33 +32,25 @@ pluginManagement {
 
 rootProject.name = "jBox3D"
 
-include(":box3d:box3d-build")
-include(":box3d:box3d-base")
-include(":box3d:box3d-core")
-include(":box3d:box3d-jni")
-include(":box3d:box3d-ffm")
-include(":box3d:box3d-web")
-include(":box3d:box3d-android")
+include(":box3d:builder")
+include(":box3d:base")
+include(":box3d:core")
+include(":box3d:shared:jni")
+include(":box3d:shared:c")
+include(":box3d:desktop:jni")
+include(":box3d:desktop:ffm")
+include(":box3d:desktop:c")
+include(":box3d:web:wasm")
+include(":box3d:android:jni")
+include(":box3d:android:c")
+include(":extensions:gdx")
+include(":extensions:fdx")
 
-//includeBuild("E:\\Dev\\Projects\\java\\jParser") {
-//    dependencySubstitution {
-//        substitute(module("com.github.xpenatan.jParser:gen-build")).using(project(":jParser:gen:gen-build"))
-//        substitute(module("com.github.xpenatan.jParser:gen-build-tool")).using(project(":jParser:gen:gen-build-tool"))
-//        substitute(module("com.github.xpenatan.jParser:gen-core")).using(project(":jParser:gen:gen-core"))
-//        substitute(module("com.github.xpenatan.jParser:gen-jni")).using(project(":jParser:gen:gen-jni"))
-//        substitute(module("com.github.xpenatan.jParser:gen-ffm")).using(project(":jParser:gen:gen-ffm"))
-//        substitute(module("com.github.xpenatan.jParser:gen-idl")).using(project(":jParser:gen:gen-idl"))
-//        substitute(module("com.github.xpenatan.jParser:gen-web")).using(project(":jParser:gen:gen-web"))
-//        substitute(module("com.github.xpenatan.jParser:api-core")).using(project(":jParser:api:api-core"))
-//        substitute(module("com.github.xpenatan.jParser:api-web")).using(project(":jParser:api:api-web"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-base")).using(project(":jParser:runtime:runtime-base"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-core")).using(project(":jParser:runtime:runtime-core"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-web")).using(project(":jParser:runtime:runtime-web"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-web_wasm")).using(project(":jParser:runtime:runtime-web_wasm"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-jni")).using(project(":jParser:runtime:runtime-jni"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-ffm")).using(project(":jParser:runtime:runtime-ffm"))
-//        substitute(module("com.github.xpenatan.jParser:runtime-android")).using(project(":jParser:runtime:runtime-android"))
-//        substitute(module("com.github.xpenatan.jParser:loader-core")).using(project(":jParser:loader:loader-core"))
-//        substitute(module("com.github.xpenatan.jParser:loader-web")).using(project(":jParser:loader:loader-web"))
-//    }
-//}
+include(":samples:shared")
+include(":samples:gdx:core")
+include(":samples:gdx:desktop")
+include(":samples:gdx:web")
+include(":samples:fdx:core")
+include(":samples:fdx:desktop")
+include(":samples:fdx:web")
+include(":samples:fdx:android")
