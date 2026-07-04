@@ -43,6 +43,7 @@ gdxTeaVM {
 
 val jsWebappDir = layout.buildDirectory.dir("dist/web/webapp")
 val wasmWebappDir = layout.buildDirectory.dir("dist/wasm/webapp")
+val pagesWebappDir = layout.buildDirectory.dir("pages")
 
 fun registerBox3DRuntimeScriptCopy(
     taskName: String,
@@ -118,6 +119,24 @@ tasks.register("box3d_gdx_web_wasm_build") {
     group = "samples"
     description = "Builds the jBox3D libGDX Wasm web sample."
     dependsOn(copyBox3DWasmRuntimeScripts)
+}
+
+tasks.register<Sync>("box3d_gdx_web_pages_build") {
+    group = "samples"
+    description = "Builds the jBox3D libGDX web samples in a GitHub Pages layout."
+    dependsOn(copyBox3DJsRuntimeScripts, copyBox3DWasmRuntimeScripts)
+    into(pagesWebappDir)
+    from(jsWebappDir) {
+        into("gdx/gl/js")
+        exclude("WEB-INF/**")
+    }
+    from(wasmWebappDir) {
+        into("gdx/gl/wasm")
+        exclude("WEB-INF/**")
+    }
+    from(layout.projectDirectory.file("src/main/pages/index.html")) {
+        into("")
+    }
 }
 
 tasks.register("box3d_gdx_web_js_run") {

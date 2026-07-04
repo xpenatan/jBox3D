@@ -98,9 +98,13 @@ Web samples also consume prebuilt jParser WebAssembly outputs from `:box3d:web:w
 ```powershell
 .\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_js_build
 .\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_wasm_build
+.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_pages_build
 .\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_js_run
 .\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_wasm_run
 ```
+
+The GitHub Pages staging task writes the uploadable site to `samples/gdx/platforms/web/build/pages`.
+It publishes the libGDX web samples under `gdx/gl/js/` and `gdx/gl/wasm/`.
 
 Android validation requires a configured Android SDK through `ANDROID_HOME`, `ANDROID_SDK_ROOT`, or a local `local.properties` file.
 
