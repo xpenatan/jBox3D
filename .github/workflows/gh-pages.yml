@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -40,6 +43,11 @@ jobs:
 
       - name: Build Box3D WebAssembly runtime
         run: ./gradlew --no-daemon :box3d:builder:box3d_build_project_web_wasm
+
+      - name: Verify Box3D WebAssembly runtime
+        run: |
+          test -f box3d/builder/build/c++/libs/emscripten/box3d.js
+          test -f box3d/builder/build/c++/libs/emscripten/box3d.wasm
 
       - name: Build GitHub Pages site
         run: ./gradlew --no-daemon :samples:gdx:platforms:web:box3d_gdx_web_pages_build

@@ -52,7 +52,7 @@ fun registerBox3DRuntimeScriptCopy(
 ): TaskProvider<Task> {
     val runtimeClasspath = configurations.named("runtimeClasspath")
     return tasks.register(taskName) {
-        dependsOn(buildTaskName, ":box3d:web:wasm:jar")
+        dependsOn(":box3d:builder:box3d_build_project_web_wasm", buildTaskName, ":box3d:web:wasm:jar")
         inputs.files(runtimeClasspath)
         outputs.file(webappDir.map { it.file("scripts/box3d.js") })
         outputs.file(webappDir.map { it.file("scripts/box3d.wasm") })
