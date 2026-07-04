@@ -102,6 +102,7 @@ val linuxTargetNames = setOf(
     JParserTargets.LINUX64_FFM,
     JParserTargets.LINUX64_TEAVM_C
 )
+val androidArmV7TargetName = "armeabi_v7a"
 
 jParser {
     libName.set("box3d")
@@ -141,6 +142,11 @@ jParser {
                 }
                 if(targetName in linuxTargetNames) {
                     linkerFlag("-lm")
+                }
+                if(targetName == JParserTargets.ANDROID_JNI || targetName == JParserTargets.ANDROID_TEAVM_C) {
+                    androidTarget(androidArmV7TargetName) {
+                        compileFlag("-DBOX3D_DISABLE_SIMD")
+                    }
                 }
                 if(targetName == JParserTargets.WEB_WASM) {
                     cppExclude(box3dTimerSource)

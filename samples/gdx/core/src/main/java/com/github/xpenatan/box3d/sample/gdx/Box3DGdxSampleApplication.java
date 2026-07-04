@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -41,9 +42,10 @@ import com.github.xpenatan.box3d.sample.shared.Box3DSampleSettings;
 import com.github.xpenatan.box3d.gdx.GdxDebugRenderer;
 
 public final class Box3DGdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
-    private static final int SELECTOR_HIT_WIDTH = 326;
     private static final int SETTINGS_HIT_WIDTH = 326;
     private static final int MENU_BAR_HIT_HEIGHT = 38;
+    private static final float SAMPLE_MENU_WIDTH = 430.0f;
+    private static final float SAMPLE_MENU_MAX_HEIGHT = 560.0f;
     private static final float FPS_UPDATE_INTERVAL = 0.25f;
     private static final float FLY_LOOK_RADIANS_PER_PIXEL = 0.0026f;
     private static final float FLY_SPEED = 10.0f;
@@ -74,7 +76,9 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private Label launchSpeedLabel;
     private Label shadowBiasLabel;
     private Slider shadowBiasSlider;
-    private com.badlogic.gdx.scenes.scene2d.ui.List<String> sampleList;
+    private ScrollPane settingsScrollPane;
+    private Table sampleMenuPopup;
+    private TextButton samplesMenuButton;
     private com.badlogic.gdx.scenes.scene2d.ui.List<String> launchShapeList;
     private com.badlogic.gdx.scenes.scene2d.ui.List<String> debugVisualizationList;
     private CheckBox sleepCheckBox;
@@ -84,9 +88,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private float cameraPitchRadians;
     private float fpsElapsed;
     private int fpsFrames;
-    private int debugVisualizationIndex = Box3DDebugVisualization.ALL.index();
+    private int debugVisualizationIndex = resolveInitialDebugVisualizationIndex();
     private boolean fpsHasValue;
-    private boolean updatingSelection;
     private boolean updatingDebugVisualizationSelection;
     private String screenshotPath;
     private long screenshotAfterFrames;
@@ -101,6 +104,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private int throwClickX;
     private int throwClickY;
     private boolean preserveCameraOnSampleChange;
+    private boolean initialScrollAligned;
 
     public Box3DGdxSampleApplication() {
         this(0L);
@@ -128,6 +132,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         updateCameraViewport(width, height);
         if(stage != null) {
             stage.getViewport().update(width, height, true);
+            positionSampleMenuPopup();
         }
     }
 
@@ -153,6 +158,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
 
         if(stage != null) {
             stage.act(Gdx.graphics.getDeltaTime());
+            alignInitialScrollPanes();
+            Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
             stage.draw();
         }
         writeScreenshotIfRequested();
@@ -219,12 +226,9 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         root.setFillParent(true);
         root.top().left();
 
-        Table selectorPanel = new Table();
-        selectorPanel.setBackground(skin.newDrawable("white", new Color(0.06f, 0.07f, 0.09f, 0.92f)));
-        selectorPanel.defaults().left().growX();
-
         Table panel = new Table();
-        panel.setBackground(skin.newDrawable("white", new Color(0.06f, 0.07f, 0.09f, 0.92f)));
+        panel.setBackground(skin.getDrawable("box3d-panel"));
+        panel.top();
         panel.defaults().left().growX();
         Box3DSampleSettings settings = controller.settings();
         Box3DSampleEntry selectedEntry = controller.selectedEntry();
@@ -239,24 +243,6 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         panel.add(frameTimeLabel).pad(0.0f, 10.0f, 4.0f, 10.0f).row();
         panel.add(cameraPoseLabel).pad(0.0f, 10.0f, 2.0f, 10.0f).row();
         panel.add(cameraAnglesLabel).pad(0.0f, 10.0f, 10.0f, 10.0f).row();
-
-        selectorPanel.add(new Label("Samples", skin, "title")).pad(10.0f, 10.0f, 6.0f, 10.0f).row();
-
-        sampleList = new com.badlogic.gdx.scenes.scene2d.ui.List<String>(skin);
-        sampleList.setItems(sampleNames());
-        sampleList.setSelectedIndex(controller.selectedIndex());
-        sampleList.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if(!updatingSelection) {
-                    controller.selectSample(sampleList.getSelectedIndex());
-                }
-            }
-        });
-
-        ScrollPane scrollPane = new ScrollPane(sampleList, skin);
-        scrollPane.setFadeScrollBars(false);
-        selectorPanel.add(scrollPane).width(286.0f).growY().pad(0.0f, 10.0f, 10.0f, 10.0f).row();
 
         TextButton resetTestButton = new TextButton("Reset Test", skin);
         resetTestButton.addListener(new ChangeListener() {
@@ -449,23 +435,58 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         updateSimulationLabels();
         updateInfoLabels(0.0f);
 
-        root.add(createMenuBar()).colspan(3).growX().height(34.0f).top().left().row();
+        root.add(createMenuBar()).colspan(2).growX().height(34.0f).top().left().row();
 
-        ScrollPane selectorScrollPane = new ScrollPane(selectorPanel, skin);
-        selectorScrollPane.setFadeScrollBars(false);
-        ScrollPane panelScrollPane = new ScrollPane(panel, skin);
-        panelScrollPane.setFadeScrollBars(false);
-        root.add(selectorScrollPane).width(SELECTOR_HIT_WIDTH).growY().pad(8.0f).top().left();
+        settingsScrollPane = new ScrollPane(panel, skin);
+        settingsScrollPane.setFadeScrollBars(false);
+        settingsScrollPane.setScrollingDisabled(true, false);
+
         root.add().expand().fill();
-        root.add(panelScrollPane).width(SETTINGS_HIT_WIDTH).growY().pad(8.0f).top().right();
+        root.add(settingsScrollPane).width(SETTINGS_HIT_WIDTH).growY().pad(8.0f).top().right();
         stage.addActor(root);
+
+        sampleMenuPopup = new Table();
+        sampleMenuPopup.setBackground(skin.getDrawable("box3d-panel"));
+        sampleMenuPopup.top().left();
+        sampleMenuPopup.setVisible(false);
+        stage.addActor(sampleMenuPopup);
+        rebuildSampleMenuPopup();
+        if(shouldOpenSampleMenuInitially()) {
+            sampleMenuPopup.setVisible(true);
+        }
+    }
+
+    private void alignInitialScrollPanes() {
+        if(initialScrollAligned) {
+            return;
+        }
+        alignScrollPaneToTop(settingsScrollPane);
+        initialScrollAligned = true;
+    }
+
+    private void alignScrollPaneToTop(ScrollPane scrollPane) {
+        if(scrollPane == null) {
+            return;
+        }
+        scrollPane.validate();
+        scrollPane.setScrollY(0.0f);
+        scrollPane.updateVisualScroll();
     }
 
     private Table createMenuBar() {
         Table menuBar = new Table();
-        menuBar.setBackground(skin.newDrawable("white", new Color(0.035f, 0.04f, 0.055f, 0.94f)));
+        menuBar.setBackground(skin.getDrawable("box3d-menu"));
         menuBar.defaults().height(24.0f).pad(4.0f, 3.0f, 4.0f, 3.0f);
         menuBar.add(new Label("jBox3D", skin, "title")).padLeft(10.0f).padRight(10.0f);
+
+        samplesMenuButton = new TextButton("Samples", skin);
+        samplesMenuButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                toggleSampleMenuPopup();
+            }
+        });
+        menuBar.add(samplesMenuButton).width(92.0f);
 
         TextButton restartButton = new TextButton("Restart", skin);
         restartButton.addListener(new ChangeListener() {
@@ -500,12 +521,108 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         return menuBar;
     }
 
-    private Array<String> sampleNames() {
-        Array<String> names = new Array<String>();
-        for(Box3DSampleEntry entry : controller.entries()) {
-            names.add(entry.displayName());
+    private void toggleSampleMenuPopup() {
+        if(sampleMenuPopup == null) {
+            return;
         }
-        return names;
+        if(sampleMenuPopup.isVisible()) {
+            sampleMenuPopup.setVisible(false);
+            return;
+        }
+        rebuildSampleMenuPopup();
+        sampleMenuPopup.setVisible(true);
+    }
+
+    private void rebuildSampleMenuPopup() {
+        if(sampleMenuPopup == null || stage == null) {
+            return;
+        }
+
+        float stageHeight = stage.getViewport().getWorldHeight();
+        float popupHeight = Math.max(180.0f,
+                Math.min(SAMPLE_MENU_MAX_HEIGHT, stageHeight - MENU_BAR_HIT_HEIGHT - 12.0f));
+        float contentHeight = Math.max(120.0f, popupHeight - 18.0f);
+
+        Table content = new Table();
+        content.top().left();
+        content.defaults().left().growX();
+
+        Array<String> categories = sampleCategories();
+        for(int categoryIndex = 0; categoryIndex < categories.size; categoryIndex++) {
+            String category = categories.get(categoryIndex);
+            if(categoryIndex > 0) {
+                content.add().height(6.0f).row();
+            }
+            Label categoryLabel = new Label(category, skin, "title");
+            content.add(categoryLabel).pad(8.0f, 10.0f, 4.0f, 10.0f).row();
+            for(int i = 0; i < controller.entries().size(); i++) {
+                Box3DSampleEntry entry = controller.entries().get(i);
+                if(!entry.category().equals(category)) {
+                    continue;
+                }
+                content.add(createSampleMenuItem(entry, i)).height(24.0f)
+                        .pad(0.0f, 10.0f, 2.0f, 10.0f).row();
+            }
+        }
+
+        ScrollPane sampleScrollPane = new ScrollPane(content, skin);
+        sampleScrollPane.setFadeScrollBars(false);
+        sampleScrollPane.setScrollingDisabled(true, false);
+
+        sampleMenuPopup.clearChildren();
+        sampleMenuPopup.add(sampleScrollPane).width(SAMPLE_MENU_WIDTH - 12.0f).height(contentHeight)
+                .pad(6.0f).row();
+        sampleMenuPopup.setSize(SAMPLE_MENU_WIDTH, popupHeight);
+        positionSampleMenuPopup();
+    }
+
+    private TextButton createSampleMenuItem(Box3DSampleEntry entry, int sampleIndex) {
+        boolean selected = sampleIndex == controller.selectedIndex();
+        TextButton item = new TextButton(entry.name(), skin, selected ? "selected" : "default");
+        item.getLabel().setAlignment(Align.left);
+        item.getLabelCell().left().padLeft(8.0f);
+        item.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                controller.selectSample(sampleIndex);
+                if(sampleMenuPopup != null) {
+                    sampleMenuPopup.setVisible(false);
+                }
+            }
+        });
+        return item;
+    }
+
+    private Array<String> sampleCategories() {
+        Array<String> categories = new Array<String>();
+        for(Box3DSampleEntry entry : controller.entries()) {
+            if(!containsCategory(categories, entry.category())) {
+                categories.add(entry.category());
+            }
+        }
+        return categories;
+    }
+
+    private boolean containsCategory(Array<String> categories, String category) {
+        for(int i = 0; i < categories.size; i++) {
+            if(categories.get(i).equals(category)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void positionSampleMenuPopup() {
+        if(sampleMenuPopup == null || stage == null) {
+            return;
+        }
+        float stageHeight = stage.getViewport().getWorldHeight();
+        sampleMenuPopup.setPosition(8.0f,
+                Math.max(8.0f, stageHeight - MENU_BAR_HIT_HEIGHT - sampleMenuPopup.getHeight() - 4.0f));
+    }
+
+    private boolean shouldOpenSampleMenuInitially() {
+        return Boolean.parseBoolean(System.getProperty("jbox3d.sample.openSamplesMenu", "false"));
     }
 
     private Array<String> debugVisualizationNames() {
@@ -568,10 +685,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         if(activeSampleCategoryLabel != null) {
             activeSampleCategoryLabel.setText(entry.category());
         }
-        if(sampleList != null) {
-            updatingSelection = true;
-            sampleList.setSelectedIndex(controller.selectedIndex());
-            updatingSelection = false;
+        if(sampleMenuPopup != null && sampleMenuPopup.isVisible()) {
+            rebuildSampleMenuPopup();
         }
     }
 
@@ -623,19 +738,27 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     }
 
     private Skin createSkin() {
-        Skin selectorSkin = new Skin();
-        BitmapFont font = new BitmapFont();
-        selectorSkin.add("default-font", font);
+        Skin selectorSkin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        BitmapFont font = selectorSkin.getFont("default-font");
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        Texture white = new Texture(pixmap);
-        pixmap.dispose();
-        selectorSkin.add("white", white);
+        addUiDrawable(selectorSkin, "panel", "box3d-panel", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "menu", "box3d-menu", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "button-up", "box3d-button-up", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "button-down", "box3d-button-down", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "button-over", "box3d-button-over", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "list-bg", "box3d-list-bg", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "selection", "box3d-selection", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "scroll", "box3d-scroll", 1.0f, 1.0f);
+        addUiDrawable(selectorSkin, "scroll-knob", "box3d-scroll-knob", 12.0f, 12.0f);
+        addUiDrawable(selectorSkin, "slider-bg", "box3d-slider-bg", 1.0f, 4.0f);
+        addUiDrawable(selectorSkin, "slider-fill", "box3d-slider-fill", 1.0f, 4.0f);
+        addUiDrawable(selectorSkin, "slider-knob", "box3d-slider-knob", 12.0f, 18.0f);
+        addUiDrawable(selectorSkin, "checkbox-off", "box3d-checkbox-off", 18.0f, 18.0f);
+        addUiDrawable(selectorSkin, "checkbox-over", "box3d-checkbox-over", 18.0f, 18.0f);
+        addUiDrawable(selectorSkin, "checkbox-on", "box3d-checkbox-on", 18.0f, 18.0f);
+        addUiDrawable(selectorSkin, "checkbox-on-over", "box3d-checkbox-on-over", 18.0f, 18.0f);
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, new Color(0.93f, 0.95f, 0.97f, 1.0f));
-        selectorSkin.add("default", labelStyle);
+        selectorSkin.add("default", new Label.LabelStyle(font, new Color(0.93f, 0.95f, 0.97f, 1.0f)));
         selectorSkin.add("title", new Label.LabelStyle(font, new Color(0.86f, 0.70f, 0.32f, 1.0f)));
         selectorSkin.add("muted", new Label.LabelStyle(font, new Color(0.70f, 0.73f, 0.78f, 1.0f)));
         selectorSkin.add("metric", new Label.LabelStyle(font, new Color(0.38f, 0.70f, 0.62f, 1.0f)));
@@ -643,32 +766,32 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
         buttonStyle.fontColor = new Color(0.93f, 0.95f, 0.97f, 1.0f);
-        buttonStyle.up = selectorSkin.newDrawable("white", new Color(0.16f, 0.18f, 0.22f, 1.0f));
-        buttonStyle.down = selectorSkin.newDrawable("white", new Color(0.24f, 0.28f, 0.34f, 1.0f));
-        buttonStyle.over = selectorSkin.newDrawable("white", new Color(0.20f, 0.23f, 0.28f, 1.0f));
+        buttonStyle.up = selectorSkin.getDrawable("box3d-button-up");
+        buttonStyle.down = selectorSkin.getDrawable("box3d-button-down");
+        buttonStyle.over = selectorSkin.getDrawable("box3d-button-over");
         selectorSkin.add("default", buttonStyle);
+
+        TextButton.TextButtonStyle selectedButtonStyle = new TextButton.TextButtonStyle();
+        selectedButtonStyle.font = font;
+        selectedButtonStyle.fontColor = Color.WHITE;
+        selectedButtonStyle.up = selectorSkin.getDrawable("box3d-selection");
+        selectedButtonStyle.down = selectorSkin.getDrawable("box3d-button-down");
+        selectedButtonStyle.over = selectorSkin.getDrawable("box3d-button-over");
+        selectorSkin.add("selected", selectedButtonStyle);
 
         CheckBox.CheckBoxStyle checkBoxStyle = new CheckBox.CheckBoxStyle();
         checkBoxStyle.font = font;
         checkBoxStyle.fontColor = new Color(0.93f, 0.95f, 0.97f, 1.0f);
-        checkBoxStyle.checkboxOff = createCheckboxDrawable(selectorSkin, "checkbox-off",
-                new Color(0.10f, 0.11f, 0.14f, 1.0f), new Color(0.30f, 0.34f, 0.40f, 1.0f), false);
-        checkBoxStyle.checkboxOver = createCheckboxDrawable(selectorSkin, "checkbox-over",
-                new Color(0.16f, 0.18f, 0.22f, 1.0f), new Color(0.38f, 0.42f, 0.50f, 1.0f), false);
-        checkBoxStyle.checkboxOn = createCheckboxDrawable(selectorSkin, "checkbox-on",
-                new Color(0.20f, 0.36f, 0.58f, 1.0f), new Color(0.45f, 0.58f, 0.78f, 1.0f), true);
-        checkBoxStyle.checkboxOnOver = createCheckboxDrawable(selectorSkin, "checkbox-on-over",
-                new Color(0.25f, 0.43f, 0.68f, 1.0f), new Color(0.52f, 0.66f, 0.86f, 1.0f), true);
+        checkBoxStyle.checkboxOff = selectorSkin.getDrawable("box3d-checkbox-off");
+        checkBoxStyle.checkboxOver = selectorSkin.getDrawable("box3d-checkbox-over");
+        checkBoxStyle.checkboxOn = selectorSkin.getDrawable("box3d-checkbox-on");
+        checkBoxStyle.checkboxOnOver = selectorSkin.getDrawable("box3d-checkbox-on-over");
         selectorSkin.add("default", checkBoxStyle);
 
         Slider.SliderStyle sliderStyle = new Slider.SliderStyle();
-        sliderStyle.background = selectorSkin.newDrawable("white", new Color(0.10f, 0.11f, 0.14f, 1.0f));
-        sliderStyle.knobBefore = selectorSkin.newDrawable("white", new Color(0.20f, 0.36f, 0.58f, 1.0f));
-        sliderStyle.knob = selectorSkin.newDrawable("white", new Color(0.93f, 0.95f, 0.97f, 1.0f));
-        sliderStyle.background.setMinHeight(4.0f);
-        sliderStyle.knobBefore.setMinHeight(4.0f);
-        sliderStyle.knob.setMinWidth(12.0f);
-        sliderStyle.knob.setMinHeight(18.0f);
+        sliderStyle.background = selectorSkin.getDrawable("box3d-slider-bg");
+        sliderStyle.knobBefore = selectorSkin.getDrawable("box3d-slider-fill");
+        sliderStyle.knob = selectorSkin.getDrawable("box3d-slider-knob");
         selectorSkin.add("default-horizontal", sliderStyle);
 
         com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle listStyle =
@@ -676,41 +799,28 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         listStyle.font = font;
         listStyle.fontColorUnselected = new Color(0.86f, 0.88f, 0.91f, 1.0f);
         listStyle.fontColorSelected = Color.WHITE;
-        listStyle.selection = selectorSkin.newDrawable("white", new Color(0.20f, 0.36f, 0.58f, 1.0f));
-        listStyle.background = selectorSkin.newDrawable("white", new Color(0.10f, 0.11f, 0.14f, 0.96f));
+        listStyle.selection = selectorSkin.getDrawable("box3d-selection");
+        listStyle.background = selectorSkin.getDrawable("box3d-list-bg");
         selectorSkin.add("default", listStyle);
 
         ScrollPane.ScrollPaneStyle scrollStyle = new ScrollPane.ScrollPaneStyle();
-        scrollStyle.background = selectorSkin.newDrawable("white", new Color(0.10f, 0.11f, 0.14f, 0.96f));
-        scrollStyle.vScroll = selectorSkin.newDrawable("white", new Color(0.08f, 0.09f, 0.11f, 1.0f));
-        scrollStyle.vScrollKnob = selectorSkin.newDrawable("white", new Color(0.32f, 0.36f, 0.42f, 1.0f));
+        scrollStyle.background = selectorSkin.getDrawable("box3d-list-bg");
+        scrollStyle.vScroll = selectorSkin.getDrawable("box3d-scroll");
+        scrollStyle.vScrollKnob = selectorSkin.getDrawable("box3d-scroll-knob");
+        scrollStyle.hScroll = selectorSkin.getDrawable("box3d-scroll");
+        scrollStyle.hScrollKnob = selectorSkin.getDrawable("box3d-scroll-knob");
         selectorSkin.add("default", scrollStyle);
 
         return selectorSkin;
     }
 
-    private Drawable createCheckboxDrawable(Skin skin, String name, Color fill, Color border, boolean checked) {
-        Pixmap pixmap = new Pixmap(18, 18, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0.0f, 0.0f, 0.0f, 0.0f);
-        pixmap.fill();
-        pixmap.setColor(fill);
-        pixmap.fillRectangle(1, 1, 16, 16);
-        pixmap.setColor(border);
-        pixmap.drawRectangle(0, 0, 18, 18);
-        pixmap.drawRectangle(1, 1, 16, 16);
-        if(checked) {
-            pixmap.setColor(0.92f, 0.95f, 1.0f, 1.0f);
-            pixmap.drawLine(4, 9, 7, 12);
-            pixmap.drawLine(4, 10, 7, 13);
-            pixmap.drawLine(7, 12, 14, 4);
-            pixmap.drawLine(7, 13, 14, 5);
-        }
-        Texture texture = new Texture(pixmap);
-        pixmap.dispose();
+    private Drawable addUiDrawable(Skin skin, String fileName, String name, float minWidth, float minHeight) {
+        Texture texture = new Texture(Gdx.files.internal("data/ui/" + fileName + ".png"));
         skin.add(name + "-texture", texture);
         TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(texture));
-        drawable.setMinWidth(18.0f);
-        drawable.setMinHeight(18.0f);
+        drawable.setMinWidth(minWidth);
+        drawable.setMinHeight(minHeight);
+        skin.add(name, drawable, Drawable.class);
         return drawable;
     }
 
@@ -738,6 +848,9 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     }
 
     private void updateControls(float deltaSeconds) {
+        if(sampleMenuPopup != null && sampleMenuPopup.isVisible() && Gdx.input.justTouched() && !isPointerOverUi()) {
+            sampleMenuPopup.setVisible(false);
+        }
         if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             resetTest();
         }
@@ -976,6 +1089,35 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         }
     }
 
+    private static int resolveInitialDebugVisualizationIndex() {
+        String index = System.getProperty("jbox3d.sample.debugVisualizationIndex");
+        if(index != null && index.trim().length() > 0) {
+            try {
+                return Math.max(0,
+                        Math.min(Integer.parseInt(index.trim()), Box3DDebugVisualization.values().length - 1));
+            }
+            catch(NumberFormatException ignored) {
+            }
+        }
+
+        String name = System.getProperty("jbox3d.sample.debugVisualization");
+        if(name == null || name.trim().length() == 0) {
+            return Box3DDebugVisualization.ALL.index();
+        }
+        String normalized = normalize(name);
+        Box3DDebugVisualization[] values = Box3DDebugVisualization.values();
+        for(int i = 0; i < values.length; i++) {
+            if(normalize(values[i].label()).equals(normalized) || normalize(values[i].name()).equals(normalized)) {
+                return values[i].index();
+            }
+        }
+        return Box3DDebugVisualization.ALL.index();
+    }
+
+    private static String normalize(String value) {
+        return value == null ? "" : value.toLowerCase().replace(" ", "").replace("_", "").replace("-", "").trim();
+    }
+
     private static float round(float value, float scale) {
         return Math.round(value * scale) / scale;
     }
@@ -983,8 +1125,15 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private boolean isPointerOverUi() {
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
-        return y < MENU_BAR_HIT_HEIGHT || x <= SELECTOR_HIT_WIDTH
-                || x >= Gdx.graphics.getWidth() - SETTINGS_HIT_WIDTH;
+        if(y < MENU_BAR_HIT_HEIGHT || x >= Gdx.graphics.getWidth() - SETTINGS_HIT_WIDTH) {
+            return true;
+        }
+        if(sampleMenuPopup == null || !sampleMenuPopup.isVisible()) {
+            return false;
+        }
+        float stageY = Gdx.graphics.getHeight() - y;
+        return x >= sampleMenuPopup.getX() && x <= sampleMenuPopup.getX() + sampleMenuPopup.getWidth()
+                && stageY >= sampleMenuPopup.getY() && stageY <= sampleMenuPopup.getY() + sampleMenuPopup.getHeight();
     }
 
     private void syncFlyAnglesFromCamera() {

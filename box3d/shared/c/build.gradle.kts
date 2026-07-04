@@ -4,6 +4,7 @@ plugins {
 
 val moduleName = "shared-c"
 group = "${LibExt.groupId}.shared"
+val generatedTeaVMCResourcesDir = layout.buildDirectory.dir("generated/jparser/resources/main")
 
 base {
     archivesName.set(moduleName)
@@ -12,6 +13,7 @@ base {
 dependencies {
     api("com.github.xpenatan.jParser:api-core:${LibExt.jParserVersion}")
     api("com.github.xpenatan.jParser:loader-core:${LibExt.jParserVersion}")
+    api("com.github.xpenatan.jParser:runtime-core:${LibExt.jParserVersion}")
     api("com.github.xpenatan.jParser:runtime-c:${LibExt.jParserVersion}")
 
     api("org.teavm:teavm-core:${LibExt.teaVMVersion}")
@@ -20,15 +22,19 @@ dependencies {
 
 sourceSets {
     main {
-        java.setSrcDirs(listOf("src/main/java"))
-        java.exclude("**/JBox3DLoader.java")
+        val generatedJavaRoot = file("src/main/java").toPath().toAbsolutePath().normalize()
+        java.setSrcDirs(listOf("src/main/java", "src/manual/java"))
+        java.exclude { element ->
+            element.file.name == "JBox3DLoader.java" &&
+                    element.file.toPath().toAbsolutePath().normalize().startsWith(generatedJavaRoot)
+        }
+        resources.setSrcDirs(listOf(generatedTeaVMCResourcesDir))
     }
 }
 
 tasks.named("clean") {
     doFirst {
-        val srcPath = "$projectDir/src/main/java"
-        project.delete(files(srcPath))
+        project.delete(files("$projectDir/src/main/java"))
     }
 }
 

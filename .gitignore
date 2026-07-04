@@ -25,7 +25,6 @@ local.properties
 .settings
 out/
 jni-headers/
-*.c
 libs/
 *.log
 *.o

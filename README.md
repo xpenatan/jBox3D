@@ -39,11 +39,17 @@ Canonical modules are defined in `settings.gradle.kts`.
 ### Sample modules
 
 - `:samples:gdx:core` - shared libGDX 3D sample application.
-- `:samples:gdx:desktop` - libGDX LWJGL3 desktop launcher.
-- `:samples:gdx:web` - libGDX TeaVM web launcher.
+- `:samples:gdx:platforms:desktop-jni` - libGDX LWJGL3 desktop launcher using JNI.
+- `:samples:gdx:platforms:desktop-ffm` - libGDX LWJGL3 desktop launcher using FFM.
+- `:samples:gdx:platforms:desktop-c` - libGDX desktop compile/package target for TeaVM C generated bindings.
+- `:samples:gdx:platforms:web` - libGDX TeaVM web launcher.
+- `:samples:gdx:platforms:android` - libGDX Android JNI sample launcher.
 - `:samples:fdx:core` - shared libfdx 3D sample application.
-- `:samples:fdx:desktop` - libfdx desktop launchers for OpenGL, WGPU, and Vulkan.
-- `:samples:fdx:web` - libfdx TeaVM web launchers for WebGL and WebGPU.
+- `:samples:fdx:platforms:desktop-jni` - libfdx desktop launchers for OpenGL, WGPU, and Vulkan using JNI.
+- `:samples:fdx:platforms:desktop-ffm` - libfdx desktop launchers for OpenGL, WGPU, and Vulkan using FFM.
+- `:samples:fdx:platforms:desktop-c` - libfdx desktop compile/package targets for TeaVM C generated bindings.
+- `:samples:fdx:platforms:web` - libfdx TeaVM web launchers for WebGL and WebGPU.
+- `:samples:fdx:platforms:android` - libfdx Android sample launcher.
 
 ## Local Checks
 
@@ -58,38 +64,50 @@ The desktop samples do not build native libraries. Build native outputs explicit
 
 ```powershell
 .\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_c
 ```
 
-Use the matching `box3d_build_project_*_jni` task for other desktop platforms.
+Use the matching `box3d_build_project_*_jni`, `box3d_build_project_*_ffm`, or `box3d_build_project_*_c` task for other desktop platforms.
 
 Then build the sample launchers:
 
 ```powershell
-.\gradlew.bat :samples:gdx:desktop:box3d_gdx_desktop_jni_build
-.\gradlew.bat :samples:fdx:desktop:box3d_fdx_desktop_gl_jni_build
-.\gradlew.bat :samples:fdx:desktop:box3d_fdx_desktop_wgpu_jni_build
-.\gradlew.bat :samples:fdx:desktop:box3d_fdx_desktop_vulkan_jni_build
+.\gradlew.bat :samples:gdx:platforms:desktop-jni:box3d_gdx_desktop_jni_build
+.\gradlew.bat :samples:gdx:platforms:desktop-ffm:box3d_gdx_desktop_ffm_build
+.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_build
+.\gradlew.bat :samples:gdx:platforms:android:box3d_gdx_android_jni_build
+.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_build
+.\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_gl_ffm_build
+.\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_gl_c_build
 ```
 
-Run the desktop samples with:
+Run the JVM desktop samples with:
 
 ```powershell
-.\gradlew.bat :samples:gdx:desktop:box3d_gdx_desktop_jni_run
-.\gradlew.bat :samples:fdx:desktop:box3d_fdx_desktop_gl_jni_run
-.\gradlew.bat :samples:fdx:desktop:box3d_fdx_desktop_wgpu_jni_run
-.\gradlew.bat :samples:fdx:desktop:box3d_fdx_desktop_vulkan_jni_run
+.\gradlew.bat :samples:gdx:platforms:desktop-jni:box3d_gdx_desktop_jni_run
+.\gradlew.bat :samples:gdx:platforms:desktop-ffm:box3d_gdx_desktop_ffm_run
+.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_run
+.\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_gl_ffm_run
 ```
+
+The desktop C sample modules are compile/package checks for TeaVM C generated bindings. They are not JVM desktop launchers, so they intentionally expose build tasks only until a dedicated TeaVM C app build pipeline exists.
 
 Web samples also consume prebuilt jParser WebAssembly outputs from `:box3d:web:wasm`; they do not compile Box3D natives themselves. After building the web runtime through `:box3d:builder`, use:
 
 ```powershell
-.\gradlew.bat :samples:gdx:web:box3d_gdx_web_js_build
-.\gradlew.bat :samples:gdx:web:box3d_gdx_web_wasm_build
-.\gradlew.bat :samples:gdx:web:box3d_gdx_web_js_run
-.\gradlew.bat :samples:gdx:web:box3d_gdx_web_wasm_run
+.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_js_build
+.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_wasm_build
+.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_js_run
+.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_wasm_run
 ```
 
 Android validation requires a configured Android SDK through `ANDROID_HOME`, `ANDROID_SDK_ROOT`, or a local `local.properties` file.
+
+```powershell
+.\gradlew.bat :samples:gdx:platforms:android:box3d_gdx_android_jni_run
+.\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_gles_run
+```
 
 ## Development Notes
 
