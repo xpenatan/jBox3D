@@ -12,7 +12,8 @@ var libProjects = mutableSetOf(
     project(":box3d:web:wasm"),
     project(":box3d:android:jni"),
     project(":box3d:android:c"),
-    project(":extensions:gdx"),
+    project(":extensions:gdx-gl"),
+    project(":extensions:gdx-wgpu"),
     project(":extensions:fdx"),
 )
 

@@ -11,16 +11,19 @@ object LibExt {
         }
 
     const val javaMainTarget = "1.8"
+    const val javaGdxWebGPUTarget = "11"
     const val javaWebTarget = "17"
     const val javaFFMTarget = "25"
 
     // Library dependencies
     const val box3dVersion = "0.1.0"
     const val jParserVersion = "-SNAPSHOT"
+    const val jWebGPUVersion = "-SNAPSHOT"
     const val teaVMVersion = "0.15.0"
     const val fdxGroup = "io.github.libfdx"
     const val fdxVersion = "-SNAPSHOT"
     const val gdxVersion = "1.14.2"
+    const val gdxWebGPUVersion = "-SNAPSHOT"
     const val gdxTeaVMVersion = "-SNAPSHOT"
 
     // Sample dependencies

@@ -33,6 +33,17 @@ allprojects {
     configurations.configureEach {
         // Check for updates every sync
         resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+        resolutionStrategy.eachDependency {
+            if(requested.group == "com.github.xpenatan.jParser") {
+                useVersion(LibExt.jParserVersion)
+            }
+            else if(requested.group == "com.github.xpenatan.gdx-teavm") {
+                useVersion(LibExt.gdxTeaVMVersion)
+            }
+            else if(requested.group == "com.github.xpenatan.jWebGPU") {
+                useVersion(LibExt.jWebGPUVersion)
+            }
+        }
     }
 }
 

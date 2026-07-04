@@ -17,22 +17,30 @@ The Java API is still evolving, but generated bindings, native builds, runtime p
 | WebAssembly | `:box3d:web:wasm` | Emscripten WebAssembly runtime used by TeaVM browser samples. |
 | Android JNI | `:box3d:android:jni` | Android JNI runtime packaging. |
 | Android C | `:box3d:android:c` | Android TeaVM C runtime packaging. |
-| libGDX extension | `:extensions:gdx` | ModelBatch-based debug renderer support for libGDX samples. |
+| libGDX WebGL extension | `:extensions:gdx-gl` | ModelBatch-based debug renderer support for libGDX WebGL samples. |
+| libGDX WebGPU extension | `:extensions:gdx-wgpu` | WgModelBatch-based debug renderer support for libGDX WebGPU samples. |
 | libFDX extension | `:extensions:fdx` | ModelBatch-based debug renderer support for libFDX samples. |
 
 ## Samples
 
-The shared sample logic lives in `:samples:shared`, with renderer-specific cores in `:samples:gdx:core` and `:samples:fdx:core`.
+The shared Box3D sample logic lives in `:samples:shared`. The shared libGDX app/UI layer lives in `:samples:gdx:shared`, with renderer-specific cores in `:samples:gdx:gl:core` and `:samples:gdx:wgpu:core`.
 
 Web version: [https://xpenatan.github.io/jBox3D](https://xpenatan.github.io/jBox3D)
 
-libGDX sample launchers:
+libGDX WebGL sample launchers:
 
-- `:samples:gdx:platforms:desktop-jni`
-- `:samples:gdx:platforms:desktop-ffm`
-- `:samples:gdx:platforms:desktop-c`
-- `:samples:gdx:platforms:web`
-- `:samples:gdx:platforms:android`
+- `:samples:gdx:gl:platforms:desktop-jni`
+- `:samples:gdx:gl:platforms:desktop-ffm`
+- `:samples:gdx:gl:platforms:desktop-c`
+- `:samples:gdx:gl:platforms:web`
+- `:samples:gdx:gl:platforms:android`
+
+libGDX WebGPU sample launchers:
+
+- `:samples:gdx:wgpu:platforms:desktop-jni`
+- `:samples:gdx:wgpu:platforms:desktop-ffm`
+- `:samples:gdx:wgpu:platforms:web`
+- `:samples:gdx:wgpu:platforms:android`
 
 libFDX sample launchers:
 
@@ -48,7 +56,7 @@ libFDX sample launchers:
 - Android SDK for Android modules and samples.
 - Emscripten for `:box3d:builder:box3d_build_project_web_wasm`.
 - Platform native toolchains for desktop native builds: MSVC on Windows, clang/gcc on Linux, and Xcode command line tools on macOS.
-- jParser, gdx-teavm, and libFDX are consumed with `-SNAPSHOT` versions from Maven snapshots.
+- jParser, gdx-teavm, gdx-webgpu, and libFDX are consumed with `-SNAPSHOT` versions from Maven snapshots.
 
 ## Native Build Driver
 
@@ -74,16 +82,26 @@ Equivalent aliases exist for `linux64`, `mac64`, and `macArm` desktop targets. T
 
 ## Running Samples
 
-Desktop libGDX:
+Desktop libGDX WebGL:
 
 ```powershell
 .\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
-.\gradlew.bat :samples:gdx:platforms:desktop-jni:box3d_gdx_desktop_jni_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-jni:box3d_gdx_desktop_jni_run
 
 .\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
-.\gradlew.bat :samples:gdx:platforms:desktop-ffm:box3d_gdx_desktop_ffm_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-ffm:box3d_gdx_desktop_ffm_run
 
-.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_run
+```
+
+Desktop libGDX WebGPU:
+
+```powershell
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
+.\gradlew.bat :samples:gdx:wgpu:platforms:desktop-jni:box3d_gdx_wgpu_desktop_jni_run
+
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
+.\gradlew.bat :samples:gdx:wgpu:platforms:desktop-ffm:box3d_gdx_wgpu_desktop_ffm_run
 ```
 
 Desktop libFDX:
@@ -103,8 +121,8 @@ Desktop libFDX:
 Desktop C samples use the current host C native target automatically:
 
 ```powershell
-.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_build
-.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_build
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_run
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_gl_c_build
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_wgpu_c_build
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_vulkan_c_build
@@ -114,8 +132,10 @@ Web libGDX:
 
 ```powershell
 .\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
-.\gradlew.bat :samples:gdx:platforms:web:gdx_teavm_web_js_run
-.\gradlew.bat :samples:gdx:platforms:web:gdx_teavm_web_wasm_run
+.\gradlew.bat :samples:gdx:gl:platforms:web:gdx_teavm_web_js_run
+.\gradlew.bat :samples:gdx:gl:platforms:web:gdx_teavm_web_wasm_run
+.\gradlew.bat :samples:gdx:wgpu:platforms:web:gdx_teavm_web_js_run
+.\gradlew.bat :samples:gdx:wgpu:platforms:web:gdx_teavm_web_wasm_run
 ```
 
 Web libFDX:
@@ -132,7 +152,8 @@ Android:
 
 ```powershell
 .\gradlew.bat :box3d:builder:box3d_build_project_android_jni
-.\gradlew.bat :samples:gdx:platforms:android:box3d_gdx_android_jni_run
+.\gradlew.bat :samples:gdx:gl:platforms:android:box3d_gdx_android_jni_run
+.\gradlew.bat :samples:gdx:wgpu:platforms:android:box3d_gdx_wgpu_android_jni_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_gles_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_wgpu_jni_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_vulkan_run
