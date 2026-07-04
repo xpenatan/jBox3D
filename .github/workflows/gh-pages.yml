@@ -49,8 +49,21 @@ jobs:
           test -f box3d/builder/build/c++/libs/emscripten/box3d.js
           test -f box3d/builder/build/c++/libs/emscripten/box3d.wasm
 
-      - name: Build GitHub Pages site
-        run: ./gradlew --no-daemon :samples:gdx:platforms:web:box3d_gdx_web_pages_build
+      - name: Build libGDX web samples
+        run: |
+          ./gradlew --no-daemon \
+            :samples:gdx:platforms:web:gdx_teavm_web_js_build \
+            :samples:gdx:platforms:web:gdx_teavm_web_wasm_build
+
+      - name: Stage GitHub Pages site
+        run: |
+          pages_dir="samples/gdx/platforms/web/build/pages"
+          rm -rf "$pages_dir"
+          mkdir -p "$pages_dir/gdx/gl/js" "$pages_dir/gdx/gl/wasm"
+          cp -R samples/gdx/platforms/web/build/dist/web/webapp/. "$pages_dir/gdx/gl/js/"
+          cp -R samples/gdx/platforms/web/build/dist/wasm/webapp/. "$pages_dir/gdx/gl/wasm/"
+          rm -rf "$pages_dir/gdx/gl/js/WEB-INF" "$pages_dir/gdx/gl/wasm/WEB-INF"
+          cp samples/gdx/platforms/web/src/main/pages/index.html "$pages_dir/index.html"
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
