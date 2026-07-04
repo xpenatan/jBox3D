@@ -1,125 +1,144 @@
 # jBox3D
 
-jBox3D is an early Java binding project for [Box3D](https://github.com/erincatto/box3d), a 3D physics engine for games.
+jBox3D provides Java bindings for [Box3D](https://github.com/erincatto/box3d), Erin Catto's 3D physics engine.
 
-The project currently contains the Gradle layout, native source download/build driver, initial generated wrapper bindings, JNI runtime packaging, and small desktop samples. The Java API is still experimental and will change as the binding coverage grows.
+The project uses jParser WebIDL bindings over a small C/C++ wrapper layer, downloads upstream Box3D source into the build directory, generates Java/native glue, and packages runtime modules for desktop, web, and Android targets. It also includes libGDX and libFDX sample applications with Box3D-style sample selection, solver settings, debug rendering, picking, throwing, and camera controls.
 
-## Planned Targets
+The Java API is still evolving, but generated bindings, native builds, runtime packaging, extensions, samples, and a GitHub Pages web deployment workflow are in place.
 
-- JNI desktop runtime
-- FFM desktop runtime
-- C desktop runtime
-- TeaVM/WebAssembly web runtime
-- Android JNI runtime
-- Android C runtime
+## Targets
 
-## Project Structure
+| Target | Modules | Notes |
+| --- | --- | --- |
+| Core Java API | `:box3d:base`, `:box3d:core` | Hand-authored support plus generated Box3D API classes. |
+| Desktop JNI | `:box3d:shared:jni`, `:box3d:desktop:jni` | Native library packaging for Windows, Linux, and macOS. |
+| Desktop FFM | `:box3d:desktop:ffm` | Java 25 FFM runtime for desktop. |
+| Desktop C | `:box3d:shared:c`, `:box3d:desktop:c` | TeaVM C generated binding runtime used by the desktop C samples. |
+| WebAssembly | `:box3d:web:wasm` | Emscripten WebAssembly runtime used by TeaVM browser samples. |
+| Android JNI | `:box3d:android:jni` | Android JNI runtime packaging. |
+| Android C | `:box3d:android:c` | Android TeaVM C runtime packaging. |
+| libGDX extension | `:extensions:gdx` | ModelBatch-based debug renderer support for libGDX samples. |
+| libFDX extension | `:extensions:fdx` | ModelBatch-based debug renderer support for libFDX samples. |
 
-Canonical modules are defined in `settings.gradle.kts`.
+## Samples
 
-### Core library modules
+The shared sample logic lives in `:samples:shared`, with renderer-specific cores in `:samples:gdx:core` and `:samples:fdx:core`.
 
-- `:box3d:base` - hand-authored Java templates and support code.
-- `:box3d:builder` - Box3D source download, binding generation, and native build driver.
-- `:box3d:core` - generated Java API layer.
-- `:box3d:shared:jni` - generated platform-neutral JNI Java layer.
-- `:box3d:shared:c` - generated platform-neutral C Java layer.
-- `:box3d:desktop:jni` - desktop JNI native packaging.
-- `:box3d:desktop:ffm` - desktop FFM native packaging.
-- `:box3d:desktop:c` - desktop C native packaging.
-- `:box3d:web:wasm` - TeaVM/WebAssembly runtime packaging.
-- `:box3d:android:jni` - Android JNI runtime packaging.
-- `:box3d:android:c` - Android C runtime packaging.
+Web version: [https://xpenatan.github.io/jBox3D](https://xpenatan.github.io/jBox3D)
 
-### Extension modules
+libGDX sample launchers:
 
-- `:extensions:gdx` - libGDX debug renderer support.
-- `:extensions:fdx` - libfdx debug renderer support.
+- `:samples:gdx:platforms:desktop-jni`
+- `:samples:gdx:platforms:desktop-ffm`
+- `:samples:gdx:platforms:desktop-c`
+- `:samples:gdx:platforms:web`
+- `:samples:gdx:platforms:android`
 
-### Sample modules
+libFDX sample launchers:
 
-- `:samples:gdx:core` - shared libGDX 3D sample application.
-- `:samples:gdx:platforms:desktop-jni` - libGDX LWJGL3 desktop launcher using JNI.
-- `:samples:gdx:platforms:desktop-ffm` - libGDX LWJGL3 desktop launcher using FFM.
-- `:samples:gdx:platforms:desktop-c` - libGDX desktop compile/package target for TeaVM C generated bindings.
-- `:samples:gdx:platforms:web` - libGDX TeaVM web launcher.
-- `:samples:gdx:platforms:android` - libGDX Android JNI sample launcher.
-- `:samples:fdx:core` - shared libfdx 3D sample application.
-- `:samples:fdx:platforms:desktop-jni` - libfdx desktop launchers for OpenGL, WGPU, and Vulkan using JNI.
-- `:samples:fdx:platforms:desktop-ffm` - libfdx desktop launchers for OpenGL, WGPU, and Vulkan using FFM.
-- `:samples:fdx:platforms:desktop-c` - libfdx desktop compile/package targets for TeaVM C generated bindings.
-- `:samples:fdx:platforms:web` - libfdx TeaVM web launchers for WebGL and WebGPU.
-- `:samples:fdx:platforms:android` - libfdx Android sample launcher.
+- `:samples:fdx:platforms:desktop-jni`
+- `:samples:fdx:platforms:desktop-ffm`
+- `:samples:fdx:platforms:desktop-c`
+- `:samples:fdx:platforms:web`
+- `:samples:fdx:platforms:android`
 
-## Local Checks
+## Requirements
 
-Use `.\gradlew.bat` on Windows and `./gradlew` on macOS/Linux.
+- JDK 25 for the full build and FFM/runtime validation.
+- Android SDK for Android modules and samples.
+- Emscripten for `:box3d:builder:box3d_build_project_web_wasm`.
+- Platform native toolchains for desktop native builds: MSVC on Windows, clang/gcc on Linux, and Xcode command line tools on macOS.
+- jParser, gdx-teavm, and libFDX are consumed with `-SNAPSHOT` versions from Maven snapshots.
+
+## Native Build Driver
+
+The builder module downloads Box3D source into `box3d/builder/build/box3d-source`, generates Java bindings, and builds native outputs through jParser.
 
 ```powershell
-.\gradlew.bat projects
-.\gradlew.bat :box3d:builder:build :box3d:base:build :box3d:core:build
+.\gradlew.bat :box3d:builder:box3d_download_source
+.\gradlew.bat :box3d:builder:box3d_build_project
 ```
 
-The desktop samples do not build native libraries. Build native outputs explicitly through the jParser-backed build module when needed:
+Common native build aliases:
 
 ```powershell
 .\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
 .\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
 .\gradlew.bat :box3d:builder:box3d_build_project_windows64_c
+.\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
+.\gradlew.bat :box3d:builder:box3d_build_project_android_jni
+.\gradlew.bat :box3d:builder:box3d_build_project_android_c
 ```
 
-Use the matching `box3d_build_project_*_jni`, `box3d_build_project_*_ffm`, or `box3d_build_project_*_c` task for other desktop platforms.
+Equivalent aliases exist for `linux64`, `mac64`, and `macArm` desktop targets. The builder also exposes the jParser iOS JNI target alias; `settings.gradle.kts` does not include an iOS runtime or sample module.
 
-Then build the sample launchers:
+## Running Samples
 
-```powershell
-.\gradlew.bat :samples:gdx:platforms:desktop-jni:box3d_gdx_desktop_jni_build
-.\gradlew.bat :samples:gdx:platforms:desktop-ffm:box3d_gdx_desktop_ffm_build
-.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_build
-.\gradlew.bat :samples:gdx:platforms:android:box3d_gdx_android_jni_build
-.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_build
-.\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_gl_ffm_build
-.\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_gl_c_build
-```
-
-Run the JVM desktop samples with:
+Desktop libGDX:
 
 ```powershell
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
 .\gradlew.bat :samples:gdx:platforms:desktop-jni:box3d_gdx_desktop_jni_run
+
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
 .\gradlew.bat :samples:gdx:platforms:desktop-ffm:box3d_gdx_desktop_ffm_run
+
+.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_run
+```
+
+Desktop libFDX:
+
+```powershell
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_run
+.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_wgpu_jni_run
+.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_vulkan_jni_run
+
+.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_gl_ffm_run
+.\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_wgpu_ffm_run
+.\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_vulkan_ffm_run
 ```
 
-The desktop C sample modules are compile/package checks for TeaVM C generated bindings. They are not JVM desktop launchers, so they intentionally expose build tasks only until a dedicated TeaVM C app build pipeline exists.
-
-Web samples also consume prebuilt jParser WebAssembly outputs from `:box3d:web:wasm`; they do not compile Box3D natives themselves. After building the web runtime through `:box3d:builder`, use:
+Desktop C samples use the current host C native target automatically:
 
 ```powershell
-.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_js_build
-.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_wasm_build
-.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_pages_build
-.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_js_run
-.\gradlew.bat :samples:gdx:platforms:web:box3d_gdx_web_wasm_run
+.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_build
+.\gradlew.bat :samples:gdx:platforms:desktop-c:box3d_gdx_desktop_c_run
+.\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_gl_c_build
+.\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_wgpu_c_build
+.\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_vulkan_c_build
 ```
 
-The GitHub Pages staging task writes the uploadable site to `samples/gdx/platforms/web/build/pages`.
-It publishes the libGDX web samples under `gdx/gl/js/` and `gdx/gl/wasm/`.
-
-Android validation requires a configured Android SDK through `ANDROID_HOME`, `ANDROID_SDK_ROOT`, or a local `local.properties` file.
+Web libGDX:
 
 ```powershell
+.\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
+.\gradlew.bat :samples:gdx:platforms:web:gdx_teavm_web_js_run
+.\gradlew.bat :samples:gdx:platforms:web:gdx_teavm_web_wasm_run
+```
+
+Web libFDX:
+
+```powershell
+.\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
+.\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgl_js_run
+.\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgl_wasm_run
+.\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgpu_js_run
+.\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgpu_wasm_run
+```
+
+Android:
+
+```powershell
+.\gradlew.bat :box3d:builder:box3d_build_project_android_jni
 .\gradlew.bat :samples:gdx:platforms:android:box3d_gdx_android_jni_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_gles_run
+.\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_wgpu_jni_run
+.\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_vulkan_run
 ```
 
-## Development Notes
-
-- Upstream Box3D source is downloaded into the build directory and is not vendored.
-- Box3D debug draw callbacks are exposed through `B3DebugDrawEm`; the libGDX and libfdx samples render them through the extension modules.
-- No CI workflows are included yet.
-- Future Maven group ID: `com.github.xpenatan.jBox3D`.
-- Planned artifact IDs: `core`, `shared-jni`, `shared-c`, `desktop-jni`, `desktop-ffm`, `desktop-c`, `web-wasm`, `android-jni`, `android-c`, `gdx`, and `fdx`.
+Android run tasks require `adb` from `ANDROID_HOME`, `ANDROID_SDK_ROOT`, `local.properties`, or `PATH`.
 
 ## License
 
