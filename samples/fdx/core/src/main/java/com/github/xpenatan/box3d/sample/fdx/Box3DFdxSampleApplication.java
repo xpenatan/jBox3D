@@ -36,6 +36,7 @@ import io.github.libfdx.ui.UiToolkit;
 public final class Box3DFdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
     private static final int SELECTOR_HIT_WIDTH = 310;
     private static final float FPS_UPDATE_INTERVAL = 0.25f;
+    private static final long SAMPLE_DOUBLE_CLICK_NANOS = 450_000_000L;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS = 12;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS_SQUARED =
             THROW_CLICK_MAX_DRAG_PIXELS * THROW_CLICK_MAX_DRAG_PIXELS;
@@ -84,6 +85,8 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private boolean throwClickPending;
     private int throwClickX;
     private int throwClickY;
+    private int lastSampleClickIndex = -1;
+    private long lastSampleClickNanos;
     private boolean preserveCameraOnSampleChange;
 
     public Box3DFdxSampleApplication() {
@@ -225,7 +228,7 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
                             }
                             final int sampleIndex = i;
                             list.button(entry.name(), Ui.modifier().fillWidth().height(30.0f),
-                                    () -> selectSample(sampleIndex));
+                                    () -> selectSampleOnDoubleClick(sampleIndex));
                         }
                     });
                     controls.button("Reset Test", Ui.modifier().fillWidth().height(32.0f), this::resetTest);
@@ -250,7 +253,6 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
                     controls.checkbox("Warm Starting", Ui.modifier().fillWidth().height(28.0f),
                             warmStartingEnabledState);
                     controls.checkbox("Continuous", Ui.modifier().fillWidth().height(28.0f), continuousEnabledState);
-                    controls.button("Restart", Ui.modifier().fillWidth().height(32.0f), this::resetTest);
 
                     Box3DLaunchShape activeShape = Box3DLaunchShape.byIndex(launchShapeIndex.get());
                     controls.text("Throw: " + activeShape.label());
@@ -293,7 +295,20 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         });
     }
 
+    private void selectSampleOnDoubleClick(int index) {
+        long now = System.nanoTime();
+        if(lastSampleClickIndex != index || now - lastSampleClickNanos > SAMPLE_DOUBLE_CLICK_NANOS) {
+            lastSampleClickIndex = index;
+            lastSampleClickNanos = now;
+            return;
+        }
+        lastSampleClickIndex = -1;
+        lastSampleClickNanos = 0L;
+        selectSample(index);
+    }
+
     private void selectSample(int index) {
+        cancelPointerInteractions();
         Box3DSampleEntry entry = controller.entries().get(index);
         activeSampleName.set(entry.displayName());
         controller.selectSample(index);
@@ -432,9 +447,7 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private void updateBodyDrag() {
         bodyDrag.setEnabled(dragBodiesEnabled.get());
         if(input == null || camera == null || !controller.isReady()) {
-            bodyDrag.end();
-            dragButtonDown = false;
-            throwClickPending = false;
+            cancelPointerInteractions();
             return;
         }
 
@@ -488,6 +501,12 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         int deltaX = x - throwClickX;
         int deltaY = y - throwClickY;
         return deltaX * deltaX + deltaY * deltaY > THROW_CLICK_MAX_DRAG_PIXELS_SQUARED;
+    }
+
+    private void cancelPointerInteractions() {
+        bodyDrag.end();
+        dragButtonDown = false;
+        throwClickPending = false;
     }
 
     private void pickRay(int screenX, int screenY, float[] origin, float[] direction) {

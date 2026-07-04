@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.math.Vector3;
@@ -77,6 +79,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private Label shadowBiasLabel;
     private Slider shadowBiasSlider;
     private ScrollPane settingsScrollPane;
+    private ScrollPane sampleMenuScrollPane;
     private Table sampleMenuPopup;
     private TextButton samplesMenuButton;
     private com.badlogic.gdx.scenes.scene2d.ui.List<String> launchShapeList;
@@ -355,15 +358,6 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         });
         panel.add(continuousCheckBox).height(28.0f).pad(0.0f, 10.0f, 8.0f, 10.0f).row();
 
-        TextButton solverRestartButton = new TextButton("Restart", skin);
-        solverRestartButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                resetTest();
-            }
-        });
-        panel.add(solverRestartButton).height(30.0f).pad(0.0f, 10.0f, 10.0f, 10.0f).row();
-
         panel.add(new Label("Throw", skin)).pad(0.0f, 10.0f, 4.0f, 10.0f).row();
         launchShapeList = new com.badlogic.gdx.scenes.scene2d.ui.List<String>(skin);
         launchShapeList.setItems(launchShapeNames());
@@ -488,24 +482,6 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         });
         menuBar.add(samplesMenuButton).width(92.0f);
 
-        TextButton restartButton = new TextButton("Restart", skin);
-        restartButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                resetTest();
-            }
-        });
-        menuBar.add(restartButton).width(82.0f);
-
-        TextButton cameraButton = new TextButton("Camera", skin);
-        cameraButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                resetCamera();
-            }
-        });
-        menuBar.add(cameraButton).width(78.0f);
-
         TextButton throwButton = new TextButton("Throw", skin);
         throwButton.addListener(new ChangeListener() {
             @Override
@@ -537,6 +513,10 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         if(sampleMenuPopup == null || stage == null) {
             return;
         }
+        if(sampleMenuScrollPane != null) {
+            sampleMenuScrollPane.validate();
+        }
+        float sampleMenuScrollY = sampleMenuScrollPane != null ? sampleMenuScrollPane.getScrollY() : 0.0f;
 
         float stageHeight = stage.getViewport().getWorldHeight();
         float popupHeight = Math.max(180.0f,
@@ -565,15 +545,18 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
             }
         }
 
-        ScrollPane sampleScrollPane = new ScrollPane(content, skin);
-        sampleScrollPane.setFadeScrollBars(false);
-        sampleScrollPane.setScrollingDisabled(true, false);
+        sampleMenuScrollPane = new ScrollPane(content, skin);
+        sampleMenuScrollPane.setFadeScrollBars(false);
+        sampleMenuScrollPane.setScrollingDisabled(true, false);
 
         sampleMenuPopup.clearChildren();
-        sampleMenuPopup.add(sampleScrollPane).width(SAMPLE_MENU_WIDTH - 12.0f).height(contentHeight)
+        sampleMenuPopup.add(sampleMenuScrollPane).width(SAMPLE_MENU_WIDTH - 12.0f).height(contentHeight)
                 .pad(6.0f).row();
         sampleMenuPopup.setSize(SAMPLE_MENU_WIDTH, popupHeight);
         positionSampleMenuPopup();
+        sampleMenuScrollPane.validate();
+        sampleMenuScrollPane.setScrollY(Math.min(sampleMenuScrollY, sampleMenuScrollPane.getMaxY()));
+        sampleMenuScrollPane.updateVisualScroll();
     }
 
     private TextButton createSampleMenuItem(Box3DSampleEntry entry, int sampleIndex) {
@@ -581,16 +564,21 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         TextButton item = new TextButton(entry.name(), skin, selected ? "selected" : "default");
         item.getLabel().setAlignment(Align.left);
         item.getLabelCell().left().padLeft(8.0f);
-        item.addListener(new ChangeListener() {
+        item.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                controller.selectSample(sampleIndex);
-                if(sampleMenuPopup != null) {
-                    sampleMenuPopup.setVisible(false);
+            public void clicked(InputEvent event, float x, float y) {
+                event.stop();
+                if(getTapCount() >= 2) {
+                    selectSampleFromMenu(sampleIndex);
                 }
             }
         });
         return item;
+    }
+
+    private void selectSampleFromMenu(int sampleIndex) {
+        cancelPointerInteractions();
+        controller.selectSample(sampleIndex);
     }
 
     private Array<String> sampleCategories() {
@@ -911,9 +899,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
 
     private void updateBodyDrag() {
         if(camera == null || !controller.isReady()) {
-            bodyDrag.end();
-            dragButtonDown = false;
-            throwClickPending = false;
+            cancelPointerInteractions();
             return;
         }
 
@@ -972,6 +958,12 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         int deltaX = x - throwClickX;
         int deltaY = y - throwClickY;
         return deltaX * deltaX + deltaY * deltaY > THROW_CLICK_MAX_DRAG_PIXELS_SQUARED;
+    }
+
+    private void cancelPointerInteractions() {
+        bodyDrag.end();
+        dragButtonDown = false;
+        throwClickPending = false;
     }
 
     private boolean updateFlyPosition(float deltaSeconds) {
