@@ -11,6 +11,7 @@ The Java API is still evolving, but generated bindings, native builds, runtime p
 | Target | Modules | Notes |
 | --- | --- | --- |
 | Core Java API | `:box3d:base`, `:box3d:core` | Hand-authored support plus generated Box3D API classes. |
+| Box3D source download | `:box3d:download` | Downloads upstream Box3D source used by the builder. |
 | Desktop JNI | `:box3d:shared:jni`, `:box3d:desktop:jni` | Native library packaging for Windows, Linux, and macOS. |
 | Desktop FFM | `:box3d:desktop:ffm` | Java 25 FFM runtime for desktop. |
 | Desktop C | `:box3d:shared:c`, `:box3d:desktop:c` | TeaVM C generated binding runtime used by the desktop C samples. |
@@ -54,41 +55,41 @@ libFDX sample launchers:
 
 - JDK 25 for the full build and FFM/runtime validation.
 - Android SDK for Android modules and samples.
-- Emscripten for `:box3d:builder:box3d_build_project_web_wasm`.
+- Emscripten for `:box3d:builder:jParser_build_web_wasm`.
 - Platform native toolchains for desktop native builds: MSVC on Windows, clang/gcc on Linux, and Xcode command line tools on macOS.
 - jParser, gdx-teavm, gdx-webgpu, and libFDX are consumed with `-SNAPSHOT` versions from Maven snapshots.
 
 ## Native Build Driver
 
-The builder module downloads Box3D source into `box3d/builder/build/box3d-source`, generates Java bindings, and builds native outputs through jParser.
+The download module downloads Box3D source into `box3d/download/build/box3d-source`. The builder module consumes that source, generates Java bindings, and builds native outputs through jParser.
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_download_source
-.\gradlew.bat :box3d:builder:box3d_build_project
+.\gradlew.bat :box3d:download:box3d_download_source
+.\gradlew.bat :box3d:builder:jParser_generate
 ```
 
-Common native build aliases:
+Common native build tasks:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_c
-.\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
-.\gradlew.bat :box3d:builder:box3d_build_project_android_jni
-.\gradlew.bat :box3d:builder:box3d_build_project_android_c
+.\gradlew.bat :box3d:builder:jParser_build_windows64_jni
+.\gradlew.bat :box3d:builder:jParser_build_windows64_ffm
+.\gradlew.bat :box3d:builder:jParser_build_windows64_teavm_c
+.\gradlew.bat :box3d:builder:jParser_build_web_wasm
+.\gradlew.bat :box3d:builder:jParser_build_android_jni
+.\gradlew.bat :box3d:builder:jParser_build_android_teavm_c
 ```
 
-Equivalent aliases exist for `linux64`, `mac64`, and `macArm` desktop targets. The builder also exposes the jParser iOS JNI target alias; `settings.gradle.kts` does not include an iOS runtime or sample module.
+Equivalent `jParser_build_*` tasks exist for `linux64`, `mac64`, and `macArm` desktop targets. The builder also exposes the jParser iOS JNI task; `settings.gradle.kts` does not include an iOS runtime or sample module.
 
 ## Running Samples
 
 Desktop libGDX WebGL:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
+.\gradlew.bat :box3d:builder:jParser_build_windows64_jni
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-jni:box3d_gdx_desktop_jni_run
 
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
+.\gradlew.bat :box3d:builder:jParser_build_windows64_ffm
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-ffm:box3d_gdx_desktop_ffm_run
 
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_run
@@ -97,32 +98,35 @@ Desktop libGDX WebGL:
 Desktop libGDX WebGPU:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
+.\gradlew.bat :box3d:builder:jParser_build_windows64_jni
 .\gradlew.bat :samples:gdx:wgpu:platforms:desktop-jni:box3d_gdx_wgpu_desktop_jni_run
 
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
+.\gradlew.bat :box3d:builder:jParser_build_windows64_ffm
 .\gradlew.bat :samples:gdx:wgpu:platforms:desktop-ffm:box3d_gdx_wgpu_desktop_ffm_run
 ```
 
 Desktop libFDX:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_jni
+.\gradlew.bat :box3d:builder:jParser_build_windows64_jni
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_run
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_wgpu_jni_run
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_vulkan_jni_run
 
-.\gradlew.bat :box3d:builder:box3d_build_project_windows64_ffm
+.\gradlew.bat :box3d:builder:jParser_build_windows64_ffm
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_gl_ffm_run
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_wgpu_ffm_run
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_vulkan_ffm_run
 ```
 
-Desktop C samples use the current host C native target automatically:
+Desktop C samples use the current host C native target automatically. The default tasks link Box3D statically;
+the additional tasks exercise operating-system-linked and runtime-loaded shared libraries:
 
 ```powershell
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_build
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_shared_linked_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_runtime_loaded_run
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_gl_c_build
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_wgpu_c_build
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_vulkan_c_build
@@ -131,7 +135,7 @@ Desktop C samples use the current host C native target automatically:
 Web libGDX:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
+.\gradlew.bat :box3d:builder:jParser_build_web_wasm
 .\gradlew.bat :samples:gdx:gl:platforms:web:gdx_teavm_web_js_run
 .\gradlew.bat :samples:gdx:gl:platforms:web:gdx_teavm_web_wasm_run
 .\gradlew.bat :samples:gdx:wgpu:platforms:web:gdx_teavm_web_js_run
@@ -141,7 +145,7 @@ Web libGDX:
 Web libFDX:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_web_wasm
+.\gradlew.bat :box3d:builder:jParser_build_web_wasm
 .\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgl_js_run
 .\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgl_wasm_run
 .\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgpu_js_run
@@ -151,7 +155,7 @@ Web libFDX:
 Android:
 
 ```powershell
-.\gradlew.bat :box3d:builder:box3d_build_project_android_jni
+.\gradlew.bat :box3d:builder:jParser_build_android_jni
 .\gradlew.bat :samples:gdx:gl:platforms:android:box3d_gdx_android_jni_run
 .\gradlew.bat :samples:gdx:wgpu:platforms:android:box3d_gdx_wgpu_android_jni_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_gles_run

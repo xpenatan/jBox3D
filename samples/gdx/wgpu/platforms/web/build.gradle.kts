@@ -10,7 +10,6 @@ java {
 dependencies {
     implementation(project(":samples:gdx:wgpu:core"))
     implementation(project(":box3d:web:wasm"))
-    implementation("com.github.xpenatan.jParser:api-web:${LibExt.jParserVersion}")
     implementation("com.github.xpenatan.jParser:runtime-web:${LibExt.jParserVersion}")
     implementation("com.github.xpenatan.jWebGPU:webgpu-core:${LibExt.jWebGPUVersion}")
     implementation("com.github.xpenatan.jWebGPU:webgpu-web:${LibExt.jWebGPUVersion}")

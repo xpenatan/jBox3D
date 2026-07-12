@@ -30,11 +30,11 @@ tasks.named<Copy>("processTestResources") {
 }
 
 val currentPlatformJniBuildTask = when {
-    System.getProperty("os.name").lowercase().contains("windows") && System.getProperty("os.arch").contains("64") -> ":box3d:builder:box3d_build_project_windows64_jni"
-    System.getProperty("os.name").lowercase().contains("linux") && System.getProperty("os.arch").contains("64") -> ":box3d:builder:box3d_build_project_linux64_jni"
-    System.getProperty("os.name").lowercase().contains("mac") && System.getProperty("os.arch").lowercase().contains("aarch64") -> ":box3d:builder:box3d_build_project_macArm_jni"
-    System.getProperty("os.name").lowercase().contains("mac") && System.getProperty("os.arch").lowercase().contains("arm64") -> ":box3d:builder:box3d_build_project_macArm_jni"
-    System.getProperty("os.name").lowercase().contains("mac") && System.getProperty("os.arch").contains("64") -> ":box3d:builder:box3d_build_project_mac64_jni"
+    System.getProperty("os.name").lowercase().contains("windows") && System.getProperty("os.arch").contains("64") -> ":box3d:builder:jParser_build_windows64_jni"
+    System.getProperty("os.name").lowercase().contains("linux") && System.getProperty("os.arch").contains("64") -> ":box3d:builder:jParser_build_linux64_jni"
+    System.getProperty("os.name").lowercase().contains("mac") && System.getProperty("os.arch").lowercase().contains("aarch64") -> ":box3d:builder:jParser_build_macArm_jni"
+    System.getProperty("os.name").lowercase().contains("mac") && System.getProperty("os.arch").lowercase().contains("arm64") -> ":box3d:builder:jParser_build_macArm_jni"
+    System.getProperty("os.name").lowercase().contains("mac") && System.getProperty("os.arch").contains("64") -> ":box3d:builder:jParser_build_mac64_jni"
     else -> null
 }
 

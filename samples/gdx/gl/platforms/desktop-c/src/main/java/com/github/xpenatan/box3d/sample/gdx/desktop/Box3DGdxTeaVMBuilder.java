@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.teavm.vm.TeaVMOptimizationLevel;
 
 public final class Box3DGdxTeaVMBuilder {
+    private static final String JPARSER_TEAVMC_LINKAGE = "JPARSER_TEAVMC_LINKAGE";
     private static final int NATIVE_MIN_HEAP_SIZE = 64 * 1024 * 1024;
     private static final int NATIVE_MAX_HEAP_SIZE = 512 * 1024 * 1024;
     private static final int NATIVE_MIN_DIRECT_BUFFER_SIZE = 64 * 1024 * 1024;
@@ -19,6 +20,7 @@ public final class Box3DGdxTeaVMBuilder {
     public static void main(String[] args) throws IOException {
         TeaGLFWBackend.NativeBuildType buildType = parseBuildType(args);
         String action = args.length > 1 ? normalize(args[1]) : "generate";
+        TeaVMCLinkage linkage = parseLinkage(args);
         boolean buildExecutable = action.equals("build") || action.equals("run");
         boolean runExecutable = action.equals("run");
         if(!action.equals("generate") && !buildExecutable) {
@@ -31,6 +33,7 @@ public final class Box3DGdxTeaVMBuilder {
                 .setBuildExecutableAfterBuild(buildExecutable)
                 .setRunExecutableAfterBuild(runExecutable)
                 .setRunExecutableWithConsoleLog(consoleLog);
+        backend.cmakeDefinition(JPARSER_TEAVMC_LINKAGE, linkage.name());
         AssetFileHandle glAssets = new AssetFileHandle("../../core/src/main/resources");
         AssetFileHandle gdxAssets = new AssetFileHandle("../../../shared/src/main/resources");
         AssetFileHandle sharedAssets = new AssetFileHandle("../../../../shared/src/main/resources");
@@ -58,7 +61,7 @@ public final class Box3DGdxTeaVMBuilder {
     }
 
     private static boolean hasConsoleArg(String[] args) {
-        for(int i = 2; i < args.length; i++) {
+        for(int i = 3; i < args.length; i++) {
             String value = normalize(args[i]);
             if(value.equals("console")) {
                 return true;
@@ -68,7 +71,20 @@ public final class Box3DGdxTeaVMBuilder {
         return false;
     }
 
+    private static TeaVMCLinkage parseLinkage(String[] args) {
+        if(args.length < 3) {
+            return TeaVMCLinkage.STATIC;
+        }
+        return TeaVMCLinkage.valueOf(args[2].trim().toUpperCase(Locale.ROOT));
+    }
+
     private static String normalize(String value) {
         return value.trim().toLowerCase(Locale.ROOT).replace("--", "");
+    }
+
+    private enum TeaVMCLinkage {
+        STATIC,
+        SHARED_LINKED,
+        RUNTIME_LOADED
     }
 }

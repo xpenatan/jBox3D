@@ -33,6 +33,7 @@ pluginManagement {
 rootProject.name = "jBox3D"
 
 include(":box3d:builder")
+include(":box3d:download")
 include(":box3d:base")
 include(":box3d:core")
 include(":box3d:shared:jni")

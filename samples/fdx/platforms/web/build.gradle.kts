@@ -72,7 +72,7 @@ fun registerBox3DRuntimeScriptCopy(
             if(missing.isNotEmpty()) {
                 throw GradleException(
                     "Missing jBox3D web runtime scripts: ${missing.joinToString()}. " +
-                            "Run :box3d:builder:box3d_build_project_web_wasm before building the web sample."
+                            "Run :box3d:builder:jParser_build_web_wasm before building the web sample."
                 )
             }
         }

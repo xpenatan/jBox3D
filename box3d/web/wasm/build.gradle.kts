@@ -25,11 +25,6 @@ dependencies {
     api("com.github.xpenatan.jParser:runtime-web:${LibExt.jParserVersion}")
     api("com.github.xpenatan.jParser:runtime-web_wasm:${LibExt.jParserVersion}")
 
-    implementation("com.github.xpenatan.jParser:loader-core:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:loader-web:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:api-core:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:api-web:${LibExt.jParserVersion}")
-
     api("org.teavm:teavm-jso:${LibExt.teaVMVersion}")
     api("org.teavm:teavm-core:${LibExt.teaVMVersion}")
     api("org.teavm:teavm-classlib:${LibExt.teaVMVersion}")

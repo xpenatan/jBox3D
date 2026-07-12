@@ -22,13 +22,9 @@ dependencies {
 
 sourceSets {
     main {
-        val generatedJavaRoot = file("src/main/java").toPath().toAbsolutePath().normalize()
-        java.setSrcDirs(listOf("src/main/java", "src/manual/java"))
-        java.exclude { element ->
-            element.file.name == "JBox3DLoader.java" &&
-                    element.file.toPath().toAbsolutePath().normalize().startsWith(generatedJavaRoot)
-        }
-        resources.setSrcDirs(listOf(generatedTeaVMCResourcesDir))
+        java.setSrcDirs(listOf("src/main/java"))
+        java.include("gen/c/**/*.java")
+        resources.setSrcDirs(listOf("src/main/resources", generatedTeaVMCResourcesDir))
     }
 }
 

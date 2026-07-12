@@ -57,7 +57,11 @@ tasks.matching { task ->
 
 dependencies {
     api(project(":box3d:shared:c"))
-    api("com.github.xpenatan.jParser:runtime-c_android:${LibExt.jParserVersion}")
+    api("com.github.xpenatan.jParser:runtime-android-c:${LibExt.jParserVersion}")
+    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_x86:${LibExt.jParserVersion}")
+    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_x86_64:${LibExt.jParserVersion}")
+    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_armeabi_v7a:${LibExt.jParserVersion}")
+    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_arm64_v8a:${LibExt.jParserVersion}")
 }
 
 publishing {
