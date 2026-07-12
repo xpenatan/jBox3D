@@ -18,9 +18,19 @@ The Java API is still evolving, but generated bindings, native builds, runtime p
 | WebAssembly | `:box3d:web:wasm` | Emscripten WebAssembly runtime used by TeaVM browser samples. |
 | Android JNI | `:box3d:android:jni` | Android JNI runtime packaging. |
 | Android C | `:box3d:android:c` | Android TeaVM C runtime packaging. |
-| libGDX WebGL extension | `:extensions:gdx-gl` | ModelBatch-based debug renderer support for libGDX WebGL samples. |
-| libGDX WebGPU extension | `:extensions:gdx-wgpu` | WgModelBatch-based debug renderer support for libGDX WebGPU samples. |
+| libGDX GL extension | `:extensions:gdx:gl` | Base libGDX integration with allocation-free math conversions and ModelBatch debug rendering. |
+| libGDX WebGPU extension | `:extensions:gdx:wgpu` | WebGPU-specific rendering support layered on the libGDX GL extension. |
 | libFDX extension | `:extensions:fdx` | ModelBatch-based debug renderer support for libFDX samples. |
+
+The interop converters write into caller-owned output objects so they can be reused in render loops:
+
+```java
+GdxBox3DConverter.toGdx(box3dVector, reusableGdxVector);
+GdxBox3DConverter.toBox3D(gdxVector, reusableBox3dVector);
+
+FdxBox3DConverter.toFdx(box3dVector, reusableFdxVector);
+FdxBox3DConverter.toBox3D(fdxVector, reusableBox3dVector);
+```
 
 ## Samples
 

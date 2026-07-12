@@ -2,7 +2,7 @@ plugins {
     id("java-library")
 }
 
-val moduleName = "fdx"
+val moduleName = "gdx-wgpu"
 
 base {
     archivesName.set(moduleName)
@@ -10,16 +10,13 @@ base {
 
 dependencies {
     compileOnly(project(":box3d:core"))
-    api("${LibExt.fdxGroup}:graphics:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:g3d:${LibExt.fdxVersion}")
-
-    testImplementation(project(":box3d:core"))
-    testImplementation("junit:junit:${LibExt.jUnitVersion}")
+    api(project(":extensions:gdx:gl"))
+    api("io.github.monstroussoftware.gdx-webgpu:gdx-webgpu:${LibExt.gdxWebGPUVersion}")
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
+    sourceCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
+    targetCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
 }
 
 java {

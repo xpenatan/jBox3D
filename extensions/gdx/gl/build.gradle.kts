@@ -2,7 +2,7 @@ plugins {
     id("java-library")
 }
 
-val moduleName = "fdx"
+val moduleName = "gdx-gl"
 
 base {
     archivesName.set(moduleName)
@@ -10,16 +10,15 @@ base {
 
 dependencies {
     compileOnly(project(":box3d:core"))
-    api("${LibExt.fdxGroup}:graphics:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:g3d:${LibExt.fdxVersion}")
+    api("com.badlogicgames.gdx:gdx:${LibExt.gdxVersion}")
 
     testImplementation(project(":box3d:core"))
     testImplementation("junit:junit:${LibExt.jUnitVersion}")
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
+    sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+    targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
 }
 
 java {

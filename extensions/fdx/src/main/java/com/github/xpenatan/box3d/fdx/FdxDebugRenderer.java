@@ -30,8 +30,7 @@ import io.github.libfdx.math.Color;
 import io.github.libfdx.math.Matrix4;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 public class FdxDebugRenderer extends B3DebugDrawEm {
     public static final float DEFAULT_SHADOW_BIAS = 0.001f;
@@ -50,13 +49,15 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
     private final DirectionalShadowMap3D shadowMap;
     private final boolean ownsModelBatch;
     private final boolean ownsLineRenderer;
-    private final Map<Long, DebugModel> modelCache = new HashMap<Long, DebugModel>();
+    private final LongDebugModelMap modelCache = new LongDebugModelMap();
     private final ArrayList<RetiredDebugModel> retiredModels = new ArrayList<RetiredDebugModel>();
     private final ArrayList<DefaultModelInstance> visibleInstances = new ArrayList<DefaultModelInstance>();
     private final ArrayList<DefaultModelInstance> shadowCasterInstances = new ArrayList<DefaultModelInstance>();
     private final Matrix4 worldTransform = new Matrix4();
     private final Matrix4 combinedTransform = new Matrix4();
     private final float[] solidRgba = new float[] { 0.58f, 0.60f, 0.62f, 1.0f };
+    private final float[] transformedPoints = new float[24];
+    private final float[] viewProjectionValues = new float[Matrix4.VALUE_COUNT];
     private boolean enabled = true;
     private boolean drawSolidShapes = true;
     private boolean drawWireframe = true;
@@ -240,8 +241,15 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         if(modelCache.isEmpty()) {
             return;
         }
-        for(DebugModel model : modelCache.values()) {
-            retiredModels.add(new RetiredDebugModel(model, RETIRED_MODEL_FRAME_DELAY));
+        DebugModel zeroValue = modelCache.zeroValue();
+        if(zeroValue != null) {
+            retiredModels.add(new RetiredDebugModel(zeroValue, RETIRED_MODEL_FRAME_DELAY));
+        }
+        for(int i = 0; i < modelCache.capacity(); i++) {
+            DebugModel model = modelCache.valueAt(i);
+            if(model != null) {
+                retiredModels.add(new RetiredDebugModel(model, RETIRED_MODEL_FRAME_DELAY));
+            }
         }
         modelCache.clear();
     }
@@ -258,13 +266,13 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         }
 
         if(collectSolidShapes) {
-            Long key = Long.valueOf(shape.GetShapeId());
+            long key = shape.GetShapeId();
             DebugModel model = modelCache.get(key);
             if(model == null) {
                 model = buildModel(shape);
                 modelCache.put(key, model);
             }
-            appendSolidInstances(model, transform, castsShadow(shape));
+            appendSolidInstances(model, transform);
         }
 
         if(drawWireframe) {
@@ -285,10 +293,13 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         if(!enabled || transform == null) {
             return;
         }
-        float[] origin = transformPoint(transform, 0.0f, 0.0f, 0.0f);
-        line(origin, transformPoint(transform, TRANSFORM_AXIS_LENGTH, 0.0f, 0.0f), 0xFF0000L, 1.0f);
-        line(origin, transformPoint(transform, 0.0f, TRANSFORM_AXIS_LENGTH, 0.0f), 0x00FF00L, 1.0f);
-        line(origin, transformPoint(transform, 0.0f, 0.0f, TRANSFORM_AXIS_LENGTH), 0x0000FFL, 1.0f);
+        transformPoint(transform, 0.0f, 0.0f, 0.0f, transformedPoints, 0);
+        transformPoint(transform, TRANSFORM_AXIS_LENGTH, 0.0f, 0.0f, transformedPoints, 3);
+        line(transformedPoints, 0, 3, 0xFF0000L, 1.0f);
+        transformPoint(transform, 0.0f, TRANSFORM_AXIS_LENGTH, 0.0f, transformedPoints, 3);
+        line(transformedPoints, 0, 3, 0x00FF00L, 1.0f);
+        transformPoint(transform, 0.0f, 0.0f, TRANSFORM_AXIS_LENGTH, transformedPoints, 3);
+        line(transformedPoints, 0, 3, 0x0000FFL, 1.0f);
     }
 
     @Override
@@ -315,7 +326,9 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
     @Override
     protected void DrawCapsule(B3Vec3 p1, B3Vec3 p2, float radius, int color, float alpha) {
         if(enabled && p1 != null && p2 != null) {
-            drawWireCapsule(toArray(p1), toArray(p2), radius, color, alpha);
+            writePoint(p1, transformedPoints, 0);
+            writePoint(p2, transformedPoints, 3);
+            drawWireCapsule(transformedPoints, 0, 3, radius, color, alpha);
         }
     }
 
@@ -409,6 +422,7 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
                 debugModel.primitives.add(primitive);
             }
         }
+        cacheShadowBody(debugModel, shape.GetShapeId());
         return debugModel;
     }
 
@@ -457,8 +471,9 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         return primitive;
     }
 
-    private void appendSolidInstances(DebugModel model, B3Transform transform, boolean castsShadow) {
-        toMatrix(worldTransform, transform);
+    private void appendSolidInstances(DebugModel model, B3Transform transform) {
+        FdxBox3DConverter.toFdx(transform, worldTransform);
+        boolean castsShadow = model.castsShadow();
         if(model.meshInstance != null) {
             model.meshInstance.transform(worldTransform);
             visibleInstances.add(model.meshInstance);
@@ -477,38 +492,36 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         }
     }
 
-    private boolean castsShadow(B3DebugShape debugShape) {
-        B3Shape shape = new B3Shape(debugShape.GetShapeId());
-        B3Body body = null;
+    private static void cacheShadowBody(DebugModel model, long shapeId) {
+        B3Shape shape = new B3Shape(shapeId);
         try {
-            if(!shape.IsValid()) {
-                return false;
+            if(shape.IsValid()) {
+                model.shadowBody = new B3Body(shape.GetBodyId());
             }
-            body = new B3Body(shape.GetBodyId());
-            return body.IsValid() && body.GetType() != B3.StaticBody();
         }
         finally {
-            disposeNative(body, shape);
+            disposeNative(shape);
         }
     }
 
     private void drawShapeWire(B3DebugShape shape, B3Transform transform, int color) {
         for(int i = 0; i < shape.GetSphereCount(); i++) {
             B3Sphere sphere = shape.GetSphereAt(i);
-            float[] center = transformPoint(transform, sphere.GetCenter());
-            drawWireSphere(center[0], center[1], center[2], sphere.GetRadius(), color, 1.0f);
+            transformPoint(transform, sphere.GetCenter(), transformedPoints, 0);
+            drawWireSphere(transformedPoints[0], transformedPoints[1], transformedPoints[2],
+                    sphere.GetRadius(), color, 1.0f);
         }
         for(int i = 0; i < shape.GetCapsuleCount(); i++) {
             B3Capsule capsule = shape.GetCapsuleAt(i);
-            float[] p1 = transformPoint(transform, capsule.GetCenter1());
-            float[] p2 = transformPoint(transform, capsule.GetCenter2());
-            drawWireCapsule(p1, p2, capsule.GetRadius(), color, 1.0f);
+            transformPoint(transform, capsule.GetCenter1(), transformedPoints, 0);
+            transformPoint(transform, capsule.GetCenter2(), transformedPoints, 3);
+            drawWireCapsule(transformedPoints, 0, 3, capsule.GetRadius(), color, 1.0f);
         }
         int edgeCount = shape.GetHullEdgeCount();
         for(int i = 0; i < edgeCount; i++) {
-            float[] p1 = transformPoint(transform, shape.GetHullEdgeVertex0(i));
-            float[] p2 = transformPoint(transform, shape.GetHullEdgeVertex1(i));
-            line(p1, p2, color, 1.0f);
+            transformPoint(transform, shape.GetHullEdgeVertex0(i), transformedPoints, 0);
+            transformPoint(transform, shape.GetHullEdgeVertex1(i), transformedPoints, 3);
+            line(transformedPoints, 0, 3, color, 1.0f);
         }
     }
 
@@ -520,7 +533,8 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
     }
 
     private void renderLines(Matrix4 viewProjection) {
-        lineRenderer.render3D(viewProjection.values());
+        viewProjection.copyValues(viewProjectionValues, 0);
+        lineRenderer.render3D(viewProjectionValues);
         lineRenderer.clear3D();
     }
 
@@ -542,8 +556,15 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
     }
 
     private void disposeCachedModels() {
-        for(DebugModel model : modelCache.values()) {
-            model.dispose();
+        DebugModel zeroValue = modelCache.zeroValue();
+        if(zeroValue != null) {
+            zeroValue.dispose();
+        }
+        for(int i = 0; i < modelCache.capacity(); i++) {
+            DebugModel model = modelCache.valueAt(i);
+            if(model != null) {
+                model.dispose();
+            }
         }
         modelCache.clear();
     }
@@ -577,32 +598,30 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
     }
 
     private void drawBox(float hx, float hy, float hz, B3Transform transform, long color) {
-        float[][] corners = {
-                transformPoint(transform, -hx, -hy, -hz),
-                transformPoint(transform, hx, -hy, -hz),
-                transformPoint(transform, hx, -hy, hz),
-                transformPoint(transform, -hx, -hy, hz),
-                transformPoint(transform, -hx, hy, -hz),
-                transformPoint(transform, hx, hy, -hz),
-                transformPoint(transform, hx, hy, hz),
-                transformPoint(transform, -hx, hy, hz)
-        };
-        edge(corners, 0, 1, color);
-        edge(corners, 1, 2, color);
-        edge(corners, 2, 3, color);
-        edge(corners, 3, 0, color);
-        edge(corners, 4, 5, color);
-        edge(corners, 5, 6, color);
-        edge(corners, 6, 7, color);
-        edge(corners, 7, 4, color);
-        edge(corners, 0, 4, color);
-        edge(corners, 1, 5, color);
-        edge(corners, 2, 6, color);
-        edge(corners, 3, 7, color);
+        transformPoint(transform, -hx, -hy, -hz, transformedPoints, 0);
+        transformPoint(transform, hx, -hy, -hz, transformedPoints, 3);
+        transformPoint(transform, hx, -hy, hz, transformedPoints, 6);
+        transformPoint(transform, -hx, -hy, hz, transformedPoints, 9);
+        transformPoint(transform, -hx, hy, -hz, transformedPoints, 12);
+        transformPoint(transform, hx, hy, -hz, transformedPoints, 15);
+        transformPoint(transform, hx, hy, hz, transformedPoints, 18);
+        transformPoint(transform, -hx, hy, hz, transformedPoints, 21);
+        edge(0, 1, color);
+        edge(1, 2, color);
+        edge(2, 3, color);
+        edge(3, 0, color);
+        edge(4, 5, color);
+        edge(5, 6, color);
+        edge(6, 7, color);
+        edge(7, 4, color);
+        edge(0, 4, color);
+        edge(1, 5, color);
+        edge(2, 6, color);
+        edge(3, 7, color);
     }
 
-    private void edge(float[][] corners, int a, int b, long color) {
-        line(corners[a], corners[b], color, 1.0f);
+    private void edge(int a, int b, long color) {
+        line(transformedPoints, a * 3, b * 3, color, 1.0f);
     }
 
     private void drawWireSphere(float x, float y, float z, float radius, long color, float alpha) {
@@ -622,32 +641,28 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         }
     }
 
-    private void drawWireCapsule(float[] p1, float[] p2, float radius, long color, float alpha) {
-        line(p1, p2, color, alpha);
-        drawWireSphere(p1[0], p1[1], p1[2], radius, color, alpha);
-        drawWireSphere(p2[0], p2[1], p2[2], radius, color, alpha);
+    private void drawWireCapsule(float[] points, int p1, int p2, float radius, long color, float alpha) {
+        line(points, p1, p2, color, alpha);
+        drawWireSphere(points[p1], points[p1 + 1], points[p1 + 2], radius, color, alpha);
+        drawWireSphere(points[p2], points[p2 + 1], points[p2 + 2], radius, color, alpha);
     }
 
     private void line(B3Vec3 p1, B3Vec3 p2, long color, float alpha) {
         line(p1.GetX(), p1.GetY(), p1.GetZ(), p2.GetX(), p2.GetY(), p2.GetZ(), color, alpha);
     }
 
-    private void line(float[] p1, float[] p2, long color, float alpha) {
-        line(p1[0], p1[1], p1[2], p2[0], p2[1], p2[2], color, alpha);
+    private void line(float[] points, int p1, int p2, long color, float alpha) {
+        line(points[p1], points[p1 + 1], points[p1 + 2],
+                points[p2], points[p2 + 1], points[p2 + 2], color, alpha);
     }
 
     private void line(float x1, float y1, float z1, float x2, float y2, float z2, long color, float alpha) {
-        float[] rgba = toRgba(color, alpha);
-        lineRenderer.line3D(x1, y1, z1, x2, y2, z2, rgba[0], rgba[1], rgba[2], rgba[3]);
-    }
-
-    private void toMatrix(Matrix4 out, B3Transform transform) {
-        B3Vec3 position = transform.GetP();
-        B3Quat rotation = transform.GetQ();
-        B3Vec3 qv = rotation.GetV();
-        out.setToTrs(position.GetX(), position.GetY(), position.GetZ(),
-                qv.GetX(), qv.GetY(), qv.GetZ(), rotation.GetS(),
-                1.0f, 1.0f, 1.0f);
+        long rgb = color & 0x00FFFFFFL;
+        lineRenderer.line3D(x1, y1, z1, x2, y2, z2,
+                ((rgb >> 16) & 0xFF) / 255.0f,
+                ((rgb >> 8) & 0xFF) / 255.0f,
+                (rgb & 0xFF) / 255.0f,
+                Math.max(0.0f, Math.min(1.0f, alpha)));
     }
 
     private static float[] sphereTriangles(float radius, int slices, int stacks) {
@@ -762,11 +777,11 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         return out;
     }
 
-    private static float[] transformPoint(B3Transform transform, B3Vec3 point) {
-        return transformPoint(transform, point.GetX(), point.GetY(), point.GetZ());
+    private static void transformPoint(B3Transform transform, B3Vec3 point, float[] out, int offset) {
+        transformPoint(transform, point.GetX(), point.GetY(), point.GetZ(), out, offset);
     }
 
-    private static float[] transformPoint(B3Transform transform, float x, float y, float z) {
+    private static void transformPoint(B3Transform transform, float x, float y, float z, float[] out, int offset) {
         B3Quat q = transform.GetQ();
         B3Vec3 qv = q.GetV();
         float qx = qv.GetX();
@@ -780,33 +795,21 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         float ry = y + qw * ty + qz * tx - qx * tz;
         float rz = z + qw * tz + qx * ty - qy * tx;
         B3Vec3 p = transform.GetP();
-        return new float[] { p.GetX() + rx, p.GetY() + ry, p.GetZ() + rz };
+        out[offset] = p.GetX() + rx;
+        out[offset + 1] = p.GetY() + ry;
+        out[offset + 2] = p.GetZ() + rz;
     }
 
-    private static float[] toArray(B3Vec3 value) {
-        return new float[] { value.GetX(), value.GetY(), value.GetZ() };
+    private static void writePoint(B3Vec3 value, float[] out, int offset) {
+        out[offset] = value.GetX();
+        out[offset + 1] = value.GetY();
+        out[offset + 2] = value.GetZ();
     }
 
-    private static void disposeNative(NativeObject... objects) {
-        if(objects == null) {
-            return;
+    private static void disposeNative(NativeObject object) {
+        if(object != null && object.native_hasOwnership() && !object.isDisposed()) {
+            object.dispose();
         }
-        for(int i = 0; i < objects.length; i++) {
-            NativeObject object = objects[i];
-            if(object != null && object.native_hasOwnership() && !object.isDisposed()) {
-                object.dispose();
-            }
-        }
-    }
-
-    private static float[] toRgba(long hexColor, float alpha) {
-        long rgb = hexColor & 0x00FFFFFFL;
-        return new float[] {
-                ((rgb >> 16) & 0xFF) / 255.0f,
-                ((rgb >> 8) & 0xFF) / 255.0f,
-                (rgb & 0xFF) / 255.0f,
-                Math.max(0.0f, Math.min(1.0f, alpha))
-        };
     }
 
     private static float clamp(float value) {
@@ -823,7 +826,12 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
     private static final class DebugModel implements Disposable {
         Model meshModel;
         DefaultModelInstance meshInstance;
+        B3Body shadowBody;
         final ArrayList<PrimitiveInstance> primitives = new ArrayList<PrimitiveInstance>();
+
+        boolean castsShadow() {
+            return shadowBody != null && shadowBody.IsValid() && shadowBody.GetType() != B3.StaticBody();
+        }
 
         @Override
         public void dispose() {
@@ -836,11 +844,13 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
                 primitives.get(i).model.dispose();
             }
             primitives.clear();
+            disposeNative(shadowBody);
+            shadowBody = null;
         }
 
         @Override
         public boolean isDisposed() {
-            return meshModel == null && primitives.isEmpty();
+            return meshModel == null && primitives.isEmpty() && shadowBody == null;
         }
     }
 
@@ -862,6 +872,106 @@ public class FdxDebugRenderer extends B3DebugDrawEm {
         PrimitiveInstance(Model model, DefaultModelInstance instance) {
             this.model = model;
             this.instance = instance;
+        }
+    }
+
+    /** Primitive-long map used by the render loop without boxing shape IDs. */
+    private static final class LongDebugModelMap {
+        private static final int INITIAL_CAPACITY = 128;
+        private static final float LOAD_FACTOR = 0.7f;
+
+        private long[] keys = new long[INITIAL_CAPACITY];
+        private DebugModel[] values = new DebugModel[INITIAL_CAPACITY];
+        private DebugModel zeroValue;
+        private int size;
+        private int threshold = (int)(INITIAL_CAPACITY * LOAD_FACTOR);
+
+        boolean isEmpty() {
+            return size == 0;
+        }
+
+        DebugModel get(long key) {
+            if(key == 0L) {
+                return zeroValue;
+            }
+            int mask = keys.length - 1;
+            int index = index(key, mask);
+            while(keys[index] != 0L) {
+                if(keys[index] == key) {
+                    return values[index];
+                }
+                index = (index + 1) & mask;
+            }
+            return null;
+        }
+
+        void put(long key, DebugModel value) {
+            if(key == 0L) {
+                if(zeroValue == null) {
+                    size++;
+                }
+                zeroValue = value;
+                return;
+            }
+            if(size + 1 > threshold) {
+                resize(keys.length * 2);
+            }
+            putNonZero(key, value);
+        }
+
+        DebugModel zeroValue() {
+            return zeroValue;
+        }
+
+        int capacity() {
+            return values.length;
+        }
+
+        DebugModel valueAt(int index) {
+            return values[index];
+        }
+
+        void clear() {
+            Arrays.fill(keys, 0L);
+            Arrays.fill(values, null);
+            zeroValue = null;
+            size = 0;
+        }
+
+        private void putNonZero(long key, DebugModel value) {
+            int mask = keys.length - 1;
+            int index = index(key, mask);
+            while(keys[index] != 0L) {
+                if(keys[index] == key) {
+                    values[index] = value;
+                    return;
+                }
+                index = (index + 1) & mask;
+            }
+            keys[index] = key;
+            values[index] = value;
+            size++;
+        }
+
+        private void resize(int newCapacity) {
+            long[] oldKeys = keys;
+            DebugModel[] oldValues = values;
+            keys = new long[newCapacity];
+            values = new DebugModel[newCapacity];
+            threshold = (int)(newCapacity * LOAD_FACTOR);
+            size = zeroValue == null ? 0 : 1;
+            for(int i = 0; i < oldKeys.length; i++) {
+                if(oldKeys[i] != 0L) {
+                    putNonZero(oldKeys[i], oldValues[i]);
+                }
+            }
+        }
+
+        private static int index(long key, int mask) {
+            key ^= key >>> 33;
+            key *= 0xff51afd7ed558ccdL;
+            key ^= key >>> 33;
+            return (int)key & mask;
         }
     }
 }

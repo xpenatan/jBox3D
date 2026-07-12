@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(project(":samples:gdx:shared"))
-    api(project(":extensions:gdx-wgpu"))
+    api(project(":extensions:gdx:wgpu"))
     api("io.github.monstroussoftware.gdx-webgpu:gdx-webgpu:${LibExt.gdxWebGPUVersion}")
 }
 
