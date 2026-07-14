@@ -42,7 +42,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build Box3D WebAssembly runtime
-        run: ./gradlew --no-daemon :box3d:builder:box3d_build_project_web_wasm
+        run: ./gradlew --no-daemon :box3d:builder:jParser_build_web_wasm
 
       - name: Verify Box3D WebAssembly runtime
         run: |
