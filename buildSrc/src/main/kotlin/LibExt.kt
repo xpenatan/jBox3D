@@ -17,7 +17,7 @@ object LibExt {
 
     // Library dependencies
     const val box3dVersion = "0.1.0"
-    const val jParserVersion = "1.2.3"
+    const val jParserVersion = "-SNAPSHOT"
     const val jWebGPUVersion = "-SNAPSHOT"
     const val teaVMVersion = "0.15.0"
     const val fdxGroup = "io.github.libfdx"
