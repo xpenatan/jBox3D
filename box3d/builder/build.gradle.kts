@@ -103,6 +103,10 @@ jParser {
                 if(targetName == JParserTargets.WEB_WASM) {
                     cppExclude(box3dTimerSource)
                     cppInclude(box3dWebTimerSource)
+                    // Emscripten 6.0.3's LLVM WebAssembly selector crashes on an
+                    // SLP-generated min/max pattern in shape.c. Keep -O3 and explicit
+                    // SIMD, but disable automatic SLP until the LLVM fix is released.
+                    compileFlag("-fno-slp-vectorize")
                     compileFlag("-msimd128")
                     compileFlag("-msse2")
                     linkerFlag("-msimd128")
