@@ -97,17 +97,17 @@ The builder also exposes `:box3d:builder:jParser_build_ios_jni`, but this reposi
 
 ### Desktop
 
-Build the native JNI or FFM target for the current host before launching those samples. The corresponding launcher tasks package native libraries already produced by the builder; they do not invoke the JNI or FFM native build themselves.
+Build the native JNI, FFM, or C target for the current host before launching those samples. The launcher tasks package native libraries already produced by the builder; they do not invoke the native build themselves.
 
 libGDX / OpenGL:
 
 ```powershell
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-jni:box3d_gdx_desktop_jni_run
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-ffm:box3d_gdx_desktop_ffm_run
-.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:box3d_gdx_desktop_c_run
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-c:gdx_teavm_glfw_run
 ```
 
-The TeaVM C launcher builds the current host's native C runtime automatically. It also provides `box3d_gdx_desktop_c_shared_linked_run` and `box3d_gdx_desktop_c_runtime_loaded_run` to exercise alternate linkage modes.
+The gdx-teavm plugin provides the standard `gdx_teavm_glfw_generate`, `gdx_teavm_glfw_build`, and `gdx_teavm_glfw_run` tasks.
 
 libGDX / WebGPU:
 
