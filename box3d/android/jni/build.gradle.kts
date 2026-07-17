@@ -36,6 +36,21 @@ android {
     }
 }
 
+val mavenSourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(android.sourceSets["main"].java.srcDirs)
+    from(rootProject.file("README.md")) {
+        into("META-INF")
+    }
+}
+
+val mavenJavadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(rootProject.file("README.md")) {
+        into("META-INF")
+    }
+}
+
 dependencies {
     api(project(":box3d:shared:jni"))
     api("com.github.xpenatan.jParser:runtime-jni:${LibExt.jParserVersion}")
@@ -50,6 +65,8 @@ publishing {
             artifactId = moduleName
             groupId = LibExt.groupId
             version = LibExt.libVersion
+            artifact(mavenSourcesJar)
+            artifact(mavenJavadocJar)
         }
     }
 }

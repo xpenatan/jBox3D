@@ -1,6 +1,7 @@
 pluginManagement {
-    val jParserPluginVersion = "-SNAPSHOT"
+    val jParserPluginVersion = "1.2.4"
     val gdxTeaVMPluginVersion = "1.6.0"
+    val libfdxPluginVersion = "-SNAPSHOT"
 
     resolutionStrategy {
         eachPlugin {
@@ -13,7 +14,7 @@ pluginManagement {
     plugins {
         id("com.github.xpenatan.jparser") version jParserPluginVersion
         id("com.github.xpenatan.gdx-teavm") version gdxTeaVMPluginVersion
-        id("io.github.libfdx") version "-SNAPSHOT"
+        id("io.github.libfdx") version libfdxPluginVersion
     }
 
     repositories {

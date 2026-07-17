@@ -26,6 +26,41 @@ The binding contract is [`box3d.idl`](box3d/builder/src/main/cpp/box3d.idl). The
 
 Box3D and its Java API are still evolving, but binding generation, native builds, runtime packaging, integration modules, cross-platform samples, and GitHub Pages deployment are in place.
 
+## Maven artifacts
+
+Release artifacts are published to Maven Central under `com.github.xpenatan.jBox3D`. Snapshot artifacts use the `-SNAPSHOT` version and are published through the Central Portal snapshot repository.
+
+| Artifact | Purpose |
+| --- | --- |
+| `core` | Platform-neutral Box3D API. |
+| `shared-jni`, `desktop-jni`, `android-jni` | JNI bindings and platform runtimes. |
+| `desktop-ffm` | Java 25 FFM desktop runtime. |
+| `shared-c`, `desktop-c`, `android-c` | TeaVM C bindings and platform runtimes. |
+| `web-wasm` | TeaVM web bindings and Emscripten side module. |
+| `gdx-gl`, `gdx-wgpu`, `fdx` | Rendering and math integrations. |
+
+A consumer normally selects `core`, one runtime, and an optional rendering integration:
+
+```kotlin
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        content {
+            includeGroup("com.github.xpenatan.jBox3D")
+        }
+    }
+}
+
+dependencies {
+    implementation("com.github.xpenatan.jBox3D:core:-SNAPSHOT")
+    runtimeOnly("com.github.xpenatan.jBox3D:desktop-jni:-SNAPSHOT")
+    implementation("com.github.xpenatan.jBox3D:gdx-gl:-SNAPSHOT")
+}
+```
+
+For a release, replace `-SNAPSHOT` with the version from `gradle.properties` and the snapshot repository can be omitted.
+
 The integration converters write into caller-owned output objects, avoiding temporary allocations in render loops:
 
 ```java
@@ -54,7 +89,7 @@ The shared Java scenarios are under [`samples/shared`](samples/shared/src/main/j
 - A platform C/C++ toolchain: MSVC on Windows, clang or GCC on Linux, or Xcode command-line tools on macOS.
 - Emscripten for the WebAssembly target.
 - Android SDK and NDK for Android native targets (compile SDK 36; OpenGL modules require API 21, while WebGPU and libFDX samples require API 29).
-- Current snapshot artifacts for jParser, jWebGPU, gdx-webgpu, and libFDX, resolved through the configured Maven repositories.
+- Access to Maven Central and the configured Central Portal snapshot repository for Gradle dependencies.
 
 The Gradle wrapper is pinned to 9.4.1 so the full build can run on JDK 25. On macOS or Linux, use `./gradlew` in place of `\.\gradlew.bat` in the commands below.
 
@@ -193,6 +228,34 @@ $env:GRADLE_OPTS = '-Djbox3d.sample.sample=Stacking/Single Box'
 The [live site](https://xpenatan.github.io/jBox3D) packages four libGDX distributions: OpenGL and WebGPU, each compiled with TeaVM JavaScript and WasmGC. The libFDX web launchers are available locally but are not currently included in the Pages bundle.
 
 The manually dispatched [GitHub Pages workflow](.github/workflows/gh-pages.yml) writes the static site to `samples/gdx/gl/platforms/web/build/pages` and deploys it when run from `master`; the repository's Pages source must be set to **GitHub Actions**.
+
+## Publishing
+
+The reusable Maven workflow builds Windows, Linux, macOS Intel/Apple Silicon, WebAssembly, and Android native runtimes before publishing one complete artifact set. Pushes to `master` run the snapshot workflow; releases are started manually with the `Build Release` workflow.
+
+Configure these GitHub Actions secrets before enabling uploads:
+
+- `CENTRAL_PORTAL_USERNAME` and `CENTRAL_PORTAL_PASSWORD`: a Maven Central Portal user token.
+- `PGP_SECRET` and `PGP_PASSPHRASE`: the ASCII-armored private signing key and its passphrase.
+
+The Central Portal namespace must also have snapshot publishing enabled. Local preparation commands are:
+
+```powershell
+# Unsigned local snapshot repository: build/snapshot-deploy
+.\gradlew.bat prepareSnapshotDeploy
+
+# Signed release bundle without uploading: build/staging-deploy.zip
+.\gradlew.bat validateReleaseDependencies
+.\gradlew.bat publishTestRelease
+
+# Remote publishing; credentials and signing variables are required
+.\gradlew.bat publishSnapshot
+.\gradlew.bat publishRelease
+```
+
+`publishRelease` requests automatic publishing after Central validation. Maven Central releases are immutable, so build and inspect the signed bundle with `publishTestRelease` before dispatching a release.
+
+The release workflow verifies that all required non-snapshot dependency versions are available from Maven Central before starting the native build matrix.
 
 ## License
 

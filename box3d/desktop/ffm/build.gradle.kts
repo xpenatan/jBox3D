@@ -23,11 +23,11 @@ tasks.named<Jar>("jar") {
 }
 
 dependencies {
-    implementation("com.github.xpenatan.jParser:runtime-ffm:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-ffm_windows_x64:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-ffm_linux_x64:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-ffm_mac_x64:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-ffm_mac_arm64:${LibExt.jParserVersion}")
+    implementation("com.github.xpenatan.jParser:runtime-desktop-ffm:${LibExt.jParserVersion}")
+    implementation("com.github.xpenatan.jParser:runtime-desktop-ffm_windows_x64:${LibExt.jParserVersion}")
+    implementation("com.github.xpenatan.jParser:runtime-desktop-ffm_linux_x64:${LibExt.jParserVersion}")
+    implementation("com.github.xpenatan.jParser:runtime-desktop-ffm_mac_x64:${LibExt.jParserVersion}")
+    implementation("com.github.xpenatan.jParser:runtime-desktop-ffm_mac_arm64:${LibExt.jParserVersion}")
     implementation("com.github.xpenatan.jParser:api-core:${LibExt.jParserVersion}")
     implementation("com.github.xpenatan.jParser:loader-core:${LibExt.jParserVersion}")
 }

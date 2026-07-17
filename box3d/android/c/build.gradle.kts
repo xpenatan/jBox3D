@@ -49,6 +49,21 @@ android {
     }
 }
 
+val mavenSourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
+    from(android.sourceSets["main"].java.srcDirs)
+    from(rootProject.file("README.md")) {
+        into("META-INF")
+    }
+}
+
+val mavenJavadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+    from(rootProject.file("README.md")) {
+        into("META-INF")
+    }
+}
+
 tasks.matching { task ->
     task.name == "mergeReleaseJniLibFolders" || task.name == "mergeDebugJniLibFolders"
 }.configureEach {
@@ -70,6 +85,8 @@ publishing {
             artifactId = moduleName
             groupId = LibExt.groupId
             version = LibExt.libVersion
+            artifact(mavenSourcesJar)
+            artifact(mavenJavadocJar)
         }
     }
 }

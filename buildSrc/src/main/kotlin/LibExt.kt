@@ -5,10 +5,8 @@ object LibExt {
     const val groupId = "com.github.xpenatan.jBox3D"
     const val libName = "jBox3D"
     var isRelease = false
-    var libVersion: String = ""
-        get() {
-            return getVersion()
-        }
+    val libVersion: String
+        get() = getVersion()
 
     const val javaMainTarget = "1.8"
     const val javaGdxWebGPUTarget = "11"
@@ -17,37 +15,40 @@ object LibExt {
 
     // Library dependencies
     const val box3dVersion = "0.1.0"
-    const val jParserVersion = "-SNAPSHOT"
-    const val jWebGPUVersion = "-SNAPSHOT"
+    const val jParserVersion = "1.2.4"
+    const val jWebGPUReleaseVersion = "0.3.2"
+    val jWebGPUVersion: String
+        get() = releaseDependencyVersion(jWebGPUReleaseVersion)
     const val fdxGroup = "io.github.libfdx"
-    const val fdxVersion = "-SNAPSHOT"
+    const val fdxReleaseVersion = "0.0.2"
+    val fdxVersion: String
+        get() = releaseDependencyVersion(fdxReleaseVersion)
     const val gdxVersion = "1.14.2"
-    const val gdxWebGPUVersion = "-SNAPSHOT"
+    const val gdxWebGPUReleaseVersion = "0.8.1"
+    val gdxWebGPUVersion: String
+        get() = releaseDependencyVersion(gdxWebGPUReleaseVersion)
     const val gdxTeaVMVersion = "1.6.0"
 
-    // Sample dependencies
-    const val sampleVersion = "-SNAPSHOT"
-    const val useRepoLibs = false
-
     // Test dependencies
-    const val jUnitVersion = "4.12"
+    const val jUnitVersion = "4.13.2"
+}
+
+private fun releaseDependencyVersion(releaseVersion: String): String {
+    return if(LibExt.isRelease) releaseVersion else "-SNAPSHOT"
 }
 
 private fun getVersion(): String {
-    var libVersion = "-SNAPSHOT"
+    if(!LibExt.isRelease) {
+        return "-SNAPSHOT"
+    }
+
     val file = File("gradle.properties")
-    if(file.exists()) {
-        val properties = Properties()
-        properties.load(file.inputStream())
-        val version = properties.getProperty("version")
-        if(LibExt.isRelease) {
-            libVersion = version
-        }
+    if(!file.exists()) {
+        throw RuntimeException("gradle.properties must exist for release builds")
     }
-    else {
-        if(LibExt.isRelease) {
-            throw RuntimeException("properties should exist")
-        }
-    }
-    return libVersion
+
+    val properties = Properties()
+    file.inputStream().use(properties::load)
+    return properties.getProperty("version")?.trim()?.takeIf(String::isNotEmpty)
+        ?: throw RuntimeException("version is missing from gradle.properties")
 }
