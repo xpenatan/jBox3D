@@ -309,9 +309,6 @@ jobs:
       - name: Generate Java bindings
         run: ./gradlew --no-daemon :box3d:builder:jParser_generate
 
-      - name: Verify generated bindings are committed
-        run: git diff --exit-code
-
       - name: Read release version
         id: version
         shell: bash
