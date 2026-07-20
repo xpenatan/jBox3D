@@ -15,7 +15,7 @@ object LibExt {
 
     // Library dependencies
     const val box3dVersion = "0.1.0"
-    const val jParserVersion = "1.2.4"
+    const val jParserVersion = "-SNAPSHOT"
     const val jWebGPUReleaseVersion = "0.3.2"
     val jWebGPUVersion: String
         get() = releaseDependencyVersion(jWebGPUReleaseVersion)
