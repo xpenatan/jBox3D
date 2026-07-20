@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":samples:gdx:shared"))
+    api(project(":samples:gdx:core"))
     api(project(":extensions:gdx:wgpu"))
     api("io.github.monstroussoftware.gdx-webgpu:gdx-webgpu:${LibExt.gdxWebGPUVersion}")
 }

@@ -50,7 +50,7 @@ include(":extensions:gdx:wgpu")
 include(":extensions:fdx")
 
 include(":samples:shared")
-include(":samples:gdx:shared")
+include(":samples:gdx:core")
 include(":samples:gdx:gl:core")
 include(":samples:gdx:gl:platforms:desktop-jni")
 include(":samples:gdx:gl:platforms:desktop-ffm")

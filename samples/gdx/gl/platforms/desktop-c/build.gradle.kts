@@ -18,7 +18,7 @@ java {
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.desktop.Box3DGdxDesktopLauncher"
 
 gdxTeaVM {
-    assets.from(project(":samples:gdx:shared").projectDir.resolve("src/main/resources"))
+    assets.from(project(":samples:gdx:core").projectDir.resolve("src/main/resources"))
     assets.from(project(":samples:shared").projectDir.resolve("src/main/resources"))
 
     reflection.add("com.badlogic.gdx.math.Vector2")

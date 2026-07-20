@@ -74,7 +74,7 @@ android {
     sourceSets {
         named("main") {
             assets.srcDirs(
-                project(":samples:gdx:shared").projectDir.resolve("src/main/resources"),
+                project(":samples:gdx:core").projectDir.resolve("src/main/resources"),
                 project(":samples:shared").projectDir.resolve("src/main/resources")
             )
             jniLibs.srcDirs(stagedGdxJniLibsDir)
