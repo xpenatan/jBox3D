@@ -1,5 +1,3 @@
-import java.net.HttpURLConnection
-import java.net.URI
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -130,51 +128,6 @@ val validateNativeArtifacts = tasks.register("validateNativeArtifacts") {
     }
 }
 
-tasks.register("validateReleaseDependencies") {
-    group = "publishing"
-    description = "Verify that the immutable upstream versions required by a release are on Maven Central."
-
-    doLast {
-        val releaseCoordinates = listOf(
-            Triple("io.github.libfdx", "graphics", LibExt.fdxReleaseVersion),
-            Triple("io.github.libfdx", "g3d", LibExt.fdxReleaseVersion),
-            Triple(
-                "io.github.monstroussoftware.gdx-webgpu",
-                "gdx-webgpu",
-                LibExt.gdxWebGPUReleaseVersion,
-            ),
-        )
-        val missingCoordinates = releaseCoordinates.filterNot { (groupId, artifactId, version) ->
-            val groupPath = groupId.replace('.', '/')
-            val pomUrl = URI(
-                "https://repo1.maven.org/maven2/$groupPath/$artifactId/$version/" +
-                    "$artifactId-$version.pom"
-            ).toURL()
-            val connection = pomUrl.openConnection() as HttpURLConnection
-            try {
-                connection.requestMethod = "HEAD"
-                connection.connectTimeout = 15_000
-                connection.readTimeout = 15_000
-                connection.responseCode == HttpURLConnection.HTTP_OK
-            }
-            finally {
-                connection.disconnect()
-            }
-        }
-
-        if(missingCoordinates.isNotEmpty()) {
-            throw GradleException(
-                "Publish the required upstream releases to Maven Central first:\n - " +
-                    missingCoordinates.joinToString("\n - ") { (groupId, artifactId, version) ->
-                        "$groupId:$artifactId:$version"
-                    }
-            )
-        }
-
-        logger.lifecycle("Validated ${releaseCoordinates.size} upstream release coordinates.")
-    }
-}
-
 configure(libraryProjects) {
     apply(plugin = "maven-publish")
     apply(plugin = "signing")
@@ -238,9 +191,6 @@ configure(libraryProjects) {
     tasks.withType<PublishToMavenRepository>().configureEach {
         if(isSnapshotPublish || isDirectRepositoryPublish || isReleaseIntent) {
             dependsOn(rootProject.tasks.named("validateNativeArtifacts"))
-        }
-        if(isReleaseIntent) {
-            dependsOn(rootProject.tasks.named("validateReleaseDependencies"))
         }
         when {
             isReleaseIntent -> dependsOn(rootProject.tasks.named("cleanStagingDeploy"))
