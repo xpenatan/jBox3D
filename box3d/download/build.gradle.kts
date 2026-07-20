@@ -7,6 +7,8 @@ plugins {
     id("java")
 }
 
+val box3dVersion = "0.1.0"
+
 val buildDirFile = layout.buildDirectory.get().asFile
 val box3dSourceRoot = buildDirFile.resolve("box3d-source")
 val box3dIncludeDir = box3dSourceRoot.resolve("include")
@@ -15,15 +17,15 @@ val box3dArchiveFile = buildDirFile.resolve("tmp/box3d-source.zip")
 
 tasks.register("box3d_download_source") {
     group = "box3d"
-    description = "Download Box3D ${LibExt.box3dVersion} source into the build directory."
-    inputs.property("box3dVersion", LibExt.box3dVersion)
+    description = "Download Box3D ${box3dVersion} source into the build directory."
+    inputs.property("box3dVersion", box3dVersion)
     outputs.dir(box3dSourceRoot)
     onlyIf {
         !box3dIncludeDir.isDirectory || !box3dPrivateSourceDir.isDirectory
     }
 
     doLast {
-        val url = "https://github.com/erincatto/box3d/archive/refs/tags/v${LibExt.box3dVersion}.zip"
+        val url = "https://github.com/erincatto/box3d/archive/refs/tags/v${box3dVersion}.zip"
         println("URL: $url")
         delete(box3dSourceRoot)
         box3dArchiveFile.parentFile.mkdirs()

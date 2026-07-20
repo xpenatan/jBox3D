@@ -14,7 +14,6 @@ object LibExt {
     const val javaFFMTarget = "25"
 
     // Library dependencies
-    const val box3dVersion = "0.1.0"
     const val jParserVersion = "-SNAPSHOT"
     const val jWebGPUVersion = "-SNAPSHOT"
     const val fdxReleaseVersion = "0.0.2"
