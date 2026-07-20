@@ -36,12 +36,12 @@ val box3dRuntimeClasspath by configurations.creating {
 
 dependencies {
     implementation(project(":samples:fdx:core"))
-    implementation("${LibExt.fdxGroup}:backend_desktop:${LibExt.fdxVersion}")
-    implementation("${LibExt.fdxGroup}:wgpu_core:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:backend_desktop:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:wgpu_core:${LibExt.fdxVersion}")
 
-    glRuntimeClasspath("${LibExt.fdxGroup}:gl_desktop:${LibExt.fdxVersion}")
-    vulkanRuntimeClasspath("${LibExt.fdxGroup}:vulkan_desktop:${LibExt.fdxVersion}")
-    wgpuJniRuntimeClasspath("${LibExt.fdxGroup}:wgpu_desktop_jni:${LibExt.fdxVersion}")
+    glRuntimeClasspath("io.github.libfdx:gl_desktop:${LibExt.fdxVersion}")
+    vulkanRuntimeClasspath("io.github.libfdx:vulkan_desktop:${LibExt.fdxVersion}")
+    wgpuJniRuntimeClasspath("io.github.libfdx:wgpu_desktop_jni:${LibExt.fdxVersion}")
     box3dRuntimeClasspath(project(box3dRuntimeProject))
 }
 

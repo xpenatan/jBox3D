@@ -7,11 +7,11 @@ dependencies {
     compileOnly(project(":box3d:core"))
     api(project(":extensions:fdx"))
 
-    api("${LibExt.fdxGroup}:application:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:camera:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:display:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:graphics:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:ui_kit:${LibExt.fdxVersion}")
+    api("io.github.libfdx:application:${LibExt.fdxVersion}")
+    api("io.github.libfdx:camera:${LibExt.fdxVersion}")
+    api("io.github.libfdx:display:${LibExt.fdxVersion}")
+    api("io.github.libfdx:graphics:${LibExt.fdxVersion}")
+    api("io.github.libfdx:ui_kit:${LibExt.fdxVersion}")
 }
 
 java {

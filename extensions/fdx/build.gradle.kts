@@ -10,8 +10,8 @@ base {
 
 dependencies {
     compileOnly(project(":box3d:core"))
-    api("${LibExt.fdxGroup}:graphics:${LibExt.fdxVersion}")
-    api("${LibExt.fdxGroup}:g3d:${LibExt.fdxVersion}")
+    api("io.github.libfdx:graphics:${LibExt.fdxVersion}")
+    api("io.github.libfdx:g3d:${LibExt.fdxVersion}")
 
     testImplementation(project(":box3d:core"))
     testImplementation("junit:junit:${LibExt.jUnitVersion}")

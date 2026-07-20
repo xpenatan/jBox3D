@@ -136,8 +136,8 @@ tasks.register("validateReleaseDependencies") {
 
     doLast {
         val releaseCoordinates = listOf(
-            Triple(LibExt.fdxGroup, "graphics", LibExt.fdxReleaseVersion),
-            Triple(LibExt.fdxGroup, "g3d", LibExt.fdxReleaseVersion),
+            Triple("io.github.libfdx", "graphics", LibExt.fdxReleaseVersion),
+            Triple("io.github.libfdx", "g3d", LibExt.fdxReleaseVersion),
             Triple(
                 "io.github.monstroussoftware.gdx-webgpu",
                 "gdx-webgpu",

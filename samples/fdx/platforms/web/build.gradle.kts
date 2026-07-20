@@ -11,9 +11,9 @@ java {
 dependencies {
     implementation(project(":samples:fdx:core"))
     implementation(project(":box3d:web:wasm"))
-    implementation("${LibExt.fdxGroup}:backend_web:${LibExt.fdxVersion}")
-    implementation("${LibExt.fdxGroup}:gl_web:${LibExt.fdxVersion}")
-    implementation("${LibExt.fdxGroup}:wgpu_web:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:backend_web:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:gl_web:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:wgpu_web:${LibExt.fdxVersion}")
 }
 
 libfdx {

@@ -16,25 +16,16 @@ object LibExt {
     // Library dependencies
     const val box3dVersion = "0.1.0"
     const val jParserVersion = "-SNAPSHOT"
-    const val jWebGPUReleaseVersion = "0.3.2"
-    val jWebGPUVersion: String
-        get() = releaseDependencyVersion(jWebGPUReleaseVersion)
-    const val fdxGroup = "io.github.libfdx"
+    const val jWebGPUVersion = "-SNAPSHOT"
     const val fdxReleaseVersion = "0.0.2"
-    val fdxVersion: String
-        get() = releaseDependencyVersion(fdxReleaseVersion)
+    const val fdxVersion = "-SNAPSHOT"
     const val gdxVersion = "1.14.2"
     const val gdxWebGPUReleaseVersion = "0.8.1"
-    val gdxWebGPUVersion: String
-        get() = releaseDependencyVersion(gdxWebGPUReleaseVersion)
+    const val gdxWebGPUVersion = "-SNAPSHOT"
     const val gdxTeaVMVersion = "1.6.0"
 
     // Test dependencies
     const val jUnitVersion = "4.13.2"
-}
-
-private fun releaseDependencyVersion(releaseVersion: String): String {
-    return if(LibExt.isRelease) releaseVersion else "-SNAPSHOT"
 }
 
 private fun getVersion(): String {

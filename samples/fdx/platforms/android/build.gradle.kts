@@ -37,9 +37,9 @@ dependencies {
 
     implementation(project(":samples:fdx:core"))
     implementation(project(":box3d:android:jni"))
-    implementation("${LibExt.fdxGroup}:backend_android:${LibExt.fdxVersion}")
-    implementation("${LibExt.fdxGroup}:wgpu_android_jni:${LibExt.fdxVersion}")
-    implementation("${LibExt.fdxGroup}:vulkan_android_jni:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:backend_android:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:wgpu_android_jni:${LibExt.fdxVersion}")
+    implementation("io.github.libfdx:vulkan_android_jni:${LibExt.fdxVersion}")
 }
 
 fun adbExecutable(): String {
