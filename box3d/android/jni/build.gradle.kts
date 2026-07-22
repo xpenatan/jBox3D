@@ -63,8 +63,6 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             artifactId = moduleName
-            groupId = LibExt.groupId
-            version = LibExt.libVersion
             artifact(mavenSourcesJar)
             artifact(mavenJavadocJar)
         }

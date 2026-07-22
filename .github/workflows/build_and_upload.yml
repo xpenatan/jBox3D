@@ -333,7 +333,7 @@ jobs:
 
       - name: Prepare local snapshot repository proof
         if: ${{ inputs.shouldUpload && !inputs.isRelease }}
-        run: ./gradlew --no-daemon prepareSnapshotDeploy
+        run: ./gradlew --no-daemon prepareSnapshot
 
       - name: Upload snapshot repository proof
         if: ${{ inputs.shouldUpload && !inputs.isRelease }}
