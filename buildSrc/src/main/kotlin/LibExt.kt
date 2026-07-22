@@ -9,7 +9,7 @@ object LibExt {
     const val javaFFMTarget = "25"
 
     // Library dependencies
-    const val jParserVersion = "-SNAPSHOT"
+    const val jParserVersion = "1.2.5"
     const val jWebGPUVersion = "-SNAPSHOT"
     const val fdxVersion = "-SNAPSHOT"
     const val gdxVersion = "1.14.2"
