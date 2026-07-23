@@ -11,15 +11,15 @@ val box3dRuntimeClasspath by configurations.creating {
 
 dependencies {
     implementation(project(":samples:gdx:gl:core"))
-    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${LibExt.gdxVersion}")
-    implementation("com.badlogicgames.gdx:gdx-platform:${LibExt.gdxVersion}:natives-desktop")
+    implementation(libs.gdxBackendLwjgl3)
+    implementation(variantOf(libs.gdxPlatform) { classifier("natives-desktop") })
 
     box3dRuntimeClasspath(project(box3dRuntimeProject))
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
 }
 
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.desktop.Box3DGdxDesktopLauncher"

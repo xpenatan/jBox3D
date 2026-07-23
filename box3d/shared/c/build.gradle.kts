@@ -3,7 +3,6 @@ plugins {
 }
 
 val moduleName = "shared-c"
-group = "${LibExt.groupId}.shared"
 val generatedTeaVMCResourcesDir = layout.buildDirectory.dir("generated/jparser/resources/main")
 
 base {
@@ -11,10 +10,7 @@ base {
 }
 
 dependencies {
-    api("com.github.xpenatan.jParser:api-core:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:loader-core:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:runtime-core:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:runtime-c:${LibExt.jParserVersion}")
+    api(libs.bundles.jParserSharedC)
 }
 
 sourceSets {
@@ -32,8 +28,8 @@ tasks.named("clean") {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
 }
 
 java {

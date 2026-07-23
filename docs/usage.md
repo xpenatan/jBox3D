@@ -10,7 +10,11 @@ This guide covers building jBox3D from source and running its sample application
 - Android SDK and NDK for Android native targets. The build uses compile SDK 36; OpenGL modules require API 21, while WebGPU and libFDX samples require API 29.
 - Access to Maven Central and the configured snapshot repository for Gradle dependencies.
 
-The Gradle wrapper uses Gradle 9.4.1. The commands below use PowerShell on Windows; on macOS or Linux, use `./gradlew` instead of `.\gradlew.bat`.
+The Gradle wrapper uses Gradle 9.6.1. The commands below use PowerShell on Windows; on macOS or Linux, use `./gradlew` instead of `.\gradlew.bat`.
+
+## Version catalog
+
+Build targets, publication versions, plugin versions, and external dependencies are declared in `gradle/libs.versions.toml`. Catalog aliases use lower camelCase so their generated Gradle accessors remain flat.
 
 ## Project layout
 

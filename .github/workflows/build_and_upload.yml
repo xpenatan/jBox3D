@@ -11,35 +11,8 @@ on:
         type: boolean
 
 jobs:
-  preflight:
-    name: Validate release prerequisites
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        if: ${{ inputs.isRelease }}
-        uses: actions/checkout@v6
-
-      - name: Set up JDK 25
-        if: ${{ inputs.isRelease }}
-        uses: actions/setup-java@v5
-        with:
-          distribution: corretto
-          java-version: "25"
-          cache: gradle
-
-      - name: Make Gradle wrapper executable
-        if: ${{ inputs.isRelease }}
-        run: chmod +x gradlew
-
-      - name: Validate immutable upstream dependencies
-        if: ${{ inputs.isRelease }}
-        run: ./gradlew --no-daemon validateReleaseDependencies
-
   build_windows:
     name: Build Windows natives
-    needs: preflight
     runs-on: windows-latest
     timeout-minutes: 45
 
@@ -81,7 +54,6 @@ jobs:
 
   build_linux:
     name: Build Linux natives
-    needs: preflight
     runs-on: ubuntu-22.04
     timeout-minutes: 45
 
@@ -115,7 +87,6 @@ jobs:
 
   build_macos:
     name: Build macOS natives
-    needs: preflight
     runs-on: macos-latest
     timeout-minutes: 60
 
@@ -152,7 +123,6 @@ jobs:
 
   build_web:
     name: Build WebAssembly runtime
-    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -187,7 +157,6 @@ jobs:
 
   build_android:
     name: Build Android natives
-    needs: preflight
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -313,7 +282,7 @@ jobs:
         id: version
         shell: bash
         run: |
-          version="$(sed -n 's/^version[[:space:]]*=[[:space:]]*//p' gradle.properties | head -n 1 | tr -d '\r')"
+          version="$(./gradlew --no-daemon --quiet --warning-mode none printReleaseVersion)"
           test -n "$version"
           echo "value=$version" >> "$GITHUB_OUTPUT"
 

@@ -21,9 +21,7 @@ tasks.named<Jar>("jar") {
 
 dependencies {
     api(project(":box3d:core"))
-    api("com.github.xpenatan.jParser:runtime-core:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:runtime-web:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:runtime-web_wasm:${LibExt.jParserVersion}")
+    api(libs.bundles.jParserWeb)
 }
 
 sourceSets {
@@ -41,8 +39,8 @@ tasks.named("clean") {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
 }
 
 java {

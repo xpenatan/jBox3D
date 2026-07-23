@@ -1,0 +1,142 @@
+[versions]
+jbox3dGroup = "com.github.xpenatan.jBox3D"
+jbox3dName = "jBox3D"
+jbox3dRelease = "0.1.0.0"
+jbox3dSnapshot = "-SNAPSHOT"
+box3dSource = "0.1.0"
+
+javaMain = "1.8"
+javaGdxWebGPU = "11"
+javaWeb = "17"
+javaFFM = "25"
+
+androidGradlePlugin = "9.1.1"
+androidCompileSdk = "36"
+androidTargetSdk = "36"
+androidMinSdk = "21"
+androidModernMinSdk = "29"
+androidDesugar = "2.0.3"
+
+easyPublishing = "0.1.0"
+jParser = "1.2.5"
+jWebGPU = "0.3.3"
+fdx = "-SNAPSHOT"
+gdx = "1.14.2"
+gdxWebGPU = "-SNAPSHOT"
+gdxTeaVM = "1.6.0"
+junit = "4.13.2"
+
+[plugins]
+easyPublishing = { id = "com.github.xpenatan.easy-publishing", version.ref = "easyPublishing" }
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+jParser = { id = "com.github.xpenatan.jparser", version.ref = "jParser" }
+gdxTeaVM = { id = "com.github.xpenatan.gdx-teavm", version.ref = "gdxTeaVM" }
+fdx = { id = "io.github.libfdx", version.ref = "fdx" }
+
+[libraries]
+androidDesugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugar" }
+
+jParserLoaderCore = { module = "com.github.xpenatan.jParser:loader-core", version.ref = "jParser" }
+jParserApiCore = { module = "com.github.xpenatan.jParser:api-core", version.ref = "jParser" }
+jParserRuntimeBase = { module = "com.github.xpenatan.jParser:runtime-base", version.ref = "jParser" }
+jParserRuntimeCore = { module = "com.github.xpenatan.jParser:runtime-core", version.ref = "jParser" }
+jParserRuntimeJni = { module = "com.github.xpenatan.jParser:runtime-jni", version.ref = "jParser" }
+jParserRuntimeAndroid = { module = "com.github.xpenatan.jParser:runtime-android", version.ref = "jParser" }
+jParserRuntimeAndroidC = { module = "com.github.xpenatan.jParser:runtime-android-c", version.ref = "jParser" }
+jParserRuntimeAndroidCX86 = { module = "com.github.xpenatan.jParser:runtime-android-c_x86", version.ref = "jParser" }
+jParserRuntimeAndroidCX8664 = { module = "com.github.xpenatan.jParser:runtime-android-c_x86_64", version.ref = "jParser" }
+jParserRuntimeAndroidCArmeabiV7a = { module = "com.github.xpenatan.jParser:runtime-android-c_armeabi_v7a", version.ref = "jParser" }
+jParserRuntimeAndroidCArm64V8a = { module = "com.github.xpenatan.jParser:runtime-android-c_arm64_v8a", version.ref = "jParser" }
+jParserRuntimeDesktopJniWindowsX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-jni_windows_x64", version.ref = "jParser" }
+jParserRuntimeDesktopJniLinuxX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-jni_linux_x64", version.ref = "jParser" }
+jParserRuntimeDesktopJniMacX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-jni_mac_x64", version.ref = "jParser" }
+jParserRuntimeDesktopJniMacArm64 = { module = "com.github.xpenatan.jParser:runtime-desktop-jni_mac_arm64", version.ref = "jParser" }
+jParserRuntimeDesktopFFM = { module = "com.github.xpenatan.jParser:runtime-desktop-ffm", version.ref = "jParser" }
+jParserRuntimeDesktopFFMWindowsX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-ffm_windows_x64", version.ref = "jParser" }
+jParserRuntimeDesktopFFMLinuxX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-ffm_linux_x64", version.ref = "jParser" }
+jParserRuntimeDesktopFFMMacX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-ffm_mac_x64", version.ref = "jParser" }
+jParserRuntimeDesktopFFMMacArm64 = { module = "com.github.xpenatan.jParser:runtime-desktop-ffm_mac_arm64", version.ref = "jParser" }
+jParserRuntimeC = { module = "com.github.xpenatan.jParser:runtime-c", version.ref = "jParser" }
+jParserRuntimeDesktopCWindowsX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-c_windows_x64", version.ref = "jParser" }
+jParserRuntimeDesktopCLinuxX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-c_linux_x64", version.ref = "jParser" }
+jParserRuntimeDesktopCMacX64 = { module = "com.github.xpenatan.jParser:runtime-desktop-c_mac_x64", version.ref = "jParser" }
+jParserRuntimeDesktopCMacArm64 = { module = "com.github.xpenatan.jParser:runtime-desktop-c_mac_arm64", version.ref = "jParser" }
+jParserRuntimeWeb = { module = "com.github.xpenatan.jParser:runtime-web", version.ref = "jParser" }
+jParserRuntimeWebWasm = { module = "com.github.xpenatan.jParser:runtime-web_wasm", version.ref = "jParser" }
+
+jWebGPUCore = { module = "com.github.xpenatan.jWebGPU:webgpu-core", version.ref = "jWebGPU" }
+jWebGPUWeb = { module = "com.github.xpenatan.jWebGPU:webgpu-web", version.ref = "jWebGPU" }
+jWebGPUWebWasm = { module = "com.github.xpenatan.jWebGPU:webgpu-web_wasm", version.ref = "jWebGPU" }
+
+gdxCore = { module = "com.badlogicgames.gdx:gdx", version.ref = "gdx" }
+gdxBackendLwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdx" }
+gdxBackendAndroid = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdx" }
+gdxPlatform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "gdx" }
+
+gdxWebGPUCore = { module = "io.github.monstroussoftware.gdx-webgpu:gdx-webgpu", version.ref = "gdxWebGPU" }
+gdxWebGPUBackendDesktopJni = { module = "io.github.monstroussoftware.gdx-webgpu:backend-desktop-jni", version.ref = "gdxWebGPU" }
+gdxWebGPUBackendDesktopFFM = { module = "io.github.monstroussoftware.gdx-webgpu:backend-desktop-ffm", version.ref = "gdxWebGPU" }
+gdxWebGPUBackendTeaVM = { module = "io.github.monstroussoftware.gdx-webgpu:backend-teavm", version.ref = "gdxWebGPU" }
+gdxWebGPUBackendAndroid = { module = "io.github.monstroussoftware.gdx-webgpu:backend-android", version.ref = "gdxWebGPU" }
+
+fdxGraphics = { module = "io.github.libfdx:graphics", version.ref = "fdx" }
+fdxG3d = { module = "io.github.libfdx:g3d", version.ref = "fdx" }
+fdxApplication = { module = "io.github.libfdx:application", version.ref = "fdx" }
+fdxCamera = { module = "io.github.libfdx:camera", version.ref = "fdx" }
+fdxDisplay = { module = "io.github.libfdx:display", version.ref = "fdx" }
+fdxUiKit = { module = "io.github.libfdx:ui_kit", version.ref = "fdx" }
+fdxBackendDesktop = { module = "io.github.libfdx:backend_desktop", version.ref = "fdx" }
+fdxWGPUCore = { module = "io.github.libfdx:wgpu_core", version.ref = "fdx" }
+fdxGlDesktop = { module = "io.github.libfdx:gl_desktop", version.ref = "fdx" }
+fdxVulkanDesktop = { module = "io.github.libfdx:vulkan_desktop", version.ref = "fdx" }
+fdxWGPUDesktopJni = { module = "io.github.libfdx:wgpu_desktop_jni", version.ref = "fdx" }
+fdxBackendWeb = { module = "io.github.libfdx:backend_web", version.ref = "fdx" }
+fdxGlWeb = { module = "io.github.libfdx:gl_web", version.ref = "fdx" }
+fdxWGPUWeb = { module = "io.github.libfdx:wgpu_web", version.ref = "fdx" }
+fdxBackendAndroid = { module = "io.github.libfdx:backend_android", version.ref = "fdx" }
+fdxWGPUAndroidJni = { module = "io.github.libfdx:wgpu_android_jni", version.ref = "fdx" }
+fdxVulkanAndroidJni = { module = "io.github.libfdx:vulkan_android_jni", version.ref = "fdx" }
+
+junit = { module = "junit:junit", version.ref = "junit" }
+
+[bundles]
+jParserBase = ["jParserLoaderCore", "jParserRuntimeBase", "jParserRuntimeCore"]
+jParserCore = ["jParserLoaderCore", "jParserApiCore", "jParserRuntimeCore"]
+jParserSharedJni = ["jParserRuntimeJni", "jParserApiCore", "jParserLoaderCore"]
+jParserSharedC = ["jParserApiCore", "jParserLoaderCore", "jParserRuntimeCore", "jParserRuntimeC"]
+jParserDesktopJni = [
+    "jParserRuntimeDesktopJniWindowsX64",
+    "jParserRuntimeDesktopJniLinuxX64",
+    "jParserRuntimeDesktopJniMacX64",
+    "jParserRuntimeDesktopJniMacArm64",
+]
+jParserDesktopFFM = [
+    "jParserRuntimeDesktopFFM",
+    "jParserRuntimeDesktopFFMWindowsX64",
+    "jParserRuntimeDesktopFFMLinuxX64",
+    "jParserRuntimeDesktopFFMMacX64",
+    "jParserRuntimeDesktopFFMMacArm64",
+    "jParserApiCore",
+    "jParserLoaderCore",
+]
+jParserDesktopC = [
+    "jParserRuntimeDesktopCWindowsX64",
+    "jParserRuntimeDesktopCLinuxX64",
+    "jParserRuntimeDesktopCMacX64",
+    "jParserRuntimeDesktopCMacArm64",
+]
+jParserWeb = ["jParserRuntimeCore", "jParserRuntimeWeb", "jParserRuntimeWebWasm"]
+jParserAndroidJni = ["jParserRuntimeJni", "jParserRuntimeAndroid", "jParserApiCore", "jParserLoaderCore"]
+jParserAndroidCRuntimes = [
+    "jParserRuntimeAndroidCX86",
+    "jParserRuntimeAndroidCX8664",
+    "jParserRuntimeAndroidCArmeabiV7a",
+    "jParserRuntimeAndroidCArm64V8a",
+]
+jWebGPUWeb = ["jWebGPUCore", "jWebGPUWeb", "jWebGPUWebWasm"]
+fdxExtension = ["fdxGraphics", "fdxG3d"]
+fdxCore = ["fdxApplication", "fdxCamera", "fdxDisplay", "fdxGraphics", "fdxUiKit"]
+fdxDesktopCore = ["fdxBackendDesktop", "fdxWGPUCore"]
+fdxWeb = ["fdxBackendWeb", "fdxGlWeb", "fdxWGPUWeb"]
+fdxAndroid = ["fdxBackendAndroid", "fdxWGPUAndroidJni", "fdxVulkanAndroidJni"]

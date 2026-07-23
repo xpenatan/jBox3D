@@ -1,19 +1,17 @@
 plugins {
     id("java")
-    id("io.github.libfdx")
+    alias(libs.plugins.fdx)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaFFM.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaFFM.get())
 }
 
 dependencies {
     implementation(project(":samples:fdx:core"))
     implementation(project(":box3d:web:wasm"))
-    implementation("io.github.libfdx:backend_web:${LibExt.fdxVersion}")
-    implementation("io.github.libfdx:gl_web:${LibExt.fdxVersion}")
-    implementation("io.github.libfdx:wgpu_web:${LibExt.fdxVersion}")
+    implementation(libs.bundles.fdxWeb)
 }
 
 libfdx {

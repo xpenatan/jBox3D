@@ -11,12 +11,12 @@ base {
 dependencies {
     compileOnly(project(":box3d:core"))
     api(project(":extensions:gdx:gl"))
-    api("io.github.monstroussoftware.gdx-webgpu:gdx-webgpu:${LibExt.gdxWebGPUVersion}")
+    api(libs.gdxWebGPUCore)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaGdxWebGPU.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaGdxWebGPU.get())
 }
 
 java {

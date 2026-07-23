@@ -5,10 +5,10 @@ plugins {
 dependencies {
     api(project(":samples:gdx:core"))
     api(project(":extensions:gdx:gl"))
-    api("com.badlogicgames.gdx:gdx:${LibExt.gdxVersion}")
+    api(libs.gdxCore)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
 }

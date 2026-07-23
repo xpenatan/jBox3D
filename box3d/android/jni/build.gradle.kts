@@ -1,16 +1,16 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.androidLibrary)
 }
 
 val moduleName = "android-jni"
-group = "${LibExt.groupId}.android"
 
 android {
+    enableKotlin = false
     namespace = "com.github.xpenatan.box3d.android.jni"
-    compileSdk = 36
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.androidMinSdk.get().toInt()
     }
 
     sourceSets {
@@ -20,8 +20,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
-        targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
     }
 
     buildTypes {
@@ -53,10 +53,7 @@ val mavenJavadocJar by tasks.registering(Jar::class) {
 
 dependencies {
     api(project(":box3d:shared:jni"))
-    api("com.github.xpenatan.jParser:runtime-jni:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:runtime-android:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:api-core:${LibExt.jParserVersion}")
-    api("com.github.xpenatan.jParser:loader-core:${LibExt.jParserVersion}")
+    api(libs.bundles.jParserAndroidJni)
 }
 
 publishing {

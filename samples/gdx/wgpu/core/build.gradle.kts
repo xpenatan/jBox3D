@@ -5,10 +5,10 @@ plugins {
 dependencies {
     api(project(":samples:gdx:core"))
     api(project(":extensions:gdx:wgpu"))
-    api("io.github.monstroussoftware.gdx-webgpu:gdx-webgpu:${LibExt.gdxWebGPUVersion}")
+    api(libs.gdxWebGPUCore)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaGdxWebGPU.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaGdxWebGPU.get())
 }

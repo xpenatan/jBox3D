@@ -5,7 +5,7 @@ import java.io.File
 
 plugins {
     id("java-library")
-    id("com.github.xpenatan.jparser")
+    alias(libs.plugins.jParser)
 }
 
 fun File.normalizedPath(): String {
@@ -22,8 +22,8 @@ val box3dTimerSource = File(box3dPrivateSourceDir, "timer.c")
 val box3dWebTimerSource = File(box3dCustomSourceDir, "box3d_web_timer.c")
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
 }
 
 val jParserTargetNames = listOf(

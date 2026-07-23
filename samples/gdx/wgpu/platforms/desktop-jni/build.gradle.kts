@@ -11,14 +11,14 @@ val box3dRuntimeClasspath by configurations.creating {
 
 dependencies {
     implementation(project(":samples:gdx:wgpu:core"))
-    implementation("io.github.monstroussoftware.gdx-webgpu:backend-desktop-jni:${LibExt.gdxWebGPUVersion}")
+    implementation(libs.gdxWebGPUBackendDesktopJni)
 
     box3dRuntimeClasspath(project(box3dRuntimeProject))
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaGdxWebGPUTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaGdxWebGPU.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaGdxWebGPU.get())
 }
 
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.wgpu.desktop.Box3DGdxWgpuDesktopLauncher"

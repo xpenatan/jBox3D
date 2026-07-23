@@ -1,20 +1,18 @@
 plugins {
-    id("com.github.xpenatan.gdx-teavm")
+    alias(libs.plugins.gdxTeaVM)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
 }
 
 dependencies {
     implementation(project(":samples:gdx:wgpu:core"))
     implementation(project(":box3d:web:wasm"))
-    implementation("com.github.xpenatan.jParser:runtime-web:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jWebGPU:webgpu-core:${LibExt.jWebGPUVersion}")
-    implementation("com.github.xpenatan.jWebGPU:webgpu-web:${LibExt.jWebGPUVersion}")
-    implementation("com.github.xpenatan.jWebGPU:webgpu-web_wasm:${LibExt.jWebGPUVersion}")
-    implementation("io.github.monstroussoftware.gdx-webgpu:backend-teavm:${LibExt.gdxWebGPUVersion}")
+    implementation(libs.jParserRuntimeWeb)
+    implementation(libs.bundles.jWebGPUWeb)
+    implementation(libs.gdxWebGPUBackendTeaVM)
 }
 
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.wgpu.web.Box3DGdxWgpuWebLauncher"

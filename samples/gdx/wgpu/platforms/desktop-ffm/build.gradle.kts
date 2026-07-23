@@ -13,14 +13,14 @@ val box3dRuntimeClasspath by configurations.creating {
 
 dependencies {
     implementation(project(":samples:gdx:wgpu:core"))
-    implementation("io.github.monstroussoftware.gdx-webgpu:backend-desktop-ffm:${LibExt.gdxWebGPUVersion}")
+    implementation(libs.gdxWebGPUBackendDesktopFFM)
 
     box3dRuntimeClasspath(project(box3dRuntimeProject))
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaFFMTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaFFM.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaFFM.get())
 }
 
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.wgpu.desktop.Box3DGdxWgpuDesktopLauncher"
@@ -32,7 +32,7 @@ fun Task.configureRuntimeInputs() {
 
 fun JavaExec.useJava25Launcher() {
     javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(LibExt.javaFFMTarget.toInt()))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.javaFFM.get().toInt()))
     })
     jvmArgs("--enable-native-access=ALL-UNNAMED")
 }

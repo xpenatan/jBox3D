@@ -7,7 +7,7 @@ plugins {
     id("java")
 }
 
-val box3dVersion = "0.1.0"
+val box3dVersion = libs.versions.box3dSource.get()
 
 val buildDirFile = layout.buildDirectory.get().asFile
 val box3dSourceRoot = buildDirFile.resolve("box3d-source")

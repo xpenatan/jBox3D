@@ -2,10 +2,8 @@ import java.io.File
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.androidApplication)
 }
-
-group = "com.github.xpenatan.box3d.sample.gdx.android"
 
 val gdxNativeClassifiers = linkedMapOf(
     "armeabi-v7a" to "natives-armeabi-v7a",
@@ -49,24 +47,25 @@ val stageGdxJniLibs by tasks.registering(Copy::class) {
 dependencies {
     implementation(project(":samples:gdx:gl:core"))
     implementation(project(":box3d:android:jni"))
-    implementation("com.badlogicgames.gdx:gdx-backend-android:${LibExt.gdxVersion}")
+    implementation(libs.gdxBackendAndroid)
 
     gdxNativeClassifiers.forEach { (abi, classifier) ->
         add(
             gdxNativeConfigurations.getValue(abi).name,
-            "com.badlogicgames.gdx:gdx-platform:${LibExt.gdxVersion}:$classifier"
+            variantOf(libs.gdxPlatform) { classifier(classifier) }
         )
     }
 }
 
 android {
+    enableKotlin = false
     namespace = "com.github.xpenatan.box3d.sample.gdx.android"
-    compileSdk = 36
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.github.xpenatan.box3d.sample.gdx.android"
-        minSdk = 21
-        targetSdk = 36
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
     }
@@ -77,7 +76,7 @@ android {
                 project(":samples:gdx:core").projectDir.resolve("src/main/resources"),
                 project(":samples:shared").projectDir.resolve("src/main/resources")
             )
-            jniLibs.srcDirs(stagedGdxJniLibsDir)
+            jniLibs.srcDirs(stagedGdxJniLibsDir.get().asFile)
         }
     }
 
@@ -89,8 +88,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
-        targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
     }
 }
 

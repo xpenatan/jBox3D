@@ -1,9 +1,8 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.androidLibrary)
 }
 
 val moduleName = "android-c"
-group = "${LibExt.groupId}.android"
 val cLibsDir = "$projectDir/../../builder/build/c++/libs/android"
 val stagedJniLibsDir = layout.buildDirectory.dir("generated/cJniLibs")
 val androidAbis = listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
@@ -19,22 +18,23 @@ val stageCJniLibs by tasks.registering(Copy::class) {
 }
 
 android {
+    enableKotlin = false
     namespace = "com.github.xpenatan.box3d.android.c"
-    compileSdk = 36
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.androidMinSdk.get().toInt()
     }
 
     sourceSets {
         named("main") {
-            jniLibs.srcDirs(stagedJniLibsDir)
+            jniLibs.srcDirs(stagedJniLibsDir.get().asFile)
         }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
-        targetCompatibility = JavaVersion.toVersion(LibExt.javaMainTarget)
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.javaMain.get())
     }
 
     buildTypes {
@@ -72,11 +72,8 @@ tasks.matching { task ->
 
 dependencies {
     api(project(":box3d:shared:c"))
-    api("com.github.xpenatan.jParser:runtime-android-c:${LibExt.jParserVersion}")
-    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_x86:${LibExt.jParserVersion}")
-    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_x86_64:${LibExt.jParserVersion}")
-    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_armeabi_v7a:${LibExt.jParserVersion}")
-    runtimeOnly("com.github.xpenatan.jParser:runtime-android-c_arm64_v8a:${LibExt.jParserVersion}")
+    api(libs.jParserRuntimeAndroidC)
+    runtimeOnly(libs.bundles.jParserAndroidCRuntimes)
 }
 
 publishing {

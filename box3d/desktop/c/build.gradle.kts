@@ -3,7 +3,6 @@ plugins {
 }
 
 val moduleName = "desktop-c"
-group = "${LibExt.groupId}.desktop"
 val nativeResourceRoot = "external_cpp/jparser/box3d/native"
 
 base {
@@ -36,15 +35,12 @@ tasks.named<Jar>("jar") {
 dependencies {
     api(project(":box3d:shared:c"))
 
-    implementation("com.github.xpenatan.jParser:runtime-desktop-c_windows_x64:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-desktop-c_linux_x64:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-desktop-c_mac_x64:${LibExt.jParserVersion}")
-    implementation("com.github.xpenatan.jParser:runtime-desktop-c_mac_arm64:${LibExt.jParserVersion}")
+    implementation(libs.bundles.jParserDesktopC)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
-    targetCompatibility = JavaVersion.toVersion(LibExt.javaWebTarget)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.javaWeb.get())
 }
 
 java {
