@@ -18,7 +18,7 @@ androidModernMinSdk = "29"
 androidDesugar = "2.0.3"
 
 easyPublishing = "0.1.0"
-jParser = "1.2.5"
+jParser = "-SNAPSHOT"
 jWebGPU = "0.3.3"
 fdx = "-SNAPSHOT"
 gdx = "1.14.2"
