@@ -282,7 +282,7 @@ jobs:
         id: version
         shell: bash
         run: |
-          version="$(./gradlew --no-daemon --quiet --warning-mode none printReleaseVersion)"
+          version="$(sed -n 's/^jbox3dRelease[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' gradle/libs.versions.toml | head -n 1 | tr -d '\r')"
           test -n "$version"
           echo "value=$version" >> "$GITHUB_OUTPUT"
 
