@@ -44,7 +44,7 @@ For a release, use its published version and remove the snapshot repository when
 | `desktop-ffm` | Java 25 FFM desktop runtime. |
 | `shared-c`, `desktop-c`, `android-c` | TeaVM C bindings and platform runtimes. |
 | `web-wasm` | TeaVM web bindings and Emscripten side module. |
-| `gdx-gl`, `gdx-wgpu`, `fdx` | Rendering and math integrations. |
+| `gdx-gl`, `fdx` | Rendering and math integrations. |
 
 ## API model
 
@@ -60,7 +60,7 @@ FdxBox3DConverter.toBox3D(fdxVector, reusableBox3dVector);
 
 ## Samples
 
-The sample suite includes libGDX OpenGL and WebGPU renderers, plus libFDX OpenGL, WebGPU, and Vulkan renderers where supported.
+The sample suite includes a libGDX OpenGL renderer, plus libFDX OpenGL, WebGPU, and Vulkan renderers where supported.
 
 ## Documentation
 

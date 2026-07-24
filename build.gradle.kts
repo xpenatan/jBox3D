@@ -32,7 +32,6 @@ val publishingModules = listOf(
     ":box3d:android:jni",
     ":box3d:android:c",
     ":extensions:gdx:gl",
-    ":extensions:gdx:wgpu",
     ":extensions:fdx",
 )
 

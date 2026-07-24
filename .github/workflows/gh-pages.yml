@@ -50,21 +50,16 @@ jobs:
         run: |
           ./gradlew --no-daemon \
             :samples:gdx:gl:platforms:web:gdx_teavm_web_js_build \
-            :samples:gdx:gl:platforms:web:gdx_teavm_web_wasm_build \
-            :samples:gdx:wgpu:platforms:web:gdx_teavm_web_js_build \
-            :samples:gdx:wgpu:platforms:web:gdx_teavm_web_wasm_build
+            :samples:gdx:gl:platforms:web:gdx_teavm_web_wasm_build
 
       - name: Stage GitHub Pages site
         run: |
           pages_dir="samples/gdx/gl/platforms/web/build/pages"
           rm -rf "$pages_dir"
-          mkdir -p "$pages_dir/gdx/gl/js" "$pages_dir/gdx/gl/wasm" "$pages_dir/gdx/webgpu/js" "$pages_dir/gdx/webgpu/wasm"
+          mkdir -p "$pages_dir/gdx/gl/js" "$pages_dir/gdx/gl/wasm"
           cp -R samples/gdx/gl/platforms/web/build/dist/js/webapp/. "$pages_dir/gdx/gl/js/"
           cp -R samples/gdx/gl/platforms/web/build/dist/wasm/webapp/. "$pages_dir/gdx/gl/wasm/"
-          cp -R samples/gdx/wgpu/platforms/web/build/dist/js/webapp/. "$pages_dir/gdx/webgpu/js/"
-          cp -R samples/gdx/wgpu/platforms/web/build/dist/wasm/webapp/. "$pages_dir/gdx/webgpu/wasm/"
           rm -rf "$pages_dir/gdx/gl/js/WEB-INF" "$pages_dir/gdx/gl/wasm/WEB-INF"
-          rm -rf "$pages_dir/gdx/webgpu/js/WEB-INF" "$pages_dir/gdx/webgpu/wasm/WEB-INF"
           cp samples/gdx/gl/platforms/web/src/main/pages/index.html "$pages_dir/index.html"
 
       - name: Upload GitHub Pages artifact

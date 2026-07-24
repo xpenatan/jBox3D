@@ -6,7 +6,6 @@ jbox3dSnapshot = "-SNAPSHOT"
 box3dSource = "0.1.0"
 
 javaMain = "1.8"
-javaGdxWebGPU = "11"
 javaWeb = "17"
 javaFFM = "25"
 
@@ -19,10 +18,8 @@ androidDesugar = "2.0.3"
 
 easyPublishing = "0.1.0"
 jParser = "-SNAPSHOT"
-jWebGPU = "0.3.3"
 fdx = "-SNAPSHOT"
 gdx = "1.14.2"
-gdxWebGPU = "-SNAPSHOT"
 gdxTeaVM = "1.6.0"
 junit = "4.13.2"
 
@@ -65,20 +62,10 @@ jParserRuntimeDesktopCMacArm64 = { module = "com.github.xpenatan.jParser:runtime
 jParserRuntimeWeb = { module = "com.github.xpenatan.jParser:runtime-web", version.ref = "jParser" }
 jParserRuntimeWebWasm = { module = "com.github.xpenatan.jParser:runtime-web_wasm", version.ref = "jParser" }
 
-jWebGPUCore = { module = "com.github.xpenatan.jWebGPU:webgpu-core", version.ref = "jWebGPU" }
-jWebGPUWeb = { module = "com.github.xpenatan.jWebGPU:webgpu-web", version.ref = "jWebGPU" }
-jWebGPUWebWasm = { module = "com.github.xpenatan.jWebGPU:webgpu-web_wasm", version.ref = "jWebGPU" }
-
 gdxCore = { module = "com.badlogicgames.gdx:gdx", version.ref = "gdx" }
 gdxBackendLwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdx" }
 gdxBackendAndroid = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdx" }
 gdxPlatform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "gdx" }
-
-gdxWebGPUCore = { module = "io.github.monstroussoftware.gdx-webgpu:gdx-webgpu", version.ref = "gdxWebGPU" }
-gdxWebGPUBackendDesktopJni = { module = "io.github.monstroussoftware.gdx-webgpu:backend-desktop-jni", version.ref = "gdxWebGPU" }
-gdxWebGPUBackendDesktopFFM = { module = "io.github.monstroussoftware.gdx-webgpu:backend-desktop-ffm", version.ref = "gdxWebGPU" }
-gdxWebGPUBackendTeaVM = { module = "io.github.monstroussoftware.gdx-webgpu:backend-teavm", version.ref = "gdxWebGPU" }
-gdxWebGPUBackendAndroid = { module = "io.github.monstroussoftware.gdx-webgpu:backend-android", version.ref = "gdxWebGPU" }
 
 fdxGraphics = { module = "io.github.libfdx:graphics", version.ref = "fdx" }
 fdxG3d = { module = "io.github.libfdx:g3d", version.ref = "fdx" }
@@ -134,7 +121,6 @@ jParserAndroidCRuntimes = [
     "jParserRuntimeAndroidCArmeabiV7a",
     "jParserRuntimeAndroidCArm64V8a",
 ]
-jWebGPUWeb = ["jWebGPUCore", "jWebGPUWeb", "jWebGPUWebWasm"]
 fdxExtension = ["fdxGraphics", "fdxG3d"]
 fdxCore = ["fdxApplication", "fdxCamera", "fdxDisplay", "fdxGraphics", "fdxUiKit"]
 fdxDesktopCore = ["fdxBackendDesktop", "fdxWGPUCore"]

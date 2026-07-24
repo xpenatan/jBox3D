@@ -7,7 +7,7 @@ This guide covers building jBox3D from source and running its sample application
 - JDK 25 for the full build, FFM runtime, and libFDX modules.
 - A platform C/C++ toolchain: MSVC on Windows, clang or GCC on Linux, or Xcode command-line tools on macOS.
 - Emscripten for the WebAssembly target.
-- Android SDK and NDK for Android native targets. The build uses compile SDK 36; OpenGL modules require API 21, while WebGPU and libFDX samples require API 29.
+- Android SDK and NDK for Android native targets. The build uses compile SDK 36; OpenGL modules require API 21, while libFDX samples require API 29.
 - Access to Maven Central and the configured snapshot repository for Gradle dependencies.
 
 The Gradle wrapper uses Gradle 9.6.1. The commands below use PowerShell on Windows; on macOS or Linux, use `./gradlew` instead of `.\gradlew.bat`.
@@ -27,7 +27,7 @@ Build targets, publication versions, plugin versions, and external dependencies 
 | TeaVM C | `:box3d:shared:c`, `:box3d:desktop:c` | TeaVM C bindings and desktop native packaging. |
 | WebAssembly | `:box3d:web:wasm` | TeaVM web API and the Emscripten side module. |
 | Android | `:box3d:android:jni`, `:box3d:android:c` | Android JNI and TeaVM C runtime packaging. |
-| Integrations | `:extensions:gdx:gl`, `:extensions:gdx:wgpu`, `:extensions:fdx` | libGDX and libFDX integrations. |
+| Integrations | `:extensions:gdx:gl`, `:extensions:fdx` | libGDX and libFDX integrations. |
 | Samples | `:samples:shared`, `:samples:gdx:*`, `:samples:fdx:*` | Shared scenarios and platform launchers. |
 
 ## Generate the bindings
@@ -90,13 +90,6 @@ libGDX OpenGL:
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-c:gdx_teavm_glfw_run
 ```
 
-libGDX WebGPU:
-
-```powershell
-.\gradlew.bat :samples:gdx:wgpu:platforms:desktop-jni:box3d_gdx_wgpu_desktop_jni_run
-.\gradlew.bat :samples:gdx:wgpu:platforms:desktop-ffm:box3d_gdx_wgpu_desktop_ffm_run
-```
-
 libFDX OpenGL, WebGPU, and Vulkan:
 
 ```powershell
@@ -121,13 +114,11 @@ The libFDX desktop C module currently provides compile-path validation rather th
 
 Build the WebAssembly runtime first, then launch a JavaScript or WasmGC sample.
 
-libGDX OpenGL and WebGPU:
+libGDX OpenGL:
 
 ```powershell
 .\gradlew.bat :samples:gdx:gl:platforms:web:gdx_teavm_web_js_run
 .\gradlew.bat :samples:gdx:gl:platforms:web:gdx_teavm_web_wasm_run
-.\gradlew.bat :samples:gdx:wgpu:platforms:web:gdx_teavm_web_js_run
-.\gradlew.bat :samples:gdx:wgpu:platforms:web:gdx_teavm_web_wasm_run
 ```
 
 libFDX OpenGL and WebGPU:
@@ -146,7 +137,6 @@ Build the JNI runtime, then install and launch a sample through `adb`:
 ```powershell
 .\gradlew.bat :box3d:builder:jParser_build_android_jni
 .\gradlew.bat :samples:gdx:gl:platforms:android:box3d_gdx_android_jni_run
-.\gradlew.bat :samples:gdx:wgpu:platforms:android:box3d_gdx_wgpu_android_jni_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_gles_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_wgpu_jni_run
 .\gradlew.bat :samples:fdx:platforms:android:box3d_fdx_android_vulkan_run
