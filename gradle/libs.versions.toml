@@ -17,7 +17,7 @@ androidModernMinSdk = "29"
 androidDesugar = "2.0.3"
 
 easyPublishing = "0.1.0"
-jParser = "-SNAPSHOT"
+jParser = "1.2.6"
 fdx = "-SNAPSHOT"
 gdx = "1.14.2"
 gdxTeaVM = "1.6.0"
