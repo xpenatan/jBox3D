@@ -16,7 +16,7 @@ androidMinSdk = "21"
 androidModernMinSdk = "29"
 androidDesugar = "2.0.3"
 
-easyPublishing = "0.1.1"
+easyPublishing = "0.1.2"
 jParser = "-SNAPSHOT"
 libfdx = "-SNAPSHOT"
 libgdx = "1.14.2"
@@ -28,7 +28,7 @@ junit = "4.13.2"
 easyPublishing = { id = "com.github.xpenatan.easy-publishing", version.ref = "easyPublishing" }
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-jParser = { id = "com.github.xpenatan.jparser", version.ref = "jParser" }
+jParser = { id = "com.github.xpenatan.jParser", version.ref = "jParser" }
 gdxTeaVM = { id = "com.github.xpenatan.gdx-teavm", version.ref = "gdxTeaVM" }
 fdx = { id = "io.github.libfdx", version.ref = "libfdx" }
 
