@@ -49,7 +49,9 @@ dependencies {
 val sampleMainClass = "com.github.xpenatan.box3d.sample.fdx.desktop.Box3DFdxDesktopLauncher"
 
 fun Task.configureRuntimeInputs(providerClasspath: FileCollection) {
-    dependsOn("$box3dRuntimeProject:jar")
+    if(!libs.versions.jbox3dUseMavenArtifacts.get().toBoolean()) {
+        dependsOn("$box3dRuntimeProject:jar")
+    }
     inputs.files(providerClasspath)
     inputs.files(box3dRuntimeClasspath)
 }

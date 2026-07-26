@@ -3,6 +3,34 @@ plugins {
     alias(libs.plugins.easyPublishing)
 }
 
+val jbox3dPublishedModules = linkedMapOf(
+    ":box3d:core" to "core",
+    ":box3d:shared:jni" to "shared-jni",
+    ":box3d:shared:c" to "shared-c",
+    ":box3d:desktop:jni" to "desktop-jni",
+    ":box3d:desktop:ffm" to "desktop-ffm",
+    ":box3d:desktop:c" to "desktop-c",
+    ":box3d:web:wasm" to "web-wasm",
+    ":box3d:android:jni" to "android-jni",
+    ":box3d:android:c" to "android-c",
+    ":extensions:gdx:gl" to "gdx-gl",
+    ":extensions:fdx" to "fdx",
+)
+
+val useJBox3DMavenArtifacts = libs.versions.jbox3dUseMavenArtifacts.get().let { value ->
+    value.toBooleanStrictOrNull()
+        ?: throw GradleException(
+            "jbox3dUseMavenArtifacts in gradle/libs.versions.toml must be either true or false."
+        )
+}
+val jbox3dMavenGroup = libs.versions.jbox3dGroup.get()
+val jbox3dMavenVersion = libs.versions.jbox3dMavenVersion.get()
+    .also { version ->
+        if(version.isBlank()) {
+            throw GradleException("jbox3dMavenVersion in gradle/libs.versions.toml must not be blank.")
+        }
+    }
+
 allprojects {
     repositories {
         mavenLocal()
@@ -21,22 +49,25 @@ allprojects {
     }
 }
 
-val publishingModules = listOf(
-    ":box3d:core",
-    ":box3d:shared:jni",
-    ":box3d:shared:c",
-    ":box3d:desktop:jni",
-    ":box3d:desktop:ffm",
-    ":box3d:desktop:c",
-    ":box3d:web:wasm",
-    ":box3d:android:jni",
-    ":box3d:android:c",
-    ":extensions:gdx:gl",
-    ":extensions:fdx",
-)
+if(useJBox3DMavenArtifacts) {
+    logger.lifecycle("jBox3D samples: using Maven artifacts version $jbox3dMavenVersion")
+    subprojects {
+        if(path.startsWith(":samples:")) {
+            configurations.configureEach {
+                resolutionStrategy.dependencySubstitution {
+                    jbox3dPublishedModules.forEach { (projectPath, artifactId) ->
+                        substitute(project(projectPath))
+                            .using(module("$jbox3dMavenGroup:$artifactId:$jbox3dMavenVersion"))
+                            .because("jbox3dUseMavenArtifacts is enabled")
+                    }
+                }
+            }
+        }
+    }
+}
 
 easyPublishing {
-    modules(publishingModules)
+    modules(jbox3dPublishedModules.keys.toList())
 
     groupId.set(libs.versions.jbox3dGroup)
     releaseVersion.set(libs.versions.jbox3dRelease)

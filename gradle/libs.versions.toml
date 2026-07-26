@@ -3,6 +3,8 @@ jbox3dGroup = "com.github.xpenatan.jBox3D"
 jbox3dName = "jBox3D"
 jbox3dRelease = "0.1.0.0"
 jbox3dSnapshot = "-SNAPSHOT"
+jbox3dUseMavenArtifacts = "true"
+jbox3dMavenVersion = "-SNAPSHOT"
 box3dSource = "0.1.0"
 
 javaMain = "1.8"

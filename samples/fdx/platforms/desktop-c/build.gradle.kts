@@ -45,7 +45,9 @@ dependencies {
 }
 
 fun Task.configureRuntimeInputs(providerClasspath: FileCollection) {
-    dependsOn("$box3dRuntimeProject:jar")
+    if(!libs.versions.jbox3dUseMavenArtifacts.get().toBoolean()) {
+        dependsOn("$box3dRuntimeProject:jar")
+    }
     inputs.files(providerClasspath)
     inputs.files(box3dRuntimeClasspath)
 }

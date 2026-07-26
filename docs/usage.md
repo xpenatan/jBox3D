@@ -16,6 +16,30 @@ The Gradle wrapper uses Gradle 9.6.1. The commands below use PowerShell on Windo
 
 Build targets, publication versions, plugin versions, and external dependencies are declared in `gradle/libs.versions.toml`. Catalog aliases use lower camelCase so their generated Gradle accessors remain flat.
 
+## Run samples with published jBox3D artifacts
+
+By default, the samples depend on the jBox3D projects in this checkout. To keep the sample source local while resolving the jBox3D core, integration, and platform runtime artifacts from Maven, set the global sample options in `gradle/libs.versions.toml`:
+
+```toml
+jbox3dUseMavenArtifacts = "true"
+jbox3dMavenVersion = "-SNAPSHOT"
+```
+
+Then run any sample normally:
+
+```powershell
+.\gradlew.bat :samples:gdx:gl:platforms:desktop-jni:box3d_gdx_desktop_jni_run
+```
+
+Set `jbox3dMavenVersion` to a published release version when testing a release:
+
+```toml
+jbox3dUseMavenArtifacts = "true"
+jbox3dMavenVersion = "0.1.0.0"
+```
+
+Set `jbox3dUseMavenArtifacts` back to `"false"` to use the projects and native outputs from the local checkout. Snapshot dependencies are refreshed on every Gradle invocation.
+
 ## Project layout
 
 | Area | Modules | Purpose |

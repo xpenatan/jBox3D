@@ -25,7 +25,9 @@ java {
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.desktop.Box3DGdxDesktopLauncher"
 
 fun Task.configureRuntimeInputs() {
-    dependsOn("$box3dRuntimeProject:jar")
+    if(!libs.versions.jbox3dUseMavenArtifacts.get().toBoolean()) {
+        dependsOn("$box3dRuntimeProject:jar")
+    }
     inputs.files(box3dRuntimeClasspath)
 }
 
