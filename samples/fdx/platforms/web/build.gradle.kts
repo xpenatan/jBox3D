@@ -153,27 +153,55 @@ tasks.register<io.github.libfdx.gradle.LibfdxRunWebTask>("box3d_fdx_webgpu_wasm_
 fun Task.configureWebGpuPage(webappPath: String, title: String) {
     val webappDir = layout.buildDirectory.dir(webappPath)
     val indexFile = webappDir.map { it.file("index.html") }
+    val loaderFile = webappDir.map { it.file("scripts/fdx-loader.js") }
     val outputFile = webappDir.map { it.file("webgpu.html") }
-    inputs.file(indexFile)
-    outputs.file(outputFile)
+    val outputLoaderFile = webappDir.map { it.file("scripts/fdx-webgpu-loader.js") }
+    inputs.files(indexFile, loaderFile)
+    outputs.files(outputFile, outputLoaderFile)
     doLast {
-        writeWebGpuPage(indexFile.get().asFile, outputFile.get().asFile, title)
+        writeWebGpuPage(
+            indexFile.get().asFile,
+            loaderFile.get().asFile,
+            outputFile.get().asFile,
+            outputLoaderFile.get().asFile,
+            title
+        )
     }
 }
 
-fun writeWebGpuPage(indexFile: File, outputFile: File, title: String) {
+fun writeWebGpuPage(
+    indexFile: File,
+    loaderFile: File,
+    outputFile: File,
+    outputLoaderFile: File,
+    title: String
+) {
     val source = indexFile.readText()
     val withTitle = source.replace(Regex("<title>.*</title>"), "<title>$title</title>")
-    val rewritten = when {
-        withTitle.contains("main();") -> withTitle.replace(
-            "main();",
-            "main([\"--graphics=webgpu\"]);"
-        )
-        withTitle.contains("teavm.exports.main([]);") -> withTitle.replace(
-            "teavm.exports.main([]);",
-            "teavm.exports.main([\"--graphics=webgpu\"]);"
-        )
-        else -> throw GradleException("Could not create WebGPU launch page from ${indexFile.absolutePath}")
+    val defaultLoader = "scripts/fdx-loader.js"
+    val webGpuLoader = "scripts/fdx-webgpu-loader.js"
+    if(!withTitle.contains(defaultLoader)) {
+        throw GradleException("Could not locate the libfdx loader in ${indexFile.absolutePath}")
     }
-    outputFile.writeText(rewritten)
+    outputFile.writeText(withTitle.replace(defaultLoader, webGpuLoader))
+
+    val loaderSource = loaderFile.readText()
+    val defaultArgs = "mainClassArgs: [],"
+    if(!loaderSource.contains(defaultArgs)) {
+        throw GradleException("Could not configure WebGPU arguments in ${loaderFile.absolutePath}")
+    }
+    val loaderWithGraphicsArg = loaderSource.replace(
+        defaultArgs,
+        "mainClassArgs: [\"--graphics=webgpu\"],"
+    )
+    val spreadEntryCall = "return entry.apply(root, config.mainClassArgs);"
+    if(!loaderWithGraphicsArg.contains(spreadEntryCall)) {
+        throw GradleException("Could not configure WebGPU entry arguments in ${loaderFile.absolutePath}")
+    }
+    outputLoaderFile.writeText(
+        loaderWithGraphicsArg.replace(
+            spreadEntryCall,
+            "return entry(config.mainClassArgs);"
+        )
+    )
 }

@@ -54,6 +54,10 @@ val mavenJavadocJar by tasks.registering(Jar::class) {
 dependencies {
     api(project(":box3d:shared:jni"))
     api(libs.bundles.jParserAndroidJni)
+    runtimeOnly(libs.jParserRuntimeAndroidX86)
+    runtimeOnly(libs.jParserRuntimeAndroidX8664)
+    runtimeOnly(libs.jParserRuntimeAndroidArmeabiV7a)
+    runtimeOnly(libs.jParserRuntimeAndroidArm64V8a)
 }
 
 publishing {
