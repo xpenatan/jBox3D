@@ -10,6 +10,9 @@ on:
         required: true
         type: boolean
 
+permissions:
+  contents: read
+
 jobs:
   build_windows:
     name: Build Windows natives
@@ -202,6 +205,8 @@ jobs:
     needs: [build_windows, build_linux, build_macos, build_web, build_android]
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: write
     env:
       CENTRAL_PORTAL_USERNAME: ${{ secrets.CENTRAL_PORTAL_USERNAME }}
       CENTRAL_PORTAL_PASSWORD: ${{ secrets.CENTRAL_PORTAL_PASSWORD }}
@@ -278,6 +283,29 @@ jobs:
       - name: Generate Java bindings
         run: ./gradlew --no-daemon :box3d:builder:jParser_generate
 
+      - name: Commit generated code
+        if: ${{ inputs.shouldUpload }}
+        id: generated-code
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GitHub Actions Bot"
+          git config user.email "bot@github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit"
+          else
+            if [[ "$GITHUB_REF_TYPE" != "branch" ]]; then
+              echo "::error::Generated code can only be committed from a branch ref"
+              exit 1
+            fi
+            git commit -m "Commit generated code from :box3d:builder:jParser_generate"
+            git push origin "HEAD:${GITHUB_REF}"
+          fi
+
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
       - name: Read release version
         id: version
         shell: bash
@@ -327,5 +355,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref,
-              sha: context.sha
+              sha: '${{ steps.generated-code.outputs.sha }}'
             });

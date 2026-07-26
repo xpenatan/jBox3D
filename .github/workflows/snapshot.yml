@@ -6,7 +6,7 @@ on:
       - master
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: maven-snapshot-${{ github.ref }}
@@ -19,4 +19,3 @@ jobs:
       isRelease: false
       shouldUpload: true
     secrets: inherit
-
