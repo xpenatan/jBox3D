@@ -8,7 +8,7 @@ package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3Shape extends NativeObject {
+public final class B3Shape extends NativeObject {
 
     private B3Filter B3Filter_TEMP_GEN_0;
 

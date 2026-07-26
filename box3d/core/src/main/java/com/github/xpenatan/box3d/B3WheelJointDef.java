@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3WheelJointDef extends NativeObject {
+public final class B3WheelJointDef extends NativeObject {
 
     static public final B3WheelJointDef NULL = B3WheelJointDef.native_new();
 

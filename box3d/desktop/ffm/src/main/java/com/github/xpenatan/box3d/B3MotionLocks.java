@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3MotionLocks extends NativeObject {
+public final class B3MotionLocks extends NativeObject {
 
     static public final B3MotionLocks NULL = B3MotionLocks.native_new();
 

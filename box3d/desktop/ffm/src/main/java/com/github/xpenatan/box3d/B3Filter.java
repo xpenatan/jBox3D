@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3Filter extends NativeObject {
+public final class B3Filter extends NativeObject {
 
     static public final B3Filter NULL = B3Filter.native_new();
 

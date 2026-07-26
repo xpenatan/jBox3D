@@ -8,7 +8,7 @@ package gen.c.com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3Joint extends NativeObject {
+public final class B3Joint extends NativeObject {
 
     static public final B3Joint NULL = B3Joint.native_new();
 

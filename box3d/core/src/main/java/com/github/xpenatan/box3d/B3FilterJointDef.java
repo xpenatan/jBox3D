@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3FilterJointDef extends NativeObject {
+public final class B3FilterJointDef extends NativeObject {
 
     static public final B3FilterJointDef NULL = B3FilterJointDef.native_new();
 

@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3Joint extends NativeObject {
+public final class B3Joint extends NativeObject {
 
     static public final B3Joint NULL = B3Joint.native_new();
 

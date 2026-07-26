@@ -8,7 +8,7 @@ package gen.c.com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3World extends NativeObject {
+public final class B3World extends NativeObject {
 
     private B3AABB B3AABB_TEMP_GEN_0;
 

@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3Hull extends NativeObject {
+public final class B3Hull extends NativeObject {
 
     static private B3Hull B3Hull_TEMP_STATIC_GEN_0;
 

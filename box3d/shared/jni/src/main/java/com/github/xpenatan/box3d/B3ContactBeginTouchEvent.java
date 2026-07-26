@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3ContactBeginTouchEvent extends NativeObject {
+public final class B3ContactBeginTouchEvent extends NativeObject {
 
     private B3ContactId B3ContactId_TEMP_GEN_0;
 

@@ -8,7 +8,7 @@ package gen.c.com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3FilterJointDef extends NativeObject {
+public final class B3FilterJointDef extends NativeObject {
 
     private B3Transform B3Transform_TEMP_GEN_0;
 

@@ -8,7 +8,7 @@ package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3Hull extends NativeObject {
+public final class B3Hull extends NativeObject {
 
     static private B3Hull B3Hull_TEMP_STATIC_GEN_0;
 

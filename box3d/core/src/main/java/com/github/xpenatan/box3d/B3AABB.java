@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3AABB extends NativeObject {
+public final class B3AABB extends NativeObject {
 
     static public final B3AABB NULL = B3AABB.native_new();
 

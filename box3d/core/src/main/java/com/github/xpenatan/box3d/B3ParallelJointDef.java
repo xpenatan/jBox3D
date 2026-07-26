@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3ParallelJointDef extends NativeObject {
+public final class B3ParallelJointDef extends NativeObject {
 
     static public final B3ParallelJointDef NULL = B3ParallelJointDef.native_new();
 

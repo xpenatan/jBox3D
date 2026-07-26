@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3DistanceJointDef extends NativeObject {
+public final class B3DistanceJointDef extends NativeObject {
 
     static public final B3DistanceJointDef NULL = B3DistanceJointDef.native_new();
 

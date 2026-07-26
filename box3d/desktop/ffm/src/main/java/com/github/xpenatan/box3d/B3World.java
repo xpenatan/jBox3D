@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3World extends NativeObject {
+public final class B3World extends NativeObject {
 
     private B3AABB B3AABB_TEMP_GEN_0;
 

@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3ContactId extends NativeObject {
+public final class B3ContactId extends NativeObject {
 
     static public final B3ContactId NULL = B3ContactId.native_new();
 

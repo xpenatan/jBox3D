@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3RevoluteJointDef extends NativeObject {
+public final class B3RevoluteJointDef extends NativeObject {
 
     private B3Transform B3Transform_TEMP_GEN_0;
 

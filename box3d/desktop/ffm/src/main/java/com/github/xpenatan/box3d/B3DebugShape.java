@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3DebugShape extends NativeObject {
+public final class B3DebugShape extends NativeObject {
 
     private B3Sphere B3Sphere_TEMP_GEN_0;
 

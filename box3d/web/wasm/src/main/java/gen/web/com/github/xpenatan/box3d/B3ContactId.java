@@ -8,7 +8,7 @@ package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3ContactId extends NativeObject {
+public final class B3ContactId extends NativeObject {
 
     static public final B3ContactId NULL = B3ContactId.native_new();
 

@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3ContactEvents extends NativeObject {
+public final class B3ContactEvents extends NativeObject {
 
     private B3ContactBeginTouchEvent B3ContactBeginTouchEvent_TEMP_GEN_0;
 

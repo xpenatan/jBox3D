@@ -8,7 +8,7 @@ package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3ContactEndTouchEvent extends NativeObject {
+public final class B3ContactEndTouchEvent extends NativeObject {
 
     private B3ContactId B3ContactId_TEMP_GEN_0;
 

@@ -8,7 +8,7 @@ package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3SphericalJointDef extends NativeObject {
+public final class B3SphericalJointDef extends NativeObject {
 
     private B3Transform B3Transform_TEMP_GEN_0;
 

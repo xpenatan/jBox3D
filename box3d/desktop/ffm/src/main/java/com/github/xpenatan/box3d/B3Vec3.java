@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3Vec3 extends NativeObject {
+public final class B3Vec3 extends NativeObject {
 
     static public final B3Vec3 NULL = B3Vec3.native_new();
 

@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3PrismaticJointDef extends NativeObject {
+public final class B3PrismaticJointDef extends NativeObject {
 
     static public final B3PrismaticJointDef NULL = B3PrismaticJointDef.native_new();
 

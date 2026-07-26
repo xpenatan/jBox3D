@@ -8,7 +8,7 @@ package gen.c.com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3MotionLocks extends NativeObject {
+public final class B3MotionLocks extends NativeObject {
 
     static public final B3MotionLocks NULL = B3MotionLocks.native_new();
 

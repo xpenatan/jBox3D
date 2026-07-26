@@ -15,7 +15,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.invoke.MethodHandle;
 
-public class B3SensorBeginTouchEvent extends NativeObject {
+public final class B3SensorBeginTouchEvent extends NativeObject {
 
     static public final B3SensorBeginTouchEvent NULL = B3SensorBeginTouchEvent.native_new();
 

@@ -8,7 +8,7 @@ package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3SensorEvents extends NativeObject {
+public final class B3SensorEvents extends NativeObject {
 
     private B3SensorBeginTouchEvent B3SensorBeginTouchEvent_TEMP_GEN_0;
 

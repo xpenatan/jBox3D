@@ -8,7 +8,7 @@ package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
 
-public class B3QueryFilter extends NativeObject {
+public final class B3QueryFilter extends NativeObject {
 
     static public final B3QueryFilter NULL = B3QueryFilter.native_new();
 
