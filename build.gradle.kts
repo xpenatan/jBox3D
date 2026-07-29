@@ -14,7 +14,6 @@ val jbox3dPublishedModules = linkedMapOf(
     ":box3d:android:jni" to "android-jni",
     ":box3d:android:c" to "android-c",
     ":extensions:gdx:gl" to "gdx-gl",
-    ":extensions:fdx" to "fdx",
 )
 
 val useJBox3DMavenArtifacts = libs.versions.jbox3dUseMavenArtifacts.get().let { value ->

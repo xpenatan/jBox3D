@@ -3,7 +3,7 @@ jbox3dGroup = "com.github.xpenatan.jBox3D"
 jbox3dName = "jBox3D"
 jbox3dRelease = "0.1.0.0"
 jbox3dSnapshot = "-SNAPSHOT"
-jbox3dUseMavenArtifacts = "true"
+jbox3dUseMavenArtifacts = "false"
 jbox3dMavenVersion = "-SNAPSHOT"
 box3dSource = "0.1.0"
 
@@ -75,6 +75,7 @@ gdxBackendAndroid = { module = "com.badlogicgames.gdx:gdx-backend-android", vers
 gdxPlatform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "libgdx" }
 
 fdxGraphics = { module = "io.github.libfdx:graphics", version.ref = "libfdx" }
+fdxBox3dExt = { module = "io.github.libfdx:box3d_ext", version.ref = "libfdx" }
 fdxG3d = { module = "io.github.libfdx:g3d", version.ref = "libfdx" }
 fdxApplication = { module = "io.github.libfdx:application", version.ref = "libfdx" }
 fdxCamera = { module = "io.github.libfdx:camera", version.ref = "libfdx" }

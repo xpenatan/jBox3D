@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation(project(":samples:shared"))
     compileOnly(project(":box3d:core"))
-    api(project(":extensions:fdx"))
+    api(libs.fdxBox3dExt)
 
     api(libs.bundles.fdxCore)
 }

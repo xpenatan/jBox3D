@@ -5,7 +5,7 @@
 
 Java bindings for [Box3D](https://github.com/erincatto/box3d) across desktop, web, and Android.
 
-jBox3D provides a platform-neutral Java API, native runtimes for JNI, Java FFM, TeaVM C, and WebAssembly, plus integrations for libGDX and libFDX. The bindings are generated from a WebIDL contract and stay close to the upstream Box3D API.
+jBox3D provides a platform-neutral Java API, native runtimes for JNI, Java FFM, TeaVM C, and WebAssembly, plus a libGDX integration and libFDX sample frontend. The libFDX adapter is owned and published by [libFDX](https://github.com/libfdx/libfdx). The bindings are generated from a WebIDL contract and stay close to the upstream Box3D API.
 
 **Online samples:** [xpenatan.github.io/jBox3D](https://xpenatan.github.io/jBox3D) | **2D companion project:** [jBox2D](https://github.com/xpenatan/jBox2d)
 
@@ -20,16 +20,19 @@ repositories {
         url = uri("https://central.sonatype.com/repository/maven-snapshots/")
         content {
             includeGroup("com.github.xpenatan.jBox3D")
+            includeGroup("io.github.libfdx")
         }
     }
 }
 
 val jbox3dVersion = "-SNAPSHOT"
+val libfdxVersion = "-SNAPSHOT"
 
 dependencies {
     implementation("com.github.xpenatan.jBox3D:core:$jbox3dVersion")
     runtimeOnly("com.github.xpenatan.jBox3D:desktop-jni:$jbox3dVersion")
     implementation("com.github.xpenatan.jBox3D:gdx-gl:$jbox3dVersion")
+    implementation("io.github.libfdx:box3d_ext:$libfdxVersion")
 }
 ```
 
@@ -44,7 +47,10 @@ For a release, use its published version and remove the snapshot repository when
 | `desktop-ffm` | Java 25 FFM desktop runtime. |
 | `shared-c`, `desktop-c`, `android-c` | TeaVM C bindings and platform runtimes. |
 | `web-wasm` | TeaVM web bindings and Emscripten side module. |
-| `gdx-gl`, `fdx` | Rendering and math integrations. |
+| `gdx-gl` | libGDX rendering and math integration. |
+
+The libFDX rendering and math integration is published separately as
+`io.github.libfdx:box3d_ext`.
 
 ## API model
 

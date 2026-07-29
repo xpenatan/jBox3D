@@ -51,7 +51,7 @@ Set `jbox3dUseMavenArtifacts` back to `"false"` to use the projects and native o
 | TeaVM C | `:box3d:shared:c`, `:box3d:desktop:c` | TeaVM C bindings and desktop native packaging. |
 | WebAssembly | `:box3d:web:wasm` | TeaVM web API and the Emscripten side module. |
 | Android | `:box3d:android:jni`, `:box3d:android:c` | Android JNI and TeaVM C runtime packaging. |
-| Integrations | `:extensions:gdx:gl`, `:extensions:fdx` | libGDX and libFDX integrations. |
+| Integration | `:extensions:gdx:gl` | libGDX integration. The libFDX adapter is published by libFDX as `box3d_ext`. |
 | Samples | `:samples:shared`, `:samples:gdx:*`, `:samples:fdx:*` | Shared scenarios and platform launchers. |
 
 ## Generate the bindings

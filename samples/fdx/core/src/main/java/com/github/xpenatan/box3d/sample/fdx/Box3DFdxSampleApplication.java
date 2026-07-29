@@ -10,7 +10,7 @@ import com.github.xpenatan.box3d.sample.shared.Box3DSampleController;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleEntry;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleHost;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleSettings;
-import com.github.xpenatan.box3d.fdx.FdxDebugRenderer;
+import io.github.libfdx.physics.box3d.FdxDebugRenderer;
 import io.github.libfdx.Fdx;
 import io.github.libfdx.application.Application;
 import io.github.libfdx.application.ApplicationAdapter;

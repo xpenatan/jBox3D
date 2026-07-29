@@ -22,7 +22,6 @@ include(":box3d:web:wasm")
 include(":box3d:android:jni")
 include(":box3d:android:c")
 include(":extensions:gdx:gl")
-include(":extensions:fdx")
 
 include(":samples:shared")
 include(":samples:gdx:core")
