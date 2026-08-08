@@ -13,7 +13,6 @@ public enum Box3DDebugVisualization {
     CONTACTS("Contacts", true, false, true, false),
     CONTACT_NORMALS("Contact Normals", true, false, true, false),
     CONTACT_FORCES("Contact Forces", true, false, true, false),
-    FRICTION_FORCES("Friction Forces", true, false, true, false),
     ISLANDS("Islands", true, false, true, false),
     OFF("Off", false, false, false, false);
 
@@ -75,7 +74,6 @@ public enum Box3DDebugVisualization {
         renderer.SetDrawContactFeatures(this == CONTACTS || this == ALL);
         renderer.SetDrawContactNormals(this == CONTACT_NORMALS || this == ALL);
         renderer.SetDrawContactForces(this == CONTACT_FORCES || this == ALL);
-        renderer.SetDrawFrictionForces(this == FRICTION_FORCES || this == ALL);
         renderer.SetDrawIslands(this == ISLANDS || this == ALL);
     }
 
@@ -97,8 +95,7 @@ public enum Box3DDebugVisualization {
     }
 
     private boolean drawsContacts() {
-        return this == CONTACTS || this == CONTACT_NORMALS || this == CONTACT_FORCES || this == FRICTION_FORCES
-                || this == ALL;
+        return this == CONTACTS || this == CONTACT_NORMALS || this == CONTACT_FORCES || this == ALL;
     }
 
     private static String[] createLabels() {

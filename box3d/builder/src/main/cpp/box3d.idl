@@ -850,8 +850,6 @@ interface B3DebugDrawEm {
     boolean GetDrawContactNormals();
     void SetDrawContactForces(boolean enabled);
     boolean GetDrawContactForces();
-    void SetDrawFrictionForces(boolean enabled);
-    boolean GetDrawFrictionForces();
     void SetDrawIslands(boolean enabled);
     boolean GetDrawIslands();
 };
@@ -859,7 +857,7 @@ interface B3DebugDrawEm {
 [JSImplementation="B3DebugDrawEm"]
 interface B3DebugDrawImplCustom : B3DebugDrawEm {
     void B3DebugDrawImplCustom();
-    boolean DrawShape(B3DebugShape shape, [Const, Ref] B3Transform transform, long color);
+    void DrawShape(B3DebugShape shape, [Const, Ref] B3Transform transform, long color);
     void DrawSegment([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, long color);
     void DrawTransform([Const, Ref] B3Transform transform);
     void DrawPoint([Const, Ref] B3Vec3 p, float size, long color);

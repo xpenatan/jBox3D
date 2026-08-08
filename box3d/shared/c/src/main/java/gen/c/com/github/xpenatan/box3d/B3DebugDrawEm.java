@@ -52,12 +52,12 @@ public class B3DebugDrawEm extends NativeObject {
 
     private static abstract class TEAVMC_DrawShape_Function extends org.teavm.interop.Function {
 
-        public abstract boolean call(int callbackId, long shape_addr, long transform_addr, int color);
+        public abstract void call(int callbackId, long shape_addr, long transform_addr, int color);
     }
 
     @org.teavm.interop.Export(name = "teavmc_B3DebugDrawEm_DrawShape")
-    private static boolean teavmc_B3DebugDrawEm_DrawShape(int callbackId, long shape_addr, long transform_addr, int color) {
-        return TEAVMC_CALLBACKS.get(callbackId).internal_DrawShape(shape_addr, transform_addr, color);
+    private static void teavmc_B3DebugDrawEm_DrawShape(int callbackId, long shape_addr, long transform_addr, int color) {
+        TEAVMC_CALLBACKS.get(callbackId).internal_DrawShape(shape_addr, transform_addr, color);
     }
 
     private static abstract class TEAVMC_DrawSegment_Function extends org.teavm.interop.Function {
@@ -379,20 +379,6 @@ public class B3DebugDrawEm extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugdrawem_getdrawcontactforces")
     public static native boolean internal_native_GetDrawContactForces(long this_addr);
 
-    public void SetDrawFrictionForces(boolean enabled) {
-        internal_native_SetDrawFrictionForces(native_address, enabled);
-    }
-
-    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugdrawem_setdrawfrictionforces")
-    public static native void internal_native_SetDrawFrictionForces(long this_addr, boolean enabled);
-
-    public boolean GetDrawFrictionForces() {
-        return internal_native_GetDrawFrictionForces(native_address);
-    }
-
-    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugdrawem_getdrawfrictionforces")
-    public static native boolean internal_native_GetDrawFrictionForces(long this_addr);
-
     public void SetDrawIslands(boolean enabled) {
         internal_native_SetDrawIslands(native_address, enabled);
     }
@@ -418,18 +404,17 @@ public class B3DebugDrawEm extends NativeObject {
         setupCallback(native_address, callbackId, org.teavm.interop.Function.get(TEAVMC_DrawShape_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawShape"), org.teavm.interop.Function.get(TEAVMC_DrawSegment_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawSegment"), org.teavm.interop.Function.get(TEAVMC_DrawTransform_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawTransform"), org.teavm.interop.Function.get(TEAVMC_DrawPoint_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawPoint"), org.teavm.interop.Function.get(TEAVMC_DrawSphere_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawSphere"), org.teavm.interop.Function.get(TEAVMC_DrawCapsule_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawCapsule"), org.teavm.interop.Function.get(TEAVMC_DrawBounds_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawBounds"), org.teavm.interop.Function.get(TEAVMC_DrawBox_Function.class, B3DebugDrawEm.class, "teavmc_B3DebugDrawEm_DrawBox"));
     }
 
-    protected boolean DrawShape(B3DebugShape shape, B3Transform transform, int color) {
-        return false;
+    protected void DrawShape(B3DebugShape shape, B3Transform transform, int color) {
     }
 
-    private boolean internal_DrawShape(long shape_addr, long transform_addr, int color) {
+    private void internal_DrawShape(long shape_addr, long transform_addr, int color) {
         if (B3DebugShape_TEMP_STATIC_GEN_0 == null)
             B3DebugShape_TEMP_STATIC_GEN_0 = B3DebugShape.native_new();
         B3DebugShape_TEMP_STATIC_GEN_0.internal_reset(shape_addr, false);
         if (B3Transform_TEMP_STATIC_GEN_0 == null)
             B3Transform_TEMP_STATIC_GEN_0 = B3Transform.native_new();
         B3Transform_TEMP_STATIC_GEN_0.internal_reset(transform_addr, false);
-        return DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
+        DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
     }
 
     protected void DrawSegment(B3Vec3 p1, B3Vec3 p2, int color) {

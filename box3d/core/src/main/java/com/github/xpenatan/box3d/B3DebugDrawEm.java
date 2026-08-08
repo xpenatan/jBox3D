@@ -158,13 +158,6 @@ public class B3DebugDrawEm extends NativeObject {
         return false;
     }
 
-    public void SetDrawFrictionForces(boolean enabled) {
-    }
-
-    public boolean GetDrawFrictionForces() {
-        return false;
-    }
-
     public void SetDrawIslands(boolean enabled) {
     }
 
@@ -181,18 +174,17 @@ public class B3DebugDrawEm extends NativeObject {
     private void setupCallback() {
     }
 
-    protected boolean DrawShape(B3DebugShape shape, B3Transform transform, int color) {
-        return false;
+    protected void DrawShape(B3DebugShape shape, B3Transform transform, int color) {
     }
 
-    private boolean internal_DrawShape(long shape_addr, long transform_addr, int color) {
+    private void internal_DrawShape(long shape_addr, long transform_addr, int color) {
         if (B3DebugShape_TEMP_STATIC_GEN_0 == null)
             B3DebugShape_TEMP_STATIC_GEN_0 = B3DebugShape.native_new();
         B3DebugShape_TEMP_STATIC_GEN_0.internal_reset(shape_addr, false);
         if (B3Transform_TEMP_STATIC_GEN_0 == null)
             B3Transform_TEMP_STATIC_GEN_0 = B3Transform.native_new();
         B3Transform_TEMP_STATIC_GEN_0.internal_reset(transform_addr, false);
-        return DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
+        DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
     }
 
     protected void DrawSegment(B3Vec3 p1, B3Vec3 p2, int color) {

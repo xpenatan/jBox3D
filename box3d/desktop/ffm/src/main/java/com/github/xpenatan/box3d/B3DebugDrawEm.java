@@ -47,9 +47,9 @@ public class B3DebugDrawEm extends NativeObject {
 
     private static final java.lang.foreign.Linker callbackLinker = java.lang.foreign.Linker.nativeLinker();
 
-    private static final java.lang.invoke.MethodType callbackMethodType_DrawShape = java.lang.invoke.MethodType.methodType(boolean.class, long.class, long.class, int.class);
+    private static final java.lang.invoke.MethodType callbackMethodType_DrawShape = java.lang.invoke.MethodType.methodType(void.class, long.class, long.class, int.class);
 
-    private static final java.lang.foreign.FunctionDescriptor callbackDescriptor_DrawShape = java.lang.foreign.FunctionDescriptor.of(java.lang.foreign.ValueLayout.JAVA_BOOLEAN, java.lang.foreign.ValueLayout.JAVA_LONG, java.lang.foreign.ValueLayout.JAVA_LONG, java.lang.foreign.ValueLayout.JAVA_INT);
+    private static final java.lang.foreign.FunctionDescriptor callbackDescriptor_DrawShape = java.lang.foreign.FunctionDescriptor.ofVoid(java.lang.foreign.ValueLayout.JAVA_LONG, java.lang.foreign.ValueLayout.JAVA_LONG, java.lang.foreign.ValueLayout.JAVA_INT);
 
     private static final java.lang.invoke.MethodType callbackMethodType_DrawSegment = java.lang.invoke.MethodType.methodType(void.class, long.class, long.class, int.class);
 
@@ -483,30 +483,6 @@ public class B3DebugDrawEm extends NativeObject {
         }
     }
 
-    public void SetDrawFrictionForces(boolean enabled) {
-        internal_native_SetDrawFrictionForces(native_address, enabled);
-    }
-
-    public static void internal_native_SetDrawFrictionForces(long this_addr, boolean enabled) {
-        try {
-            FFMHandles.internal_native_SetDrawFrictionForces__JZ.invokeExact(this_addr, enabled);
-        } catch (Throwable e) {
-            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
-        }
-    }
-
-    public boolean GetDrawFrictionForces() {
-        return internal_native_GetDrawFrictionForces(native_address);
-    }
-
-    public static boolean internal_native_GetDrawFrictionForces(long this_addr) {
-        try {
-            return (boolean) FFMHandles.internal_native_GetDrawFrictionForces__J.invokeExact(this_addr);
-        } catch (Throwable e) {
-            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
-        }
-    }
-
     public void SetDrawIslands(boolean enabled) {
         internal_native_SetDrawIslands(native_address, enabled);
     }
@@ -563,18 +539,17 @@ public class B3DebugDrawEm extends NativeObject {
         }
     }
 
-    protected boolean DrawShape(B3DebugShape shape, B3Transform transform, int color) {
-        return false;
+    protected void DrawShape(B3DebugShape shape, B3Transform transform, int color) {
     }
 
-    private boolean internal_DrawShape(long shape_addr, long transform_addr, int color) {
+    private void internal_DrawShape(long shape_addr, long transform_addr, int color) {
         if (B3DebugShape_TEMP_STATIC_GEN_0 == null)
             B3DebugShape_TEMP_STATIC_GEN_0 = B3DebugShape.native_new();
         B3DebugShape_TEMP_STATIC_GEN_0.internal_reset(shape_addr, false);
         if (B3Transform_TEMP_STATIC_GEN_0 == null)
             B3Transform_TEMP_STATIC_GEN_0 = B3Transform.native_new();
         B3Transform_TEMP_STATIC_GEN_0.internal_reset(transform_addr, false);
-        return DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
+        DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
     }
 
     protected void DrawSegment(B3Vec3 p1, B3Vec3 p2, int color) {
@@ -774,10 +749,6 @@ public class B3DebugDrawEm extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_SetDrawContactForces__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_setdrawcontactforces", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 
         static final java.lang.invoke.MethodHandle internal_native_GetDrawContactForces__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_getdrawcontactforces", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
-
-        static final java.lang.invoke.MethodHandle internal_native_SetDrawFrictionForces__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_setdrawfrictionforces", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
-
-        static final java.lang.invoke.MethodHandle internal_native_GetDrawFrictionForces__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_getdrawfrictionforces", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetDrawIslands__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_setdrawislands", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 

@@ -32,12 +32,12 @@ static B3Transform toTransform(b3WorldTransform transform) {
     return B3Transform(b3ToRelativeTransform(transform, b3Pos_zero));
 }
 
-static bool drawShapeCallback(void* userShape, b3WorldTransform transform, b3HexColor color, void* context) {
+static void drawShapeCallback(void* userShape, b3WorldTransform transform, b3HexColor color, void* context) {
     B3DebugDrawEm* draw = static_cast<B3DebugDrawEm*>(context);
     if(draw == nullptr || userShape == nullptr) {
-        return true;
+        return;
     }
-    return draw->DrawShape(static_cast<B3DebugShape*>(userShape), toTransform(transform), static_cast<int>(color));
+    draw->DrawShape(static_cast<B3DebugShape*>(userShape), toTransform(transform), static_cast<int>(color));
 }
 
 static void drawSegmentCallback(b3Pos p1, b3Pos p2, b3HexColor color, void* context) {
@@ -2865,14 +2865,6 @@ bool B3DebugDrawEm::GetDrawContactForces() const {
     return m_draw.drawContactForces;
 }
 
-void B3DebugDrawEm::SetDrawFrictionForces(bool enabled) {
-    m_draw.drawFrictionForces = enabled;
-}
-
-bool B3DebugDrawEm::GetDrawFrictionForces() const {
-    return m_draw.drawFrictionForces;
-}
-
 void B3DebugDrawEm::SetDrawIslands(bool enabled) {
     m_draw.drawIslands = enabled;
 }
@@ -2881,8 +2873,7 @@ bool B3DebugDrawEm::GetDrawIslands() const {
     return m_draw.drawIslands;
 }
 
-bool B3DebugDrawEm::DrawShape(B3DebugShape*, const B3Transform&, int) {
-    return true;
+void B3DebugDrawEm::DrawShape(B3DebugShape*, const B3Transform&, int) {
 }
 
 void B3DebugDrawEm::DrawSegment(const B3Vec3&, const B3Vec3&, int) {

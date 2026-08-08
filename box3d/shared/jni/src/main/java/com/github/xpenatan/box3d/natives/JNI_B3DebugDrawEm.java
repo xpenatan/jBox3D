@@ -74,10 +74,6 @@ final public class JNI_B3DebugDrawEm {
 
     public static native boolean internal_native_GetDrawContactForces(long this_addr);
 
-    public static native void internal_native_SetDrawFrictionForces(long this_addr, boolean enabled);
-
-    public static native boolean internal_native_GetDrawFrictionForces(long this_addr);
-
     public static native void internal_native_SetDrawIslands(long this_addr, boolean enabled);
 
     public static native boolean internal_native_GetDrawIslands(long this_addr);

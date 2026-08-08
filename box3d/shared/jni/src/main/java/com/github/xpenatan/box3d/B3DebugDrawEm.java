@@ -311,22 +311,6 @@ public class B3DebugDrawEm extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3DebugDrawEm.internal_native_GetDrawContactForces(this_addr);
     }
 
-    public void SetDrawFrictionForces(boolean enabled) {
-        internal_native_SetDrawFrictionForces(native_address, enabled);
-    }
-
-    public static void internal_native_SetDrawFrictionForces(long this_addr, boolean enabled) {
-        com.github.xpenatan.box3d.natives.JNI_B3DebugDrawEm.internal_native_SetDrawFrictionForces(this_addr, enabled);
-    }
-
-    public boolean GetDrawFrictionForces() {
-        return internal_native_GetDrawFrictionForces(native_address);
-    }
-
-    public static boolean internal_native_GetDrawFrictionForces(long this_addr) {
-        return com.github.xpenatan.box3d.natives.JNI_B3DebugDrawEm.internal_native_GetDrawFrictionForces(this_addr);
-    }
-
     public void SetDrawIslands(boolean enabled) {
         internal_native_SetDrawIslands(native_address, enabled);
     }
@@ -353,18 +337,17 @@ public class B3DebugDrawEm extends NativeObject {
         internal_native_setupCallback(native_address);
     }
 
-    protected boolean DrawShape(B3DebugShape shape, B3Transform transform, int color) {
-        return false;
+    protected void DrawShape(B3DebugShape shape, B3Transform transform, int color) {
     }
 
-    private boolean internal_DrawShape(long shape_addr, long transform_addr, int color) {
+    private void internal_DrawShape(long shape_addr, long transform_addr, int color) {
         if (B3DebugShape_TEMP_STATIC_GEN_0 == null)
             B3DebugShape_TEMP_STATIC_GEN_0 = B3DebugShape.native_new();
         B3DebugShape_TEMP_STATIC_GEN_0.internal_reset(shape_addr, false);
         if (B3Transform_TEMP_STATIC_GEN_0 == null)
             B3Transform_TEMP_STATIC_GEN_0 = B3Transform.native_new();
         B3Transform_TEMP_STATIC_GEN_0.internal_reset(transform_addr, false);
-        return DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
+        DrawShape(B3DebugShape_TEMP_STATIC_GEN_0, B3Transform_TEMP_STATIC_GEN_0, color);
     }
 
     protected void DrawSegment(B3Vec3 p1, B3Vec3 p2, int color) {

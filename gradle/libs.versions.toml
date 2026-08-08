@@ -5,7 +5,8 @@ jbox3dRelease = "0.1.0.0"
 jbox3dSnapshot = "-SNAPSHOT"
 jbox3dUseMavenArtifacts = "false"
 jbox3dMavenVersion = "-SNAPSHOT"
-box3dSource = "0.1.0"
+# Accepts a released version (for example, "0.1.0") or a Git commit hash.
+box3dSource = "3fc20f5b453ba9e14cdf54ecafa87a2a4bcdf53c"
 
 javaMain = "1.8"
 javaWeb = "17"

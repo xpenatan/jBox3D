@@ -1019,12 +1019,10 @@ public:
     bool GetDrawContactNormals() const;
     void SetDrawContactForces(bool enabled);
     bool GetDrawContactForces() const;
-    void SetDrawFrictionForces(bool enabled);
-    bool GetDrawFrictionForces() const;
     void SetDrawIslands(bool enabled);
     bool GetDrawIslands() const;
 
-    virtual bool DrawShape(B3DebugShape* shape, const B3Transform& transform, int color);
+    virtual void DrawShape(B3DebugShape* shape, const B3Transform& transform, int color);
     virtual void DrawSegment(const B3Vec3& p1, const B3Vec3& p2, int color);
     virtual void DrawTransform(const B3Transform& transform);
     virtual void DrawPoint(const B3Vec3& p, float size, int color);

@@ -237,7 +237,6 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
         SetDrawContactFeatures(enabled);
         SetDrawContactNormals(enabled);
         SetDrawContactForces(enabled);
-        SetDrawFrictionForces(enabled);
         SetDrawIslands(enabled);
     }
 
@@ -249,9 +248,9 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     }
 
     @Override
-    protected boolean DrawShape(B3DebugShape shape, B3Transform transform, int color) {
+    protected void DrawShape(B3DebugShape shape, B3Transform transform, int color) {
         if(!enabled || shape == null || transform == null) {
-            return true;
+            return;
         }
 
         if(drawSolidShapes) {
@@ -266,7 +265,6 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
         if(drawWireframe) {
             drawShapeWire(shape, transform, color);
         }
-        return true;
     }
 
     @Override

@@ -63,6 +63,12 @@ Download the pinned Box3D source and generate the Java and native bindings:
 .\gradlew.bat :box3d:builder:jParser_generate
 ```
 
+Set `box3dSource` in `gradle/libs.versions.toml` to either a released Box3D version such as `0.1.0` or a 7- to 40-character Git commit hash. Released versions resolve to `v<version>` tags; commit hashes resolve directly. To override the catalog value for one invocation, pass `-Pbox3dSource=<version-or-commit>`:
+
+```powershell
+.\gradlew.bat :box3d:builder:jParser_generate "-Pbox3dSource=3fc20f5b453ba9e14cdf54ecafa87a2a4bcdf53c"
+```
+
 The downloaded source is written to `box3d/download/build/box3d-source` and is not vendored in the repository. Generated source directories are removed by their module `clean` tasks, so a clean build must regenerate them:
 
 ```powershell
