@@ -112,6 +112,41 @@ public final class B3SphericalJointDef extends NativeObject {
     public void SetDampingRatio(float ratio) {
     }
 
+    public boolean GetEnableConeLimit() {
+        return false;
+    }
+
+    public void SetEnableConeLimit(boolean enabled) {
+    }
+
+    public float GetConeAngle() {
+        return 0;
+    }
+
+    public void SetConeAngle(float radians) {
+    }
+
+    public boolean GetEnableTwistLimit() {
+        return false;
+    }
+
+    public void SetEnableTwistLimit(boolean enabled) {
+    }
+
+    public float GetLowerTwistAngle() {
+        return 0;
+    }
+
+    public void SetLowerTwistAngle(float radians) {
+    }
+
+    public float GetUpperTwistAngle() {
+        return 0;
+    }
+
+    public void SetUpperTwistAngle(float radians) {
+    }
+
     public boolean GetEnableMotor() {
         return false;
     }

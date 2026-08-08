@@ -211,6 +211,20 @@ public final class B3ShapeDef extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "invokeContactCreation"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3ShapeDef);jsObj.SetInvokeContactCreation(invokeContactCreation);")
     public static native void internal_native_SetInvokeContactCreation(int this_addr, boolean invokeContactCreation);
 
+    public boolean GetEnableSpeculativeContact() {
+        return internal_native_GetEnableSpeculativeContact(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3ShapeDef);var returnedJSObj = jsObj.GetEnableSpeculativeContact();return returnedJSObj;")
+    public static native boolean internal_native_GetEnableSpeculativeContact(int this_addr);
+
+    public void SetEnableSpeculativeContact(boolean enabled) {
+        internal_native_SetEnableSpeculativeContact(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3ShapeDef);jsObj.SetEnableSpeculativeContact(enabled);")
+    public static native void internal_native_SetEnableSpeculativeContact(int this_addr, boolean enabled);
+
     public boolean GetUpdateBodyMass() {
         return internal_native_GetUpdateBodyMass(native_address);
     }

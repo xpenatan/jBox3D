@@ -32,7 +32,7 @@ final class StaticInvokeSample extends AbstractBox3DSample {
         B3Vec3 center = new B3Vec3(0.0f, 0.0f, 0.0f);
         B3Sphere sphere = new B3Sphere(center, 0.5f);
         staticBody = world().CreateBody(bodyDef);
-        staticBody.CreateSphereShape(shapeDef, sphere);
+        dispose(staticBody.CreateSphereShape(shapeDef, sphere));
         dispose(sphere, center, shapeDef, bodyDef);
     }
 }

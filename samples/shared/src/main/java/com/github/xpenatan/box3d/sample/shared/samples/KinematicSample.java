@@ -20,7 +20,7 @@ final class KinematicSample extends AbstractBox3DSample {
 
     @Override
     public void step(float deltaSeconds) {
-        time += deltaSeconds;
+        float timeStep = Math.max(1.0f / 240.0f, Math.min(deltaSeconds, 1.0f / 30.0f));
         float delay = 2.0f;
         if(time > delay) {
             float t = time - delay;
@@ -28,9 +28,10 @@ final class KinematicSample extends AbstractBox3DSample {
             B3Vec3 position = new B3Vec3(2.0f * amplitude * (float)Math.cos(t),
                     amplitude * ((float)Math.sin(2.0f * t) + 1.0f) + 1.0f, 0.0f);
             B3Quat rotation = rotationZ(2.0f * t);
-            body.SetTransform(position, rotation);
+            body.SetTargetTransform(position, rotation, timeStep, true);
             dispose(rotation, position);
         }
         super.step(deltaSeconds);
+        time += timeStep;
     }
 }

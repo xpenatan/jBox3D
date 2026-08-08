@@ -2,24 +2,30 @@ package com.github.xpenatan.box3d.sample.shared.samples;
 
 import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
-import com.github.xpenatan.box3d.B3BodyDef;
-import com.github.xpenatan.box3d.B3Capsule;
-import com.github.xpenatan.box3d.B3Hull;
-import com.github.xpenatan.box3d.B3PrismaticJointDef;
-import com.github.xpenatan.box3d.B3Quat;
-import com.github.xpenatan.box3d.B3QueryFilter;
-import com.github.xpenatan.box3d.B3Shape;
+import com.github.xpenatan.box3d.B3Mesh;
 import com.github.xpenatan.box3d.B3ShapeDef;
-import com.github.xpenatan.box3d.B3Sphere;
 import com.github.xpenatan.box3d.B3Vec3;
-import com.github.xpenatan.box3d.B3WheelJointDef;
 
+/** Exact default mesh selection and creation flags from Mesh/Viewer. */
 final class MeshViewerSample extends AbstractBox3DSample {
+    private final B3Mesh mesh;
+
     MeshViewerSample() {
-        addGroundBox(24.0f);
-        DiagnosticUtil.addMeshBowl(this, 10, 1.0f);
-        B3Hull rock = B3Hull.CreateRock(1.1f);
-        addHull(rock, B3.DynamicBody(), 0.0f, 6.0f, 0.0f, null, 1.0f, 0.6f, 0.0f, 0.0f);
-        dispose(rock);
+        mesh = B3Mesh.CreateFromObj(SampleAssets.readUtf8("data/meshes/voxel_mesh_01.obj"),
+                0.01f, true, true, true, true, 0.0015f);
+        if(!mesh.IsValid()) {
+            throw new IllegalStateException("Box3D could not create data/meshes/voxel_mesh_01.obj");
+        }
+        B3Body body = createBody(B3.StaticBody(), 0.0f, 0.0f, 0.0f, null);
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        B3Vec3 one = new B3Vec3(1.0f, 1.0f, 1.0f);
+        dispose(body.CreateMeshShape(shapeDef, mesh, one), body, one, shapeDef);
+        addDebugAxes(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        dispose(mesh);
     }
 }

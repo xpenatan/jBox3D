@@ -54,6 +54,7 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     private static final long MODEL_ATTRIBUTES = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal;
     private static final int INITIAL_LINE_CAPACITY = 16384;
     private static final int LINE_DATA_STRIDE = 7;
+    private static final int MAX_TRIANGLES_PER_MESH = 10000;
 
     private final ModelBatch modelBatch;
     private final ShadowBiasShaderProvider modelShaderProvider;
@@ -377,25 +378,11 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     private DebugModel buildModel(B3DebugShape shape) {
         DebugModel debugModel = new DebugModel();
         int triangleCount = shape.GetTriangleCount();
-        if(triangleCount > 0) {
-            ModelBuilder builder = new ModelBuilder();
-            builder.begin();
-            MeshPartBuilder part = builder.part("box3d-debug-solid", GL20.GL_TRIANGLES, MODEL_ATTRIBUTES, solidMaterial());
-            MeshPartBuilder.VertexInfo v0 = new MeshPartBuilder.VertexInfo();
-            MeshPartBuilder.VertexInfo v1 = new MeshPartBuilder.VertexInfo();
-            MeshPartBuilder.VertexInfo v2 = new MeshPartBuilder.VertexInfo();
-            for(int i = 0; i < triangleCount; i++) {
-                B3Vec3 p0 = shape.GetTriangleVertex0(i);
-                B3Vec3 p1 = shape.GetTriangleVertex1(i);
-                B3Vec3 p2 = shape.GetTriangleVertex2(i);
-                B3Vec3 n = shape.GetTriangleNormal(i);
-                v0.setPos(p0.GetX(), p0.GetY(), p0.GetZ()).setNor(n.GetX(), n.GetY(), n.GetZ());
-                v1.setPos(p1.GetX(), p1.GetY(), p1.GetZ()).setNor(n.GetX(), n.GetY(), n.GetZ());
-                v2.setPos(p2.GetX(), p2.GetY(), p2.GetZ()).setNor(n.GetX(), n.GetY(), n.GetZ());
-                part.triangle(v0, v1, v2);
-            }
-            debugModel.meshModel = builder.end();
-            debugModel.meshInstance = new ModelInstance(debugModel.meshModel);
+        for(int firstTriangle = 0; firstTriangle < triangleCount; firstTriangle += MAX_TRIANGLES_PER_MESH) {
+            int endTriangle = Math.min(firstTriangle + MAX_TRIANGLES_PER_MESH, triangleCount);
+            Model model = buildTriangleModel(shape, firstTriangle, endTriangle);
+            debugModel.meshModels.add(model);
+            debugModel.meshInstances.add(new ModelInstance(model));
         }
 
         ModelBuilder primitiveBuilder = new ModelBuilder();
@@ -422,6 +409,26 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
         }
         cacheShadowBody(debugModel, shape.GetShapeId());
         return debugModel;
+    }
+
+    private Model buildTriangleModel(B3DebugShape shape, int firstTriangle, int endTriangle) {
+        ModelBuilder builder = new ModelBuilder();
+        builder.begin();
+        MeshPartBuilder part = builder.part("box3d-debug-solid", GL20.GL_TRIANGLES, MODEL_ATTRIBUTES, solidMaterial());
+        MeshPartBuilder.VertexInfo v0 = new MeshPartBuilder.VertexInfo();
+        MeshPartBuilder.VertexInfo v1 = new MeshPartBuilder.VertexInfo();
+        MeshPartBuilder.VertexInfo v2 = new MeshPartBuilder.VertexInfo();
+        for(int i = firstTriangle; i < endTriangle; i++) {
+            B3Vec3 p0 = shape.GetTriangleVertex0(i);
+            B3Vec3 p1 = shape.GetTriangleVertex1(i);
+            B3Vec3 p2 = shape.GetTriangleVertex2(i);
+            B3Vec3 n = shape.GetTriangleNormal(i);
+            v0.setPos(p0.GetX(), p0.GetY(), p0.GetZ()).setNor(n.GetX(), n.GetY(), n.GetZ());
+            v1.setPos(p1.GetX(), p1.GetY(), p1.GetZ()).setNor(n.GetX(), n.GetY(), n.GetZ());
+            v2.setPos(p2.GetX(), p2.GetY(), p2.GetZ()).setNor(n.GetX(), n.GetY(), n.GetZ());
+            part.triangle(v0, v1, v2);
+        }
+        return builder.end();
     }
 
     private PrimitiveInstance buildCapsulePrimitive(ModelBuilder builder, B3Capsule capsule) {
@@ -524,11 +531,12 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     private void appendSolidInstances(DebugModel model, B3Transform transform) {
         GdxBox3DConverter.toGdx(transform, worldTransform);
         boolean castsShadow = model.castsShadow();
-        if(model.meshInstance != null) {
-            model.meshInstance.transform.set(worldTransform);
-            visibleInstances.add(model.meshInstance);
+        for(int i = 0; i < model.meshInstances.size; i++) {
+            ModelInstance meshInstance = model.meshInstances.get(i);
+            meshInstance.transform.set(worldTransform);
+            visibleInstances.add(meshInstance);
             if(castsShadow) {
-                shadowCasterInstances.add(model.meshInstance);
+                shadowCasterInstances.add(meshInstance);
             }
         }
         for(int i = 0; i < model.primitives.size; i++) {
@@ -789,8 +797,8 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     }
 
     private static final class DebugModel implements Disposable {
-        Model meshModel;
-        ModelInstance meshInstance;
+        final Array<Model> meshModels = new Array<Model>(false, 1);
+        final Array<ModelInstance> meshInstances = new Array<ModelInstance>(false, 1);
         B3Body shadowBody;
         final Array<PrimitiveInstance> primitives = new Array<PrimitiveInstance>(false, 4);
 
@@ -800,11 +808,11 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
 
         @Override
         public void dispose() {
-            if(meshModel != null) {
-                meshModel.dispose();
-                meshModel = null;
-                meshInstance = null;
+            for(int i = 0; i < meshModels.size; i++) {
+                meshModels.get(i).dispose();
             }
+            meshModels.clear();
+            meshInstances.clear();
             for(int i = 0; i < primitives.size; i++) {
                 primitives.get(i).model.dispose();
             }

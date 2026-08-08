@@ -12,7 +12,7 @@ final class InclinedPlaneSample extends AbstractBox3DSample {
 
         for(int i = 0; i < 5; i++) {
             float friction = (i + 1) * (i + 1) * 0.04f;
-            addDynamicBox(-10.0f + 5.0f * i, 15.75f, -10.6f, 1.0f, 1.0f, 1.0f, null, 1.0f, friction, 0.0f,
+            addDynamicBox(-10.0f + 5.0f * i, 14.25f, -10.6f, 1.0f, 1.0f, 1.0f, null, 1.0f, friction, 0.0f,
                     0.0f);
         }
     }

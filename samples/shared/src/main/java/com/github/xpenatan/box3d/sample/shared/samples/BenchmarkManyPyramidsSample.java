@@ -4,26 +4,50 @@ import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
 import com.github.xpenatan.box3d.B3BodyDef;
 import com.github.xpenatan.box3d.B3Hull;
-import com.github.xpenatan.box3d.B3Quat;
 import com.github.xpenatan.box3d.B3ShapeDef;
 import com.github.xpenatan.box3d.B3Vec3;
 
+/** Exact port of {@code CreateManyPyramids} in {@code shared/benchmarks.c}. */
 final class BenchmarkManyPyramidsSample extends AbstractBox3DSample {
     BenchmarkManyPyramidsSample() {
-        addGroundBox(90.0f);
-        for(int z = 0; z < 5; z++) {
-            for(int x = 0; x < 5; x++) {
-                createPyramid(8, 0.45f, -18.0f + x * 9.0f, -18.0f + z * 9.0f);
+        int baseCount = 10;
+        float extent = 0.5f;
+        int rowCount = 14;
+        int columnCount = 14;
+        float groundExtent = extent * columnCount * (baseCount + 1.0f);
+        addGroundBox(groundExtent);
+
+        float baseWidth = 2.0f * extent * baseCount;
+        float baseZ = -groundExtent + 2.0f * extent;
+        float deltaZ = 2.0f * (groundExtent - 2.0f * extent) / (rowCount - 1.0f);
+        B3Hull box = B3Hull.CreateBox(extent, extent, extent);
+        B3BodyDef bodyDef = new B3BodyDef();
+        bodyDef.SetType(B3.DynamicBody());
+        bodyDef.SetEnableSleep(false);
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        shapeDef.SetDensity(100.0f);
+        B3Vec3 position = new B3Vec3();
+
+        for(int i = 0; i < rowCount; ++i) {
+            for(int j = 0; j < columnCount; ++j) {
+                float centerX = -groundExtent + j * (baseWidth + 2.0f * extent) + 2.0f * extent;
+                createSmallPyramid(baseCount, extent, centerX, baseZ, bodyDef, shapeDef, box, position);
             }
+            baseZ += deltaZ;
         }
+        dispose(position, shapeDef, bodyDef, box);
     }
 
-    private void createPyramid(int baseCount, float halfWidth, float offsetX, float offsetZ) {
-        for(int row = 0; row < baseCount; row++) {
-            float y = (2.0f * row + 1.0f) * halfWidth;
-            for(int column = row; column < baseCount; column++) {
-                float x = (row + 1.0f) * halfWidth + 2.0f * (column - row) * halfWidth - baseCount * halfWidth;
-                addDynamicBox(offsetX + x, y, offsetZ, halfWidth, halfWidth, halfWidth);
+    private void createSmallPyramid(int baseCount, float extent, float centerX, float baseZ, B3BodyDef bodyDef,
+            B3ShapeDef shapeDef, B3Hull box, B3Vec3 position) {
+        for(int i = 0; i < baseCount; ++i) {
+            float y = (2.0f * i + 1.0f) * extent;
+            for(int j = i; j < baseCount; ++j) {
+                float x = (i + 1.0f) * extent + 2.0f * (j - i) * extent + centerX - 0.5f;
+                position.Set(x, y, baseZ);
+                bodyDef.SetPosition(position);
+                B3Body body = world().CreateBody(bodyDef);
+                dispose(body.CreateHullShape(shapeDef, box), body);
             }
         }
     }

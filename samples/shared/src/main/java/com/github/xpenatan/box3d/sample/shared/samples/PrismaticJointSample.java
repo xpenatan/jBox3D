@@ -37,12 +37,14 @@ final class PrismaticJointSample extends AbstractBox3DSample {
         jointDef.SetBodyIdB(body.GetId());
         JointSampleUtil.setLocalPositionA(jointDef, 0.0f, 6.5f, 0.0f);
         JointSampleUtil.setLocalPositionB(jointDef, 0.0f, 1.5f, 0.0f);
+        jointDef.SetConstraintHertz(120.0f);
         jointDef.SetEnableSpring(true);
         jointDef.SetHertz(2.0f);
         jointDef.SetDampingRatio(0.7f);
         jointDef.SetLowerTranslation(-1.0f);
         jointDef.SetUpperTranslation(1.0f);
         jointDef.SetMaxMotorForce(20.0f);
+        jointDef.SetMotorSpeed(0.0f);
         dispose(world().CreatePrismaticJoint(jointDef));
 
         dispose(jointDef, shape, bodyDef);

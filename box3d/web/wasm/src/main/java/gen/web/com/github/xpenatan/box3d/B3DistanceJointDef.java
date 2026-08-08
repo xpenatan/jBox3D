@@ -155,6 +155,20 @@ public final class B3DistanceJointDef extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "collide"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3DistanceJointDef);jsObj.SetCollideConnected(collide);")
     public static native void internal_native_SetCollideConnected(int this_addr, boolean collide);
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "force"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3DistanceJointDef);jsObj.SetForceThreshold(force);")
+    public static native void internal_native_SetForceThreshold(int this_addr, float force);
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3DistanceJointDef);jsObj.SetTorqueThreshold(torque);")
+    public static native void internal_native_SetTorqueThreshold(int this_addr, float torque);
+
     public float GetConstraintHertz() {
         return internal_native_GetConstraintHertz(native_address);
     }

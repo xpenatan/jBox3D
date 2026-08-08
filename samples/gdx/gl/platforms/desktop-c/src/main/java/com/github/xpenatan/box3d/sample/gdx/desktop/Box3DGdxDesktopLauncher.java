@@ -12,6 +12,8 @@ public final class Box3DGdxDesktopLauncher {
     public static void main(String[] args) {
         long exitAfterFrames = Long.parseLong(option(args, "--exit-after-frames=",
                 System.getProperty("jbox3d.sample.exitAfterFrames", "0")));
+        setPropertyFromOption(args, "--sample=", "jbox3d.sample.sample");
+        setPropertyFromOption(args, "--sample-index=", "jbox3d.sample.sampleIndex");
         setPropertyFromOption(args, "--validate-all=", "jbox3d.sample.validateAll");
         setPropertyFromOption(args, "--auto-throw-after-frames=", "jbox3d.sample.autoThrowAfterFrames");
         setPropertyFromOption(args, "--screenshot=", "jbox3d.sample.screenshot");

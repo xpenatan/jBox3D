@@ -19,6 +19,8 @@ public final class B3WorldDef extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     static public final B3WorldDef NULL = B3WorldDef.native_new();
 
     public B3WorldDef() {
@@ -306,6 +308,36 @@ public final class B3WorldDef extends NativeObject {
         }
     }
 
+    public B3Capacity GetCapacity() {
+        long addr = internal_native_GetCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetCapacity_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetCapacity_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetCapacity(B3Capacity capacity) {
+        internal_native_SetCapacity(native_address, capacity.native_address);
+    }
+
+    public static void internal_native_SetCapacity(long this_addr, long capacity_addr) {
+        try {
+            FFMHandles.internal_native_SetCapacity__JJ.invokeExact(this_addr, capacity_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3worlddef_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
@@ -351,5 +383,9 @@ public final class B3WorldDef extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetWorkerCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3worlddef_getworkercount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetWorkerCount__JI = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3worlddef_setworkercount", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetCapacity_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3worlddef_getcapacity_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetCapacity__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3worlddef_setcapacity", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
     }
 }

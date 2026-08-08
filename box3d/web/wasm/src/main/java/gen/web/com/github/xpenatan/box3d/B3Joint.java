@@ -98,10 +98,66 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetLinearSeparation();return returnedJSObj;")
     public static native float internal_native_GetLinearSeparation(int this_addr);
 
+    public float GetPrismaticTranslation() {
+        return internal_native_GetPrismaticTranslation(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticTranslation();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticTranslation(int this_addr);
+
+    public void SetPrismaticMotorSpeed(float speed) {
+        internal_native_SetPrismaticMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "speed"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticMotorSpeed(speed);")
+    public static native void internal_native_SetPrismaticMotorSpeed(int this_addr, float speed);
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteTargetAngle(radians);")
     public static native void internal_native_SetRevoluteTargetAngle(int this_addr, float radians);
+
+    public void SetRevoluteMaxMotorTorque(float torque) {
+        internal_native_SetRevoluteMaxMotorTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteMaxMotorTorque(torque);")
+    public static native void internal_native_SetRevoluteMaxMotorTorque(int this_addr, float torque);
+
+    public void SetRevoluteSpringHertz(float hertz) {
+        internal_native_SetRevoluteSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteSpringHertz(hertz);")
+    public static native void internal_native_SetRevoluteSpringHertz(int this_addr, float hertz);
+
+    public void SetRevoluteSpringDampingRatio(float dampingRatio) {
+        internal_native_SetRevoluteSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteSpringDampingRatio(dampingRatio);")
+    public static native void internal_native_SetRevoluteSpringDampingRatio(int this_addr, float dampingRatio);
+
+    public void SetSphericalMaxMotorTorque(float torque) {
+        internal_native_SetSphericalMaxMotorTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalMaxMotorTorque(torque);")
+    public static native void internal_native_SetSphericalMaxMotorTorque(int this_addr, float torque);
+
+    public void SetSphericalSpringHertz(float hertz) {
+        internal_native_SetSphericalSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalSpringHertz(hertz);")
+    public static native void internal_native_SetSphericalSpringHertz(int this_addr, float hertz);
+
+    public void SetSphericalSpringDampingRatio(float dampingRatio) {
+        internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalSpringDampingRatio(dampingRatio);")
+    public static native void internal_native_SetSphericalSpringDampingRatio(int this_addr, float dampingRatio);
 }

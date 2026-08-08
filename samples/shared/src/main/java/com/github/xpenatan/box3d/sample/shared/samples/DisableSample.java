@@ -13,11 +13,6 @@ final class DisableSample extends AbstractBox3DSample {
     private static final int LINK_COUNT = 4;
 
     private final B3Body[] bodies = new B3Body[LINK_COUNT];
-    private final B3Body ball;
-    private float toggleTimer;
-    private boolean linkEnabled = true;
-    private boolean ballEnabled = true;
-
     DisableSample() {
         addGroundBox(20.0f);
 
@@ -52,7 +47,7 @@ final class DisableSample extends AbstractBox3DSample {
         }
 
         B3BodyDef ballDef = bodyDef(B3.DynamicBody(), 3.0f, 3.0f, 0.0f, null);
-        ball = world().CreateBody(ballDef);
+        B3Body ball = world().CreateBody(ballDef);
         B3Vec3 center = new B3Vec3(0.0f, 0.0f, 0.0f);
         B3Sphere sphere = new B3Sphere(center, 0.5f);
         dispose(ball.CreateSphereShape(shapeDef, sphere));
@@ -61,17 +56,6 @@ final class DisableSample extends AbstractBox3DSample {
 
     @Override
     public void step(float deltaSeconds) {
-        toggleTimer += deltaSeconds;
-        if(toggleTimer > 3.0f) {
-            toggleTimer = 0.0f;
-            linkEnabled = !linkEnabled;
-            setEnabled(bodies[2], linkEnabled);
-            if(linkEnabled) {
-                ballEnabled = !ballEnabled;
-                setEnabled(ball, ballEnabled);
-            }
-        }
-
         B3Vec3 impulse = new B3Vec3(0.0f, 0.1f, 0.0f);
         bodies[2].ApplyLinearImpulseToCenter(impulse, true);
         dispose(impulse);
@@ -85,12 +69,4 @@ final class DisableSample extends AbstractBox3DSample {
         dispose(position);
     }
 
-    private void setEnabled(B3Body body, boolean enable) {
-        if(enable) {
-            body.Enable();
-        }
-        else {
-            body.Disable();
-        }
-    }
 }

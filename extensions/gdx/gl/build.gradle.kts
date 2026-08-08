@@ -12,7 +12,7 @@ dependencies {
     compileOnly(project(":box3d:core"))
     api(libs.gdxCore)
 
-    testImplementation(project(":box3d:core"))
+    testImplementation(project(":box3d:desktop:jni"))
     testImplementation(libs.junit)
 }
 

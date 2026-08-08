@@ -108,11 +108,75 @@ public final class B3Joint extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetLinearSeparation(this_addr);
     }
 
+    public float GetPrismaticTranslation() {
+        return internal_native_GetPrismaticTranslation(native_address);
+    }
+
+    public static float internal_native_GetPrismaticTranslation(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticTranslation(this_addr);
+    }
+
+    public void SetPrismaticMotorSpeed(float speed) {
+        internal_native_SetPrismaticMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetPrismaticMotorSpeed(long this_addr, float speed) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticMotorSpeed(this_addr, speed);
+    }
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
 
     public static void internal_native_SetRevoluteTargetAngle(long this_addr, float radians) {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteTargetAngle(this_addr, radians);
+    }
+
+    public void SetRevoluteMaxMotorTorque(float torque) {
+        internal_native_SetRevoluteMaxMotorTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetRevoluteMaxMotorTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteMaxMotorTorque(this_addr, torque);
+    }
+
+    public void SetRevoluteSpringHertz(float hertz) {
+        internal_native_SetRevoluteSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteSpringHertz(this_addr, hertz);
+    }
+
+    public void SetRevoluteSpringDampingRatio(float dampingRatio) {
+        internal_native_SetRevoluteSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetRevoluteSpringDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteSpringDampingRatio(this_addr, dampingRatio);
+    }
+
+    public void SetSphericalMaxMotorTorque(float torque) {
+        internal_native_SetSphericalMaxMotorTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalMaxMotorTorque(this_addr, torque);
+    }
+
+    public void SetSphericalSpringHertz(float hertz) {
+        internal_native_SetSphericalSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetSphericalSpringHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalSpringHertz(this_addr, hertz);
+    }
+
+    public void SetSphericalSpringDampingRatio(float dampingRatio) {
+        internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalSpringDampingRatio(this_addr, dampingRatio);
     }
 }

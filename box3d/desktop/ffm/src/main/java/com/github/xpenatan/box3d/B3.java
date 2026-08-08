@@ -45,6 +45,18 @@ public final class B3 extends NativeObject {
         }
     }
 
+    public static boolean IsDoublePrecision() {
+        return internal_native_IsDoublePrecision();
+    }
+
+    public static boolean internal_native_IsDoublePrecision() {
+        try {
+            return (boolean) FFMHandles.internal_native_IsDoublePrecision__.invokeExact();
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public static int StaticBody() {
         return internal_native_StaticBody();
     }
@@ -177,6 +189,30 @@ public final class B3 extends NativeObject {
         }
     }
 
+    public static float GetStallThreshold() {
+        return internal_native_GetStallThreshold();
+    }
+
+    public static float internal_native_GetStallThreshold() {
+        try {
+            return (float) FFMHandles.internal_native_GetStallThreshold__.invokeExact();
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public static void SetStallThreshold(float seconds) {
+        internal_native_SetStallThreshold(seconds);
+    }
+
+    public static void internal_native_SetStallThreshold(float seconds) {
+        try {
+            FFMHandles.internal_native_SetStallThreshold__F.invokeExact(seconds);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public static long DefaultMaskBits() {
         return internal_native_DefaultMaskBits();
     }
@@ -192,6 +228,8 @@ public final class B3 extends NativeObject {
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_deleteNative__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_deletenative", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsDoublePrecision__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_isdoubleprecision", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN));
 
         static final java.lang.invoke.MethodHandle internal_native_StaticBody__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_staticbody", FunctionDescriptor.of(ValueLayout.JAVA_INT));
 
@@ -214,6 +252,10 @@ public final class B3 extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetWorldCount__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_getworldcount", FunctionDescriptor.of(ValueLayout.JAVA_INT));
 
         static final java.lang.invoke.MethodHandle internal_native_GetMaxWorldCount__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_getmaxworldcount", FunctionDescriptor.of(ValueLayout.JAVA_INT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetStallThreshold__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_getstallthreshold", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetStallThreshold__F = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_setstallthreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_FLOAT));
 
         static final java.lang.invoke.MethodHandle internal_native_DefaultMaskBits__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3_defaultmaskbits", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
     }

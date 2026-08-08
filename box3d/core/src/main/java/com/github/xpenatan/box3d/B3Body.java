@@ -62,6 +62,14 @@ public final class B3Body extends NativeObject {
         return null;
     }
 
+    public B3Vec3 GetWorldCenter() {
+        return null;
+    }
+
+    public B3Vec3 GetLocalPoint(B3Vec3 worldPoint) {
+        return null;
+    }
+
     public void SetTransform(B3Vec3 position, B3Quat rotation) {
     }
 
@@ -111,6 +119,21 @@ public final class B3Body extends NativeObject {
     public void ApplyMassFromShapes() {
     }
 
+    public B3Vec3 GetLocalRotationalInertiaColumnX() {
+        return null;
+    }
+
+    public B3Vec3 GetLocalRotationalInertiaColumnY() {
+        return null;
+    }
+
+    public B3Vec3 GetLocalRotationalInertiaColumnZ() {
+        return null;
+    }
+
+    public void SetMassData(float mass, B3Vec3 center, B3Vec3 inertiaColumnX, B3Vec3 inertiaColumnY, B3Vec3 inertiaColumnZ) {
+    }
+
     public float GetLinearDamping() {
         return 0;
     }
@@ -137,6 +160,10 @@ public final class B3Body extends NativeObject {
     }
 
     public void SetAwake(boolean awake) {
+    }
+
+    public B3RayResult CastRay(B3Vec3 origin, B3Vec3 translation, B3QueryFilter filter, float maxFraction, B3Transform bodyTransform) {
+        return null;
     }
 
     public boolean IsEnabled() {
@@ -180,6 +207,26 @@ public final class B3Body extends NativeObject {
     }
 
     public B3Shape CreateHullShape(B3ShapeDef def, B3Hull hull) {
+        return null;
+    }
+
+    public B3Shape CreateTransformedHullShape(B3ShapeDef def, B3Hull hull, B3Transform transform, B3Vec3 scale) {
+        return null;
+    }
+
+    public B3Shape CreateMeshShape(B3ShapeDef def, B3Mesh mesh, B3Vec3 scale) {
+        return null;
+    }
+
+    public B3Shape CreateMeshShapeWithMaterials(B3ShapeDef def, B3Mesh mesh, B3Vec3 scale, B3SurfaceMaterialArray materials) {
+        return null;
+    }
+
+    public B3Shape CreateHeightFieldShape(B3ShapeDef def, B3HeightField heightField) {
+        return null;
+    }
+
+    public B3Shape CreateBakedCompoundShape(B3ShapeDef def, B3Compound compound) {
         return null;
     }
 }

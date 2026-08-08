@@ -10,6 +10,8 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Shape extends NativeObject {
 
+    private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_0;
+
     private B3Filter B3Filter_TEMP_GEN_0;
 
     private B3RayResult B3RayResult_TEMP_GEN_0;
@@ -158,6 +160,28 @@ public final class B3Shape extends NativeObject {
 
     public static void internal_native_SetRestitution(long this_addr, float restitution) {
         com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_SetRestitution(this_addr, restitution);
+    }
+
+    public B3SurfaceMaterial GetSurfaceMaterial() {
+        long addr = internal_native_GetSurfaceMaterial_addr(native_address);
+        if (addr == 0)
+            return B3SurfaceMaterial.NULL;
+        if (B3SurfaceMaterial_TEMP_GEN_0 == null)
+            B3SurfaceMaterial_TEMP_GEN_0 = B3SurfaceMaterial.native_new();
+        B3SurfaceMaterial_TEMP_GEN_0.internal_reset(addr, false);
+        return B3SurfaceMaterial_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetSurfaceMaterial_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetSurfaceMaterial_addr(this_addr);
+    }
+
+    public void SetSurfaceMaterial(B3SurfaceMaterial material) {
+        internal_native_SetSurfaceMaterial(native_address, material.native_address);
+    }
+
+    public static void internal_native_SetSurfaceMaterial(long this_addr, long material_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_SetSurfaceMaterial(this_addr, material_addr);
     }
 
     public B3Filter GetFilter() {

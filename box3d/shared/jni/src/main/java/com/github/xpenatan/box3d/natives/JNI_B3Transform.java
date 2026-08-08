@@ -23,4 +23,8 @@ final public class JNI_B3Transform {
     public static native long internal_native_GetQ_addr(long this_addr);
 
     public static native void internal_native_SetQ(long this_addr, long rotation_addr);
+
+    public static native long internal_native_TransformPoint_addr(long this_addr, long point_addr);
+
+    public static native long internal_native_InvMul_addr(long a_addr, long b_addr);
 }

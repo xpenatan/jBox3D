@@ -211,6 +211,20 @@ public final class B3ShapeDef extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shapedef_setinvokecontactcreation")
     public static native void internal_native_SetInvokeContactCreation(long this_addr, boolean invokeContactCreation);
 
+    public boolean GetEnableSpeculativeContact() {
+        return internal_native_GetEnableSpeculativeContact(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shapedef_getenablespeculativecontact")
+    public static native boolean internal_native_GetEnableSpeculativeContact(long this_addr);
+
+    public void SetEnableSpeculativeContact(boolean enabled) {
+        internal_native_SetEnableSpeculativeContact(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shapedef_setenablespeculativecontact")
+    public static native void internal_native_SetEnableSpeculativeContact(long this_addr, boolean enabled);
+
     public boolean GetUpdateBodyMass() {
         return internal_native_GetUpdateBodyMass(native_address);
     }

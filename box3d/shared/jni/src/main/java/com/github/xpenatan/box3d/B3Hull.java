@@ -10,21 +10,7 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Hull extends NativeObject {
 
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_0;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_1;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_2;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_3;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_4;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_5;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_6;
-
-    static private B3Hull B3Hull_TEMP_STATIC_GEN_7;
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
 
     static public final B3Hull NULL = B3Hull.native_new();
 
@@ -63,10 +49,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateBox_addr(hx, hy, hz);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_0 == null)
-            B3Hull_TEMP_STATIC_GEN_0 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_0.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_0;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateBox_addr(float hx, float hy, float hz) {
@@ -77,10 +62,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateOffsetBox_addr(hx, hy, hz, offset.native_address);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_1 == null)
-            B3Hull_TEMP_STATIC_GEN_1 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_1.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_1;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateOffsetBox_addr(float hx, float hy, float hz, long offset_addr) {
@@ -91,10 +75,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateTransformedBox_addr(hx, hy, hz, transform.native_address);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_2 == null)
-            B3Hull_TEMP_STATIC_GEN_2 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_2.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_2;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateTransformedBox_addr(float hx, float hy, float hz, long transform_addr) {
@@ -105,10 +88,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateScaledBox_addr(halfWidths.native_address, transform.native_address, postScale.native_address);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_3 == null)
-            B3Hull_TEMP_STATIC_GEN_3 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_3.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_3;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateScaledBox_addr(long halfWidths_addr, long transform_addr, long postScale_addr) {
@@ -119,10 +101,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateCube_addr(halfWidth);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_4 == null)
-            B3Hull_TEMP_STATIC_GEN_4 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_4.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_4;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateCube_addr(float halfWidth) {
@@ -133,10 +114,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateCylinder_addr(height, radius, yOffset, sides);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_5 == null)
-            B3Hull_TEMP_STATIC_GEN_5 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_5.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_5;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateCylinder_addr(float height, float radius, float yOffset, int sides) {
@@ -147,10 +127,9 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateCone_addr(height, radius1, radius2, slices);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_6 == null)
-            B3Hull_TEMP_STATIC_GEN_6 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_6.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_6;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateCone_addr(float height, float radius1, float radius2, int slices) {
@@ -161,14 +140,39 @@ public final class B3Hull extends NativeObject {
         long addr = internal_native_CreateRock_addr(radius);
         if (addr == 0)
             return B3Hull.NULL;
-        if (B3Hull_TEMP_STATIC_GEN_7 == null)
-            B3Hull_TEMP_STATIC_GEN_7 = B3Hull.native_new();
-        B3Hull_TEMP_STATIC_GEN_7.internal_reset(addr, false);
-        return B3Hull_TEMP_STATIC_GEN_7;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
     }
 
     public static long internal_native_CreateRock_addr(float radius) {
         return com.github.xpenatan.box3d.natives.JNI_B3Hull.internal_native_CreateRock_addr(radius);
+    }
+
+    public static B3Hull CreateFromPoints(B3Vec3Array points, int maxVertexCount) {
+        long addr = internal_native_CreateFromPoints_addr(points.native_address, maxVertexCount);
+        if (addr == 0)
+            return B3Hull.NULL;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
+    }
+
+    public static long internal_native_CreateFromPoints_addr(long points_addr, int maxVertexCount) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Hull.internal_native_CreateFromPoints_addr(points_addr, maxVertexCount);
+    }
+
+    public static B3Hull CloneAndTransform(B3Hull hull, B3Transform transform, B3Vec3 scale) {
+        long addr = internal_native_CloneAndTransform_addr(hull.native_address, transform.native_address, scale.native_address);
+        if (addr == 0)
+            return B3Hull.NULL;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
+    }
+
+    public static long internal_native_CloneAndTransform_addr(long hull_addr, long transform_addr, long scale_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Hull.internal_native_CloneAndTransform_addr(hull_addr, transform_addr, scale_addr);
     }
 
     public boolean IsValid() {
@@ -201,5 +205,19 @@ public final class B3Hull extends NativeObject {
 
     public static int internal_native_GetFaceCount(long this_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3Hull.internal_native_GetFaceCount(this_addr);
+    }
+
+    public B3Vec3 GetPoint(int index) {
+        long addr = internal_native_GetPoint_addr(native_address, index);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetPoint_addr(long this_addr, int index) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Hull.internal_native_GetPoint_addr(this_addr, index);
     }
 }

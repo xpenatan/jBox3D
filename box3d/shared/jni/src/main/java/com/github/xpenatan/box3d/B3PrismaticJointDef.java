@@ -171,6 +171,38 @@ public final class B3PrismaticJointDef extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3PrismaticJointDef.internal_native_SetCollideConnected(this_addr, collide);
     }
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    public static void internal_native_SetForceThreshold(long this_addr, float force) {
+        com.github.xpenatan.box3d.natives.JNI_B3PrismaticJointDef.internal_native_SetForceThreshold(this_addr, force);
+    }
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    public static void internal_native_SetTorqueThreshold(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3PrismaticJointDef.internal_native_SetTorqueThreshold(this_addr, torque);
+    }
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    public static float internal_native_GetConstraintHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3PrismaticJointDef.internal_native_GetConstraintHertz(this_addr);
+    }
+
+    public void SetConstraintHertz(float hertz) {
+        internal_native_SetConstraintHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetConstraintHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3PrismaticJointDef.internal_native_SetConstraintHertz(this_addr, hertz);
+    }
+
     public boolean GetEnableSpring() {
         return internal_native_GetEnableSpring(native_address);
     }

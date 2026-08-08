@@ -66,8 +66,13 @@ public final class GdxBox3DConverter {
         requireNonNull(position, "position");
         requireNonNull(rotation, "rotation");
         requireNonNull(out, "out");
-        out.GetP().Set(position.x, position.y, position.z);
-        out.GetQ().Set(rotation.x, rotation.y, rotation.z, rotation.w);
+        B3Vec3 outPosition = out.GetP();
+        outPosition.Set(position.x, position.y, position.z);
+        out.SetP(outPosition);
+
+        B3Quat outRotation = out.GetQ();
+        outRotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+        out.SetQ(outRotation);
         return out;
     }
 

@@ -12,6 +12,8 @@ public final class B3WorldDef extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     static public final B3WorldDef NULL = B3WorldDef.native_new();
 
     public B3WorldDef() {
@@ -188,4 +190,24 @@ public final class B3WorldDef extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3worlddef_setworkercount")
     public static native void internal_native_SetWorkerCount(long this_addr, int workerCount);
+
+    public B3Capacity GetCapacity() {
+        long addr = internal_native_GetCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3worlddef_getcapacity_addr")
+    public static native long internal_native_GetCapacity_addr(long this_addr);
+
+    public void SetCapacity(B3Capacity capacity) {
+        internal_native_SetCapacity(native_address, capacity.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3worlddef_setcapacity")
+    public static native void internal_native_SetCapacity(long this_addr, long capacity_addr);
 }

@@ -1,9 +1,12 @@
+import org.gradle.language.jvm.tasks.ProcessResources
+
 plugins {
     id("java-library")
 }
 
 val moduleName = "shared-c"
 val generatedTeaVMCResourcesDir = layout.buildDirectory.dir("generated/jparser/resources/main")
+val box3dSourceRoot = project(":box3d:download").layout.buildDirectory.dir("box3d-source")
 
 base {
     archivesName.set(moduleName)
@@ -24,6 +27,15 @@ sourceSets {
 tasks.named("clean") {
     doFirst {
         project.delete(files("$projectDir/src/main/java"))
+    }
+}
+
+tasks.named<ProcessResources>("processResources") {
+    dependsOn(":box3d:download:box3d_download_source")
+    from(box3dSourceRoot) {
+        include("samples/tiny_obj_loader.h")
+        include("samples/earcut.h")
+        into("external_cpp/jparser/box3d/source")
     }
 }
 

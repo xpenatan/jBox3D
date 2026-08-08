@@ -42,6 +42,14 @@ final public class JNI_B3PrismaticJointDef {
 
     public static native void internal_native_SetCollideConnected(long this_addr, boolean collide);
 
+    public static native void internal_native_SetForceThreshold(long this_addr, float force);
+
+    public static native void internal_native_SetTorqueThreshold(long this_addr, float torque);
+
+    public static native float internal_native_GetConstraintHertz(long this_addr);
+
+    public static native void internal_native_SetConstraintHertz(long this_addr, float hertz);
+
     public static native boolean internal_native_GetEnableSpring(long this_addr);
 
     public static native void internal_native_SetEnableSpring(long this_addr, boolean enabled);

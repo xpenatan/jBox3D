@@ -23,7 +23,7 @@ import com.github.xpenatan.box3d.B3WeldJointDef;
 import com.github.xpenatan.box3d.B3WheelJointDef;
 
 final class DistanceJointSample extends AbstractBox3DSample {
-    private static final int COUNT = 8;
+    private static final int COUNT = 1;
 
     DistanceJointSample() {
         addGroundBox(20.0f);
@@ -39,6 +39,10 @@ final class DistanceJointSample extends AbstractBox3DSample {
         jointDef.SetDampingRatio(0.5f);
         jointDef.SetLowerSpringForce(-2000.0f);
         jointDef.SetUpperSpringForce(100.0f);
+        jointDef.SetMinLength(1.0f);
+        jointDef.SetMaxLength(1.0f);
+        jointDef.SetEnableSpring(false);
+        jointDef.SetEnableLimit(false);
 
         B3Body previous = ground;
         for(int i = 0; i < COUNT; i++) {

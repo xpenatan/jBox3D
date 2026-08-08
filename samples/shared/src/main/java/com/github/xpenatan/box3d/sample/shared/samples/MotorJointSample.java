@@ -24,8 +24,6 @@ import com.github.xpenatan.box3d.B3WheelJointDef;
 
 final class MotorJointSample extends AbstractBox3DSample {
     private final B3Body target;
-    private float time;
-
     MotorJointSample() {
         addGroundBox(20.0f);
 
@@ -65,11 +63,9 @@ final class MotorJointSample extends AbstractBox3DSample {
 
     @Override
     public void step(float deltaSeconds) {
-        time += deltaSeconds * 0.75f;
-        B3Vec3 position = new B3Vec3(6.0f * (float)Math.sin(2.0f * time),
-                10.0f + 4.0f * (float)Math.sin(time), 0.0f);
-        B3Quat rotation = rotationZ(2.0f * time);
-        target.SetTransform(position, rotation);
+        B3Vec3 position = new B3Vec3(0.0f, 10.0f, 0.0f);
+        B3Quat rotation = new B3Quat();
+        target.SetTargetTransform(position, rotation, deltaSeconds, true);
         dispose(rotation, position);
         super.step(deltaSeconds);
     }

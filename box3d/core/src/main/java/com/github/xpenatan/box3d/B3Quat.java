@@ -48,4 +48,23 @@ public final class B3Quat extends NativeObject {
 
     public void Set(float x, float y, float z, float w) {
     }
+
+    public void Normalize() {
+    }
+
+    public B3Vec3 RotateVector(B3Vec3 vector) {
+        return null;
+    }
+
+    public static B3Quat ComputeBetweenUnitVectors(B3Vec3 from, B3Vec3 to) {
+        return null;
+    }
+
+    public static B3Quat Mul(B3Quat a, B3Quat b) {
+        return null;
+    }
+
+    public static B3Quat InvMul(B3Quat a, B3Quat b) {
+        return null;
+    }
 }

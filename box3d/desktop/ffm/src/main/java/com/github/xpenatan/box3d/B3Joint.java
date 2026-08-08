@@ -155,6 +155,30 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public float GetPrismaticTranslation() {
+        return internal_native_GetPrismaticTranslation(native_address);
+    }
+
+    public static float internal_native_GetPrismaticTranslation(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticTranslation__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetPrismaticMotorSpeed(float speed) {
+        internal_native_SetPrismaticMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetPrismaticMotorSpeed(long this_addr, float speed) {
+        try {
+            FFMHandles.internal_native_SetPrismaticMotorSpeed__JF.invokeExact(this_addr, speed);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
@@ -162,6 +186,78 @@ public final class B3Joint extends NativeObject {
     public static void internal_native_SetRevoluteTargetAngle(long this_addr, float radians) {
         try {
             FFMHandles.internal_native_SetRevoluteTargetAngle__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetRevoluteMaxMotorTorque(float torque) {
+        internal_native_SetRevoluteMaxMotorTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetRevoluteMaxMotorTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetRevoluteMaxMotorTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetRevoluteSpringHertz(float hertz) {
+        internal_native_SetRevoluteSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetRevoluteSpringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetRevoluteSpringDampingRatio(float dampingRatio) {
+        internal_native_SetRevoluteSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetRevoluteSpringDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetRevoluteSpringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalMaxMotorTorque(float torque) {
+        internal_native_SetSphericalMaxMotorTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetSphericalMaxMotorTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalSpringHertz(float hertz) {
+        internal_native_SetSphericalSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetSphericalSpringHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetSphericalSpringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalSpringDampingRatio(float dampingRatio) {
+        internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetSphericalSpringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -189,6 +285,22 @@ public final class B3Joint extends NativeObject {
 
         static final java.lang.invoke.MethodHandle internal_native_GetLinearSeparation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getlinearseparation", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticTranslation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismatictranslation", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetPrismaticMotorSpeed__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismaticmotorspeed", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
         static final java.lang.invoke.MethodHandle internal_native_SetRevoluteTargetAngle__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutetargetangle", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetRevoluteMaxMotorTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutemaxmotortorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetRevoluteSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutespringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetRevoluteSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutespringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalMaxMotorTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalmaxmotortorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalspringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalspringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
     }
 }

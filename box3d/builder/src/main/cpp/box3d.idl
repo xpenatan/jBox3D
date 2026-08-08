@@ -20,6 +20,11 @@ interface B3Quat {
     float GetS();
     void SetS(float s);
     void Set(float x, float y, float z, float w);
+    void Normalize();
+    [Value] B3Vec3 RotateVector([Const, Ref] B3Vec3 vector);
+    static B3Quat ComputeBetweenUnitVectors([Const, Ref] B3Vec3 from, [Const, Ref] B3Vec3 to); //[-NEW_OBJECT]
+    static B3Quat Mul([Const, Ref] B3Quat a, [Const, Ref] B3Quat b); //[-NEW_OBJECT]
+    static B3Quat InvMul([Const, Ref] B3Quat a, [Const, Ref] B3Quat b); //[-NEW_OBJECT]
 };
 
 [Prefix="JBox3D::"]
@@ -30,6 +35,8 @@ interface B3Transform {
     void SetP([Const, Ref] B3Vec3 position);
     [Value] B3Quat GetQ();
     void SetQ([Const, Ref] B3Quat rotation);
+    [Value] B3Vec3 TransformPoint([Const, Ref] B3Vec3 point);
+    static B3Transform InvMul([Const, Ref] B3Transform a, [Const, Ref] B3Transform b); //[-NEW_OBJECT]
 };
 
 [Prefix="JBox3D::"]
@@ -98,6 +105,8 @@ interface B3DistanceJointDef {
     void SetDrawScale(float scale);
     boolean GetCollideConnected();
     void SetCollideConnected(boolean collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
     float GetConstraintHertz();
     void SetConstraintHertz(float hertz);
     float GetConstraintDampingRatio();
@@ -209,6 +218,10 @@ interface B3PrismaticJointDef {
     void SetDrawScale(float scale);
     boolean GetCollideConnected();
     void SetCollideConnected(boolean collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
+    float GetConstraintHertz();
+    void SetConstraintHertz(float hertz);
     boolean GetEnableSpring();
     void SetEnableSpring(boolean enabled);
     float GetHertz();
@@ -258,6 +271,16 @@ interface B3SphericalJointDef {
     void SetHertz(float hertz);
     float GetDampingRatio();
     void SetDampingRatio(float ratio);
+    boolean GetEnableConeLimit();
+    void SetEnableConeLimit(boolean enabled);
+    float GetConeAngle();
+    void SetConeAngle(float radians);
+    boolean GetEnableTwistLimit();
+    void SetEnableTwistLimit(boolean enabled);
+    float GetLowerTwistAngle();
+    void SetLowerTwistAngle(float radians);
+    float GetUpperTwistAngle();
+    void SetUpperTwistAngle(float radians);
     boolean GetEnableMotor();
     void SetEnableMotor(boolean enabled);
     float GetMaxMotorTorque();
@@ -283,6 +306,8 @@ interface B3RevoluteJointDef {
     void SetDrawScale(float scale);
     boolean GetCollideConnected();
     void SetCollideConnected(boolean collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
     float GetConstraintHertz();
     void SetConstraintHertz(float hertz);
     float GetConstraintDampingRatio();
@@ -326,6 +351,8 @@ interface B3WeldJointDef {
     void SetDrawScale(float scale);
     boolean GetCollideConnected();
     void SetCollideConnected(boolean collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
     float GetConstraintHertz();
     void SetConstraintHertz(float hertz);
     float GetConstraintDampingRatio();
@@ -471,6 +498,36 @@ interface B3SurfaceMaterial {
 };
 
 [Prefix="JBox3D::"]
+interface B3Capacity {
+    void B3Capacity();
+    long GetStaticShapeCount();
+    void SetStaticShapeCount(long count);
+    long GetDynamicShapeCount();
+    void SetDynamicShapeCount(long count);
+    long GetStaticBodyCount();
+    void SetStaticBodyCount(long count);
+    long GetDynamicBodyCount();
+    void SetDynamicBodyCount(long count);
+    long GetContactCount();
+    void SetContactCount(long count);
+};
+
+[Prefix="JBox3D::"]
+interface B3ExplosionDef {
+    void B3ExplosionDef();
+    long long GetMaskBits();
+    void SetMaskBits(long long maskBits);
+    [Value] B3Vec3 GetPosition();
+    void SetPosition([Const, Ref] B3Vec3 position);
+    float GetRadius();
+    void SetRadius(float radius);
+    float GetFalloff();
+    void SetFalloff(float falloff);
+    float GetImpulsePerArea();
+    void SetImpulsePerArea(float impulse);
+};
+
+[Prefix="JBox3D::"]
 interface B3WorldDef {
     void B3WorldDef();
     [Value] B3Vec3 GetGravity();
@@ -493,6 +550,8 @@ interface B3WorldDef {
     void SetEnableContinuous(boolean enabled);
     long GetWorkerCount();
     void SetWorkerCount(long workerCount);
+    [Value] B3Capacity GetCapacity();
+    void SetCapacity([Const, Ref] B3Capacity capacity);
 };
 
 [Prefix="JBox3D::"]
@@ -557,6 +616,8 @@ interface B3ShapeDef {
     void SetEnablePreSolveEvents(boolean enabled);
     boolean GetInvokeContactCreation();
     void SetInvokeContactCreation(boolean invokeContactCreation);
+    boolean GetEnableSpeculativeContact();
+    void SetEnableSpeculativeContact(boolean enabled);
     boolean GetUpdateBodyMass();
     void SetUpdateBodyMass(boolean updateBodyMass);
 };
@@ -599,6 +660,19 @@ interface B3BodyEvents {
     void B3BodyEvents();
     long GetMoveCount();
     [Value] B3BodyMoveEvent GetMoveEvent(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3JointEvent {
+    void B3JointEvent();
+    long long GetJointId();
+};
+
+[Prefix="JBox3D::"]
+interface B3JointEvents {
+    void B3JointEvents();
+    long GetCount();
+    [Value] B3JointEvent GetEvent(long index);
 };
 
 [Prefix="JBox3D::"]
@@ -665,20 +739,233 @@ interface B3ContactEvents {
 };
 
 [Prefix="JBox3D::"]
+interface B3Vec3Array {
+    void B3Vec3Array(long size);
+    long GetSize();
+    [Value] B3Vec3 GetValue(long index);
+    void SetValue(long index, [Const, Ref] B3Vec3 value);
+};
+
+[Prefix="JBox3D::"]
 interface B3Hull {
     void B3Hull();
-    static B3Hull CreateBox(float hx, float hy, float hz);
-    static B3Hull CreateOffsetBox(float hx, float hy, float hz, [Const, Ref] B3Vec3 offset);
-    static B3Hull CreateTransformedBox(float hx, float hy, float hz, [Const, Ref] B3Transform transform);
-    static B3Hull CreateScaledBox([Const, Ref] B3Vec3 halfWidths, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 postScale);
-    static B3Hull CreateCube(float halfWidth);
-    static B3Hull CreateCylinder(float height, float radius, float yOffset, long sides);
-    static B3Hull CreateCone(float height, float radius1, float radius2, long slices);
-    static B3Hull CreateRock(float radius);
+    static B3Hull CreateBox(float hx, float hy, float hz); //[-NEW_OBJECT]
+    static B3Hull CreateOffsetBox(float hx, float hy, float hz, [Const, Ref] B3Vec3 offset); //[-NEW_OBJECT]
+    static B3Hull CreateTransformedBox(float hx, float hy, float hz, [Const, Ref] B3Transform transform); //[-NEW_OBJECT]
+    static B3Hull CreateScaledBox([Const, Ref] B3Vec3 halfWidths, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 postScale); //[-NEW_OBJECT]
+    static B3Hull CreateCube(float halfWidth); //[-NEW_OBJECT]
+    static B3Hull CreateCylinder(float height, float radius, float yOffset, long sides); //[-NEW_OBJECT]
+    static B3Hull CreateCone(float height, float radius1, float radius2, long slices); //[-NEW_OBJECT]
+    static B3Hull CreateRock(float radius); //[-NEW_OBJECT]
+    static B3Hull CreateFromPoints([Const, Ref] B3Vec3Array points, long maxVertexCount); //[-NEW_OBJECT]
+    static B3Hull CloneAndTransform([Const, Ref] B3Hull hull, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 scale); //[-NEW_OBJECT]
     boolean IsValid();
     void Destroy();
     long GetVertexCount();
     long GetFaceCount();
+    [Value] B3Vec3 GetPoint(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3ShapeProxy {
+    void B3ShapeProxy([Const, Ref] B3Vec3Array points, long count, float radius);
+    void B3ShapeProxy([Const, Ref] B3Hull hull, float radius);
+    long GetCount();
+    float GetRadius();
+};
+
+[Prefix="JBox3D::"]
+interface B3LocalManifoldPoint {
+    void B3LocalManifoldPoint();
+    [Value] B3Vec3 GetPoint();
+    float GetSeparation();
+    long GetOwner1();
+    long GetIndex1();
+    long GetOwner2();
+    long GetIndex2();
+    long GetTriangleIndex();
+};
+
+[Prefix="JBox3D::"]
+interface B3LocalManifold {
+    void B3LocalManifold(long capacity);
+    [Value] B3Vec3 GetNormal();
+    [Value] B3Vec3 GetTriangleNormal();
+    long GetPointCount();
+    [Value] B3LocalManifoldPoint GetPoint(long index);
+    long GetFeature();
+    long GetTriangleIndex();
+};
+
+[Prefix="JBox3D::"]
+interface B3DistanceOutput {
+    void B3DistanceOutput();
+    [Value] B3Vec3 GetPointA();
+    [Value] B3Vec3 GetPointB();
+    [Value] B3Vec3 GetNormal();
+    float GetDistance();
+    long GetIterations();
+    long GetSimplexCount();
+};
+
+[Prefix="JBox3D::"]
+interface B3CastOutput {
+    void B3CastOutput();
+    [Value] B3Vec3 GetNormal();
+    [Value] B3Vec3 GetPoint();
+    float GetFraction();
+    long GetIterations();
+    boolean GetHit();
+};
+
+[Prefix="JBox3D::"]
+interface B3Sweep {
+    void B3Sweep();
+    [Value] B3Vec3 GetLocalCenter();
+    void SetLocalCenter([Const, Ref] B3Vec3 center);
+    [Value] B3Vec3 GetC1();
+    void SetC1([Const, Ref] B3Vec3 center);
+    [Value] B3Vec3 GetC2();
+    void SetC2([Const, Ref] B3Vec3 center);
+    [Value] B3Quat GetQ1();
+    void SetQ1([Const, Ref] B3Quat rotation);
+    [Value] B3Quat GetQ2();
+    void SetQ2([Const, Ref] B3Quat rotation);
+    [Value] B3Transform GetTransform(float fraction);
+};
+
+[Prefix="JBox3D::"]
+interface B3TOIOutput {
+    void B3TOIOutput();
+    long GetState();
+    [Value] B3Vec3 GetPoint();
+    [Value] B3Vec3 GetNormal();
+    float GetFraction();
+    float GetDistance();
+    long GetDistanceIterations();
+    long GetPushBackIterations();
+    long GetRootIterations();
+    boolean GetUsedFallback();
+};
+
+[Prefix="JBox3D::"]
+interface B3MoverPlaneResult {
+    void B3MoverPlaneResult();
+    long long GetShapeId();
+    [Value] B3Vec3 GetNormal();
+    float GetOffset();
+    [Value] B3Vec3 GetPoint();
+};
+
+[Prefix="JBox3D::"]
+interface B3MoverCollision {
+    void B3MoverCollision();
+    long GetCount();
+    [Value] B3MoverPlaneResult GetResult(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3PlaneSolverResult {
+    void B3PlaneSolverResult();
+    [Value] B3Vec3 GetDelta();
+    long GetIterationCount();
+};
+
+[Prefix="JBox3D::"]
+interface B3Collision {
+    static B3LocalManifold CollideSpheres(long capacity, [Const, Ref] B3Sphere sphereA, [Const, Ref] B3Sphere sphereB, [Const, Ref] B3Transform transformBtoA); //[-NEW_OBJECT]
+    static B3LocalManifold CollideCapsuleAndSphere(long capacity, [Const, Ref] B3Capsule capsuleA, [Const, Ref] B3Sphere sphereB, [Const, Ref] B3Transform transformBtoA); //[-NEW_OBJECT]
+    static B3LocalManifold CollideHullAndSphere(long capacity, [Const, Ref] B3Hull hullA, [Const, Ref] B3Sphere sphereB, [Const, Ref] B3Transform transformBtoA); //[-NEW_OBJECT]
+    static B3LocalManifold CollideCapsules(long capacity, [Const, Ref] B3Capsule capsuleA, [Const, Ref] B3Capsule capsuleB, [Const, Ref] B3Transform transformBtoA); //[-NEW_OBJECT]
+    static B3LocalManifold CollideHullAndCapsule(long capacity, [Const, Ref] B3Hull hullA, [Const, Ref] B3Capsule capsuleB, [Const, Ref] B3Transform transformBtoA); //[-NEW_OBJECT]
+    static B3LocalManifold CollideHulls(long capacity, [Const, Ref] B3Hull hullA, [Const, Ref] B3Hull hullB, [Const, Ref] B3Transform transformBtoA); //[-NEW_OBJECT]
+    static B3LocalManifold CollideTriangleAndSphere(long capacity, [Const, Ref] B3Vec3Array triangleA, [Const, Ref] B3Sphere sphereB); //[-NEW_OBJECT]
+    static B3LocalManifold CollideTriangleAndCapsule(long capacity, [Const, Ref] B3Vec3Array triangleA, [Const, Ref] B3Capsule capsuleB); //[-NEW_OBJECT]
+    static B3LocalManifold CollideTriangleAndHull(long capacity, [Const, Ref] B3Vec3Array triangleA, long triangleFlags, [Const, Ref] B3Hull hullB, boolean enableSpeculative); //[-NEW_OBJECT]
+    [Value] static B3DistanceOutput ShapeDistance([Const, Ref] B3ShapeProxy proxyA, [Const, Ref] B3ShapeProxy proxyB, [Const, Ref] B3Transform transformBtoA, boolean useRadii);
+    [Value] static B3CastOutput ShapeCast([Const, Ref] B3ShapeProxy proxyA, [Const, Ref] B3ShapeProxy proxyB, [Const, Ref] B3Transform transformBtoA, [Const, Ref] B3Vec3 translationB, float maxFraction, boolean canEncroach);
+    [Value] static B3TOIOutput TimeOfImpact([Const, Ref] B3ShapeProxy proxyA, [Const, Ref] B3ShapeProxy proxyB, [Const, Ref] B3Sweep sweepA, [Const, Ref] B3Sweep sweepB, float maxFraction);
+    [Value] static B3PlaneSolverResult SolveMoverPlanes([Const, Ref] B3Vec3 targetDelta, [Const, Ref] B3MoverCollision collision);
+    [Value] static B3Vec3 ClipVectorToMoverPlanes([Const, Ref] B3Vec3 vector, [Const, Ref] B3MoverCollision collision);
+};
+
+[Prefix="JBox3D::"]
+interface B3MeshDef {
+    void B3MeshDef(long vertexCapacity, long triangleCapacity);
+    void AddVertex([Const, Ref] B3Vec3 vertex);
+    void AddTriangle(long index1, long index2, long index3, long materialIndex);
+    float GetWeldTolerance();
+    void SetWeldTolerance(float tolerance);
+    boolean GetWeldVertices();
+    void SetWeldVertices(boolean enabled);
+    boolean GetUseMedianSplit();
+    void SetUseMedianSplit(boolean enabled);
+    boolean GetIdentifyEdges();
+    void SetIdentifyEdges(boolean enabled);
+    long GetVertexCount();
+    long GetTriangleCount();
+};
+
+[Prefix="JBox3D::"]
+interface B3Mesh {
+    void B3Mesh();
+    static B3Mesh CreateFromDef([Const, Ref] B3MeshDef def); //[-NEW_OBJECT]
+    static B3Mesh CreateFromObj([Const] DOMString objText, float scale, boolean zUp, boolean useMedianSplit, boolean identifyEdges, boolean weldVertices, float weldTolerance); //[-NEW_OBJECT]
+    static B3Mesh CreateBox([Const, Ref] B3Vec3 center, [Const, Ref] B3Vec3 extents, boolean identifyEdges); //[-NEW_OBJECT]
+    static B3Mesh CreateHollowBox([Const, Ref] B3Vec3 center, [Const, Ref] B3Vec3 extents); //[-NEW_OBJECT]
+    static B3Mesh CreatePlatform([Const, Ref] B3Vec3 center, float height, float topWidth, float bottomWidth); //[-NEW_OBJECT]
+    static B3Mesh CreateGrid(long xCount, long zCount, float cellWidth, long materialCount, boolean identifyEdges); //[-NEW_OBJECT]
+    static B3Mesh CreateWave(long xCount, long zCount, float cellWidth, float amplitude, float rowFrequency, float columnFrequency); //[-NEW_OBJECT]
+    static B3Mesh CreateTorus(long radialResolution, long tubularResolution, float radius, float thickness); //[-NEW_OBJECT]
+    boolean IsValid();
+    void Destroy();
+    long GetVertexCount();
+    long GetTriangleCount();
+    long GetMaterialCount();
+    long GetTriangleMaterialIndex(long triangleIndex);
+    void SetTriangleMaterialIndex(long triangleIndex, long materialIndex);
+};
+
+[Prefix="JBox3D::"]
+interface B3HeightField {
+    void B3HeightField();
+    static B3HeightField CreateGrid(long rowCount, long columnCount, [Const, Ref] B3Vec3 scale, boolean makeHoles); //[-NEW_OBJECT]
+    static B3HeightField CreateWave(long rowCount, long columnCount, [Const, Ref] B3Vec3 scale, float rowFrequency, float columnFrequency, boolean makeHoles); //[-NEW_OBJECT]
+    boolean IsValid();
+    void Destroy();
+};
+
+[Prefix="JBox3D::"]
+interface B3SurfaceMaterialArray {
+    void B3SurfaceMaterialArray(long size);
+    long GetSize();
+    [Value] B3SurfaceMaterial GetValue(long index);
+    void SetValue(long index, [Const, Ref] B3SurfaceMaterial material);
+};
+
+[Prefix="JBox3D::"]
+interface B3CompoundDef {
+    void B3CompoundDef(long capsuleCapacity, long hullCapacity, long meshCapacity, long sphereCapacity);
+    void AddCapsule([Const, Ref] B3Capsule capsule, [Const, Ref] B3SurfaceMaterial material);
+    void AddHull([Const, Ref] B3Hull hull, [Const, Ref] B3Transform transform, [Const, Ref] B3SurfaceMaterial material);
+    void AddMesh([Const, Ref] B3Mesh mesh, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 scale, [Const, Ref] B3SurfaceMaterialArray materials);
+    void AddSphere([Const, Ref] B3Sphere sphere, [Const, Ref] B3SurfaceMaterial material);
+    long GetCapsuleCount();
+    long GetHullCount();
+    long GetMeshCount();
+    long GetSphereCount();
+};
+
+[Prefix="JBox3D::"]
+interface B3Compound {
+    void B3Compound();
+    static B3Compound CreateFromDef([Const, Ref] B3CompoundDef def); //[-NEW_OBJECT]
+    boolean IsValid();
+    void Destroy();
+    long GetCapsuleCount();
+    long GetHullCount();
+    long GetMeshCount();
+    long GetSphereCount();
 };
 
 [Prefix="JBox3D::"]
@@ -693,6 +980,8 @@ interface B3Body {
     [Value] B3Vec3 GetPosition();
     [Value] B3Quat GetRotation();
     [Value] B3Transform GetTransform();
+    [Value] B3Vec3 GetWorldCenter();
+    [Value] B3Vec3 GetLocalPoint([Const, Ref] B3Vec3 worldPoint);
     void SetTransform([Const, Ref] B3Vec3 position, [Const, Ref] B3Quat rotation);
     void SetTargetTransform([Const, Ref] B3Vec3 position, [Const, Ref] B3Quat rotation, float timeStep, boolean wake);
     [Value] B3Vec3 GetLinearVelocity();
@@ -708,6 +997,10 @@ interface B3Body {
     float GetMass();
     float GetInverseMass();
     void ApplyMassFromShapes();
+    [Value] B3Vec3 GetLocalRotationalInertiaColumnX();
+    [Value] B3Vec3 GetLocalRotationalInertiaColumnY();
+    [Value] B3Vec3 GetLocalRotationalInertiaColumnZ();
+    void SetMassData(float mass, [Const, Ref] B3Vec3 center, [Const, Ref] B3Vec3 inertiaColumnX, [Const, Ref] B3Vec3 inertiaColumnY, [Const, Ref] B3Vec3 inertiaColumnZ);
     float GetLinearDamping();
     void SetLinearDamping(float damping);
     float GetAngularDamping();
@@ -716,6 +1009,7 @@ interface B3Body {
     void SetGravityScale(float scale);
     boolean IsAwake();
     void SetAwake(boolean awake);
+    [Value] B3RayResult CastRay([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter, float maxFraction, [Const, Ref] B3Transform bodyTransform);
     boolean IsEnabled();
     void Disable();
     void Enable();
@@ -725,9 +1019,14 @@ interface B3Body {
     void SetBullet(boolean bullet);
     long GetShapeCount();
     [Value] B3AABB ComputeAABB();
-    B3Shape CreateSphereShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Sphere sphere);
-    B3Shape CreateCapsuleShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Capsule capsule);
-    B3Shape CreateHullShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Hull hull);
+    B3Shape CreateSphereShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Sphere sphere); //[-NEW_OBJECT]
+    B3Shape CreateCapsuleShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Capsule capsule); //[-NEW_OBJECT]
+    B3Shape CreateHullShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Hull hull); //[-NEW_OBJECT]
+    B3Shape CreateTransformedHullShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Hull hull, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 scale); //[-NEW_OBJECT]
+    B3Shape CreateMeshShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3Mesh mesh, [Const, Ref] B3Vec3 scale); //[-NEW_OBJECT]
+    B3Shape CreateMeshShapeWithMaterials([Const, Ref] B3ShapeDef def, [Const, Ref] B3Mesh mesh, [Const, Ref] B3Vec3 scale, [Const, Ref] B3SurfaceMaterialArray materials); //[-NEW_OBJECT]
+    B3Shape CreateHeightFieldShape([Const, Ref] B3ShapeDef def, [Const, Ref] B3HeightField heightField); //[-NEW_OBJECT]
+    B3Shape CreateBakedCompoundShape([Ref] B3ShapeDef def, [Const, Ref] B3Compound compound); //[-NEW_OBJECT]
 };
 
 [Prefix="JBox3D::"]
@@ -741,7 +1040,15 @@ interface B3Joint {
     long long GetBodyIdB();
     void WakeBodies();
     float GetLinearSeparation();
+    float GetPrismaticTranslation();
+    void SetPrismaticMotorSpeed(float speed);
     void SetRevoluteTargetAngle(float radians);
+    void SetRevoluteMaxMotorTorque(float torque);
+    void SetRevoluteSpringHertz(float hertz);
+    void SetRevoluteSpringDampingRatio(float dampingRatio);
+    void SetSphericalMaxMotorTorque(float torque);
+    void SetSphericalSpringHertz(float hertz);
+    void SetSphericalSpringDampingRatio(float dampingRatio);
 };
 
 [Prefix="JBox3D::"]
@@ -760,6 +1067,8 @@ interface B3Shape {
     void SetFriction(float friction);
     float GetRestitution();
     void SetRestitution(float restitution);
+    [Value] B3SurfaceMaterial GetSurfaceMaterial();
+    void SetSurfaceMaterial([Const, Ref] B3SurfaceMaterial material);
     [Value] B3Filter GetFilter();
     void SetFilter([Const, Ref] B3Filter filter, boolean invokeContacts);
     void EnableSensorEvents(boolean enabled);
@@ -776,6 +1085,16 @@ interface B3Shape {
     [Value] B3AABB GetAABB();
     [Value] B3Vec3 GetClosestPoint([Const, Ref] B3Vec3 target);
     void ApplyWind([Const, Ref] B3Vec3 wind, float drag, float lift, float maxSpeed, boolean wake);
+};
+
+[Prefix="JBox3D::"]
+interface B3CustomFilterEm {
+};
+
+[JSImplementation="B3CustomFilterEm"]
+interface B3CustomFilterImplCustom : B3CustomFilterEm {
+    void B3CustomFilterImplCustom();
+    boolean Filter(long long shapeIdA, long long shapeIdB);
 };
 
 [Prefix="JBox3D::"]
@@ -801,20 +1120,39 @@ interface B3World {
     long GetWorkerCount();
     void SetWorkerCount(long workerCount);
     long GetAwakeBodyCount();
-    B3Body CreateBody([Const, Ref] B3BodyDef def);
-    B3Joint CreateDistanceJoint([Const, Ref] B3DistanceJointDef def);
-    B3Joint CreateMotorJoint([Const, Ref] B3MotorJointDef def);
-    B3Joint CreateParallelJoint([Const, Ref] B3ParallelJointDef def);
-    B3Joint CreatePrismaticJoint([Const, Ref] B3PrismaticJointDef def);
-    B3Joint CreateSphericalJoint([Const, Ref] B3SphericalJointDef def);
-    B3Joint CreateRevoluteJoint([Const, Ref] B3RevoluteJointDef def);
-    B3Joint CreateWeldJoint([Const, Ref] B3WeldJointDef def);
-    B3Joint CreateFilterJoint([Const, Ref] B3FilterJointDef def);
-    B3Joint CreateWheelJoint([Const, Ref] B3WheelJointDef def);
-    B3BodyEvents GetBodyEvents();
-    B3SensorEvents GetSensorEvents();
-    B3ContactEvents GetContactEvents();
+    void Explode([Const, Ref] B3ExplosionDef def);
+    void SetCustomFilterCallback(B3CustomFilterEm callback);
+    void ClearDebugOverlay();
+    void AddDebugSegment([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, long color);
+    void AddDebugPoint([Const, Ref] B3Vec3 point, float size, long color);
+    void AddDebugSphere([Const, Ref] B3Vec3 center, float radius, long color, float alpha);
+    void AddDebugCapsule([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, float radius, long color, float alpha);
+    void AddDebugBounds([Const, Ref] B3AABB bounds, long color);
+    void AddDebugBox([Const, Ref] B3Vec3 extents, [Const, Ref] B3Transform transform, long color);
+    void AddDebugHull([Const, Ref] B3Hull hull, [Const, Ref] B3Transform transform, [Const, Ref] B3Vec3 scale, long color);
+    void AddDebugTriangle([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, [Const, Ref] B3Vec3 p3, long color);
+    B3Body CreateBody([Const, Ref] B3BodyDef def); //[-NEW_OBJECT]
+    B3Joint CreateDistanceJoint([Const, Ref] B3DistanceJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateMotorJoint([Const, Ref] B3MotorJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateParallelJoint([Const, Ref] B3ParallelJointDef def); //[-NEW_OBJECT]
+    B3Joint CreatePrismaticJoint([Const, Ref] B3PrismaticJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateSphericalJoint([Const, Ref] B3SphericalJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateRevoluteJoint([Const, Ref] B3RevoluteJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateWeldJoint([Const, Ref] B3WeldJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateFilterJoint([Const, Ref] B3FilterJointDef def); //[-NEW_OBJECT]
+    B3Joint CreateWheelJoint([Const, Ref] B3WheelJointDef def); //[-NEW_OBJECT]
+    B3BodyEvents GetBodyEvents(); //[-NEW_OBJECT]
+    B3JointEvents GetJointEvents(); //[-NEW_OBJECT]
+    B3SensorEvents GetSensorEvents(); //[-NEW_OBJECT]
+    B3ContactEvents GetContactEvents(); //[-NEW_OBJECT]
     [Value] B3RayResult CastRayClosest([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
+    long CountOverlapsAABB([Const, Ref] B3AABB bounds, [Const, Ref] B3QueryFilter filter);
+    [Value] B3RayResult CastSphereClosest([Const, Ref] B3Vec3 origin, float radius, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
+    [Value] B3RayResult CastShapeClosest([Const, Ref] B3Vec3 origin, [Const, Ref] B3ShapeProxy proxy, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter, boolean initialOverlap);
+    boolean OverlapShape([Const, Ref] B3Vec3 origin, [Const, Ref] B3ShapeProxy proxy, [Const, Ref] B3QueryFilter filter);
+    B3MoverCollision CollideMover([Const, Ref] B3Vec3 origin, [Const, Ref] B3Capsule mover, [Const, Ref] B3QueryFilter filter, long capacity); //[-NEW_OBJECT]
+    float CastMover([Const, Ref] B3Vec3 origin, [Const, Ref] B3Capsule mover, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
+    float CastSphereClosestFraction([Const, Ref] B3Vec3 origin, float radius, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
 };
 
 [Prefix="JBox3D::"]
@@ -869,6 +1207,7 @@ interface B3DebugDrawImplCustom : B3DebugDrawEm {
 
 [Prefix="JBox3D::"]
 interface B3 {
+    static boolean IsDoublePrecision();
     static long StaticBody();
     static long KinematicBody();
     static long DynamicBody();
@@ -880,5 +1219,7 @@ interface B3 {
     static long SphereShape();
     static long GetWorldCount();
     static long GetMaxWorldCount();
+    static float GetStallThreshold();
+    static void SetStallThreshold(float seconds);
     static long long DefaultMaskBits();
 };

@@ -32,6 +32,10 @@ final public class JNI_B3Body {
 
     public static native long internal_native_GetTransform_addr(long this_addr);
 
+    public static native long internal_native_GetWorldCenter_addr(long this_addr);
+
+    public static native long internal_native_GetLocalPoint_addr(long this_addr, long worldPoint_addr);
+
     public static native void internal_native_SetTransform(long this_addr, long position_addr, long rotation_addr);
 
     public static native void internal_native_SetTargetTransform(long this_addr, long position_addr, long rotation_addr, float timeStep, boolean wake);
@@ -62,6 +66,14 @@ final public class JNI_B3Body {
 
     public static native void internal_native_ApplyMassFromShapes(long this_addr);
 
+    public static native long internal_native_GetLocalRotationalInertiaColumnX_addr(long this_addr);
+
+    public static native long internal_native_GetLocalRotationalInertiaColumnY_addr(long this_addr);
+
+    public static native long internal_native_GetLocalRotationalInertiaColumnZ_addr(long this_addr);
+
+    public static native void internal_native_SetMassData(long this_addr, float mass, long center_addr, long inertiaColumnX_addr, long inertiaColumnY_addr, long inertiaColumnZ_addr);
+
     public static native float internal_native_GetLinearDamping(long this_addr);
 
     public static native void internal_native_SetLinearDamping(long this_addr, float damping);
@@ -77,6 +89,8 @@ final public class JNI_B3Body {
     public static native boolean internal_native_IsAwake(long this_addr);
 
     public static native void internal_native_SetAwake(long this_addr, boolean awake);
+
+    public static native long internal_native_CastRay_addr(long this_addr, long origin_addr, long translation_addr, long filter_addr, float maxFraction, long bodyTransform_addr);
 
     public static native boolean internal_native_IsEnabled(long this_addr);
 
@@ -101,4 +115,14 @@ final public class JNI_B3Body {
     public static native long internal_native_CreateCapsuleShape_addr(long this_addr, long def_addr, long capsule_addr);
 
     public static native long internal_native_CreateHullShape_addr(long this_addr, long def_addr, long hull_addr);
+
+    public static native long internal_native_CreateTransformedHullShape_addr(long this_addr, long def_addr, long hull_addr, long transform_addr, long scale_addr);
+
+    public static native long internal_native_CreateMeshShape_addr(long this_addr, long def_addr, long mesh_addr, long scale_addr);
+
+    public static native long internal_native_CreateMeshShapeWithMaterials_addr(long this_addr, long def_addr, long mesh_addr, long scale_addr, long materials_addr);
+
+    public static native long internal_native_CreateHeightFieldShape_addr(long this_addr, long def_addr, long heightField_addr);
+
+    public static native long internal_native_CreateBakedCompoundShape_addr(long this_addr, long def_addr, long compound_addr);
 }

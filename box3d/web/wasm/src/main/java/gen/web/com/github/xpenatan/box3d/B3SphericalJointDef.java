@@ -227,6 +227,76 @@ public final class B3SphericalJointDef extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "ratio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);jsObj.SetDampingRatio(ratio);")
     public static native void internal_native_SetDampingRatio(int this_addr, float ratio);
 
+    public boolean GetEnableConeLimit() {
+        return internal_native_GetEnableConeLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);var returnedJSObj = jsObj.GetEnableConeLimit();return returnedJSObj;")
+    public static native boolean internal_native_GetEnableConeLimit(int this_addr);
+
+    public void SetEnableConeLimit(boolean enabled) {
+        internal_native_SetEnableConeLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);jsObj.SetEnableConeLimit(enabled);")
+    public static native void internal_native_SetEnableConeLimit(int this_addr, boolean enabled);
+
+    public float GetConeAngle() {
+        return internal_native_GetConeAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);var returnedJSObj = jsObj.GetConeAngle();return returnedJSObj;")
+    public static native float internal_native_GetConeAngle(int this_addr);
+
+    public void SetConeAngle(float radians) {
+        internal_native_SetConeAngle(native_address, radians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);jsObj.SetConeAngle(radians);")
+    public static native void internal_native_SetConeAngle(int this_addr, float radians);
+
+    public boolean GetEnableTwistLimit() {
+        return internal_native_GetEnableTwistLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);var returnedJSObj = jsObj.GetEnableTwistLimit();return returnedJSObj;")
+    public static native boolean internal_native_GetEnableTwistLimit(int this_addr);
+
+    public void SetEnableTwistLimit(boolean enabled) {
+        internal_native_SetEnableTwistLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);jsObj.SetEnableTwistLimit(enabled);")
+    public static native void internal_native_SetEnableTwistLimit(int this_addr, boolean enabled);
+
+    public float GetLowerTwistAngle() {
+        return internal_native_GetLowerTwistAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);var returnedJSObj = jsObj.GetLowerTwistAngle();return returnedJSObj;")
+    public static native float internal_native_GetLowerTwistAngle(int this_addr);
+
+    public void SetLowerTwistAngle(float radians) {
+        internal_native_SetLowerTwistAngle(native_address, radians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);jsObj.SetLowerTwistAngle(radians);")
+    public static native void internal_native_SetLowerTwistAngle(int this_addr, float radians);
+
+    public float GetUpperTwistAngle() {
+        return internal_native_GetUpperTwistAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);var returnedJSObj = jsObj.GetUpperTwistAngle();return returnedJSObj;")
+    public static native float internal_native_GetUpperTwistAngle(int this_addr);
+
+    public void SetUpperTwistAngle(float radians) {
+        internal_native_SetUpperTwistAngle(native_address, radians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3SphericalJointDef);jsObj.SetUpperTwistAngle(radians);")
+    public static native void internal_native_SetUpperTwistAngle(int this_addr, float radians);
+
     public boolean GetEnableMotor() {
         return internal_native_GetEnableMotor(native_address);
     }

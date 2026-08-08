@@ -33,6 +33,13 @@ public final class B3 extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_deletenative")
     public static native void internal_native_deleteNative(long this_addr);
 
+    public static boolean IsDoublePrecision() {
+        return internal_native_IsDoublePrecision();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isdoubleprecision")
+    public static native boolean internal_native_IsDoublePrecision();
+
     public static int StaticBody() {
         return internal_native_StaticBody();
     }
@@ -109,6 +116,20 @@ public final class B3 extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getmaxworldcount")
     public static native int internal_native_GetMaxWorldCount();
+
+    public static float GetStallThreshold() {
+        return internal_native_GetStallThreshold();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getstallthreshold")
+    public static native float internal_native_GetStallThreshold();
+
+    public static void SetStallThreshold(float seconds) {
+        internal_native_SetStallThreshold(seconds);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_setstallthreshold")
+    public static native void internal_native_SetStallThreshold(float seconds);
 
     public static long DefaultMaskBits() {
         return internal_native_DefaultMaskBits();

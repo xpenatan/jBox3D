@@ -1,27 +1,16 @@
 package com.github.xpenatan.box3d.sample.shared.samples;
 
-import com.github.xpenatan.box3d.B3;
-import com.github.xpenatan.box3d.B3Body;
-import com.github.xpenatan.box3d.B3BodyDef;
-import com.github.xpenatan.box3d.B3Capsule;
-import com.github.xpenatan.box3d.B3Hull;
-import com.github.xpenatan.box3d.B3PrismaticJointDef;
-import com.github.xpenatan.box3d.B3Quat;
-import com.github.xpenatan.box3d.B3QueryFilter;
-import com.github.xpenatan.box3d.B3Shape;
-import com.github.xpenatan.box3d.B3ShapeDef;
-import com.github.xpenatan.box3d.B3Sphere;
 import com.github.xpenatan.box3d.B3Vec3;
-import com.github.xpenatan.box3d.B3WheelJointDef;
 
+/** Exact default state of Collision / Cast World at the pinned Box3D commit. */
 final class CastWorldSample extends AbstractBox3DSample {
     CastWorldSample() {
-        addGroundBox(26.0f);
-        DiagnosticUtil.addMixedObstacleField(this);
-        B3Vec3 velocity = new B3Vec3(70.0f, 0.0f, 0.0f);
-        B3Body cast = addDynamicBox(-17.0f, 6.5f, 0.0f, 0.6f, 0.3f, 0.6f, null, 2.0f, 0.5f,
-                0.0f, 0.0f, velocity, null);
-        cast.SetBullet(true);
-        dispose(velocity);
+        B3Vec3 origin = new B3Vec3(-20.0f, 10.0f, 0.0f);
+        B3Vec3 end = new B3Vec3(0.0f, 20.0f, 0.0f);
+        world().AddDebugSegment(origin, end, 0x00FFFF);
+        world().AddDebugPoint(origin, 10.0f, 0x008000);
+        addDebugGroundGrid(10);
+        addDebugAxes(0.0f, 0.0f, 0.0f, 1.0f);
+        dispose(end, origin);
     }
 }

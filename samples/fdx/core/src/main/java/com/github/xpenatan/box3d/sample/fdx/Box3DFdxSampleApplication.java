@@ -10,6 +10,7 @@ import com.github.xpenatan.box3d.sample.shared.Box3DSampleController;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleEntry;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleHost;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleSettings;
+import com.github.xpenatan.box3d.sample.shared.samples.SampleAssets;
 import io.github.libfdx.physics.box3d.FdxDebugRenderer;
 import io.github.libfdx.Fdx;
 import io.github.libfdx.application.Application;
@@ -33,6 +34,8 @@ import io.github.libfdx.ui.UiScope;
 import io.github.libfdx.ui.UiState;
 import io.github.libfdx.ui.UiToolkit;
 
+import java.nio.charset.StandardCharsets;
+
 public final class Box3DFdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
     private static final int SELECTOR_HIT_WIDTH = 310;
     private static final float FPS_UPDATE_INTERVAL = 0.25f;
@@ -55,7 +58,7 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private final UiBooleanState continuousEnabledState = Ui.state(true);
     private final UiIntState launchShapeIndex = Ui.state(Box3DLaunchShape.SPHERE.ordinal());
     private final UiFloatState launchSpeedState = Ui.state(Box3DSampleSettings.DEFAULT_LAUNCH_SPEED);
-    private final UiIntState debugVisualizationIndex = Ui.state(Box3DDebugVisualization.ALL.index());
+    private final UiIntState debugVisualizationIndex = Ui.state(Box3DDebugVisualization.SOLID.index());
     private final UiFloatState shadowBiasState = Ui.state(Box3DSampleSettings.DEFAULT_SHADOW_BIAS);
     private final float[] dragRayOrigin = new float[3];
     private final float[] dragRayDirection = new float[3];
@@ -100,6 +103,7 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
 
     @Override
     public void create(Fdx fdx) {
+        SampleAssets.setReader(path -> fdx.files().internal(path).readString(StandardCharsets.UTF_8).get());
         application = fdx.app();
         display = fdx.displays().main();
         logger = fdx.logger();
@@ -109,8 +113,8 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         validateFramesPerSample = parsePositiveInt(System.getProperty("jbox3d.sample.validateAll"), 0);
         camera = new Camera()
                 .projection(CameraProjection.PERSPECTIVE)
-                .fieldOfView(67.0f)
-                .nearFar(0.1f, 200.0f);
+                .fieldOfView(60.0f)
+                .nearFar(0.1f, 1000.0f);
         configureCamera(controller.selectedEntry().camera());
         resetFlyCameraController();
 

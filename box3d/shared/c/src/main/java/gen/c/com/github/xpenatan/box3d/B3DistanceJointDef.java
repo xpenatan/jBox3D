@@ -155,6 +155,20 @@ public final class B3DistanceJointDef extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3distancejointdef_setcollideconnected")
     public static native void internal_native_SetCollideConnected(long this_addr, boolean collide);
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3distancejointdef_setforcethreshold")
+    public static native void internal_native_SetForceThreshold(long this_addr, float force);
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3distancejointdef_settorquethreshold")
+    public static native void internal_native_SetTorqueThreshold(long this_addr, float torque);
+
     public float GetConstraintHertz() {
         return internal_native_GetConstraintHertz(native_address);
     }

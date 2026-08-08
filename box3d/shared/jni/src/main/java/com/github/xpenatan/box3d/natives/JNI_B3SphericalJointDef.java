@@ -62,6 +62,26 @@ final public class JNI_B3SphericalJointDef {
 
     public static native void internal_native_SetDampingRatio(long this_addr, float ratio);
 
+    public static native boolean internal_native_GetEnableConeLimit(long this_addr);
+
+    public static native void internal_native_SetEnableConeLimit(long this_addr, boolean enabled);
+
+    public static native float internal_native_GetConeAngle(long this_addr);
+
+    public static native void internal_native_SetConeAngle(long this_addr, float radians);
+
+    public static native boolean internal_native_GetEnableTwistLimit(long this_addr);
+
+    public static native void internal_native_SetEnableTwistLimit(long this_addr, boolean enabled);
+
+    public static native float internal_native_GetLowerTwistAngle(long this_addr);
+
+    public static native void internal_native_SetLowerTwistAngle(long this_addr, float radians);
+
+    public static native float internal_native_GetUpperTwistAngle(long this_addr);
+
+    public static native void internal_native_SetUpperTwistAngle(long this_addr, float radians);
+
     public static native boolean internal_native_GetEnableMotor(long this_addr);
 
     public static native void internal_native_SetEnableMotor(long this_addr, boolean enabled);

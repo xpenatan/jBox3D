@@ -19,6 +19,8 @@ public final class B3Quat extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
     static public final B3Quat NULL = B3Quat.native_new();
 
     public B3Quat() {
@@ -139,6 +141,87 @@ public final class B3Quat extends NativeObject {
         }
     }
 
+    public void Normalize() {
+        internal_native_Normalize(native_address);
+    }
+
+    public static void internal_native_Normalize(long this_addr) {
+        try {
+            FFMHandles.internal_native_Normalize__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 RotateVector(B3Vec3 vector) {
+        long addr = internal_native_RotateVector_addr(native_address, vector.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    public static long internal_native_RotateVector_addr(long this_addr, long vector_addr) {
+        try {
+            return (long) FFMHandles.internal_native_RotateVector_addr__JJ.invokeExact(this_addr, vector_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public static B3Quat ComputeBetweenUnitVectors(B3Vec3 from, B3Vec3 to) {
+        long addr = internal_native_ComputeBetweenUnitVectors_addr(from.native_address, to.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        B3Quat B3Quat_NEW = B3Quat.native_new();
+        B3Quat_NEW.internal_reset(addr, true);
+        return B3Quat_NEW;
+    }
+
+    public static long internal_native_ComputeBetweenUnitVectors_addr(long from_addr, long to_addr) {
+        try {
+            return (long) FFMHandles.internal_native_ComputeBetweenUnitVectors_addr__JJ.invokeExact(from_addr, to_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public static B3Quat Mul(B3Quat a, B3Quat b) {
+        long addr = internal_native_Mul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        B3Quat B3Quat_NEW = B3Quat.native_new();
+        B3Quat_NEW.internal_reset(addr, true);
+        return B3Quat_NEW;
+    }
+
+    public static long internal_native_Mul_addr(long a_addr, long b_addr) {
+        try {
+            return (long) FFMHandles.internal_native_Mul_addr__JJ.invokeExact(a_addr, b_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public static B3Quat InvMul(B3Quat a, B3Quat b) {
+        long addr = internal_native_InvMul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        B3Quat B3Quat_NEW = B3Quat.native_new();
+        B3Quat_NEW.internal_reset(addr, true);
+        return B3Quat_NEW;
+    }
+
+    public static long internal_native_InvMul_addr(long a_addr, long b_addr) {
+        try {
+            return (long) FFMHandles.internal_native_InvMul_addr__JJ.invokeExact(a_addr, b_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3quat_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
@@ -156,5 +239,15 @@ public final class B3Quat extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_SetS__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3quat_sets", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
         static final java.lang.invoke.MethodHandle internal_native_Set__JFFFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3quat_set", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_Normalize__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3quat_normalize", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_RotateVector_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3quat_rotatevector_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_ComputeBetweenUnitVectors_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3quat_computebetweenunitvectors_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_Mul_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3quat_mul_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_InvMul_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3quat_invmul_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
     }
 }

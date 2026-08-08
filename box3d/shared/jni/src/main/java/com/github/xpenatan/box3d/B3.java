@@ -34,6 +34,14 @@ public final class B3 extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3.internal_native_deleteNative(this_addr);
     }
 
+    public static boolean IsDoublePrecision() {
+        return internal_native_IsDoublePrecision();
+    }
+
+    public static boolean internal_native_IsDoublePrecision() {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsDoublePrecision();
+    }
+
     public static int StaticBody() {
         return internal_native_StaticBody();
     }
@@ -120,6 +128,22 @@ public final class B3 extends NativeObject {
 
     public static int internal_native_GetMaxWorldCount() {
         return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_GetMaxWorldCount();
+    }
+
+    public static float GetStallThreshold() {
+        return internal_native_GetStallThreshold();
+    }
+
+    public static float internal_native_GetStallThreshold() {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_GetStallThreshold();
+    }
+
+    public static void SetStallThreshold(float seconds) {
+        internal_native_SetStallThreshold(seconds);
+    }
+
+    public static void internal_native_SetStallThreshold(float seconds) {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_SetStallThreshold(seconds);
     }
 
     public static long DefaultMaskBits() {

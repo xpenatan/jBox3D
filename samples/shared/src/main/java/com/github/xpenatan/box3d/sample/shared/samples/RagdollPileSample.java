@@ -2,26 +2,35 @@ package com.github.xpenatan.box3d.sample.shared.samples;
 
 import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
-import com.github.xpenatan.box3d.B3BodyDef;
-import com.github.xpenatan.box3d.B3Capsule;
-import com.github.xpenatan.box3d.B3DistanceJointDef;
-import com.github.xpenatan.box3d.B3Filter;
-import com.github.xpenatan.box3d.B3Hull;
-import com.github.xpenatan.box3d.B3MotionLocks;
-import com.github.xpenatan.box3d.B3Quat;
+import com.github.xpenatan.box3d.B3Mesh;
 import com.github.xpenatan.box3d.B3ShapeDef;
-import com.github.xpenatan.box3d.B3Sphere;
-import com.github.xpenatan.box3d.B3SphericalJointDef;
 import com.github.xpenatan.box3d.B3Vec3;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/** Exact release scene from Ragdoll/Pile. */
 final class RagdollPileSample extends AbstractBox3DSample {
+    private static final int COUNT = 20;
+    private B3Mesh groundMesh;
+
     RagdollPileSample() {
-        addGroundBox(28.0f);
-        for(int i = 0; i < 7; i++) {
-            SamplePortUtil.createSimpleRagdoll(this, -9.0f + i * 3.0f, 8.0f + i * 1.2f, -2.0f + (i % 3) * 2.0f);
+        B3Body ground = createBody(B3.StaticBody(), 0.0f, -1.0f, 0.0f, null);
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        groundMesh = B3Mesh.CreateGrid(20, 20, 1.0f, 1, true);
+        B3Vec3 scale = new B3Vec3(1.0f, 1.0f, 1.0f);
+        dispose(ground.CreateMeshShape(shapeDef, groundMesh, scale), scale, shapeDef, ground);
+
+        SampleRandom random = new SampleRandom(42);
+        float extent = 0.1f * COUNT;
+        for(int i = 0; i < COUNT; i++) {
+            float x = random.nextFloat(-extent, extent);
+            random.nextFloat(-extent, extent);
+            float z = random.nextFloat(-extent, extent);
+            ExactHuman.create(world(), x, 2.0f, z, 10.0f, 0.5f, 0.7f, i, false);
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        dispose(groundMesh);
     }
 }

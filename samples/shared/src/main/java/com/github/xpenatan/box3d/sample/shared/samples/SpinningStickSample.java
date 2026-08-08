@@ -17,8 +17,10 @@ final class SpinningStickSample extends AbstractBox3DSample {
         B3Body wallBody = createBody(B3.StaticBody(), 0.0f, 0.5f, 0.0f, null);
         addBoxShape(wallBody, 0.125f, 0.5f, 10.0f, 0.0f, 0.0f, 0.0f, null, 0.0f, 0.6f, 0.0f, 0.0f);
 
+        SampleRandom random = new SampleRandom();
         B3Vec3 linearVelocity = new B3Vec3(0.0f, -100.0f, 0.0f);
-        B3Vec3 angularVelocity = new B3Vec3(40.0f, -35.0f, 28.0f);
+        B3Vec3 angularVelocity = new B3Vec3(random.nextFloat(-50.0f, 50.0f),
+                random.nextFloat(-50.0f, 50.0f), random.nextFloat(-50.0f, 50.0f));
         addDynamicBox(0.0f, 20.0f, 0.5f, 2.0f, 0.1f, 0.1f, null, 1.0f, 0.6f, 0.0f, 0.1f,
                 linearVelocity, angularVelocity);
         dispose(angularVelocity, linearVelocity);

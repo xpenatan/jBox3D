@@ -53,4 +53,8 @@ final public class JNI_B3WorldDef {
     public static native int internal_native_GetWorkerCount(long this_addr);
 
     public static native void internal_native_SetWorkerCount(long this_addr, int workerCount);
+
+    public static native long internal_native_GetCapacity_addr(long this_addr);
+
+    public static native void internal_native_SetCapacity(long this_addr, long capacity_addr);
 }

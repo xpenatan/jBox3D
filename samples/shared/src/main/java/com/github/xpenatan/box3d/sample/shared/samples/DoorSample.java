@@ -24,10 +24,9 @@ import com.github.xpenatan.box3d.B3WheelJointDef;
 
 final class DoorSample extends AbstractBox3DSample {
     private final B3Body door;
-    private int steps;
 
     DoorSample() {
-        B3Body ground = addStaticBox(0.0f, -0.25f, 0.0f, 20.0f, 0.25f, 20.0f, null);
+        B3Body ground = addGroundBox(20.0f);
         B3BodyDef bodyDef = bodyDef(B3.DynamicBody(), 0.0f, 1.5f, 0.0f, null);
         bodyDef.SetGravityScale(2.0f);
         door = world().CreateBody(bodyDef);
@@ -38,18 +37,6 @@ final class DoorSample extends AbstractBox3DSample {
         createDoorJoint(ground, door, -0.75f, 4.0f, -0.75f, 1.5f, axis);
 
         dispose(axis, doorShape, bodyDef);
-    }
-
-    @Override
-    public void step(float deltaSeconds) {
-        steps++;
-        if(steps == 45) {
-            B3Vec3 impulse = new B3Vec3(0.0f, 0.0f, -50000.0f);
-            B3Vec3 point = new B3Vec3(0.75f, 1.5f, 0.0f);
-            door.ApplyLinearImpulse(impulse, point, true);
-            dispose(point, impulse);
-        }
-        super.step(deltaSeconds);
     }
 
     private void createDoorJoint(B3Body ground, B3Body door, float ax, float ay, float bx, float by, B3Quat axis) {

@@ -2,107 +2,59 @@ package com.github.xpenatan.box3d.sample.shared.samples;
 
 import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
-import com.github.xpenatan.box3d.B3MotionLocks;
+import com.github.xpenatan.box3d.B3PrismaticJointDef;
 import com.github.xpenatan.box3d.B3Quat;
-import com.github.xpenatan.box3d.B3Vec3;
+import com.github.xpenatan.box3d.B3RevoluteJointDef;
 
 final class BodyTypeSample extends AbstractBox3DSample {
-    private final B3Body platform;
-    private final B3Body secondAttachment;
-    private final B3Body secondPayload;
-    private final B3Body touchingBody;
-    private final B3Body floatingBody;
-    private int bodyType = B3.DynamicBody();
-    private float typeTimer;
-    private float enableTimer;
-    private boolean enabled = true;
-
     BodyTypeSample() {
-        addGroundBox(20.0f);
+        B3Body ground = addGroundBox(20.0f);
+        B3Body attachment = addDynamicBox(-2.0f, 3.0f, 0.0f, 0.5f, 2.0f, 0.5f);
+        B3Body secondAttachment = addDynamicBox(3.0f, 3.0f, 0.0f, 0.5f, 2.0f, 0.5f);
 
-        addDynamicBox(-2.0f, 3.0f, 0.0f, 0.5f, 2.0f, 0.5f);
-        secondAttachment = addDynamicBox(3.0f, 3.0f, 0.0f, 0.5f, 2.0f, 0.5f);
-
-        platform = createBody(bodyType, -4.0f, 5.0f, 0.0f, null);
+        B3Body platform = createBody(B3.DynamicBody(), -4.0f, 5.0f, 0.0f, null);
         B3Quat platformRotation = rotationZ(0.5f * (float)Math.PI);
-        addBoxShape(platform, 0.5f, 4.0f, 0.5f, 4.0f, 0.0f, 0.0f, platformRotation, 2.0f, 0.6f, 0.0f,
-                0.0f);
+        addBoxShape(platform, 0.5f, 4.0f, 0.5f, 4.0f, 0.0f, 0.0f, platformRotation,
+                2.0f, 0.6f, 0.0f, 0.0f);
         dispose(platformRotation);
 
+        createPlatformJoint(attachment, platform, 0.0f, 2.0f, 2.0f, 0.0f);
+        createPlatformJoint(secondAttachment, platform, 0.0f, 2.0f, 7.0f, 0.0f);
+
+        B3PrismaticJointDef prismaticDef = new B3PrismaticJointDef();
+        prismaticDef.SetBodyIdA(ground.GetId());
+        prismaticDef.SetBodyIdB(platform.GetId());
+        JointSampleUtil.setLocalPositionA(prismaticDef, 0.0f, 6.0f, 0.0f);
+        JointSampleUtil.setLocalPositionB(prismaticDef, 4.0f, 0.0f, 0.0f);
+        prismaticDef.SetMaxMotorForce(1000.0f);
+        prismaticDef.SetMotorSpeed(0.0f);
+        prismaticDef.SetEnableMotor(true);
+        prismaticDef.SetLowerTranslation(-10.0f);
+        prismaticDef.SetUpperTranslation(10.0f);
+        prismaticDef.SetEnableLimit(true);
+        dispose(world().CreatePrismaticJoint(prismaticDef), prismaticDef);
+
         addDynamicBox(-3.0f, 8.0f, 0.0f, 0.75f, 0.75f, 0.75f, null, 2.0f, 0.6f, 0.0f, 0.0f);
-        secondPayload = addDynamicBox(2.0f, 8.0f, 0.0f, 0.75f, 0.75f, 0.75f, null, 2.0f, 0.6f, 0.0f, 0.0f);
-        touchingBody = createBody(bodyType, 8.0f, 0.2f, 0.0f, null);
-        addCapsuleShape(touchingBody, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.25f, 2.0f, 0.6f, 0.0f,
-                0.0f);
-        floatingBody = addDynamicSphere(-8.0f, 12.0f, 0.0f, 0.25f, 2.0f, 0.6f, 0.0f, 0.0f);
+        addDynamicBox(2.0f, 8.0f, 0.0f, 0.75f, 0.75f, 0.75f, null, 2.0f, 0.6f, 0.0f, 0.0f);
+
+        B3Body touchingBody = createBody(B3.DynamicBody(), 8.0f, 0.2f, 0.0f, null);
+        addCapsuleShape(touchingBody, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                0.25f, 2.0f, 0.6f, 0.0f, 0.0f);
+
+        B3Body floatingBody = createBody(B3.DynamicBody(), -8.0f, 12.0f, 0.0f, null);
         floatingBody.SetGravityScale(0.0f);
+        addSphereShape(floatingBody, 0.0f, 0.5f, 0.0f, 0.25f, 2.0f, 0.6f, 0.0f, 0.0f);
     }
 
-    @Override
-    public void step(float deltaSeconds) {
-        typeTimer += deltaSeconds;
-        enableTimer += deltaSeconds;
-
-        if(typeTimer > 5.0f) {
-            typeTimer = 0.0f;
-            if(bodyType == B3.DynamicBody()) {
-                setBodyType(B3.KinematicBody());
-            }
-            else if(bodyType == B3.KinematicBody()) {
-                setBodyType(B3.StaticBody());
-            }
-            else {
-                setBodyType(B3.DynamicBody());
-            }
-        }
-
-        if(enableTimer > 8.0f) {
-            enableTimer = 0.0f;
-            enabled = !enabled;
-            setEnabled(secondPayload, enabled);
-            setEnabled(floatingBody, enabled);
-        }
-
-        if(bodyType == B3.KinematicBody()) {
-            B3Vec3 position = platform.GetPosition();
-            B3Vec3 velocity = platform.GetLinearVelocity();
-            if((position.GetX() < -14.0f && velocity.GetX() < 0.0f)
-                    || (position.GetX() > 6.0f && velocity.GetX() > 0.0f)) {
-                velocity.SetX(-velocity.GetX());
-                platform.SetLinearVelocity(velocity);
-            }
-            dispose(velocity, position);
-        }
-
-        super.step(deltaSeconds);
-    }
-
-    private void setBodyType(int type) {
-        bodyType = type;
-        setType(platform, type);
-        setType(secondAttachment, type);
-        setType(secondPayload, type);
-        setType(touchingBody, type);
-        setType(floatingBody, type);
-        if(type == B3.KinematicBody()) {
-            B3Vec3 velocity = new B3Vec3(-3.0f, 0.0f, 0.0f);
-            platform.SetLinearVelocity(velocity);
-            dispose(velocity);
-        }
-    }
-
-    private void setType(B3Body body, int type) {
-        if(body.IsValid()) {
-            body.SetType(type);
-        }
-    }
-
-    private void setEnabled(B3Body body, boolean enable) {
-        if(enable) {
-            body.Enable();
-        }
-        else {
-            body.Disable();
-        }
+    private void createPlatformJoint(B3Body bodyA, B3Body platform, float localAX, float localAY,
+            float localBX, float localBY) {
+        B3RevoluteJointDef jointDef = new B3RevoluteJointDef();
+        jointDef.SetBodyIdA(bodyA.GetId());
+        jointDef.SetBodyIdB(platform.GetId());
+        JointSampleUtil.setLocalPositionA(jointDef, localAX, localAY, 0.0f);
+        JointSampleUtil.setLocalPositionB(jointDef, localBX, localBY, 0.0f);
+        jointDef.SetMaxMotorTorque(50.0f);
+        jointDef.SetEnableMotor(true);
+        dispose(world().CreateRevoluteJoint(jointDef), jointDef);
     }
 }

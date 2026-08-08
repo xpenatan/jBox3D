@@ -33,6 +33,13 @@ public final class B3 extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3);box3d.destroy(jsObj);")
     public static native void internal_native_deleteNative(int this_addr);
 
+    public static boolean IsDoublePrecision() {
+        return internal_native_IsDoublePrecision();
+    }
+
+    @org.teavm.jso.JSBody(script = "var returnedJSObj = box3d.B3.prototype.IsDoublePrecision();return returnedJSObj;")
+    public static native boolean internal_native_IsDoublePrecision();
+
     public static int StaticBody() {
         return internal_native_StaticBody();
     }
@@ -109,6 +116,20 @@ public final class B3 extends NativeObject {
 
     @org.teavm.jso.JSBody(script = "var returnedJSObj = box3d.B3.prototype.GetMaxWorldCount();return returnedJSObj;")
     public static native int internal_native_GetMaxWorldCount();
+
+    public static float GetStallThreshold() {
+        return internal_native_GetStallThreshold();
+    }
+
+    @org.teavm.jso.JSBody(script = "var returnedJSObj = box3d.B3.prototype.GetStallThreshold();return returnedJSObj;")
+    public static native float internal_native_GetStallThreshold();
+
+    public static void SetStallThreshold(float seconds) {
+        internal_native_SetStallThreshold(seconds);
+    }
+
+    @org.teavm.jso.JSBody(params = {"seconds"}, script = "box3d.B3.prototype.SetStallThreshold(seconds);")
+    public static native void internal_native_SetStallThreshold(float seconds);
 
     public static long DefaultMaskBits() {
         return internal_native_DefaultMaskBits();

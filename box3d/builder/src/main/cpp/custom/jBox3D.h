@@ -4,7 +4,12 @@
 #include <box3d/collision.h>
 
 #include <cstdint>
+#include <limits>
 #include <vector>
+
+#define TINYOBJLOADER_USE_MAPBOX_EARCUT
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "samples/tiny_obj_loader.h"
 
 namespace JBox3D {
 
@@ -38,6 +43,11 @@ public:
     float GetS() const;
     void SetS(float s);
     void Set(float x, float y, float z, float w);
+    void Normalize();
+    B3Vec3 RotateVector(const B3Vec3& vector) const;
+    static B3Quat* ComputeBetweenUnitVectors(const B3Vec3& from, const B3Vec3& to);
+    static B3Quat* Mul(const B3Quat& a, const B3Quat& b);
+    static B3Quat* InvMul(const B3Quat& a, const B3Quat& b);
 };
 
 class B3Transform {
@@ -52,6 +62,8 @@ public:
     void SetP(const B3Vec3& position);
     B3Quat GetQ() const;
     void SetQ(const B3Quat& rotation);
+    B3Vec3 TransformPoint(const B3Vec3& point) const;
+    static B3Transform* InvMul(const B3Transform& a, const B3Transform& b);
 };
 
 class B3AABB {
@@ -139,6 +151,8 @@ public:
     void SetDrawScale(float scale);
     bool GetCollideConnected() const;
     void SetCollideConnected(bool collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
     float GetConstraintHertz() const;
     void SetConstraintHertz(float hertz);
     float GetConstraintDampingRatio() const;
@@ -259,6 +273,10 @@ public:
     void SetDrawScale(float scale);
     bool GetCollideConnected() const;
     void SetCollideConnected(bool collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
+    float GetConstraintHertz() const;
+    void SetConstraintHertz(float hertz);
     bool GetEnableSpring() const;
     void SetEnableSpring(bool enabled);
     float GetHertz() const;
@@ -311,6 +329,16 @@ public:
     void SetHertz(float hertz);
     float GetDampingRatio() const;
     void SetDampingRatio(float ratio);
+    bool GetEnableConeLimit() const;
+    void SetEnableConeLimit(bool enabled);
+    float GetConeAngle() const;
+    void SetConeAngle(float radians);
+    bool GetEnableTwistLimit() const;
+    void SetEnableTwistLimit(bool enabled);
+    float GetLowerTwistAngle() const;
+    void SetLowerTwistAngle(float radians);
+    float GetUpperTwistAngle() const;
+    void SetUpperTwistAngle(float radians);
     bool GetEnableMotor() const;
     void SetEnableMotor(bool enabled);
     float GetMaxMotorTorque() const;
@@ -339,6 +367,8 @@ public:
     void SetDrawScale(float scale);
     bool GetCollideConnected() const;
     void SetCollideConnected(bool collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
     float GetConstraintHertz() const;
     void SetConstraintHertz(float hertz);
     float GetConstraintDampingRatio() const;
@@ -385,6 +415,8 @@ public:
     void SetDrawScale(float scale);
     bool GetCollideConnected() const;
     void SetCollideConnected(bool collide);
+    void SetForceThreshold(float force);
+    void SetTorqueThreshold(float torque);
     float GetConstraintHertz() const;
     void SetConstraintHertz(float hertz);
     float GetConstraintDampingRatio() const;
@@ -498,6 +530,8 @@ public:
     B3Vec3 GetTriangleNormal(int index) const;
 
 private:
+    friend class B3World;
+
     void AddSphere(const b3Sphere& sphere, b3Transform transform);
     void AddCapsule(const b3Capsule& capsule, b3Transform transform);
     void AddEdge(b3Vec3 v0, b3Vec3 v1);
@@ -573,6 +607,43 @@ public:
     void SetCustomColor(long customColor);
 };
 
+class B3Capacity {
+public:
+    b3Capacity value;
+
+    B3Capacity();
+    explicit B3Capacity(b3Capacity value);
+
+    int GetStaticShapeCount() const;
+    void SetStaticShapeCount(int count);
+    int GetDynamicShapeCount() const;
+    void SetDynamicShapeCount(int count);
+    int GetStaticBodyCount() const;
+    void SetStaticBodyCount(int count);
+    int GetDynamicBodyCount() const;
+    void SetDynamicBodyCount(int count);
+    int GetContactCount() const;
+    void SetContactCount(int count);
+};
+
+class B3ExplosionDef {
+public:
+    b3ExplosionDef value;
+
+    B3ExplosionDef();
+
+    long long GetMaskBits() const;
+    void SetMaskBits(long long maskBits);
+    B3Vec3 GetPosition() const;
+    void SetPosition(const B3Vec3& position);
+    float GetRadius() const;
+    void SetRadius(float radius);
+    float GetFalloff() const;
+    void SetFalloff(float falloff);
+    float GetImpulsePerArea() const;
+    void SetImpulsePerArea(float impulse);
+};
+
 class B3WorldDef {
 public:
     b3WorldDef value;
@@ -599,6 +670,8 @@ public:
     void SetEnableContinuous(bool enabled);
     long GetWorkerCount() const;
     void SetWorkerCount(long workerCount);
+    B3Capacity GetCapacity() const;
+    void SetCapacity(const B3Capacity& capacity);
 };
 
 class B3BodyDef {
@@ -669,6 +742,8 @@ public:
     void SetEnablePreSolveEvents(bool enabled);
     bool GetInvokeContactCreation() const;
     void SetInvokeContactCreation(bool invokeContactCreation);
+    bool GetEnableSpeculativeContact() const;
+    void SetEnableSpeculativeContact(bool enabled);
     bool GetUpdateBodyMass() const;
     void SetUpdateBodyMass(bool updateBodyMass);
 };
@@ -730,6 +805,27 @@ public:
 
     int GetMoveCount() const;
     B3BodyMoveEvent GetMoveEvent(int index) const;
+};
+
+class B3JointEvent {
+public:
+    long long jointId;
+
+    B3JointEvent();
+    explicit B3JointEvent(const b3JointEvent& event);
+
+    long long GetJointId() const;
+};
+
+class B3JointEvents {
+public:
+    std::vector<B3JointEvent> jointEvents;
+
+    B3JointEvents();
+    explicit B3JointEvents(const b3JointEvents& events);
+
+    int GetCount() const;
+    B3JointEvent GetEvent(int index) const;
 };
 
 class B3SensorBeginTouchEvent {
@@ -839,6 +935,19 @@ public:
     B3ContactHitEvent GetHitEvent(int index) const;
 };
 
+class B3Vec3Array {
+public:
+    explicit B3Vec3Array(int size);
+
+    int GetSize() const;
+    B3Vec3 GetValue(int index) const;
+    void SetValue(int index, const B3Vec3& value);
+    const b3Vec3* GetData() const;
+
+private:
+    std::vector<b3Vec3> m_values;
+};
+
 class B3Hull {
 public:
     B3Hull();
@@ -854,17 +963,350 @@ public:
     static B3Hull* CreateCylinder(float height, float radius, float yOffset, int sides);
     static B3Hull* CreateCone(float height, float radius1, float radius2, int slices);
     static B3Hull* CreateRock(float radius);
+    static B3Hull* CreateFromPoints(const B3Vec3Array& points, int maxVertexCount);
+    static B3Hull* CloneAndTransform(const B3Hull& hull, const B3Transform& transform, const B3Vec3& scale);
 
     bool IsValid() const;
     void Destroy();
     int GetVertexCount() const;
     int GetFaceCount() const;
+    B3Vec3 GetPoint(int index) const;
     const b3HullData* GetHandle() const;
 
 private:
     b3HullData* m_hull;
     b3BoxHull m_boxHull;
     bool m_ownsHull;
+};
+
+class B3ShapeProxy {
+public:
+    B3ShapeProxy(const B3Vec3Array& points, int count, float radius);
+    B3ShapeProxy(const B3Hull& hull, float radius);
+
+    int GetCount() const;
+    float GetRadius() const;
+    const b3ShapeProxy& GetHandle() const;
+
+private:
+    std::vector<b3Vec3> m_points;
+    b3ShapeProxy m_proxy;
+};
+
+class B3LocalManifoldPoint {
+public:
+    B3LocalManifoldPoint();
+    explicit B3LocalManifoldPoint(const b3LocalManifoldPoint& point);
+
+    B3Vec3 GetPoint() const;
+    float GetSeparation() const;
+    int GetOwner1() const;
+    int GetIndex1() const;
+    int GetOwner2() const;
+    int GetIndex2() const;
+    int GetTriangleIndex() const;
+
+private:
+    b3LocalManifoldPoint m_point;
+};
+
+class B3LocalManifold {
+public:
+    explicit B3LocalManifold(int capacity);
+
+    B3Vec3 GetNormal() const;
+    B3Vec3 GetTriangleNormal() const;
+    int GetPointCount() const;
+    B3LocalManifoldPoint GetPoint(int index) const;
+    int GetFeature() const;
+    int GetTriangleIndex() const;
+
+private:
+    friend class B3Collision;
+
+    void Clear();
+    int GetCapacity() const;
+    b3LocalManifold* GetHandle();
+
+    std::vector<b3LocalManifoldPoint> m_points;
+    b3LocalManifold m_manifold;
+};
+
+class B3DistanceOutput {
+public:
+    B3DistanceOutput();
+    explicit B3DistanceOutput(const b3DistanceOutput& output);
+
+    B3Vec3 GetPointA() const;
+    B3Vec3 GetPointB() const;
+    B3Vec3 GetNormal() const;
+    float GetDistance() const;
+    int GetIterations() const;
+    int GetSimplexCount() const;
+
+private:
+    b3DistanceOutput m_output;
+};
+
+class B3CastOutput {
+public:
+    B3CastOutput();
+    explicit B3CastOutput(const b3CastOutput& output);
+
+    B3Vec3 GetNormal() const;
+    B3Vec3 GetPoint() const;
+    float GetFraction() const;
+    int GetIterations() const;
+    bool GetHit() const;
+
+private:
+    b3CastOutput m_output;
+};
+
+class B3Sweep {
+public:
+    B3Sweep();
+
+    B3Vec3 GetLocalCenter() const;
+    void SetLocalCenter(const B3Vec3& center);
+    B3Vec3 GetC1() const;
+    void SetC1(const B3Vec3& center);
+    B3Vec3 GetC2() const;
+    void SetC2(const B3Vec3& center);
+    B3Quat GetQ1() const;
+    void SetQ1(const B3Quat& rotation);
+    B3Quat GetQ2() const;
+    void SetQ2(const B3Quat& rotation);
+    B3Transform GetTransform(float fraction) const;
+
+private:
+    friend class B3Collision;
+    b3Sweep m_sweep;
+};
+
+class B3TOIOutput {
+public:
+    B3TOIOutput();
+    explicit B3TOIOutput(const b3TOIOutput& output);
+
+    int GetState() const;
+    B3Vec3 GetPoint() const;
+    B3Vec3 GetNormal() const;
+    float GetFraction() const;
+    float GetDistance() const;
+    int GetDistanceIterations() const;
+    int GetPushBackIterations() const;
+    int GetRootIterations() const;
+    bool GetUsedFallback() const;
+
+private:
+    b3TOIOutput m_output;
+};
+
+class B3MoverPlaneResult {
+public:
+    B3MoverPlaneResult();
+    explicit B3MoverPlaneResult(const b3BodyPlaneResult& result);
+
+    long long GetShapeId() const;
+    B3Vec3 GetNormal() const;
+    float GetOffset() const;
+    B3Vec3 GetPoint() const;
+
+private:
+    b3BodyPlaneResult m_result;
+};
+
+class B3MoverCollision {
+public:
+    B3MoverCollision();
+
+    int GetCount() const;
+    B3MoverPlaneResult GetResult(int index) const;
+
+private:
+    friend class B3World;
+    friend class B3Collision;
+    std::vector<b3BodyPlaneResult> m_results;
+};
+
+class B3PlaneSolverResult {
+public:
+    B3PlaneSolverResult();
+    explicit B3PlaneSolverResult(const b3PlaneSolverResult& result);
+
+    B3Vec3 GetDelta() const;
+    int GetIterationCount() const;
+
+private:
+    b3PlaneSolverResult m_result;
+};
+
+class B3Collision {
+public:
+    static B3LocalManifold* CollideSpheres(int capacity, const B3Sphere& sphereA, const B3Sphere& sphereB,
+                                           const B3Transform& transformBtoA);
+    static B3LocalManifold* CollideCapsuleAndSphere(int capacity, const B3Capsule& capsuleA,
+                                                    const B3Sphere& sphereB, const B3Transform& transformBtoA);
+    static B3LocalManifold* CollideHullAndSphere(int capacity, const B3Hull& hullA, const B3Sphere& sphereB,
+                                                 const B3Transform& transformBtoA);
+    static B3LocalManifold* CollideCapsules(int capacity, const B3Capsule& capsuleA, const B3Capsule& capsuleB,
+                                            const B3Transform& transformBtoA);
+    static B3LocalManifold* CollideHullAndCapsule(int capacity, const B3Hull& hullA, const B3Capsule& capsuleB,
+                                                  const B3Transform& transformBtoA);
+    static B3LocalManifold* CollideHulls(int capacity, const B3Hull& hullA, const B3Hull& hullB,
+                                         const B3Transform& transformBtoA);
+    static B3LocalManifold* CollideTriangleAndSphere(int capacity, const B3Vec3Array& triangleA,
+                                                     const B3Sphere& sphereB);
+    static B3LocalManifold* CollideTriangleAndCapsule(int capacity, const B3Vec3Array& triangleA,
+                                                      const B3Capsule& capsuleB);
+    static B3LocalManifold* CollideTriangleAndHull(int capacity, const B3Vec3Array& triangleA, int triangleFlags,
+                                                   const B3Hull& hullB, bool enableSpeculative);
+    static B3DistanceOutput ShapeDistance(const B3ShapeProxy& proxyA, const B3ShapeProxy& proxyB,
+                                           const B3Transform& transformBtoA, bool useRadii);
+    static B3CastOutput ShapeCast(const B3ShapeProxy& proxyA, const B3ShapeProxy& proxyB,
+                                  const B3Transform& transformBtoA, const B3Vec3& translationB,
+                                  float maxFraction, bool canEncroach);
+    static B3TOIOutput TimeOfImpact(const B3ShapeProxy& proxyA, const B3ShapeProxy& proxyB,
+                                    const B3Sweep& sweepA, const B3Sweep& sweepB, float maxFraction);
+    static B3PlaneSolverResult SolveMoverPlanes(const B3Vec3& targetDelta, const B3MoverCollision& collision);
+    static B3Vec3 ClipVectorToMoverPlanes(const B3Vec3& vector, const B3MoverCollision& collision);
+};
+
+class B3MeshDef {
+public:
+    B3MeshDef(int vertexCapacity, int triangleCapacity);
+
+    void AddVertex(const B3Vec3& vertex);
+    void AddTriangle(int index1, int index2, int index3, int materialIndex);
+    float GetWeldTolerance() const;
+    void SetWeldTolerance(float tolerance);
+    bool GetWeldVertices() const;
+    void SetWeldVertices(bool enabled);
+    bool GetUseMedianSplit() const;
+    void SetUseMedianSplit(bool enabled);
+    bool GetIdentifyEdges() const;
+    void SetIdentifyEdges(bool enabled);
+    int GetVertexCount() const;
+    int GetTriangleCount() const;
+
+    b3MeshData* CreateMeshData() const;
+
+private:
+    std::vector<b3Vec3> m_vertices;
+    std::vector<int32_t> m_indices;
+    std::vector<uint8_t> m_materialIndices;
+    float m_weldTolerance;
+    bool m_weldVertices;
+    bool m_useMedianSplit;
+    bool m_identifyEdges;
+};
+
+class B3Mesh {
+public:
+    B3Mesh();
+    explicit B3Mesh(b3MeshData* mesh);
+    ~B3Mesh();
+
+    static B3Mesh* CreateFromDef(const B3MeshDef& def);
+    static B3Mesh* CreateFromObj(const char* objText, float scale, bool zUp, bool useMedianSplit,
+                                 bool identifyEdges, bool weldVertices, float weldTolerance);
+    static B3Mesh* CreateBox(const B3Vec3& center, const B3Vec3& extents, bool identifyEdges);
+    static B3Mesh* CreateHollowBox(const B3Vec3& center, const B3Vec3& extents);
+    static B3Mesh* CreatePlatform(const B3Vec3& center, float height, float topWidth, float bottomWidth);
+    static B3Mesh* CreateGrid(int xCount, int zCount, float cellWidth, int materialCount, bool identifyEdges);
+    static B3Mesh* CreateWave(int xCount, int zCount, float cellWidth, float amplitude, float rowFrequency,
+                              float columnFrequency);
+    static B3Mesh* CreateTorus(int radialResolution, int tubularResolution, float radius, float thickness);
+    bool IsValid() const;
+    void Destroy();
+    int GetVertexCount() const;
+    int GetTriangleCount() const;
+    int GetMaterialCount() const;
+    int GetTriangleMaterialIndex(int triangleIndex) const;
+    void SetTriangleMaterialIndex(int triangleIndex, int materialIndex);
+    const b3MeshData* GetHandle() const;
+
+private:
+    b3MeshData* m_mesh;
+};
+
+class B3HeightField {
+public:
+    B3HeightField();
+    explicit B3HeightField(b3HeightFieldData* heightField);
+    ~B3HeightField();
+
+    static B3HeightField* CreateGrid(int rowCount, int columnCount, const B3Vec3& scale, bool makeHoles);
+    static B3HeightField* CreateWave(int rowCount, int columnCount, const B3Vec3& scale, float rowFrequency,
+                                     float columnFrequency, bool makeHoles);
+    bool IsValid() const;
+    void Destroy();
+    const b3HeightFieldData* GetHandle() const;
+
+private:
+    b3HeightFieldData* m_heightField;
+};
+
+class B3SurfaceMaterialArray {
+public:
+    explicit B3SurfaceMaterialArray(int size);
+
+    int GetSize() const;
+    B3SurfaceMaterial GetValue(int index) const;
+    void SetValue(int index, const B3SurfaceMaterial& material);
+    const b3SurfaceMaterial* GetData() const;
+
+private:
+    std::vector<b3SurfaceMaterial> m_values;
+};
+
+class B3CompoundDef {
+public:
+    B3CompoundDef(int capsuleCapacity, int hullCapacity, int meshCapacity, int sphereCapacity);
+
+    void AddCapsule(const B3Capsule& capsule, const B3SurfaceMaterial& material);
+    void AddHull(const B3Hull& hull, const B3Transform& transform, const B3SurfaceMaterial& material);
+    void AddMesh(const B3Mesh& mesh, const B3Transform& transform, const B3Vec3& scale,
+                 const B3SurfaceMaterialArray& materials);
+    void AddSphere(const B3Sphere& sphere, const B3SurfaceMaterial& material);
+    int GetCapsuleCount() const;
+    int GetHullCount() const;
+    int GetMeshCount() const;
+    int GetSphereCount() const;
+    b3CompoundData* CreateCompoundData() const;
+
+private:
+    struct MeshEntry {
+        const b3MeshData* meshData;
+        b3Transform transform;
+        b3Vec3 scale;
+        std::vector<b3SurfaceMaterial> materials;
+    };
+
+    std::vector<b3CompoundCapsuleDef> m_capsules;
+    std::vector<b3CompoundHullDef> m_hulls;
+    std::vector<MeshEntry> m_meshes;
+    std::vector<b3CompoundSphereDef> m_spheres;
+};
+
+class B3Compound {
+public:
+    B3Compound();
+    explicit B3Compound(b3CompoundData* compound);
+    ~B3Compound();
+
+    static B3Compound* CreateFromDef(const B3CompoundDef& def);
+    bool IsValid() const;
+    void Destroy();
+    int GetCapsuleCount() const;
+    int GetHullCount() const;
+    int GetMeshCount() const;
+    int GetSphereCount() const;
+    const b3CompoundData* GetHandle() const;
+
+private:
+    b3CompoundData* m_compound;
 };
 
 class B3Shape;
@@ -885,6 +1327,8 @@ public:
     B3Vec3 GetPosition() const;
     B3Quat GetRotation() const;
     B3Transform GetTransform() const;
+    B3Vec3 GetWorldCenter() const;
+    B3Vec3 GetLocalPoint(const B3Vec3& worldPoint) const;
     void SetTransform(const B3Vec3& position, const B3Quat& rotation);
     void SetTargetTransform(const B3Vec3& position, const B3Quat& rotation, float timeStep, bool wake);
     B3Vec3 GetLinearVelocity() const;
@@ -900,6 +1344,11 @@ public:
     float GetMass() const;
     float GetInverseMass() const;
     void ApplyMassFromShapes();
+    B3Vec3 GetLocalRotationalInertiaColumnX() const;
+    B3Vec3 GetLocalRotationalInertiaColumnY() const;
+    B3Vec3 GetLocalRotationalInertiaColumnZ() const;
+    void SetMassData(float mass, const B3Vec3& center, const B3Vec3& inertiaColumnX,
+                     const B3Vec3& inertiaColumnY, const B3Vec3& inertiaColumnZ);
     float GetLinearDamping() const;
     void SetLinearDamping(float damping);
     float GetAngularDamping() const;
@@ -908,6 +1357,8 @@ public:
     void SetGravityScale(float scale);
     bool IsAwake() const;
     void SetAwake(bool awake);
+    B3RayResult CastRay(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter,
+                        float maxFraction, const B3Transform& bodyTransform) const;
     bool IsEnabled() const;
     void Disable();
     void Enable();
@@ -920,6 +1371,13 @@ public:
     B3Shape* CreateSphereShape(const B3ShapeDef& def, const B3Sphere& sphere);
     B3Shape* CreateCapsuleShape(const B3ShapeDef& def, const B3Capsule& capsule);
     B3Shape* CreateHullShape(const B3ShapeDef& def, const B3Hull& hull);
+    B3Shape* CreateTransformedHullShape(const B3ShapeDef& def, const B3Hull& hull, const B3Transform& transform,
+                                        const B3Vec3& scale);
+    B3Shape* CreateMeshShape(const B3ShapeDef& def, const B3Mesh& mesh, const B3Vec3& scale);
+    B3Shape* CreateMeshShapeWithMaterials(const B3ShapeDef& def, const B3Mesh& mesh, const B3Vec3& scale,
+                                          const B3SurfaceMaterialArray& materials);
+    B3Shape* CreateHeightFieldShape(const B3ShapeDef& def, const B3HeightField& heightField);
+    B3Shape* CreateBakedCompoundShape(B3ShapeDef& def, const B3Compound& compound);
 
 private:
     b3BodyId m_bodyId;
@@ -938,7 +1396,15 @@ public:
     long long GetBodyIdB() const;
     void WakeBodies();
     float GetLinearSeparation() const;
+    float GetPrismaticTranslation() const;
+    void SetPrismaticMotorSpeed(float speed);
     void SetRevoluteTargetAngle(float radians);
+    void SetRevoluteMaxMotorTorque(float torque);
+    void SetRevoluteSpringHertz(float hertz);
+    void SetRevoluteSpringDampingRatio(float dampingRatio);
+    void SetSphericalMaxMotorTorque(float torque);
+    void SetSphericalSpringHertz(float hertz);
+    void SetSphericalSpringDampingRatio(float dampingRatio);
 
 private:
     b3JointId m_jointId;
@@ -962,6 +1428,8 @@ public:
     void SetFriction(float friction);
     float GetRestitution() const;
     void SetRestitution(float restitution);
+    B3SurfaceMaterial GetSurfaceMaterial() const;
+    void SetSurfaceMaterial(const B3SurfaceMaterial& material);
     B3Filter GetFilter() const;
     void SetFilter(const B3Filter& filter, bool invokeContacts);
     void EnableSensorEvents(bool enabled);
@@ -1035,6 +1503,14 @@ private:
     b3DebugDraw m_draw;
 };
 
+class B3CustomFilterEm {
+public:
+    B3CustomFilterEm();
+    virtual ~B3CustomFilterEm();
+
+    virtual bool Filter(long long shapeIdA, long long shapeIdB);
+};
+
 class B3World {
 public:
     B3World();
@@ -1060,6 +1536,18 @@ public:
     int GetWorkerCount() const;
     void SetWorkerCount(long workerCount);
     int GetAwakeBodyCount() const;
+    void Explode(const B3ExplosionDef& def);
+    void SetCustomFilterCallback(B3CustomFilterEm* callback);
+    void ClearDebugOverlay();
+    void AddDebugSegment(const B3Vec3& p1, const B3Vec3& p2, long color);
+    void AddDebugPoint(const B3Vec3& point, float size, long color);
+    void AddDebugSphere(const B3Vec3& center, float radius, long color, float alpha);
+    void AddDebugCapsule(const B3Vec3& p1, const B3Vec3& p2, float radius, long color, float alpha);
+    void AddDebugBounds(const B3AABB& bounds, long color);
+    void AddDebugBox(const B3Vec3& extents, const B3Transform& transform, long color);
+    void AddDebugHull(const B3Hull& hull, const B3Transform& transform, const B3Vec3& scale, long color);
+    void AddDebugTriangle(const B3Vec3& p1, const B3Vec3& p2, const B3Vec3& p3, long color);
+    void DrawDebugOverlay(B3DebugDrawEm* draw) const;
     B3Body* CreateBody(const B3BodyDef& def);
     B3Joint* CreateDistanceJoint(const B3DistanceJointDef& def);
     B3Joint* CreateMotorJoint(const B3MotorJointDef& def);
@@ -1071,18 +1559,77 @@ public:
     B3Joint* CreateFilterJoint(const B3FilterJointDef& def);
     B3Joint* CreateWheelJoint(const B3WheelJointDef& def);
     B3BodyEvents* GetBodyEvents() const;
+    B3JointEvents* GetJointEvents() const;
     B3SensorEvents* GetSensorEvents() const;
     B3ContactEvents* GetContactEvents() const;
     B3RayResult CastRayClosest(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter) const;
+    int CountOverlapsAABB(const B3AABB& bounds, const B3QueryFilter& filter) const;
+    B3RayResult CastSphereClosest(const B3Vec3& origin, float radius, const B3Vec3& translation,
+                                  const B3QueryFilter& filter) const;
+    B3RayResult CastShapeClosest(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3Vec3& translation,
+                                 const B3QueryFilter& filter, bool initialOverlap) const;
+    bool OverlapShape(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3QueryFilter& filter) const;
+    B3MoverCollision* CollideMover(const B3Vec3& origin, const B3Capsule& mover, const B3QueryFilter& filter,
+                                   int capacity) const;
+    float CastMover(const B3Vec3& origin, const B3Capsule& mover, const B3Vec3& translation,
+                    const B3QueryFilter& filter) const;
+    float CastSphereClosestFraction(const B3Vec3& origin, float radius, const B3Vec3& translation,
+                                    const B3QueryFilter& filter) const;
     b3WorldId GetHandle() const;
 
 private:
+    struct DebugSegment {
+        b3Vec3 p1;
+        b3Vec3 p2;
+        uint32_t color;
+    };
+    struct DebugPoint {
+        b3Vec3 point;
+        float size;
+        uint32_t color;
+    };
+    struct DebugSphere {
+        b3Vec3 center;
+        float radius;
+        uint32_t color;
+        float alpha;
+    };
+    struct DebugCapsule {
+        b3Vec3 p1;
+        b3Vec3 p2;
+        float radius;
+        uint32_t color;
+        float alpha;
+    };
+    struct DebugBounds {
+        b3AABB bounds;
+        uint32_t color;
+    };
+    struct DebugBox {
+        b3Vec3 extents;
+        b3Transform transform;
+        uint32_t color;
+    };
+    struct DebugHull {
+        B3DebugShape shape;
+        b3Transform transform;
+        uint32_t color;
+    };
+
     b3WorldId m_worldId;
     bool m_destroyed;
+    std::vector<DebugSegment> m_debugSegments;
+    std::vector<DebugPoint> m_debugPoints;
+    std::vector<DebugSphere> m_debugSpheres;
+    std::vector<DebugCapsule> m_debugCapsules;
+    std::vector<DebugBounds> m_debugBounds;
+    std::vector<DebugBox> m_debugBoxes;
+    std::vector<DebugHull> m_debugHulls;
 };
 
 class B3 {
 public:
+    static bool IsDoublePrecision();
     static int StaticBody();
     static int KinematicBody();
     static int DynamicBody();
@@ -1094,6 +1641,8 @@ public:
     static int SphereShape();
     static int GetWorldCount();
     static int GetMaxWorldCount();
+    static float GetStallThreshold();
+    static void SetStallThreshold(float seconds);
     static long long DefaultMaskBits();
 };
 

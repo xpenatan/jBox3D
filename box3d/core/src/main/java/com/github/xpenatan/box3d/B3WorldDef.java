@@ -98,4 +98,11 @@ public final class B3WorldDef extends NativeObject {
 
     public void SetWorkerCount(int workerCount) {
     }
+
+    public B3Capacity GetCapacity() {
+        return null;
+    }
+
+    public void SetCapacity(B3Capacity capacity) {
+    }
 }

@@ -29,9 +29,9 @@ final class WindDropSample extends AbstractBox3DSample {
 
     @Override
     public void step(float deltaSeconds) {
+        super.step(deltaSeconds);
         B3Vec3 wind = new B3Vec3(0.0f, 0.0f, 0.0f);
         shape.ApplyWind(wind, 1.0f, 4.0f, 10.0f, true);
         dispose(wind);
-        super.step(deltaSeconds);
     }
 }

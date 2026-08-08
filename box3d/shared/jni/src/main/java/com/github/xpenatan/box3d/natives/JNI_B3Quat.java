@@ -25,4 +25,14 @@ final public class JNI_B3Quat {
     public static native void internal_native_SetS(long this_addr, float s);
 
     public static native void internal_native_Set(long this_addr, float x, float y, float z, float w);
+
+    public static native void internal_native_Normalize(long this_addr);
+
+    public static native long internal_native_RotateVector_addr(long this_addr, long vector_addr);
+
+    public static native long internal_native_ComputeBetweenUnitVectors_addr(long from_addr, long to_addr);
+
+    public static native long internal_native_Mul_addr(long a_addr, long b_addr);
+
+    public static native long internal_native_InvMul_addr(long a_addr, long b_addr);
 }

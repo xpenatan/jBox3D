@@ -12,6 +12,8 @@ final public class JNI_B3 {
 
     public static native void internal_native_deleteNative(long this_addr);
 
+    public static native boolean internal_native_IsDoublePrecision();
+
     public static native int internal_native_StaticBody();
 
     public static native int internal_native_KinematicBody();
@@ -33,6 +35,10 @@ final public class JNI_B3 {
     public static native int internal_native_GetWorldCount();
 
     public static native int internal_native_GetMaxWorldCount();
+
+    public static native float internal_native_GetStallThreshold();
+
+    public static native void internal_native_SetStallThreshold(float seconds);
 
     public static native long internal_native_DefaultMaskBits();
 }

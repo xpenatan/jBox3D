@@ -66,6 +66,8 @@ final class WindFlapSample extends AbstractBox3DSample {
 
     @Override
     public void step(float deltaSeconds) {
+        super.step(deltaSeconds);
+
         B3Vec3 wind = new B3Vec3(0.0f, 0.0f, 0.0f);
         wingShape1.ApplyWind(wind, 1.0f, 2.0f, 10.0f, false);
         wingShape2.ApplyWind(wind, 1.0f, 2.0f, 10.0f, false);
@@ -75,7 +77,6 @@ final class WindFlapSample extends AbstractBox3DSample {
         joint1.SetRevoluteTargetAngle(angle);
         joint2.SetRevoluteTargetAngle(-angle);
         time += Math.max(1.0f / 240.0f, Math.min(deltaSeconds, 1.0f / 30.0f));
-        super.step(deltaSeconds);
     }
 
     private void setLocalPositionA(B3RevoluteJointDef jointDef, float x, float y, float z) {

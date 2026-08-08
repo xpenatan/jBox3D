@@ -1,39 +1,74 @@
 package com.github.xpenatan.box3d.sample.shared.samples;
 
-import com.github.xpenatan.box3d.B3;
-import com.github.xpenatan.box3d.B3Body;
-import com.github.xpenatan.box3d.B3BodyDef;
-import com.github.xpenatan.box3d.B3Capsule;
+import com.github.xpenatan.box3d.B3Collision;
+import com.github.xpenatan.box3d.B3DistanceOutput;
 import com.github.xpenatan.box3d.B3Hull;
-import com.github.xpenatan.box3d.B3PrismaticJointDef;
 import com.github.xpenatan.box3d.B3Quat;
-import com.github.xpenatan.box3d.B3QueryFilter;
-import com.github.xpenatan.box3d.B3Shape;
-import com.github.xpenatan.box3d.B3ShapeDef;
-import com.github.xpenatan.box3d.B3Sphere;
+import com.github.xpenatan.box3d.B3ShapeProxy;
+import com.github.xpenatan.box3d.B3Transform;
 import com.github.xpenatan.box3d.B3Vec3;
-import com.github.xpenatan.box3d.B3WheelJointDef;
 
+/** Exact default port of the pinned Collision / Distance Debug regression case. */
 final class DistanceDebugSample extends AbstractBox3DSample {
-    private final B3Shape shape;
-    private int steps;
+    private final B3Hull boxA;
+    private final B3Hull boxB;
+    private final B3ShapeProxy proxyA;
+    private final B3ShapeProxy proxyB;
+    private final B3Transform transformA;
+    private final B3Transform transformB;
 
     DistanceDebugSample() {
-        addGroundBox(18.0f);
-        B3Body body = addDynamicSphere(-2.5f, 5.0f, 0.0f, 0.6f);
-        B3Body target = addDynamicBox(2.5f, 5.0f, 0.0f, 0.8f, 0.8f, 0.8f);
-        B3ShapeDef shapeDef = shapeDef(1.0f, 0.6f, 0.0f, 0.0f);
-        B3Hull hull = B3Hull.CreateRock(0.7f);
-        shape = target.CreateHullShape(shapeDef, hull);
-        SamplePortUtil.createDistance(this, body, target, 5.0f, 1.5f, 0.9f);
-        dispose(hull, shapeDef);
+        boxA = B3Hull.CreateBox(40.0f, 1.0f, 40.0f);
+        B3Vec3 localPosition = new B3Vec3(0.0f, 10.0f, 0.0f);
+        B3Quat localRotation = new B3Quat();
+        B3Transform localTransform = new B3Transform(localPosition, localRotation);
+        boxB = B3Hull.CreateTransformedBox(0.5f, 10.0f, 0.5f, localTransform);
+        proxyA = new B3ShapeProxy(boxA, 0.0f);
+        proxyB = new B3ShapeProxy(boxB, 0.0f);
+        transformA = new B3Transform();
+        B3Vec3 positionB = new B3Vec3(-1.64657831e-6f, 1.00989532471f, 0.0f);
+        B3Quat rotationB = new B3Quat(0.0f, 0.0f, 0.00494779600f, 0.999987781f);
+        transformB = new B3Transform(positionB, rotationB);
+        dispose(rotationB, positionB, localTransform, localRotation, localPosition);
+        drawDistance();
     }
 
     @Override
     public void step(float deltaSeconds) {
-        steps++;
-        B3Vec3 query = new B3Vec3((float)Math.sin(steps * 0.05f) * 4.0f, 5.0f, 0.0f);
-        dispose(shape.GetClosestPoint(query), query);
         super.step(deltaSeconds);
+        drawDistance();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        dispose(transformB, transformA, proxyB, proxyA, boxB, boxA);
+    }
+
+    private void drawDistance() {
+        world().ClearDebugOverlay();
+        addDebugGroundGrid(10);
+        addDebugAxes(0.0f, 0.0f, 0.0f, 1.0f);
+
+        B3Transform transformBtoA = B3Transform.InvMul(transformA, transformB);
+        B3DistanceOutput output = B3Collision.ShapeDistance(proxyA, proxyB, transformBtoA, false);
+        B3Vec3 one = new B3Vec3(1.0f, 1.0f, 1.0f);
+        world().AddDebugHull(boxA, transformA, one, 0x008000);
+        world().AddDebugHull(boxB, transformB, one, 0x00FFFF);
+
+        B3Vec3 localA = output.GetPointA();
+        B3Vec3 localB = output.GetPointB();
+        B3Vec3 pointA = transformA.TransformPoint(localA);
+        B3Vec3 pointB = transformA.TransformPoint(localB);
+        B3Quat rotationA = transformA.GetQ();
+        B3Vec3 localNormal = output.GetNormal();
+        B3Vec3 normal = rotationA.RotateVector(localNormal);
+        B3Vec3 normalEnd = new B3Vec3(pointA.GetX() + normal.GetX(), pointA.GetY() + normal.GetY(),
+                pointA.GetZ() + normal.GetZ());
+        world().AddDebugPoint(pointA, 5.0f, 0xFFFFFF);
+        world().AddDebugPoint(pointB, 5.0f, 0xFFFFFF);
+        world().AddDebugSegment(pointA, normalEnd, 0xFFFFFF);
+        dispose(normalEnd, normal, localNormal, rotationA, pointB, pointA, localB, localA, one, output,
+                transformBtoA);
     }
 }

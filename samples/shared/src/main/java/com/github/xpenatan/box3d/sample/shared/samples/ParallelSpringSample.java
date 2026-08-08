@@ -46,7 +46,6 @@ final class ParallelSpringSample extends AbstractBox3DSample {
         jointDef.SetCollideConnected(true);
         jointDef.SetHertz(10.0f);
         jointDef.SetDampingRatio(0.7f);
-        jointDef.SetMaxTorque(5000.0f);
         dispose(world().CreateParallelJoint(jointDef));
 
         dispose(jointDef, axisB, axisA, bodyRotation);

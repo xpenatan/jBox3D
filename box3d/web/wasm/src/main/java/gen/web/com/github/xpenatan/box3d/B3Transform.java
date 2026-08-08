@@ -14,6 +14,8 @@ public final class B3Transform extends NativeObject {
 
     private B3Quat B3Quat_TEMP_GEN_0;
 
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
     static public final B3Transform NULL = B3Transform.native_new();
 
     public B3Transform() {
@@ -92,4 +94,29 @@ public final class B3Transform extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr", "rotation_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Transform);jsObj.SetQ(rotation_addr);")
     public static native void internal_native_SetQ(int this_addr, int rotation_addr);
+
+    public B3Vec3 TransformPoint(B3Vec3 point) {
+        int addr = internal_native_TransformPoint_addr(native_address, point.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "point_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Transform);var returnedJSObj = jsObj.TransformPoint(point_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_TransformPoint_addr(int this_addr, int point_addr);
+
+    public static B3Transform InvMul(B3Transform a, B3Transform b) {
+        int addr = internal_native_InvMul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        B3Transform B3Transform_NEW = B3Transform.native_new();
+        B3Transform_NEW.internal_reset(addr, true);
+        return B3Transform_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"a_addr", "b_addr"}, script = "var returnedJSObj = box3d.B3Transform.prototype.InvMul(a_addr, b_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_InvMul_addr(int a_addr, int b_addr);
 }

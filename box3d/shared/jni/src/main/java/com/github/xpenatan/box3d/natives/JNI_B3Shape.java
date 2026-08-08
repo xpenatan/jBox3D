@@ -40,6 +40,10 @@ final public class JNI_B3Shape {
 
     public static native void internal_native_SetRestitution(long this_addr, float restitution);
 
+    public static native long internal_native_GetSurfaceMaterial_addr(long this_addr);
+
+    public static native void internal_native_SetSurfaceMaterial(long this_addr, long material_addr);
+
     public static native long internal_native_GetFilter_addr(long this_addr);
 
     public static native void internal_native_SetFilter(long this_addr, long filter_addr, boolean invokeContacts);

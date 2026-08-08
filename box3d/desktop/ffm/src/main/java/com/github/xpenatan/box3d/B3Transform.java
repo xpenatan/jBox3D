@@ -21,6 +21,8 @@ public final class B3Transform extends NativeObject {
 
     private B3Quat B3Quat_TEMP_GEN_0;
 
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
     static public final B3Transform NULL = B3Transform.native_new();
 
     public B3Transform() {
@@ -135,6 +137,41 @@ public final class B3Transform extends NativeObject {
         }
     }
 
+    public B3Vec3 TransformPoint(B3Vec3 point) {
+        long addr = internal_native_TransformPoint_addr(native_address, point.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    public static long internal_native_TransformPoint_addr(long this_addr, long point_addr) {
+        try {
+            return (long) FFMHandles.internal_native_TransformPoint_addr__JJ.invokeExact(this_addr, point_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public static B3Transform InvMul(B3Transform a, B3Transform b) {
+        long addr = internal_native_InvMul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        B3Transform B3Transform_NEW = B3Transform.native_new();
+        B3Transform_NEW.internal_reset(addr, true);
+        return B3Transform_NEW;
+    }
+
+    public static long internal_native_InvMul_addr(long a_addr, long b_addr) {
+        try {
+            return (long) FFMHandles.internal_native_InvMul_addr__JJ.invokeExact(a_addr, b_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3transform_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
@@ -150,5 +187,9 @@ public final class B3Transform extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetQ_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3transform_getq_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetQ__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3transform_setq", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_TransformPoint_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3transform_transformpoint_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_InvMul_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3transform_invmul_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
     }
 }

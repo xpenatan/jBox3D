@@ -4,7 +4,7 @@ import com.github.xpenatan.box3d.B3Quat;
 
 final class RollingResistanceSample extends AbstractBox3DSample {
     RollingResistanceSample() {
-        addGroundBox(50.0f);
+        addGroundBox(80.0f);
 
         B3Quat planeRotation = rotationX(radians(10.0f));
         addStaticBox(0.0f, 2.0f, -20.0f, 32.0f, 0.5f, 15.0f, planeRotation);

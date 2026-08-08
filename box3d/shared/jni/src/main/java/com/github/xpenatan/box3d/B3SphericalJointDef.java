@@ -253,6 +253,86 @@ public final class B3SphericalJointDef extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_SetDampingRatio(this_addr, ratio);
     }
 
+    public boolean GetEnableConeLimit() {
+        return internal_native_GetEnableConeLimit(native_address);
+    }
+
+    public static boolean internal_native_GetEnableConeLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_GetEnableConeLimit(this_addr);
+    }
+
+    public void SetEnableConeLimit(boolean enabled) {
+        internal_native_SetEnableConeLimit(native_address, enabled);
+    }
+
+    public static void internal_native_SetEnableConeLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_SetEnableConeLimit(this_addr, enabled);
+    }
+
+    public float GetConeAngle() {
+        return internal_native_GetConeAngle(native_address);
+    }
+
+    public static float internal_native_GetConeAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_GetConeAngle(this_addr);
+    }
+
+    public void SetConeAngle(float radians) {
+        internal_native_SetConeAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetConeAngle(long this_addr, float radians) {
+        com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_SetConeAngle(this_addr, radians);
+    }
+
+    public boolean GetEnableTwistLimit() {
+        return internal_native_GetEnableTwistLimit(native_address);
+    }
+
+    public static boolean internal_native_GetEnableTwistLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_GetEnableTwistLimit(this_addr);
+    }
+
+    public void SetEnableTwistLimit(boolean enabled) {
+        internal_native_SetEnableTwistLimit(native_address, enabled);
+    }
+
+    public static void internal_native_SetEnableTwistLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_SetEnableTwistLimit(this_addr, enabled);
+    }
+
+    public float GetLowerTwistAngle() {
+        return internal_native_GetLowerTwistAngle(native_address);
+    }
+
+    public static float internal_native_GetLowerTwistAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_GetLowerTwistAngle(this_addr);
+    }
+
+    public void SetLowerTwistAngle(float radians) {
+        internal_native_SetLowerTwistAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetLowerTwistAngle(long this_addr, float radians) {
+        com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_SetLowerTwistAngle(this_addr, radians);
+    }
+
+    public float GetUpperTwistAngle() {
+        return internal_native_GetUpperTwistAngle(native_address);
+    }
+
+    public static float internal_native_GetUpperTwistAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_GetUpperTwistAngle(this_addr);
+    }
+
+    public void SetUpperTwistAngle(float radians) {
+        internal_native_SetUpperTwistAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetUpperTwistAngle(long this_addr, float radians) {
+        com.github.xpenatan.box3d.natives.JNI_B3SphericalJointDef.internal_native_SetUpperTwistAngle(this_addr, radians);
+    }
+
     public boolean GetEnableMotor() {
         return internal_native_GetEnableMotor(native_address);
     }

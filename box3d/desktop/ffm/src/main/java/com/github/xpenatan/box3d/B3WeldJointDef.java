@@ -242,6 +242,30 @@ public final class B3WeldJointDef extends NativeObject {
         }
     }
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    public static void internal_native_SetForceThreshold(long this_addr, float force) {
+        try {
+            FFMHandles.internal_native_SetForceThreshold__JF.invokeExact(this_addr, force);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    public static void internal_native_SetTorqueThreshold(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetTorqueThreshold__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public float GetConstraintHertz() {
         return internal_native_GetConstraintHertz(native_address);
     }
@@ -419,6 +443,10 @@ public final class B3WeldJointDef extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetCollideConnected__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3weldjointdef_getcollideconnected", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetCollideConnected__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3weldjointdef_setcollideconnected", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetForceThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3weldjointdef_setforcethreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetTorqueThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3weldjointdef_settorquethreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
         static final java.lang.invoke.MethodHandle internal_native_GetConstraintHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3weldjointdef_getconstrainthertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 

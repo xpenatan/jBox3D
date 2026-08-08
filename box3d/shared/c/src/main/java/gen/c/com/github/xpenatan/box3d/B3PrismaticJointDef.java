@@ -155,6 +155,34 @@ public final class B3PrismaticJointDef extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3prismaticjointdef_setcollideconnected")
     public static native void internal_native_SetCollideConnected(long this_addr, boolean collide);
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3prismaticjointdef_setforcethreshold")
+    public static native void internal_native_SetForceThreshold(long this_addr, float force);
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3prismaticjointdef_settorquethreshold")
+    public static native void internal_native_SetTorqueThreshold(long this_addr, float torque);
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3prismaticjointdef_getconstrainthertz")
+    public static native float internal_native_GetConstraintHertz(long this_addr);
+
+    public void SetConstraintHertz(float hertz) {
+        internal_native_SetConstraintHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3prismaticjointdef_setconstrainthertz")
+    public static native void internal_native_SetConstraintHertz(long this_addr, float hertz);
+
     public boolean GetEnableSpring() {
         return internal_native_GetEnableSpring(native_address);
     }

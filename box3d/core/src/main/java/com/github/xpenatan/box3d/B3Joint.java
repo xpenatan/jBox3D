@@ -58,6 +58,31 @@ public final class B3Joint extends NativeObject {
         return 0;
     }
 
+    public float GetPrismaticTranslation() {
+        return 0;
+    }
+
+    public void SetPrismaticMotorSpeed(float speed) {
+    }
+
     public void SetRevoluteTargetAngle(float radians) {
+    }
+
+    public void SetRevoluteMaxMotorTorque(float torque) {
+    }
+
+    public void SetRevoluteSpringHertz(float hertz) {
+    }
+
+    public void SetRevoluteSpringDampingRatio(float dampingRatio) {
+    }
+
+    public void SetSphericalMaxMotorTorque(float torque) {
+    }
+
+    public void SetSphericalSpringHertz(float hertz) {
+    }
+
+    public void SetSphericalSpringDampingRatio(float dampingRatio) {
     }
 }

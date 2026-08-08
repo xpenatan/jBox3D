@@ -14,6 +14,8 @@ public final class B3Transform extends NativeObject {
 
     private B3Quat B3Quat_TEMP_GEN_0;
 
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
     static public final B3Transform NULL = B3Transform.native_new();
 
     public B3Transform() {
@@ -98,5 +100,32 @@ public final class B3Transform extends NativeObject {
 
     public static void internal_native_SetQ(long this_addr, long rotation_addr) {
         com.github.xpenatan.box3d.natives.JNI_B3Transform.internal_native_SetQ(this_addr, rotation_addr);
+    }
+
+    public B3Vec3 TransformPoint(B3Vec3 point) {
+        long addr = internal_native_TransformPoint_addr(native_address, point.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    public static long internal_native_TransformPoint_addr(long this_addr, long point_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Transform.internal_native_TransformPoint_addr(this_addr, point_addr);
+    }
+
+    public static B3Transform InvMul(B3Transform a, B3Transform b) {
+        long addr = internal_native_InvMul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        B3Transform B3Transform_NEW = B3Transform.native_new();
+        B3Transform_NEW.internal_reset(addr, true);
+        return B3Transform_NEW;
+    }
+
+    public static long internal_native_InvMul_addr(long a_addr, long b_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Transform.internal_native_InvMul_addr(a_addr, b_addr);
     }
 }

@@ -37,6 +37,7 @@ import com.github.xpenatan.box3d.sample.shared.Box3DSampleController;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleEntry;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleHost;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleSettings;
+import com.github.xpenatan.box3d.sample.shared.samples.SampleAssets;
 
 public final class Box3DGdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
     private static final int SETTINGS_HIT_WIDTH = 326;
@@ -120,7 +121,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
 
     @Override
     public void create() {
-        camera = new PerspectiveCamera(67.0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        SampleAssets.setReader(path -> Gdx.files.internal(path).readString("UTF-8"));
+        camera = new PerspectiveCamera(60.0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         configureCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), controller.selectedEntry().camera());
         screenshotPath = System.getProperty("jbox3d.sample.screenshot", "");
         screenshotAfterFrames = Long.parseLong(System.getProperty("jbox3d.sample.screenshotAfterFrames", "3"));
@@ -811,7 +813,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         }
         updateCameraViewport(width, height);
         camera.near = 0.1f;
-        camera.far = 200.0f;
+        camera.far = 1000.0f;
         camera.position.set(sampleCamera.positionX, sampleCamera.positionY, sampleCamera.positionZ);
         camera.up.set(0.0f, 1.0f, 0.0f);
         camera.lookAt(sampleCamera.targetX, sampleCamera.targetY, sampleCamera.targetZ);
@@ -1087,7 +1089,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
 
         String name = System.getProperty("jbox3d.sample.debugVisualization");
         if(name == null || name.trim().length() == 0) {
-            return Box3DDebugVisualization.ALL.index();
+            return Box3DDebugVisualization.SOLID.index();
         }
         String normalized = normalize(name);
         Box3DDebugVisualization[] values = Box3DDebugVisualization.values();
@@ -1096,7 +1098,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
                 return values[i].index();
             }
         }
-        return Box3DDebugVisualization.ALL.index();
+        return Box3DDebugVisualization.SOLID.index();
     }
 
     private static String normalize(String value) {

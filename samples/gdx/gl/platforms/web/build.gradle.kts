@@ -13,10 +13,11 @@ dependencies {
 }
 
 val sampleMainClass = "com.github.xpenatan.box3d.sample.gdx.web.Box3DGdxWebLauncher"
+val sharedSampleResourcesDir = project(":samples:shared").layout.buildDirectory.dir("resources/main")
 
 gdxTeaVM {
     assets.from(project(":samples:gdx:core").projectDir.resolve("src/main/resources"))
-    assets.from(project(":samples:shared").projectDir.resolve("src/main/resources"))
+    assets.from(sharedSampleResourcesDir)
 
     js {
         mainClass.set(sampleMainClass)
@@ -37,4 +38,8 @@ gdxTeaVM {
         obfuscated.set(false)
         strict.set(false)
     }
+}
+
+tasks.matching { it.name == "generateJavaScript" || it.name == "generateWasmGC" }.configureEach {
+    dependsOn(":samples:shared:processResources")
 }

@@ -235,6 +235,22 @@ public final class B3ShapeDef extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3ShapeDef.internal_native_SetInvokeContactCreation(this_addr, invokeContactCreation);
     }
 
+    public boolean GetEnableSpeculativeContact() {
+        return internal_native_GetEnableSpeculativeContact(native_address);
+    }
+
+    public static boolean internal_native_GetEnableSpeculativeContact(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3ShapeDef.internal_native_GetEnableSpeculativeContact(this_addr);
+    }
+
+    public void SetEnableSpeculativeContact(boolean enabled) {
+        internal_native_SetEnableSpeculativeContact(native_address, enabled);
+    }
+
+    public static void internal_native_SetEnableSpeculativeContact(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3ShapeDef.internal_native_SetEnableSpeculativeContact(this_addr, enabled);
+    }
+
     public boolean GetUpdateBodyMass() {
         return internal_native_GetUpdateBodyMass(native_address);
     }

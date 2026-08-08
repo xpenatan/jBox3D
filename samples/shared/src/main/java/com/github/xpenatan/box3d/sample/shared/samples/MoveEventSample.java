@@ -18,11 +18,15 @@ final class MoveEventSample extends AbstractBox3DSample {
     MoveEventSample() {
         addGroundBox(40.0f);
         B3Body body = createBody(B3.DynamicBody(), 0.0f, 1.0f, 0.0f, null);
-        addBoxShape(body, 0.5f, 10.0f, 0.5f, 0.0f, 10.0f, 0.0f, null, 1.0f, 0.6f, 0.0f, 0.0f);
-        B3Vec3 angularVelocity = new B3Vec3(0.0f, 0.0f, 2.0f);
+        B3ShapeDef shapeDef = shapeDef(1.0f, 0.6f, 0.0f, 0.0f);
+        shapeDef.SetEnableHitEvents(true);
+        B3Vec3 offset = new B3Vec3(0.0f, 10.0f, 0.0f);
+        B3Hull hull = B3Hull.CreateOffsetBox(0.5f, 10.0f, 0.5f, offset);
+        dispose(body.CreateHullShape(shapeDef, hull));
+        B3Vec3 angularVelocity = new B3Vec3(0.0f, 0.0f, 1.0f);
         B3Vec3 linearVelocity = new B3Vec3(-10.0f, 0.0f, 0.0f);
         body.SetAngularVelocity(angularVelocity);
         body.SetLinearVelocity(linearVelocity);
-        dispose(linearVelocity, angularVelocity);
+        dispose(linearVelocity, angularVelocity, hull, offset, shapeDef);
     }
 }

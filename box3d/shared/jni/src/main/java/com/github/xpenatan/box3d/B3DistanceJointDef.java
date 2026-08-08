@@ -171,6 +171,22 @@ public final class B3DistanceJointDef extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3DistanceJointDef.internal_native_SetCollideConnected(this_addr, collide);
     }
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    public static void internal_native_SetForceThreshold(long this_addr, float force) {
+        com.github.xpenatan.box3d.natives.JNI_B3DistanceJointDef.internal_native_SetForceThreshold(this_addr, force);
+    }
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    public static void internal_native_SetTorqueThreshold(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3DistanceJointDef.internal_native_SetTorqueThreshold(this_addr, torque);
+    }
+
     public float GetConstraintHertz() {
         return internal_native_GetConstraintHertz(native_address);
     }

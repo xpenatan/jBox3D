@@ -3,8 +3,9 @@ package com.github.xpenatan.box3d.sample.shared.samples;
 final class OverlapRecoverySample extends AbstractBox3DSample {
     OverlapRecoverySample() {
         addGroundBox(20.0f);
+        world().SetContactTuning(30.0f, 10.0f, 3.0f);
         float extent = 0.5f;
-        int baseCount = 6;
+        int baseCount = 4;
         float overlap = 0.25f;
         float fraction = 1.0f - overlap;
         float y = extent;

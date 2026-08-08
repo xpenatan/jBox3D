@@ -54,6 +54,28 @@ final public class JNI_B3World {
 
     public static native int internal_native_GetAwakeBodyCount(long this_addr);
 
+    public static native void internal_native_Explode(long this_addr, long def_addr);
+
+    public static native void internal_native_SetCustomFilterCallback(long this_addr, long callback_addr);
+
+    public static native void internal_native_ClearDebugOverlay(long this_addr);
+
+    public static native void internal_native_AddDebugSegment(long this_addr, long p1_addr, long p2_addr, int color);
+
+    public static native void internal_native_AddDebugPoint(long this_addr, long point_addr, float size, int color);
+
+    public static native void internal_native_AddDebugSphere(long this_addr, long center_addr, float radius, int color, float alpha);
+
+    public static native void internal_native_AddDebugCapsule(long this_addr, long p1_addr, long p2_addr, float radius, int color, float alpha);
+
+    public static native void internal_native_AddDebugBounds(long this_addr, long bounds_addr, int color);
+
+    public static native void internal_native_AddDebugBox(long this_addr, long extents_addr, long transform_addr, int color);
+
+    public static native void internal_native_AddDebugHull(long this_addr, long hull_addr, long transform_addr, long scale_addr, int color);
+
+    public static native void internal_native_AddDebugTriangle(long this_addr, long p1_addr, long p2_addr, long p3_addr, int color);
+
     public static native long internal_native_CreateBody_addr(long this_addr, long def_addr);
 
     public static native long internal_native_CreateDistanceJoint_addr(long this_addr, long def_addr);
@@ -76,9 +98,25 @@ final public class JNI_B3World {
 
     public static native long internal_native_GetBodyEvents_addr(long this_addr);
 
+    public static native long internal_native_GetJointEvents_addr(long this_addr);
+
     public static native long internal_native_GetSensorEvents_addr(long this_addr);
 
     public static native long internal_native_GetContactEvents_addr(long this_addr);
 
     public static native long internal_native_CastRayClosest_addr(long this_addr, long origin_addr, long translation_addr, long filter_addr);
+
+    public static native int internal_native_CountOverlapsAABB(long this_addr, long bounds_addr, long filter_addr);
+
+    public static native long internal_native_CastSphereClosest_addr(long this_addr, long origin_addr, float radius, long translation_addr, long filter_addr);
+
+    public static native long internal_native_CastShapeClosest_addr(long this_addr, long origin_addr, long proxy_addr, long translation_addr, long filter_addr, boolean initialOverlap);
+
+    public static native boolean internal_native_OverlapShape(long this_addr, long origin_addr, long proxy_addr, long filter_addr);
+
+    public static native long internal_native_CollideMover_addr(long this_addr, long origin_addr, long mover_addr, long filter_addr, int capacity);
+
+    public static native float internal_native_CastMover(long this_addr, long origin_addr, long mover_addr, long translation_addr, long filter_addr);
+
+    public static native float internal_native_CastSphereClosestFraction(long this_addr, long origin_addr, float radius, long translation_addr, long filter_addr);
 }

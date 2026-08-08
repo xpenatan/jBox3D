@@ -30,5 +30,21 @@ final public class JNI_B3Joint {
 
     public static native float internal_native_GetLinearSeparation(long this_addr);
 
+    public static native float internal_native_GetPrismaticTranslation(long this_addr);
+
+    public static native void internal_native_SetPrismaticMotorSpeed(long this_addr, float speed);
+
     public static native void internal_native_SetRevoluteTargetAngle(long this_addr, float radians);
+
+    public static native void internal_native_SetRevoluteMaxMotorTorque(long this_addr, float torque);
+
+    public static native void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz);
+
+    public static native void internal_native_SetRevoluteSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public static native void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque);
+
+    public static native void internal_native_SetSphericalSpringHertz(long this_addr, float hertz);
+
+    public static native void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio);
 }

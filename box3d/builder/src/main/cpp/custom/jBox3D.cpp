@@ -89,6 +89,12 @@ static void drawBoxCallback(b3Vec3 extents, b3WorldTransform transform, b3HexCol
     }
 }
 
+static bool customFilterCallback(b3ShapeId shapeIdA, b3ShapeId shapeIdB, void* context) {
+    B3CustomFilterEm* callback = static_cast<B3CustomFilterEm*>(context);
+    return callback == nullptr || callback->Filter(static_cast<long long>(b3StoreShapeId(shapeIdA)),
+                                                   static_cast<long long>(b3StoreShapeId(shapeIdB)));
+}
+
 B3Vec3::B3Vec3() : value(b3Vec3_zero) {
 }
 
@@ -155,6 +161,26 @@ void B3Quat::Set(float x, float y, float z, float w) {
     value = {{x, y, z}, w};
 }
 
+void B3Quat::Normalize() {
+    value = b3NormalizeQuat(value);
+}
+
+B3Vec3 B3Quat::RotateVector(const B3Vec3& vector) const {
+    return B3Vec3(b3RotateVector(value, vector.value));
+}
+
+B3Quat* B3Quat::ComputeBetweenUnitVectors(const B3Vec3& from, const B3Vec3& to) {
+    return new B3Quat(b3ComputeQuatBetweenUnitVectors(from.value, to.value));
+}
+
+B3Quat* B3Quat::Mul(const B3Quat& a, const B3Quat& b) {
+    return new B3Quat(b3MulQuat(a.value, b.value));
+}
+
+B3Quat* B3Quat::InvMul(const B3Quat& a, const B3Quat& b) {
+    return new B3Quat(b3InvMulQuat(a.value, b.value));
+}
+
 B3Transform::B3Transform() : value(b3Transform_identity) {
 }
 
@@ -178,6 +204,14 @@ B3Quat B3Transform::GetQ() const {
 
 void B3Transform::SetQ(const B3Quat& rotation) {
     value.q = rotation.value;
+}
+
+B3Vec3 B3Transform::TransformPoint(const B3Vec3& point) const {
+    return B3Vec3(b3TransformPoint(value, point.value));
+}
+
+B3Transform* B3Transform::InvMul(const B3Transform& a, const B3Transform& b) {
+    return new B3Transform(b3InvMulTransforms(a.value, b.value));
 }
 
 B3AABB::B3AABB() : value{b3Vec3_zero, b3Vec3_zero} {
@@ -365,6 +399,9 @@ B3DistanceJointDef::B3DistanceJointDef() : value(b3DefaultDistanceJointDef()) {
 }
 
 DEFINE_B3_JOINT_BASE_ACCESSORS(B3DistanceJointDef)
+
+void B3DistanceJointDef::SetForceThreshold(float force) { value.base.forceThreshold = force; }
+void B3DistanceJointDef::SetTorqueThreshold(float torque) { value.base.torqueThreshold = torque; }
 
 float B3DistanceJointDef::GetConstraintHertz() const {
     return value.base.constraintHertz;
@@ -597,6 +634,11 @@ B3PrismaticJointDef::B3PrismaticJointDef() : value(b3DefaultPrismaticJointDef())
 
 DEFINE_B3_JOINT_BASE_ACCESSORS(B3PrismaticJointDef)
 
+void B3PrismaticJointDef::SetForceThreshold(float force) { value.base.forceThreshold = force; }
+void B3PrismaticJointDef::SetTorqueThreshold(float torque) { value.base.torqueThreshold = torque; }
+float B3PrismaticJointDef::GetConstraintHertz() const { return value.base.constraintHertz; }
+void B3PrismaticJointDef::SetConstraintHertz(float hertz) { value.base.constraintHertz = hertz; }
+
 bool B3PrismaticJointDef::GetEnableSpring() const {
     return value.enableSpring;
 }
@@ -776,6 +818,46 @@ void B3SphericalJointDef::SetDampingRatio(float ratio) {
     value.dampingRatio = ratio;
 }
 
+bool B3SphericalJointDef::GetEnableConeLimit() const {
+    return value.enableConeLimit;
+}
+
+void B3SphericalJointDef::SetEnableConeLimit(bool enabled) {
+    value.enableConeLimit = enabled;
+}
+
+float B3SphericalJointDef::GetConeAngle() const {
+    return value.coneAngle;
+}
+
+void B3SphericalJointDef::SetConeAngle(float radians) {
+    value.coneAngle = radians;
+}
+
+bool B3SphericalJointDef::GetEnableTwistLimit() const {
+    return value.enableTwistLimit;
+}
+
+void B3SphericalJointDef::SetEnableTwistLimit(bool enabled) {
+    value.enableTwistLimit = enabled;
+}
+
+float B3SphericalJointDef::GetLowerTwistAngle() const {
+    return value.lowerTwistAngle;
+}
+
+void B3SphericalJointDef::SetLowerTwistAngle(float radians) {
+    value.lowerTwistAngle = radians;
+}
+
+float B3SphericalJointDef::GetUpperTwistAngle() const {
+    return value.upperTwistAngle;
+}
+
+void B3SphericalJointDef::SetUpperTwistAngle(float radians) {
+    value.upperTwistAngle = radians;
+}
+
 bool B3SphericalJointDef::GetEnableMotor() const {
     return value.enableMotor;
 }
@@ -858,6 +940,9 @@ bool B3RevoluteJointDef::GetCollideConnected() const {
 void B3RevoluteJointDef::SetCollideConnected(bool collide) {
     value.base.collideConnected = collide;
 }
+
+void B3RevoluteJointDef::SetForceThreshold(float force) { value.base.forceThreshold = force; }
+void B3RevoluteJointDef::SetTorqueThreshold(float torque) { value.base.torqueThreshold = torque; }
 
 float B3RevoluteJointDef::GetConstraintHertz() const {
     return value.base.constraintHertz;
@@ -1013,6 +1098,9 @@ bool B3WeldJointDef::GetCollideConnected() const {
 void B3WeldJointDef::SetCollideConnected(bool collide) {
     value.base.collideConnected = collide;
 }
+
+void B3WeldJointDef::SetForceThreshold(float force) { value.base.forceThreshold = force; }
+void B3WeldJointDef::SetTorqueThreshold(float torque) { value.base.torqueThreshold = torque; }
 
 float B3WeldJointDef::GetConstraintHertz() const {
     return value.base.constraintHertz;
@@ -1653,6 +1741,95 @@ void B3SurfaceMaterial::SetCustomColor(long customColor) {
     value.customColor = static_cast<uint32_t>(customColor);
 }
 
+B3Capacity::B3Capacity() : value{} {
+}
+
+B3Capacity::B3Capacity(b3Capacity capacity) : value(capacity) {
+}
+
+int B3Capacity::GetStaticShapeCount() const {
+    return value.staticShapeCount;
+}
+
+void B3Capacity::SetStaticShapeCount(int count) {
+    value.staticShapeCount = count;
+}
+
+int B3Capacity::GetDynamicShapeCount() const {
+    return value.dynamicShapeCount;
+}
+
+void B3Capacity::SetDynamicShapeCount(int count) {
+    value.dynamicShapeCount = count;
+}
+
+int B3Capacity::GetStaticBodyCount() const {
+    return value.staticBodyCount;
+}
+
+void B3Capacity::SetStaticBodyCount(int count) {
+    value.staticBodyCount = count;
+}
+
+int B3Capacity::GetDynamicBodyCount() const {
+    return value.dynamicBodyCount;
+}
+
+void B3Capacity::SetDynamicBodyCount(int count) {
+    value.dynamicBodyCount = count;
+}
+
+int B3Capacity::GetContactCount() const {
+    return value.contactCount;
+}
+
+void B3Capacity::SetContactCount(int count) {
+    value.contactCount = count;
+}
+
+B3ExplosionDef::B3ExplosionDef() : value(b3DefaultExplosionDef()) {
+}
+
+long long B3ExplosionDef::GetMaskBits() const {
+    return static_cast<long long>(value.maskBits);
+}
+
+void B3ExplosionDef::SetMaskBits(long long maskBits) {
+    value.maskBits = static_cast<uint64_t>(maskBits);
+}
+
+B3Vec3 B3ExplosionDef::GetPosition() const {
+    return B3Vec3(value.position);
+}
+
+void B3ExplosionDef::SetPosition(const B3Vec3& position) {
+    value.position = position.value;
+}
+
+float B3ExplosionDef::GetRadius() const {
+    return value.radius;
+}
+
+void B3ExplosionDef::SetRadius(float radius) {
+    value.radius = radius;
+}
+
+float B3ExplosionDef::GetFalloff() const {
+    return value.falloff;
+}
+
+void B3ExplosionDef::SetFalloff(float falloff) {
+    value.falloff = falloff;
+}
+
+float B3ExplosionDef::GetImpulsePerArea() const {
+    return value.impulsePerArea;
+}
+
+void B3ExplosionDef::SetImpulsePerArea(float impulse) {
+    value.impulsePerArea = impulse;
+}
+
 B3WorldDef::B3WorldDef() : value(b3DefaultWorldDef()) {
     value.createDebugShape = createDebugShape;
     value.destroyDebugShape = destroyDebugShape;
@@ -1737,6 +1914,14 @@ long B3WorldDef::GetWorkerCount() const {
 
 void B3WorldDef::SetWorkerCount(long workerCount) {
     value.workerCount = static_cast<uint32_t>(workerCount);
+}
+
+B3Capacity B3WorldDef::GetCapacity() const {
+    return B3Capacity(value.capacity);
+}
+
+void B3WorldDef::SetCapacity(const B3Capacity& capacity) {
+    value.capacity = capacity.value;
 }
 
 B3BodyDef::B3BodyDef() : value(b3DefaultBodyDef()) {
@@ -1961,6 +2146,14 @@ void B3ShapeDef::SetInvokeContactCreation(bool invokeContactCreation) {
     value.invokeContactCreation = invokeContactCreation;
 }
 
+bool B3ShapeDef::GetEnableSpeculativeContact() const {
+    return value.enableSpeculativeContact;
+}
+
+void B3ShapeDef::SetEnableSpeculativeContact(bool enabled) {
+    value.enableSpeculativeContact = enabled;
+}
+
 bool B3ShapeDef::GetUpdateBodyMass() const {
     return value.updateBodyMass;
 }
@@ -2084,6 +2277,34 @@ B3BodyMoveEvent B3BodyEvents::GetMoveEvent(int index) const {
         return B3BodyMoveEvent();
     }
     return moveEvents[static_cast<size_t>(index)];
+}
+
+B3JointEvent::B3JointEvent() : jointId(0) {
+}
+
+B3JointEvent::B3JointEvent(const b3JointEvent& event)
+    : jointId(static_cast<long long>(b3StoreJointId(event.jointId))) {
+}
+
+long long B3JointEvent::GetJointId() const { return jointId; }
+
+B3JointEvents::B3JointEvents() {
+}
+
+B3JointEvents::B3JointEvents(const b3JointEvents& events) {
+    jointEvents.reserve(static_cast<size_t>(events.count));
+    for(int i = 0; i < events.count; ++i) {
+        jointEvents.emplace_back(events.jointEvents[i]);
+    }
+}
+
+int B3JointEvents::GetCount() const { return static_cast<int>(jointEvents.size()); }
+
+B3JointEvent B3JointEvents::GetEvent(int index) const {
+    if(index < 0 || index >= static_cast<int>(jointEvents.size())) {
+        return B3JointEvent();
+    }
+    return jointEvents[static_cast<size_t>(index)];
 }
 
 B3SensorBeginTouchEvent::B3SensorBeginTouchEvent() : sensorShapeId(0), visitorShapeId(0) {
@@ -2288,6 +2509,30 @@ B3ContactHitEvent B3ContactEvents::GetHitEvent(int index) const {
     return hitEvents[static_cast<size_t>(index)];
 }
 
+B3Vec3Array::B3Vec3Array(int size) : m_values(static_cast<size_t>(size > 0 ? size : 0)) {
+}
+
+int B3Vec3Array::GetSize() const {
+    return static_cast<int>(m_values.size());
+}
+
+B3Vec3 B3Vec3Array::GetValue(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_values.size())) {
+        return B3Vec3();
+    }
+    return B3Vec3(m_values[static_cast<size_t>(index)]);
+}
+
+void B3Vec3Array::SetValue(int index, const B3Vec3& value) {
+    if(index >= 0 && index < static_cast<int>(m_values.size())) {
+        m_values[static_cast<size_t>(index)] = value.value;
+    }
+}
+
+const b3Vec3* B3Vec3Array::GetData() const {
+    return m_values.empty() ? nullptr : m_values.data();
+}
+
 B3Hull::B3Hull() : m_hull(nullptr), m_boxHull{}, m_ownsHull(false) {
 }
 
@@ -2334,6 +2579,22 @@ B3Hull* B3Hull::CreateRock(float radius) {
     return new B3Hull(b3CreateRock(radius));
 }
 
+B3Hull* B3Hull::CreateFromPoints(const B3Vec3Array& points, int maxVertexCount) {
+    int pointCount = points.GetSize();
+    if(pointCount < 4 || maxVertexCount < 4) {
+        return new B3Hull();
+    }
+    return new B3Hull(b3CreateHull(points.GetData(), pointCount, maxVertexCount));
+}
+
+B3Hull* B3Hull::CloneAndTransform(const B3Hull& hull, const B3Transform& transform, const B3Vec3& scale) {
+    const b3HullData* source = hull.GetHandle();
+    if(source == nullptr) {
+        return new B3Hull();
+    }
+    return new B3Hull(b3CloneAndTransformHull(source, transform.value, scale.value));
+}
+
 bool B3Hull::IsValid() const {
     return m_hull != nullptr;
 }
@@ -2354,9 +2615,705 @@ int B3Hull::GetFaceCount() const {
     return m_hull != nullptr ? m_hull->faceCount : 0;
 }
 
+B3Vec3 B3Hull::GetPoint(int index) const {
+    if(m_hull == nullptr || index < 0 || index >= m_hull->vertexCount) {
+        return B3Vec3(b3Vec3_zero);
+    }
+    return B3Vec3(b3GetHullPoints(m_hull)[index]);
+}
+
 const b3HullData* B3Hull::GetHandle() const {
     return m_hull;
 }
+
+B3ShapeProxy::B3ShapeProxy(const B3Vec3Array& points, int count, float radius) : m_proxy{} {
+    int sourceCount = points.GetSize();
+    int copyCount = count < sourceCount ? count : sourceCount;
+    if(copyCount < 0) {
+        copyCount = 0;
+    }
+    const b3Vec3* data = points.GetData();
+    if(data != nullptr && copyCount > 0) {
+        m_points.assign(data, data + copyCount);
+    }
+    m_proxy.points = m_points.empty() ? nullptr : m_points.data();
+    m_proxy.count = static_cast<int>(m_points.size());
+    m_proxy.radius = radius;
+}
+
+B3ShapeProxy::B3ShapeProxy(const B3Hull& hull, float radius) : m_proxy{} {
+    const b3HullData* hullData = hull.GetHandle();
+    if(hullData != nullptr && hullData->vertexCount > 0) {
+        const b3Vec3* points = b3GetHullPoints(hullData);
+        m_points.assign(points, points + hullData->vertexCount);
+    }
+    m_proxy.points = m_points.empty() ? nullptr : m_points.data();
+    m_proxy.count = static_cast<int>(m_points.size());
+    m_proxy.radius = radius;
+}
+
+int B3ShapeProxy::GetCount() const {
+    return m_proxy.count;
+}
+
+float B3ShapeProxy::GetRadius() const {
+    return m_proxy.radius;
+}
+
+const b3ShapeProxy& B3ShapeProxy::GetHandle() const {
+    return m_proxy;
+}
+
+B3LocalManifoldPoint::B3LocalManifoldPoint() : m_point{} {
+}
+
+B3LocalManifoldPoint::B3LocalManifoldPoint(const b3LocalManifoldPoint& point) : m_point(point) {
+}
+
+B3Vec3 B3LocalManifoldPoint::GetPoint() const {
+    return B3Vec3(m_point.point);
+}
+
+float B3LocalManifoldPoint::GetSeparation() const {
+    return m_point.separation;
+}
+
+int B3LocalManifoldPoint::GetOwner1() const {
+    return m_point.pair.owner1;
+}
+
+int B3LocalManifoldPoint::GetIndex1() const {
+    return m_point.pair.index1;
+}
+
+int B3LocalManifoldPoint::GetOwner2() const {
+    return m_point.pair.owner2;
+}
+
+int B3LocalManifoldPoint::GetIndex2() const {
+    return m_point.pair.index2;
+}
+
+int B3LocalManifoldPoint::GetTriangleIndex() const {
+    return m_point.triangleIndex;
+}
+
+B3LocalManifold::B3LocalManifold(int capacity)
+    : m_points(static_cast<size_t>(capacity > 0 ? capacity : 0)), m_manifold{} {
+    m_manifold.points = m_points.empty() ? nullptr : m_points.data();
+}
+
+void B3LocalManifold::Clear() {
+    m_manifold = {};
+    m_manifold.points = m_points.empty() ? nullptr : m_points.data();
+}
+
+int B3LocalManifold::GetCapacity() const {
+    return static_cast<int>(m_points.size());
+}
+
+b3LocalManifold* B3LocalManifold::GetHandle() {
+    return &m_manifold;
+}
+
+B3Vec3 B3LocalManifold::GetNormal() const {
+    return B3Vec3(m_manifold.normal);
+}
+
+B3Vec3 B3LocalManifold::GetTriangleNormal() const {
+    return B3Vec3(m_manifold.triangleNormal);
+}
+
+int B3LocalManifold::GetPointCount() const {
+    return m_manifold.pointCount;
+}
+
+B3LocalManifoldPoint B3LocalManifold::GetPoint(int index) const {
+    if(index < 0 || index >= m_manifold.pointCount || index >= static_cast<int>(m_points.size())) {
+        return B3LocalManifoldPoint();
+    }
+    return B3LocalManifoldPoint(m_points[static_cast<size_t>(index)]);
+}
+
+int B3LocalManifold::GetFeature() const {
+    return static_cast<int>(m_manifold.feature);
+}
+
+int B3LocalManifold::GetTriangleIndex() const {
+    return m_manifold.triangleIndex;
+}
+
+B3DistanceOutput::B3DistanceOutput() : m_output{} {
+}
+
+B3DistanceOutput::B3DistanceOutput(const b3DistanceOutput& output) : m_output(output) {
+}
+
+B3Vec3 B3DistanceOutput::GetPointA() const { return B3Vec3(m_output.pointA); }
+B3Vec3 B3DistanceOutput::GetPointB() const { return B3Vec3(m_output.pointB); }
+B3Vec3 B3DistanceOutput::GetNormal() const { return B3Vec3(m_output.normal); }
+float B3DistanceOutput::GetDistance() const { return m_output.distance; }
+int B3DistanceOutput::GetIterations() const { return m_output.iterations; }
+int B3DistanceOutput::GetSimplexCount() const { return m_output.simplexCount; }
+
+B3CastOutput::B3CastOutput() : m_output{} {
+}
+
+B3CastOutput::B3CastOutput(const b3CastOutput& output) : m_output(output) {
+}
+
+B3Vec3 B3CastOutput::GetNormal() const { return B3Vec3(m_output.normal); }
+B3Vec3 B3CastOutput::GetPoint() const { return B3Vec3(m_output.point); }
+float B3CastOutput::GetFraction() const { return m_output.fraction; }
+int B3CastOutput::GetIterations() const { return m_output.iterations; }
+bool B3CastOutput::GetHit() const { return m_output.hit; }
+
+B3Sweep::B3Sweep() : m_sweep{} {
+    m_sweep.q1 = b3Quat_identity;
+    m_sweep.q2 = b3Quat_identity;
+}
+
+B3Vec3 B3Sweep::GetLocalCenter() const { return B3Vec3(m_sweep.localCenter); }
+void B3Sweep::SetLocalCenter(const B3Vec3& center) { m_sweep.localCenter = center.value; }
+B3Vec3 B3Sweep::GetC1() const { return B3Vec3(m_sweep.c1); }
+void B3Sweep::SetC1(const B3Vec3& center) { m_sweep.c1 = center.value; }
+B3Vec3 B3Sweep::GetC2() const { return B3Vec3(m_sweep.c2); }
+void B3Sweep::SetC2(const B3Vec3& center) { m_sweep.c2 = center.value; }
+B3Quat B3Sweep::GetQ1() const { return B3Quat(m_sweep.q1); }
+void B3Sweep::SetQ1(const B3Quat& rotation) { m_sweep.q1 = rotation.value; }
+B3Quat B3Sweep::GetQ2() const { return B3Quat(m_sweep.q2); }
+void B3Sweep::SetQ2(const B3Quat& rotation) { m_sweep.q2 = rotation.value; }
+B3Transform B3Sweep::GetTransform(float fraction) const { return B3Transform(b3GetSweepTransform(&m_sweep, fraction)); }
+
+B3TOIOutput::B3TOIOutput() : m_output{} {
+}
+
+B3TOIOutput::B3TOIOutput(const b3TOIOutput& output) : m_output(output) {
+}
+
+int B3TOIOutput::GetState() const { return static_cast<int>(m_output.state); }
+B3Vec3 B3TOIOutput::GetPoint() const { return B3Vec3(m_output.point); }
+B3Vec3 B3TOIOutput::GetNormal() const { return B3Vec3(m_output.normal); }
+float B3TOIOutput::GetFraction() const { return m_output.fraction; }
+float B3TOIOutput::GetDistance() const { return m_output.distance; }
+int B3TOIOutput::GetDistanceIterations() const { return m_output.distanceIterations; }
+int B3TOIOutput::GetPushBackIterations() const { return m_output.pushBackIterations; }
+int B3TOIOutput::GetRootIterations() const { return m_output.rootIterations; }
+bool B3TOIOutput::GetUsedFallback() const { return m_output.usedFallback; }
+
+B3MoverPlaneResult::B3MoverPlaneResult() : m_result{} {
+}
+
+B3MoverPlaneResult::B3MoverPlaneResult(const b3BodyPlaneResult& result) : m_result(result) {
+}
+
+long long B3MoverPlaneResult::GetShapeId() const {
+    return static_cast<long long>(b3StoreShapeId(m_result.shapeId));
+}
+
+B3Vec3 B3MoverPlaneResult::GetNormal() const {
+    return B3Vec3(m_result.result.plane.normal);
+}
+
+float B3MoverPlaneResult::GetOffset() const {
+    return m_result.result.plane.offset;
+}
+
+B3Vec3 B3MoverPlaneResult::GetPoint() const {
+    return B3Vec3(m_result.result.point);
+}
+
+B3MoverCollision::B3MoverCollision() {
+}
+
+int B3MoverCollision::GetCount() const {
+    return static_cast<int>(m_results.size());
+}
+
+B3MoverPlaneResult B3MoverCollision::GetResult(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_results.size())) {
+        return B3MoverPlaneResult();
+    }
+    return B3MoverPlaneResult(m_results[static_cast<size_t>(index)]);
+}
+
+B3PlaneSolverResult::B3PlaneSolverResult() : m_result{} {
+}
+
+B3PlaneSolverResult::B3PlaneSolverResult(const b3PlaneSolverResult& result) : m_result(result) {
+}
+
+B3Vec3 B3PlaneSolverResult::GetDelta() const {
+    return B3Vec3(m_result.delta);
+}
+
+int B3PlaneSolverResult::GetIterationCount() const {
+    return m_result.iterationCount;
+}
+
+static const b3Vec3* getTriangle(const B3Vec3Array& triangle) {
+    return triangle.GetSize() >= 3 ? triangle.GetData() : nullptr;
+}
+
+B3LocalManifold* B3Collision::CollideSpheres(int capacity, const B3Sphere& sphereA, const B3Sphere& sphereB,
+                                              const B3Transform& transformBtoA) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    b3CollideSpheres(manifold->GetHandle(), manifold->GetCapacity(), &sphereA.value, &sphereB.value, transformBtoA.value);
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideCapsuleAndSphere(int capacity, const B3Capsule& capsuleA,
+                                                       const B3Sphere& sphereB, const B3Transform& transformBtoA) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    b3CollideCapsuleAndSphere(manifold->GetHandle(), manifold->GetCapacity(), &capsuleA.value, &sphereB.value,
+                              transformBtoA.value);
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideHullAndSphere(int capacity, const B3Hull& hullA, const B3Sphere& sphereB,
+                                                    const B3Transform& transformBtoA) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    b3SimplexCache cache{};
+    const b3HullData* hull = hullA.GetHandle();
+    if(hull != nullptr) {
+        b3CollideHullAndSphere(manifold->GetHandle(), manifold->GetCapacity(), hull, &sphereB.value,
+                               transformBtoA.value, &cache);
+    }
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideCapsules(int capacity, const B3Capsule& capsuleA,
+                                               const B3Capsule& capsuleB, const B3Transform& transformBtoA) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    b3CollideCapsules(manifold->GetHandle(), manifold->GetCapacity(), &capsuleA.value, &capsuleB.value,
+                      transformBtoA.value);
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideHullAndCapsule(int capacity, const B3Hull& hullA,
+                                                     const B3Capsule& capsuleB, const B3Transform& transformBtoA) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    b3SimplexCache cache{};
+    const b3HullData* hull = hullA.GetHandle();
+    if(hull != nullptr) {
+        b3CollideHullAndCapsule(manifold->GetHandle(), manifold->GetCapacity(), hull, &capsuleB.value,
+                                transformBtoA.value, &cache);
+    }
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideHulls(int capacity, const B3Hull& hullA, const B3Hull& hullB,
+                                            const B3Transform& transformBtoA) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    b3SATCache cache{};
+    const b3HullData* a = hullA.GetHandle();
+    const b3HullData* b = hullB.GetHandle();
+    if(a != nullptr && b != nullptr) {
+        b3CollideHulls(manifold->GetHandle(), manifold->GetCapacity(), a, b, transformBtoA.value, &cache);
+    }
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideTriangleAndSphere(int capacity, const B3Vec3Array& triangleA,
+                                                        const B3Sphere& sphereB) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    const b3Vec3* triangle = getTriangle(triangleA);
+    if(triangle != nullptr) {
+        b3CollideTriangleAndSphere(manifold->GetHandle(), manifold->GetCapacity(), triangle, &sphereB.value);
+    }
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideTriangleAndCapsule(int capacity, const B3Vec3Array& triangleA,
+                                                         const B3Capsule& capsuleB) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    const b3Vec3* triangle = getTriangle(triangleA);
+    if(triangle != nullptr) {
+        b3SimplexCache cache{};
+        b3CollideTriangleAndCapsule(manifold->GetHandle(), manifold->GetCapacity(), triangle, &capsuleB.value, &cache);
+    }
+    return manifold;
+}
+
+B3LocalManifold* B3Collision::CollideTriangleAndHull(int capacity, const B3Vec3Array& triangleA,
+                                                      int triangleFlags, const B3Hull& hullB,
+                                                      bool enableSpeculative) {
+    B3LocalManifold* manifold = new B3LocalManifold(capacity);
+    const b3Vec3* triangle = getTriangle(triangleA);
+    const b3HullData* hull = hullB.GetHandle();
+    if(triangle != nullptr && hull != nullptr) {
+        b3SATCache cache{};
+        b3CollideTriangleAndHull(manifold->GetHandle(), manifold->GetCapacity(), triangle[0], triangle[1], triangle[2],
+                                 triangleFlags, hull, &cache, enableSpeculative);
+    }
+    return manifold;
+}
+
+B3DistanceOutput B3Collision::ShapeDistance(const B3ShapeProxy& proxyA, const B3ShapeProxy& proxyB,
+                                              const B3Transform& transformBtoA, bool useRadii) {
+    b3DistanceInput input{};
+    input.proxyA = proxyA.GetHandle();
+    input.proxyB = proxyB.GetHandle();
+    input.transform = transformBtoA.value;
+    input.useRadii = useRadii;
+    b3SimplexCache cache{};
+    return B3DistanceOutput(b3ShapeDistance(&input, &cache, nullptr, 0));
+}
+
+B3CastOutput B3Collision::ShapeCast(const B3ShapeProxy& proxyA, const B3ShapeProxy& proxyB,
+                                     const B3Transform& transformBtoA, const B3Vec3& translationB,
+                                     float maxFraction, bool canEncroach) {
+    b3ShapeCastPairInput input{};
+    input.proxyA = proxyA.GetHandle();
+    input.proxyB = proxyB.GetHandle();
+    input.transform = transformBtoA.value;
+    input.translationB = translationB.value;
+    input.maxFraction = maxFraction;
+    input.canEncroach = canEncroach;
+    return B3CastOutput(b3ShapeCast(&input));
+}
+
+B3TOIOutput B3Collision::TimeOfImpact(const B3ShapeProxy& proxyA, const B3ShapeProxy& proxyB,
+                                       const B3Sweep& sweepA, const B3Sweep& sweepB, float maxFraction) {
+    b3TOIInput input{};
+    input.proxyA = proxyA.GetHandle();
+    input.proxyB = proxyB.GetHandle();
+    input.sweepA = sweepA.m_sweep;
+    input.sweepB = sweepB.m_sweep;
+    input.maxFraction = maxFraction;
+    return B3TOIOutput(b3TimeOfImpact(&input));
+}
+
+B3PlaneSolverResult B3Collision::SolveMoverPlanes(const B3Vec3& targetDelta,
+                                                   const B3MoverCollision& collision) {
+    std::vector<b3CollisionPlane> planes;
+    planes.reserve(collision.m_results.size());
+    for(const b3BodyPlaneResult& result : collision.m_results) {
+        planes.push_back(b3CollisionPlane{result.result.plane, std::numeric_limits<float>::max(), 0.0f, true});
+    }
+    return B3PlaneSolverResult(b3SolvePlanes(targetDelta.value, planes.data(), static_cast<int>(planes.size())));
+}
+
+B3Vec3 B3Collision::ClipVectorToMoverPlanes(const B3Vec3& vector, const B3MoverCollision& collision) {
+    std::vector<b3CollisionPlane> planes;
+    planes.reserve(collision.m_results.size());
+    for(const b3BodyPlaneResult& result : collision.m_results) {
+        planes.push_back(b3CollisionPlane{result.result.plane, std::numeric_limits<float>::max(), 0.0f, true});
+    }
+    return B3Vec3(b3ClipVector(vector.value, planes.data(), static_cast<int>(planes.size())));
+}
+
+B3MeshDef::B3MeshDef(int vertexCapacity, int triangleCapacity)
+    : m_weldTolerance(0.0f), m_weldVertices(false), m_useMedianSplit(false), m_identifyEdges(false) {
+    if(vertexCapacity > 0) {
+        m_vertices.reserve(static_cast<size_t>(vertexCapacity));
+    }
+    if(triangleCapacity > 0) {
+        m_indices.reserve(static_cast<size_t>(3 * triangleCapacity));
+        m_materialIndices.reserve(static_cast<size_t>(triangleCapacity));
+    }
+}
+
+void B3MeshDef::AddVertex(const B3Vec3& vertex) {
+    m_vertices.push_back(vertex.value);
+}
+
+void B3MeshDef::AddTriangle(int index1, int index2, int index3, int materialIndex) {
+    m_indices.push_back(index1);
+    m_indices.push_back(index2);
+    m_indices.push_back(index3);
+    m_materialIndices.push_back(static_cast<uint8_t>(materialIndex));
+}
+
+float B3MeshDef::GetWeldTolerance() const { return m_weldTolerance; }
+void B3MeshDef::SetWeldTolerance(float tolerance) { m_weldTolerance = tolerance; }
+bool B3MeshDef::GetWeldVertices() const { return m_weldVertices; }
+void B3MeshDef::SetWeldVertices(bool enabled) { m_weldVertices = enabled; }
+bool B3MeshDef::GetUseMedianSplit() const { return m_useMedianSplit; }
+void B3MeshDef::SetUseMedianSplit(bool enabled) { m_useMedianSplit = enabled; }
+bool B3MeshDef::GetIdentifyEdges() const { return m_identifyEdges; }
+void B3MeshDef::SetIdentifyEdges(bool enabled) { m_identifyEdges = enabled; }
+int B3MeshDef::GetVertexCount() const { return static_cast<int>(m_vertices.size()); }
+int B3MeshDef::GetTriangleCount() const { return static_cast<int>(m_indices.size() / 3); }
+
+b3MeshData* B3MeshDef::CreateMeshData() const {
+    if(m_vertices.size() < 3 || m_indices.size() < 3 || m_indices.size() % 3 != 0) {
+        return nullptr;
+    }
+    b3MeshDef def{};
+    def.vertices = const_cast<b3Vec3*>(m_vertices.data());
+    def.indices = const_cast<int32_t*>(m_indices.data());
+    def.materialIndices = m_materialIndices.empty() ? nullptr : const_cast<uint8_t*>(m_materialIndices.data());
+    def.weldTolerance = m_weldTolerance;
+    def.vertexCount = static_cast<int>(m_vertices.size());
+    def.triangleCount = static_cast<int>(m_indices.size() / 3);
+    def.weldVertices = m_weldVertices;
+    def.useMedianSplit = m_useMedianSplit;
+    def.identifyEdges = m_identifyEdges;
+    return b3CreateMesh(&def, nullptr, 0);
+}
+
+B3Mesh::B3Mesh() : m_mesh(nullptr) {
+}
+
+B3Mesh::B3Mesh(b3MeshData* mesh) : m_mesh(mesh) {
+}
+
+B3Mesh::~B3Mesh() {
+    Destroy();
+}
+
+B3Mesh* B3Mesh::CreateFromDef(const B3MeshDef& def) {
+    return new B3Mesh(def.CreateMeshData());
+}
+
+B3Mesh* B3Mesh::CreateBox(const B3Vec3& center, const B3Vec3& extents, bool identifyEdges) {
+    return new B3Mesh(b3CreateBoxMesh(center.value, extents.value, identifyEdges));
+}
+
+B3Mesh* B3Mesh::CreateHollowBox(const B3Vec3& center, const B3Vec3& extents) {
+    return new B3Mesh(b3CreateHollowBoxMesh(center.value, extents.value));
+}
+
+B3Mesh* B3Mesh::CreatePlatform(const B3Vec3& center, float height, float topWidth, float bottomWidth) {
+    return new B3Mesh(b3CreatePlatformMesh(center.value, height, topWidth, bottomWidth));
+}
+
+B3Mesh* B3Mesh::CreateGrid(int xCount, int zCount, float cellWidth, int materialCount, bool identifyEdges) {
+    return new B3Mesh(b3CreateGridMesh(xCount, zCount, cellWidth, materialCount, identifyEdges));
+}
+
+B3Mesh* B3Mesh::CreateWave(int xCount, int zCount, float cellWidth, float amplitude, float rowFrequency,
+                           float columnFrequency) {
+    return new B3Mesh(b3CreateWaveMesh(xCount, zCount, cellWidth, amplitude, rowFrequency, columnFrequency));
+}
+
+B3Mesh* B3Mesh::CreateTorus(int radialResolution, int tubularResolution, float radius, float thickness) {
+    return new B3Mesh(b3CreateTorusMesh(radialResolution, tubularResolution, radius, thickness));
+}
+
+B3Mesh* B3Mesh::CreateFromObj(const char* objText, float scale, bool zUp, bool useMedianSplit,
+                              bool identifyEdges, bool weldVertices, float weldTolerance) {
+    if(objText == nullptr) {
+        return new B3Mesh();
+    }
+
+    tinyobj::ObjReaderConfig config;
+    config.triangulate = true;
+    tinyobj::ObjReader reader;
+    if(reader.ParseFromString(objText, "", config) == false) {
+        return new B3Mesh();
+    }
+
+    const tinyobj::attrib_t& attrib = reader.GetAttrib();
+    const std::vector<tinyobj::shape_t>& shapes = reader.GetShapes();
+    B3MeshDef def(static_cast<int>(attrib.vertices.size() / 3), 0);
+    def.SetWeldTolerance(weldTolerance);
+    def.SetUseMedianSplit(useMedianSplit);
+    def.SetIdentifyEdges(identifyEdges);
+    def.SetWeldVertices(weldVertices);
+
+    int vertexCount = static_cast<int>(attrib.vertices.size() / 3);
+    for(int i = 0; i < vertexCount; ++i) {
+        float x = scale * attrib.vertices[3 * i + 0];
+        float y = scale * attrib.vertices[3 * i + 1];
+        float z = scale * attrib.vertices[3 * i + 2];
+        B3Vec3 vertex(zUp ? B3Vec3(y, z, x) : B3Vec3(x, y, z));
+        def.AddVertex(vertex);
+    }
+
+    int materialIndex = 0;
+    for(const tinyobj::shape_t& shape : shapes) {
+        size_t baseIndex = 0;
+        for(unsigned char faceVertexCount : shape.mesh.num_face_vertices) {
+            if(faceVertexCount == 3) {
+                int i1 = shape.mesh.indices[baseIndex + 0].vertex_index;
+                int i2 = shape.mesh.indices[baseIndex + 1].vertex_index;
+                int i3 = shape.mesh.indices[baseIndex + 2].vertex_index;
+                def.AddTriangle(i1, i2, i3, materialIndex);
+                materialIndex = (materialIndex + 1) % 3;
+            }
+            baseIndex += faceVertexCount;
+        }
+    }
+
+    return new B3Mesh(def.CreateMeshData());
+}
+
+bool B3Mesh::IsValid() const { return m_mesh != nullptr; }
+
+void B3Mesh::Destroy() {
+    if(m_mesh != nullptr) {
+        b3DestroyMesh(m_mesh);
+        m_mesh = nullptr;
+    }
+}
+
+int B3Mesh::GetVertexCount() const { return m_mesh != nullptr ? m_mesh->vertexCount : 0; }
+int B3Mesh::GetTriangleCount() const { return m_mesh != nullptr ? m_mesh->triangleCount : 0; }
+int B3Mesh::GetMaterialCount() const { return m_mesh != nullptr ? m_mesh->materialCount : 0; }
+int B3Mesh::GetTriangleMaterialIndex(int triangleIndex) const {
+    if(m_mesh == nullptr || triangleIndex < 0 || triangleIndex >= m_mesh->triangleCount) {
+        return 0;
+    }
+    const uint8_t* materialIndices = b3GetMeshMaterialIndices(m_mesh);
+    return materialIndices != nullptr ? materialIndices[triangleIndex] : 0;
+}
+void B3Mesh::SetTriangleMaterialIndex(int triangleIndex, int materialIndex) {
+    if(m_mesh == nullptr || triangleIndex < 0 || triangleIndex >= m_mesh->triangleCount) {
+        return;
+    }
+    uint8_t* materialIndices = reinterpret_cast<uint8_t*>(reinterpret_cast<intptr_t>(m_mesh) + m_mesh->materialOffset);
+    materialIndices[triangleIndex] = static_cast<uint8_t>(materialIndex);
+    m_mesh->materialCount = b3MaxInt(m_mesh->materialCount, materialIndex + 1);
+}
+const b3MeshData* B3Mesh::GetHandle() const { return m_mesh; }
+
+B3HeightField::B3HeightField() : m_heightField(nullptr) {
+}
+
+B3HeightField::B3HeightField(b3HeightFieldData* heightField) : m_heightField(heightField) {
+}
+
+B3HeightField::~B3HeightField() {
+    Destroy();
+}
+
+B3HeightField* B3HeightField::CreateGrid(int rowCount, int columnCount, const B3Vec3& scale, bool makeHoles) {
+    return new B3HeightField(b3CreateGrid(rowCount, columnCount, scale.value, makeHoles));
+}
+
+B3HeightField* B3HeightField::CreateWave(int rowCount, int columnCount, const B3Vec3& scale, float rowFrequency,
+                                         float columnFrequency, bool makeHoles) {
+    return new B3HeightField(b3CreateWave(rowCount, columnCount, scale.value, rowFrequency, columnFrequency,
+                                          makeHoles));
+}
+
+bool B3HeightField::IsValid() const { return m_heightField != nullptr; }
+
+void B3HeightField::Destroy() {
+    if(m_heightField != nullptr) {
+        b3DestroyHeightField(m_heightField);
+        m_heightField = nullptr;
+    }
+}
+
+const b3HeightFieldData* B3HeightField::GetHandle() const { return m_heightField; }
+
+B3SurfaceMaterialArray::B3SurfaceMaterialArray(int size)
+    : m_values(static_cast<size_t>(size > 0 ? size : 0), b3DefaultSurfaceMaterial()) {
+}
+
+int B3SurfaceMaterialArray::GetSize() const { return static_cast<int>(m_values.size()); }
+
+B3SurfaceMaterial B3SurfaceMaterialArray::GetValue(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_values.size())) {
+        return B3SurfaceMaterial();
+    }
+    return B3SurfaceMaterial(m_values[static_cast<size_t>(index)]);
+}
+
+void B3SurfaceMaterialArray::SetValue(int index, const B3SurfaceMaterial& material) {
+    if(index >= 0 && index < static_cast<int>(m_values.size())) {
+        m_values[static_cast<size_t>(index)] = material.value;
+    }
+}
+
+const b3SurfaceMaterial* B3SurfaceMaterialArray::GetData() const {
+    return m_values.empty() ? nullptr : m_values.data();
+}
+
+B3CompoundDef::B3CompoundDef(int capsuleCapacity, int hullCapacity, int meshCapacity, int sphereCapacity) {
+    if(capsuleCapacity > 0) m_capsules.reserve(static_cast<size_t>(capsuleCapacity));
+    if(hullCapacity > 0) m_hulls.reserve(static_cast<size_t>(hullCapacity));
+    if(meshCapacity > 0) m_meshes.reserve(static_cast<size_t>(meshCapacity));
+    if(sphereCapacity > 0) m_spheres.reserve(static_cast<size_t>(sphereCapacity));
+}
+
+void B3CompoundDef::AddCapsule(const B3Capsule& capsule, const B3SurfaceMaterial& material) {
+    m_capsules.push_back({capsule.value, material.value});
+}
+
+void B3CompoundDef::AddHull(const B3Hull& hull, const B3Transform& transform, const B3SurfaceMaterial& material) {
+    if(hull.GetHandle() != nullptr) {
+        m_hulls.push_back({hull.GetHandle(), transform.value, material.value});
+    }
+}
+
+void B3CompoundDef::AddMesh(const B3Mesh& mesh, const B3Transform& transform, const B3Vec3& scale,
+                            const B3SurfaceMaterialArray& materials) {
+    if(mesh.GetHandle() == nullptr) {
+        return;
+    }
+    MeshEntry entry;
+    entry.meshData = mesh.GetHandle();
+    entry.transform = transform.value;
+    entry.scale = scale.value;
+    const b3SurfaceMaterial* source = materials.GetData();
+    if(source != nullptr) {
+        entry.materials.assign(source, source + materials.GetSize());
+    }
+    m_meshes.push_back(entry);
+}
+
+void B3CompoundDef::AddSphere(const B3Sphere& sphere, const B3SurfaceMaterial& material) {
+    m_spheres.push_back({sphere.value, material.value});
+}
+
+int B3CompoundDef::GetCapsuleCount() const { return static_cast<int>(m_capsules.size()); }
+int B3CompoundDef::GetHullCount() const { return static_cast<int>(m_hulls.size()); }
+int B3CompoundDef::GetMeshCount() const { return static_cast<int>(m_meshes.size()); }
+int B3CompoundDef::GetSphereCount() const { return static_cast<int>(m_spheres.size()); }
+
+b3CompoundData* B3CompoundDef::CreateCompoundData() const {
+    std::vector<b3CompoundMeshDef> meshes;
+    meshes.reserve(m_meshes.size());
+    for(const MeshEntry& entry : m_meshes) {
+        meshes.push_back({entry.meshData, entry.transform, entry.scale,
+                          entry.materials.empty() ? nullptr : entry.materials.data(),
+                          static_cast<int>(entry.materials.size())});
+    }
+
+    b3CompoundDef def{};
+    def.capsules = m_capsules.empty() ? nullptr : const_cast<b3CompoundCapsuleDef*>(m_capsules.data());
+    def.capsuleCount = static_cast<int>(m_capsules.size());
+    def.hulls = m_hulls.empty() ? nullptr : const_cast<b3CompoundHullDef*>(m_hulls.data());
+    def.hullCount = static_cast<int>(m_hulls.size());
+    def.meshes = meshes.empty() ? nullptr : meshes.data();
+    def.meshCount = static_cast<int>(meshes.size());
+    def.spheres = m_spheres.empty() ? nullptr : const_cast<b3CompoundSphereDef*>(m_spheres.data());
+    def.sphereCount = static_cast<int>(m_spheres.size());
+    return b3CreateCompound(&def);
+}
+
+B3Compound::B3Compound() : m_compound(nullptr) {
+}
+
+B3Compound::B3Compound(b3CompoundData* compound) : m_compound(compound) {
+}
+
+B3Compound::~B3Compound() {
+    Destroy();
+}
+
+B3Compound* B3Compound::CreateFromDef(const B3CompoundDef& def) {
+    return new B3Compound(def.CreateCompoundData());
+}
+
+bool B3Compound::IsValid() const { return m_compound != nullptr; }
+
+void B3Compound::Destroy() {
+    if(m_compound != nullptr) {
+        b3DestroyCompound(m_compound);
+        m_compound = nullptr;
+    }
+}
+
+int B3Compound::GetCapsuleCount() const { return m_compound != nullptr ? m_compound->capsuleCount : 0; }
+int B3Compound::GetHullCount() const { return m_compound != nullptr ? m_compound->hullCount : 0; }
+int B3Compound::GetMeshCount() const { return m_compound != nullptr ? m_compound->meshCount : 0; }
+int B3Compound::GetSphereCount() const { return m_compound != nullptr ? m_compound->sphereCount : 0; }
+const b3CompoundData* B3Compound::GetHandle() const { return m_compound; }
 
 B3Body::B3Body() : m_bodyId(b3_nullBodyId) {
 }
@@ -2400,6 +3357,14 @@ B3Quat B3Body::GetRotation() const {
 
 B3Transform B3Body::GetTransform() const {
     return B3Transform(b3Body_GetTransform(m_bodyId));
+}
+
+B3Vec3 B3Body::GetWorldCenter() const {
+    return B3Vec3(b3Body_GetWorldCenter(m_bodyId));
+}
+
+B3Vec3 B3Body::GetLocalPoint(const B3Vec3& worldPoint) const {
+    return B3Vec3(b3Body_GetLocalPoint(m_bodyId, worldPoint.value));
 }
 
 void B3Body::SetTransform(const B3Vec3& position, const B3Quat& rotation) {
@@ -2463,6 +3428,29 @@ void B3Body::ApplyMassFromShapes() {
     b3Body_ApplyMassFromShapes(m_bodyId);
 }
 
+B3Vec3 B3Body::GetLocalRotationalInertiaColumnX() const {
+    return B3Vec3(b3Body_GetLocalRotationalInertia(m_bodyId).cx);
+}
+
+B3Vec3 B3Body::GetLocalRotationalInertiaColumnY() const {
+    return B3Vec3(b3Body_GetLocalRotationalInertia(m_bodyId).cy);
+}
+
+B3Vec3 B3Body::GetLocalRotationalInertiaColumnZ() const {
+    return B3Vec3(b3Body_GetLocalRotationalInertia(m_bodyId).cz);
+}
+
+void B3Body::SetMassData(float mass, const B3Vec3& center, const B3Vec3& inertiaColumnX,
+                         const B3Vec3& inertiaColumnY, const B3Vec3& inertiaColumnZ) {
+    b3MassData massData{};
+    massData.mass = mass;
+    massData.center = center.value;
+    massData.inertia.cx = inertiaColumnX.value;
+    massData.inertia.cy = inertiaColumnY.value;
+    massData.inertia.cz = inertiaColumnZ.value;
+    b3Body_SetMassData(m_bodyId, massData);
+}
+
 float B3Body::GetLinearDamping() const {
     return b3Body_GetLinearDamping(m_bodyId);
 }
@@ -2493,6 +3481,22 @@ bool B3Body::IsAwake() const {
 
 void B3Body::SetAwake(bool awake) {
     b3Body_SetAwake(m_bodyId, awake);
+}
+
+B3RayResult B3Body::CastRay(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter,
+                            float maxFraction, const B3Transform& bodyTransform) const {
+    b3BodyCastResult bodyResult = b3Body_CastRay(m_bodyId, origin.value, translation.value, filter.value,
+                                                 maxFraction, b3MakeWorldTransform(bodyTransform.value));
+    b3RayResult result{};
+    result.shapeId = bodyResult.shapeId;
+    result.point = bodyResult.point;
+    result.normal = bodyResult.normal;
+    result.userMaterialId = bodyResult.userMaterialId;
+    result.fraction = bodyResult.fraction;
+    result.triangleIndex = bodyResult.triangleIndex;
+    result.childIndex = -1;
+    result.hit = bodyResult.hit;
+    return B3RayResult(result);
 }
 
 bool B3Body::IsEnabled() const {
@@ -2544,6 +3548,51 @@ B3Shape* B3Body::CreateHullShape(const B3ShapeDef& def, const B3Hull& hull) {
     return new B3Shape(hullData != nullptr ? b3CreateHullShape(m_bodyId, &def.value, hullData) : b3_nullShapeId);
 }
 
+B3Shape* B3Body::CreateTransformedHullShape(const B3ShapeDef& def, const B3Hull& hull,
+                                             const B3Transform& transform, const B3Vec3& scale) {
+    const b3HullData* hullData = hull.GetHandle();
+    return new B3Shape(hullData != nullptr
+        ? b3CreateTransformedHullShape(m_bodyId, &def.value, hullData, transform.value, scale.value)
+        : b3_nullShapeId);
+}
+
+B3Shape* B3Body::CreateMeshShape(const B3ShapeDef& def, const B3Mesh& mesh, const B3Vec3& scale) {
+    const b3MeshData* meshData = mesh.GetHandle();
+    return new B3Shape(meshData != nullptr ? b3CreateMeshShape(m_bodyId, &def.value, meshData, scale.value)
+                                           : b3_nullShapeId);
+}
+
+B3Shape* B3Body::CreateMeshShapeWithMaterials(const B3ShapeDef& def, const B3Mesh& mesh, const B3Vec3& scale,
+                                               const B3SurfaceMaterialArray& materials) {
+    const b3MeshData* meshData = mesh.GetHandle();
+    if(meshData == nullptr) {
+        return new B3Shape(b3_nullShapeId);
+    }
+    b3ShapeDef shapeDef = def.value;
+    std::vector<b3SurfaceMaterial> materialCopy;
+    const b3SurfaceMaterial* materialData = materials.GetData();
+    if(materialData != nullptr && materials.GetSize() > 0) {
+        materialCopy.assign(materialData, materialData + materials.GetSize());
+        shapeDef.materials = materialCopy.data();
+        shapeDef.materialCount = static_cast<int>(materialCopy.size());
+    }
+    else {
+        shapeDef.materials = nullptr;
+        shapeDef.materialCount = 0;
+    }
+    return new B3Shape(b3CreateMeshShape(m_bodyId, &shapeDef, meshData, scale.value));
+}
+
+B3Shape* B3Body::CreateHeightFieldShape(const B3ShapeDef& def, const B3HeightField& heightField) {
+    return new B3Shape(b3CreateHeightFieldShape(m_bodyId, &def.value, heightField.GetHandle()));
+}
+
+B3Shape* B3Body::CreateBakedCompoundShape(B3ShapeDef& def, const B3Compound& compound) {
+    const b3CompoundData* compoundData = compound.GetHandle();
+    return new B3Shape(compoundData != nullptr ? b3CreateBakedCompoundShape(m_bodyId, &def.value, compoundData)
+                                               : b3_nullShapeId);
+}
+
 B3Joint::B3Joint() : m_jointId(b3_nullJointId) {
 }
 
@@ -2584,8 +3633,40 @@ float B3Joint::GetLinearSeparation() const {
     return b3Joint_GetLinearSeparation(m_jointId);
 }
 
+float B3Joint::GetPrismaticTranslation() const {
+    return b3PrismaticJoint_GetTranslation(m_jointId);
+}
+
+void B3Joint::SetPrismaticMotorSpeed(float speed) {
+    b3PrismaticJoint_SetMotorSpeed(m_jointId, speed);
+}
+
 void B3Joint::SetRevoluteTargetAngle(float radians) {
     b3RevoluteJoint_SetTargetAngle(m_jointId, radians);
+}
+
+void B3Joint::SetRevoluteMaxMotorTorque(float torque) {
+    b3RevoluteJoint_SetMaxMotorTorque(m_jointId, torque);
+}
+
+void B3Joint::SetRevoluteSpringHertz(float hertz) {
+    b3RevoluteJoint_SetSpringHertz(m_jointId, hertz);
+}
+
+void B3Joint::SetRevoluteSpringDampingRatio(float dampingRatio) {
+    b3RevoluteJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
+}
+
+void B3Joint::SetSphericalMaxMotorTorque(float torque) {
+    b3SphericalJoint_SetMaxMotorTorque(m_jointId, torque);
+}
+
+void B3Joint::SetSphericalSpringHertz(float hertz) {
+    b3SphericalJoint_SetSpringHertz(m_jointId, hertz);
+}
+
+void B3Joint::SetSphericalSpringDampingRatio(float dampingRatio) {
+    b3SphericalJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
 }
 
 B3Shape::B3Shape() : m_shapeId(b3_nullShapeId) {
@@ -2646,6 +3727,14 @@ float B3Shape::GetRestitution() const {
 
 void B3Shape::SetRestitution(float restitution) {
     b3Shape_SetRestitution(m_shapeId, restitution);
+}
+
+B3SurfaceMaterial B3Shape::GetSurfaceMaterial() const {
+    return B3SurfaceMaterial(b3Shape_GetSurfaceMaterial(m_shapeId));
+}
+
+void B3Shape::SetSurfaceMaterial(const B3SurfaceMaterial& material) {
+    b3Shape_SetSurfaceMaterial(m_shapeId, material.value);
 }
 
 B3Filter B3Shape::GetFilter() const {
@@ -2742,6 +3831,7 @@ B3DebugDrawEm::~B3DebugDrawEm() {
 void B3DebugDrawEm::DrawWorld(B3World* world, long long maskBits) {
     if(world != nullptr && world->IsValid()) {
         b3World_Draw(world->GetHandle(), &m_draw, static_cast<uint64_t>(maskBits));
+        world->DrawDebugOverlay(this);
     }
 }
 
@@ -2897,6 +3987,14 @@ void B3DebugDrawEm::DrawBounds(const B3AABB&, int) {
 void B3DebugDrawEm::DrawBox(const B3Vec3&, const B3Transform&, int) {
 }
 
+B3CustomFilterEm::B3CustomFilterEm() = default;
+
+B3CustomFilterEm::~B3CustomFilterEm() = default;
+
+bool B3CustomFilterEm::Filter(long long, long long) {
+    return true;
+}
+
 B3World::B3World() : B3World(B3WorldDef()) {
 }
 
@@ -2987,6 +4085,100 @@ int B3World::GetAwakeBodyCount() const {
     return b3World_GetAwakeBodyCount(m_worldId);
 }
 
+void B3World::Explode(const B3ExplosionDef& def) {
+    b3World_Explode(m_worldId, &def.value);
+}
+
+void B3World::SetCustomFilterCallback(B3CustomFilterEm* callback) {
+    b3World_SetCustomFilterCallback(m_worldId, callback != nullptr ? customFilterCallback : nullptr, callback);
+}
+
+void B3World::ClearDebugOverlay() {
+    m_debugSegments.clear();
+    m_debugPoints.clear();
+    m_debugSpheres.clear();
+    m_debugCapsules.clear();
+    m_debugBounds.clear();
+    m_debugBoxes.clear();
+    m_debugHulls.clear();
+}
+
+void B3World::AddDebugSegment(const B3Vec3& p1, const B3Vec3& p2, long color) {
+    m_debugSegments.push_back({p1.value, p2.value, static_cast<uint32_t>(color)});
+}
+
+void B3World::AddDebugPoint(const B3Vec3& point, float size, long color) {
+    m_debugPoints.push_back({point.value, size, static_cast<uint32_t>(color)});
+}
+
+void B3World::AddDebugSphere(const B3Vec3& center, float radius, long color, float alpha) {
+    m_debugSpheres.push_back({center.value, radius, static_cast<uint32_t>(color), alpha});
+}
+
+void B3World::AddDebugCapsule(const B3Vec3& p1, const B3Vec3& p2, float radius, long color, float alpha) {
+    m_debugCapsules.push_back({p1.value, p2.value, radius, static_cast<uint32_t>(color), alpha});
+}
+
+void B3World::AddDebugBounds(const B3AABB& bounds, long color) {
+    m_debugBounds.push_back({bounds.value, static_cast<uint32_t>(color)});
+}
+
+void B3World::AddDebugBox(const B3Vec3& extents, const B3Transform& transform, long color) {
+    m_debugBoxes.push_back({extents.value, transform.value, static_cast<uint32_t>(color)});
+}
+
+void B3World::AddDebugHull(const B3Hull& hull, const B3Transform& transform, const B3Vec3& scale, long color) {
+    const b3HullData* data = hull.GetHandle();
+    if(data == nullptr) {
+        return;
+    }
+    b3HullData* scaledHull = b3CloneAndTransformHull(data, b3Transform_identity, scale.value);
+    if(scaledHull == nullptr) {
+        return;
+    }
+    B3DebugShape debugShape;
+    debugShape.m_type = static_cast<int>(b3_hullShape);
+    debugShape.AddHull(scaledHull, b3Transform_identity);
+    b3DestroyHull(scaledHull);
+    m_debugHulls.push_back({std::move(debugShape), transform.value, static_cast<uint32_t>(color)});
+}
+
+void B3World::AddDebugTriangle(const B3Vec3& p1, const B3Vec3& p2, const B3Vec3& p3, long color) {
+    B3DebugShape debugShape;
+    debugShape.m_type = static_cast<int>(b3_meshShape);
+    debugShape.AddTriangle(p1.value, p2.value, p3.value);
+    m_debugHulls.push_back({std::move(debugShape), b3Transform_identity, static_cast<uint32_t>(color)});
+}
+
+void B3World::DrawDebugOverlay(B3DebugDrawEm* draw) const {
+    if(draw == nullptr) {
+        return;
+    }
+    for(const DebugSegment& segment : m_debugSegments) {
+        draw->DrawSegment(B3Vec3(segment.p1), B3Vec3(segment.p2), static_cast<int>(segment.color));
+    }
+    for(const DebugPoint& point : m_debugPoints) {
+        draw->DrawPoint(B3Vec3(point.point), point.size, static_cast<int>(point.color));
+    }
+    for(const DebugSphere& sphere : m_debugSpheres) {
+        draw->DrawSphere(B3Vec3(sphere.center), sphere.radius, static_cast<int>(sphere.color), sphere.alpha);
+    }
+    for(const DebugCapsule& capsule : m_debugCapsules) {
+        draw->DrawCapsule(B3Vec3(capsule.p1), B3Vec3(capsule.p2), capsule.radius,
+                          static_cast<int>(capsule.color), capsule.alpha);
+    }
+    for(const DebugBounds& bounds : m_debugBounds) {
+        draw->DrawBounds(B3AABB(bounds.bounds), static_cast<int>(bounds.color));
+    }
+    for(const DebugBox& box : m_debugBoxes) {
+        draw->DrawBox(B3Vec3(box.extents), B3Transform(box.transform), static_cast<int>(box.color));
+    }
+    for(const DebugHull& hull : m_debugHulls) {
+        draw->DrawShape(const_cast<B3DebugShape*>(&hull.shape), B3Transform(hull.transform),
+                        static_cast<int>(hull.color));
+    }
+}
+
 B3Body* B3World::CreateBody(const B3BodyDef& def) {
     return new B3Body(b3CreateBody(m_worldId, &def.value));
 }
@@ -3031,6 +4223,10 @@ B3BodyEvents* B3World::GetBodyEvents() const {
     return new B3BodyEvents(b3World_GetBodyEvents(m_worldId));
 }
 
+B3JointEvents* B3World::GetJointEvents() const {
+    return new B3JointEvents(b3World_GetJointEvents(m_worldId));
+}
+
 B3SensorEvents* B3World::GetSensorEvents() const {
     return new B3SensorEvents(b3World_GetSensorEvents(m_worldId));
 }
@@ -3043,8 +4239,134 @@ B3RayResult B3World::CastRayClosest(const B3Vec3& origin, const B3Vec3& translat
     return B3RayResult(b3World_CastRayClosest(m_worldId, origin.value, translation.value, filter.value));
 }
 
+int B3World::CountOverlapsAABB(const B3AABB& bounds, const B3QueryFilter& filter) const {
+    struct Context {
+        int count;
+    } context = {0};
+    auto callback = [](b3ShapeId, void* rawContext) -> bool {
+        static_cast<Context*>(rawContext)->count += 1;
+        return true;
+    };
+    b3World_OverlapAABB(m_worldId, bounds.value, filter.value, callback, &context);
+    return context.count;
+}
+
+B3RayResult B3World::CastSphereClosest(const B3Vec3& origin, float radius, const B3Vec3& translation,
+                                        const B3QueryFilter& filter) const {
+    b3RayResult closest{};
+    closest.shapeId = b3_nullShapeId;
+    closest.fraction = 1.0f;
+    b3Vec3 point = b3Vec3_zero;
+    b3ShapeProxy proxy = {&point, 1, radius};
+    auto callback = [](b3ShapeId shapeId, b3Pos hitPoint, b3Vec3 normal, float fraction, uint64_t userMaterialId,
+                       int triangleIndex, int childIndex, void* context) -> float {
+        b3RayResult* result = static_cast<b3RayResult*>(context);
+        result->shapeId = shapeId;
+        result->point = hitPoint;
+        result->normal = normal;
+        result->userMaterialId = userMaterialId;
+        result->fraction = fraction;
+        result->triangleIndex = triangleIndex;
+        result->childIndex = childIndex;
+        result->hit = true;
+        return fraction;
+    };
+    b3World_CastShape(m_worldId, origin.value, &proxy, translation.value, filter.value, callback, &closest);
+    return B3RayResult(closest);
+}
+
+B3RayResult B3World::CastShapeClosest(const B3Vec3& origin, const B3ShapeProxy& proxy,
+                                       const B3Vec3& translation, const B3QueryFilter& filter,
+                                       bool initialOverlap) const {
+    struct Context {
+        b3RayResult result;
+        bool initialOverlap;
+    } context{};
+    context.result.shapeId = b3_nullShapeId;
+    context.result.fraction = 1.0f;
+    context.initialOverlap = initialOverlap;
+    auto callback = [](b3ShapeId shapeId, b3Pos hitPoint, b3Vec3 normal, float fraction, uint64_t userMaterialId,
+                       int triangleIndex, int childIndex, void* rawContext) -> float {
+        Context* context = static_cast<Context*>(rawContext);
+        if(!context->initialOverlap && fraction == 0.0f) {
+            return -1.0f;
+        }
+        b3RayResult& result = context->result;
+        result.shapeId = shapeId;
+        result.point = hitPoint;
+        result.normal = normal;
+        result.userMaterialId = userMaterialId;
+        result.fraction = fraction;
+        result.triangleIndex = triangleIndex;
+        result.childIndex = childIndex;
+        result.hit = true;
+        return fraction;
+    };
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    b3World_CastShape(m_worldId, origin.value, &nativeProxy, translation.value, filter.value, callback, &context);
+    return B3RayResult(context.result);
+}
+
+bool B3World::OverlapShape(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3QueryFilter& filter) const {
+    bool overlap = false;
+    auto callback = [](b3ShapeId, void* context) -> bool {
+        *static_cast<bool*>(context) = true;
+        return false;
+    };
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    b3World_OverlapShape(m_worldId, origin.value, &nativeProxy, filter.value, callback, &overlap);
+    return overlap;
+}
+
+B3MoverCollision* B3World::CollideMover(const B3Vec3& origin, const B3Capsule& mover,
+                                         const B3QueryFilter& filter, int capacity) const {
+    B3MoverCollision* collision = new B3MoverCollision();
+    if(capacity <= 0) {
+        return collision;
+    }
+
+    collision->m_results.reserve(static_cast<size_t>(capacity));
+    struct Context {
+        B3MoverCollision* collision;
+        int capacity;
+    } context{collision, capacity};
+
+    auto callback = [](b3ShapeId shapeId, const b3PlaneResult* results, int count, void* rawContext) -> bool {
+        Context* context = static_cast<Context*>(rawContext);
+        for(int i = 0; i < count && static_cast<int>(context->collision->m_results.size()) < context->capacity; ++i) {
+            context->collision->m_results.push_back(b3BodyPlaneResult{shapeId, results[i]});
+        }
+        return static_cast<int>(context->collision->m_results.size()) < context->capacity;
+    };
+
+    b3World_CollideMover(m_worldId, origin.value, &mover.value, filter.value, callback, &context);
+    return collision;
+}
+
+float B3World::CastMover(const B3Vec3& origin, const B3Capsule& mover, const B3Vec3& translation,
+                         const B3QueryFilter& filter) const {
+    return b3World_CastMover(m_worldId, origin.value, &mover.value, translation.value, filter.value, nullptr, nullptr);
+}
+
+float B3World::CastSphereClosestFraction(const B3Vec3& origin, float radius, const B3Vec3& translation,
+                                         const B3QueryFilter& filter) const {
+    float closest = 1.0f;
+    b3Vec3 point = b3Vec3_zero;
+    b3ShapeProxy proxy = {&point, 1, radius};
+    auto callback = [](b3ShapeId, b3Pos, b3Vec3, float fraction, uint64_t, int, int, void* context) -> float {
+        *static_cast<float*>(context) = fraction;
+        return fraction;
+    };
+    b3World_CastShape(m_worldId, origin.value, &proxy, translation.value, filter.value, callback, &closest);
+    return closest;
+}
+
 b3WorldId B3World::GetHandle() const {
     return m_worldId;
+}
+
+bool B3::IsDoublePrecision() {
+    return b3IsDoublePrecision();
 }
 
 int B3::StaticBody() {
@@ -3089,6 +4411,14 @@ int B3::GetWorldCount() {
 
 int B3::GetMaxWorldCount() {
     return b3GetMaxWorldCount();
+}
+
+float B3::GetStallThreshold() {
+    return b3GetStallThreshold();
+}
+
+void B3::SetStallThreshold(float seconds) {
+    b3SetStallThreshold(seconds);
 }
 
 long long B3::DefaultMaskBits() {

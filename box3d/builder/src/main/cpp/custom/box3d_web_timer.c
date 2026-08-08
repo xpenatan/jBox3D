@@ -7,7 +7,13 @@
 
 #include <emscripten/emscripten.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
+
+int atoi( const char* string )
+{
+    return (int)strtol( string, NULL, 10 );
+}
 
 float remainderf( float x, float y )
 {

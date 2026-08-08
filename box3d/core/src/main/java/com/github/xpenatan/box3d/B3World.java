@@ -99,6 +99,39 @@ public final class B3World extends NativeObject {
         return 0;
     }
 
+    public void Explode(B3ExplosionDef def) {
+    }
+
+    public void SetCustomFilterCallback(B3CustomFilterEm callback) {
+    }
+
+    public void ClearDebugOverlay() {
+    }
+
+    public void AddDebugSegment(B3Vec3 p1, B3Vec3 p2, int color) {
+    }
+
+    public void AddDebugPoint(B3Vec3 point, float size, int color) {
+    }
+
+    public void AddDebugSphere(B3Vec3 center, float radius, int color, float alpha) {
+    }
+
+    public void AddDebugCapsule(B3Vec3 p1, B3Vec3 p2, float radius, int color, float alpha) {
+    }
+
+    public void AddDebugBounds(B3AABB bounds, int color) {
+    }
+
+    public void AddDebugBox(B3Vec3 extents, B3Transform transform, int color) {
+    }
+
+    public void AddDebugHull(B3Hull hull, B3Transform transform, B3Vec3 scale, int color) {
+    }
+
+    public void AddDebugTriangle(B3Vec3 p1, B3Vec3 p2, B3Vec3 p3, int color) {
+    }
+
     public B3Body CreateBody(B3BodyDef def) {
         return null;
     }
@@ -143,6 +176,10 @@ public final class B3World extends NativeObject {
         return null;
     }
 
+    public B3JointEvents GetJointEvents() {
+        return null;
+    }
+
     public B3SensorEvents GetSensorEvents() {
         return null;
     }
@@ -153,5 +190,33 @@ public final class B3World extends NativeObject {
 
     public B3RayResult CastRayClosest(B3Vec3 origin, B3Vec3 translation, B3QueryFilter filter) {
         return null;
+    }
+
+    public int CountOverlapsAABB(B3AABB bounds, B3QueryFilter filter) {
+        return 0;
+    }
+
+    public B3RayResult CastSphereClosest(B3Vec3 origin, float radius, B3Vec3 translation, B3QueryFilter filter) {
+        return null;
+    }
+
+    public B3RayResult CastShapeClosest(B3Vec3 origin, B3ShapeProxy proxy, B3Vec3 translation, B3QueryFilter filter, boolean initialOverlap) {
+        return null;
+    }
+
+    public boolean OverlapShape(B3Vec3 origin, B3ShapeProxy proxy, B3QueryFilter filter) {
+        return false;
+    }
+
+    public B3MoverCollision CollideMover(B3Vec3 origin, B3Capsule mover, B3QueryFilter filter, int capacity) {
+        return null;
+    }
+
+    public float CastMover(B3Vec3 origin, B3Capsule mover, B3Vec3 translation, B3QueryFilter filter) {
+        return 0;
+    }
+
+    public float CastSphereClosestFraction(B3Vec3 origin, float radius, B3Vec3 translation, B3QueryFilter filter) {
+        return 0;
     }
 }

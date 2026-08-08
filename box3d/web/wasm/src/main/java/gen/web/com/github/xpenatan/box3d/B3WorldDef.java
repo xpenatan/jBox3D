@@ -12,6 +12,8 @@ public final class B3WorldDef extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     static public final B3WorldDef NULL = B3WorldDef.native_new();
 
     public B3WorldDef() {
@@ -188,4 +190,24 @@ public final class B3WorldDef extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr", "workerCount"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3WorldDef);jsObj.SetWorkerCount(workerCount);")
     public static native void internal_native_SetWorkerCount(int this_addr, int workerCount);
+
+    public B3Capacity GetCapacity() {
+        int addr = internal_native_GetCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3WorldDef);var returnedJSObj = jsObj.GetCapacity();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetCapacity_addr(int this_addr);
+
+    public void SetCapacity(B3Capacity capacity) {
+        internal_native_SetCapacity(native_address, capacity.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "capacity_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3WorldDef);jsObj.SetCapacity(capacity_addr);")
+    public static native void internal_native_SetCapacity(int this_addr, int capacity_addr);
 }

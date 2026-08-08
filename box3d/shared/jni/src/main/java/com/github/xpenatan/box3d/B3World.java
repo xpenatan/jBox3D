@@ -14,33 +14,11 @@ public final class B3World extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
-    private B3Body B3Body_TEMP_GEN_0;
-
-    private B3Joint B3Joint_TEMP_GEN_0;
-
-    private B3Joint B3Joint_TEMP_GEN_1;
-
-    private B3Joint B3Joint_TEMP_GEN_2;
-
-    private B3Joint B3Joint_TEMP_GEN_3;
-
-    private B3Joint B3Joint_TEMP_GEN_4;
-
-    private B3Joint B3Joint_TEMP_GEN_5;
-
-    private B3Joint B3Joint_TEMP_GEN_6;
-
-    private B3Joint B3Joint_TEMP_GEN_7;
-
-    private B3Joint B3Joint_TEMP_GEN_8;
-
-    private B3BodyEvents B3BodyEvents_TEMP_GEN_0;
-
-    private B3SensorEvents B3SensorEvents_TEMP_GEN_0;
-
-    private B3ContactEvents B3ContactEvents_TEMP_GEN_0;
-
     private B3RayResult B3RayResult_TEMP_GEN_0;
+
+    private B3RayResult B3RayResult_TEMP_GEN_1;
+
+    private B3RayResult B3RayResult_TEMP_GEN_2;
 
     static public final B3World NULL = B3World.native_new();
 
@@ -248,14 +226,101 @@ public final class B3World extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_GetAwakeBodyCount(this_addr);
     }
 
+    public void Explode(B3ExplosionDef def) {
+        internal_native_Explode(native_address, def.native_address);
+    }
+
+    public static void internal_native_Explode(long this_addr, long def_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_Explode(this_addr, def_addr);
+    }
+
+    public void SetCustomFilterCallback(B3CustomFilterEm callback) {
+        internal_native_SetCustomFilterCallback(native_address, callback.native_address);
+    }
+
+    public static void internal_native_SetCustomFilterCallback(long this_addr, long callback_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_SetCustomFilterCallback(this_addr, callback_addr);
+    }
+
+    public void ClearDebugOverlay() {
+        internal_native_ClearDebugOverlay(native_address);
+    }
+
+    public static void internal_native_ClearDebugOverlay(long this_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_ClearDebugOverlay(this_addr);
+    }
+
+    public void AddDebugSegment(B3Vec3 p1, B3Vec3 p2, int color) {
+        internal_native_AddDebugSegment(native_address, p1.native_address, p2.native_address, color);
+    }
+
+    public static void internal_native_AddDebugSegment(long this_addr, long p1_addr, long p2_addr, int color) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugSegment(this_addr, p1_addr, p2_addr, color);
+    }
+
+    public void AddDebugPoint(B3Vec3 point, float size, int color) {
+        internal_native_AddDebugPoint(native_address, point.native_address, size, color);
+    }
+
+    public static void internal_native_AddDebugPoint(long this_addr, long point_addr, float size, int color) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugPoint(this_addr, point_addr, size, color);
+    }
+
+    public void AddDebugSphere(B3Vec3 center, float radius, int color, float alpha) {
+        internal_native_AddDebugSphere(native_address, center.native_address, radius, color, alpha);
+    }
+
+    public static void internal_native_AddDebugSphere(long this_addr, long center_addr, float radius, int color, float alpha) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugSphere(this_addr, center_addr, radius, color, alpha);
+    }
+
+    public void AddDebugCapsule(B3Vec3 p1, B3Vec3 p2, float radius, int color, float alpha) {
+        internal_native_AddDebugCapsule(native_address, p1.native_address, p2.native_address, radius, color, alpha);
+    }
+
+    public static void internal_native_AddDebugCapsule(long this_addr, long p1_addr, long p2_addr, float radius, int color, float alpha) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugCapsule(this_addr, p1_addr, p2_addr, radius, color, alpha);
+    }
+
+    public void AddDebugBounds(B3AABB bounds, int color) {
+        internal_native_AddDebugBounds(native_address, bounds.native_address, color);
+    }
+
+    public static void internal_native_AddDebugBounds(long this_addr, long bounds_addr, int color) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugBounds(this_addr, bounds_addr, color);
+    }
+
+    public void AddDebugBox(B3Vec3 extents, B3Transform transform, int color) {
+        internal_native_AddDebugBox(native_address, extents.native_address, transform.native_address, color);
+    }
+
+    public static void internal_native_AddDebugBox(long this_addr, long extents_addr, long transform_addr, int color) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugBox(this_addr, extents_addr, transform_addr, color);
+    }
+
+    public void AddDebugHull(B3Hull hull, B3Transform transform, B3Vec3 scale, int color) {
+        internal_native_AddDebugHull(native_address, hull.native_address, transform.native_address, scale.native_address, color);
+    }
+
+    public static void internal_native_AddDebugHull(long this_addr, long hull_addr, long transform_addr, long scale_addr, int color) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugHull(this_addr, hull_addr, transform_addr, scale_addr, color);
+    }
+
+    public void AddDebugTriangle(B3Vec3 p1, B3Vec3 p2, B3Vec3 p3, int color) {
+        internal_native_AddDebugTriangle(native_address, p1.native_address, p2.native_address, p3.native_address, color);
+    }
+
+    public static void internal_native_AddDebugTriangle(long this_addr, long p1_addr, long p2_addr, long p3_addr, int color) {
+        com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_AddDebugTriangle(this_addr, p1_addr, p2_addr, p3_addr, color);
+    }
+
     public B3Body CreateBody(B3BodyDef def) {
         long addr = internal_native_CreateBody_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Body.NULL;
-        if (B3Body_TEMP_GEN_0 == null)
-            B3Body_TEMP_GEN_0 = B3Body.native_new();
-        B3Body_TEMP_GEN_0.internal_reset(addr, false);
-        return B3Body_TEMP_GEN_0;
+        B3Body B3Body_NEW = B3Body.native_new();
+        B3Body_NEW.internal_reset(addr, true);
+        return B3Body_NEW;
     }
 
     public static long internal_native_CreateBody_addr(long this_addr, long def_addr) {
@@ -266,10 +331,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateDistanceJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_0 == null)
-            B3Joint_TEMP_GEN_0 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_0.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_0;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateDistanceJoint_addr(long this_addr, long def_addr) {
@@ -280,10 +344,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateMotorJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_1 == null)
-            B3Joint_TEMP_GEN_1 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_1.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_1;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateMotorJoint_addr(long this_addr, long def_addr) {
@@ -294,10 +357,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateParallelJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_2 == null)
-            B3Joint_TEMP_GEN_2 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_2.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_2;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateParallelJoint_addr(long this_addr, long def_addr) {
@@ -308,10 +370,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreatePrismaticJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_3 == null)
-            B3Joint_TEMP_GEN_3 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_3.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_3;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreatePrismaticJoint_addr(long this_addr, long def_addr) {
@@ -322,10 +383,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateSphericalJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_4 == null)
-            B3Joint_TEMP_GEN_4 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_4.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_4;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateSphericalJoint_addr(long this_addr, long def_addr) {
@@ -336,10 +396,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateRevoluteJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_5 == null)
-            B3Joint_TEMP_GEN_5 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_5.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_5;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateRevoluteJoint_addr(long this_addr, long def_addr) {
@@ -350,10 +409,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateWeldJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_6 == null)
-            B3Joint_TEMP_GEN_6 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_6.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_6;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateWeldJoint_addr(long this_addr, long def_addr) {
@@ -364,10 +422,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateFilterJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_7 == null)
-            B3Joint_TEMP_GEN_7 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_7.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_7;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateFilterJoint_addr(long this_addr, long def_addr) {
@@ -378,10 +435,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_CreateWheelJoint_addr(native_address, def.native_address);
         if (addr == 0)
             return B3Joint.NULL;
-        if (B3Joint_TEMP_GEN_8 == null)
-            B3Joint_TEMP_GEN_8 = B3Joint.native_new();
-        B3Joint_TEMP_GEN_8.internal_reset(addr, false);
-        return B3Joint_TEMP_GEN_8;
+        B3Joint B3Joint_NEW = B3Joint.native_new();
+        B3Joint_NEW.internal_reset(addr, true);
+        return B3Joint_NEW;
     }
 
     public static long internal_native_CreateWheelJoint_addr(long this_addr, long def_addr) {
@@ -392,24 +448,35 @@ public final class B3World extends NativeObject {
         long addr = internal_native_GetBodyEvents_addr(native_address);
         if (addr == 0)
             return B3BodyEvents.NULL;
-        if (B3BodyEvents_TEMP_GEN_0 == null)
-            B3BodyEvents_TEMP_GEN_0 = B3BodyEvents.native_new();
-        B3BodyEvents_TEMP_GEN_0.internal_reset(addr, false);
-        return B3BodyEvents_TEMP_GEN_0;
+        B3BodyEvents B3BodyEvents_NEW = B3BodyEvents.native_new();
+        B3BodyEvents_NEW.internal_reset(addr, true);
+        return B3BodyEvents_NEW;
     }
 
     public static long internal_native_GetBodyEvents_addr(long this_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_GetBodyEvents_addr(this_addr);
     }
 
+    public B3JointEvents GetJointEvents() {
+        long addr = internal_native_GetJointEvents_addr(native_address);
+        if (addr == 0)
+            return B3JointEvents.NULL;
+        B3JointEvents B3JointEvents_NEW = B3JointEvents.native_new();
+        B3JointEvents_NEW.internal_reset(addr, true);
+        return B3JointEvents_NEW;
+    }
+
+    public static long internal_native_GetJointEvents_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_GetJointEvents_addr(this_addr);
+    }
+
     public B3SensorEvents GetSensorEvents() {
         long addr = internal_native_GetSensorEvents_addr(native_address);
         if (addr == 0)
             return B3SensorEvents.NULL;
-        if (B3SensorEvents_TEMP_GEN_0 == null)
-            B3SensorEvents_TEMP_GEN_0 = B3SensorEvents.native_new();
-        B3SensorEvents_TEMP_GEN_0.internal_reset(addr, false);
-        return B3SensorEvents_TEMP_GEN_0;
+        B3SensorEvents B3SensorEvents_NEW = B3SensorEvents.native_new();
+        B3SensorEvents_NEW.internal_reset(addr, true);
+        return B3SensorEvents_NEW;
     }
 
     public static long internal_native_GetSensorEvents_addr(long this_addr) {
@@ -420,10 +487,9 @@ public final class B3World extends NativeObject {
         long addr = internal_native_GetContactEvents_addr(native_address);
         if (addr == 0)
             return B3ContactEvents.NULL;
-        if (B3ContactEvents_TEMP_GEN_0 == null)
-            B3ContactEvents_TEMP_GEN_0 = B3ContactEvents.native_new();
-        B3ContactEvents_TEMP_GEN_0.internal_reset(addr, false);
-        return B3ContactEvents_TEMP_GEN_0;
+        B3ContactEvents B3ContactEvents_NEW = B3ContactEvents.native_new();
+        B3ContactEvents_NEW.internal_reset(addr, true);
+        return B3ContactEvents_NEW;
     }
 
     public static long internal_native_GetContactEvents_addr(long this_addr) {
@@ -442,5 +508,78 @@ public final class B3World extends NativeObject {
 
     public static long internal_native_CastRayClosest_addr(long this_addr, long origin_addr, long translation_addr, long filter_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CastRayClosest_addr(this_addr, origin_addr, translation_addr, filter_addr);
+    }
+
+    public int CountOverlapsAABB(B3AABB bounds, B3QueryFilter filter) {
+        return internal_native_CountOverlapsAABB(native_address, bounds.native_address, filter.native_address);
+    }
+
+    public static int internal_native_CountOverlapsAABB(long this_addr, long bounds_addr, long filter_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CountOverlapsAABB(this_addr, bounds_addr, filter_addr);
+    }
+
+    public B3RayResult CastSphereClosest(B3Vec3 origin, float radius, B3Vec3 translation, B3QueryFilter filter) {
+        long addr = internal_native_CastSphereClosest_addr(native_address, origin.native_address, radius, translation.native_address, filter.native_address);
+        if (addr == 0)
+            return B3RayResult.NULL;
+        if (B3RayResult_TEMP_GEN_1 == null)
+            B3RayResult_TEMP_GEN_1 = B3RayResult.native_new();
+        B3RayResult_TEMP_GEN_1.internal_reset(addr, false);
+        return B3RayResult_TEMP_GEN_1;
+    }
+
+    public static long internal_native_CastSphereClosest_addr(long this_addr, long origin_addr, float radius, long translation_addr, long filter_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CastSphereClosest_addr(this_addr, origin_addr, radius, translation_addr, filter_addr);
+    }
+
+    public B3RayResult CastShapeClosest(B3Vec3 origin, B3ShapeProxy proxy, B3Vec3 translation, B3QueryFilter filter, boolean initialOverlap) {
+        long addr = internal_native_CastShapeClosest_addr(native_address, origin.native_address, proxy.native_address, translation.native_address, filter.native_address, initialOverlap);
+        if (addr == 0)
+            return B3RayResult.NULL;
+        if (B3RayResult_TEMP_GEN_2 == null)
+            B3RayResult_TEMP_GEN_2 = B3RayResult.native_new();
+        B3RayResult_TEMP_GEN_2.internal_reset(addr, false);
+        return B3RayResult_TEMP_GEN_2;
+    }
+
+    public static long internal_native_CastShapeClosest_addr(long this_addr, long origin_addr, long proxy_addr, long translation_addr, long filter_addr, boolean initialOverlap) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CastShapeClosest_addr(this_addr, origin_addr, proxy_addr, translation_addr, filter_addr, initialOverlap);
+    }
+
+    public boolean OverlapShape(B3Vec3 origin, B3ShapeProxy proxy, B3QueryFilter filter) {
+        return internal_native_OverlapShape(native_address, origin.native_address, proxy.native_address, filter.native_address);
+    }
+
+    public static boolean internal_native_OverlapShape(long this_addr, long origin_addr, long proxy_addr, long filter_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_OverlapShape(this_addr, origin_addr, proxy_addr, filter_addr);
+    }
+
+    public B3MoverCollision CollideMover(B3Vec3 origin, B3Capsule mover, B3QueryFilter filter, int capacity) {
+        long addr = internal_native_CollideMover_addr(native_address, origin.native_address, mover.native_address, filter.native_address, capacity);
+        if (addr == 0)
+            return B3MoverCollision.NULL;
+        B3MoverCollision B3MoverCollision_NEW = B3MoverCollision.native_new();
+        B3MoverCollision_NEW.internal_reset(addr, true);
+        return B3MoverCollision_NEW;
+    }
+
+    public static long internal_native_CollideMover_addr(long this_addr, long origin_addr, long mover_addr, long filter_addr, int capacity) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CollideMover_addr(this_addr, origin_addr, mover_addr, filter_addr, capacity);
+    }
+
+    public float CastMover(B3Vec3 origin, B3Capsule mover, B3Vec3 translation, B3QueryFilter filter) {
+        return internal_native_CastMover(native_address, origin.native_address, mover.native_address, translation.native_address, filter.native_address);
+    }
+
+    public static float internal_native_CastMover(long this_addr, long origin_addr, long mover_addr, long translation_addr, long filter_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CastMover(this_addr, origin_addr, mover_addr, translation_addr, filter_addr);
+    }
+
+    public float CastSphereClosestFraction(B3Vec3 origin, float radius, B3Vec3 translation, B3QueryFilter filter) {
+        return internal_native_CastSphereClosestFraction(native_address, origin.native_address, radius, translation.native_address, filter.native_address);
+    }
+
+    public static float internal_native_CastSphereClosestFraction(long this_addr, long origin_addr, float radius, long translation_addr, long filter_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3World.internal_native_CastSphereClosestFraction(this_addr, origin_addr, radius, translation_addr, filter_addr);
     }
 }

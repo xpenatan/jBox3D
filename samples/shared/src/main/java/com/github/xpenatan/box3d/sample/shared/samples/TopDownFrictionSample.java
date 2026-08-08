@@ -26,7 +26,6 @@ final class TopDownFrictionSample extends AbstractBox3DSample {
     TopDownFrictionSample() {
         super(4);
 
-        B3WorldDefBuilder.disableGravity(world());
         B3Body ground = createBody(B3.StaticBody(), 0.0f, 0.0f, 0.0f, null);
         addArenaWall(ground, 0.0f, 0.0f, 0.0f, 10.0f, 0.5f, 4.0f);
         addArenaWall(ground, -10.0f, 10.0f, 0.0f, 0.5f, 10.0f, 4.0f);

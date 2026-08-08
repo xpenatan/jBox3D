@@ -364,6 +364,126 @@ public final class B3SphericalJointDef extends NativeObject {
         }
     }
 
+    public boolean GetEnableConeLimit() {
+        return internal_native_GetEnableConeLimit(native_address);
+    }
+
+    public static boolean internal_native_GetEnableConeLimit(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_GetEnableConeLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetEnableConeLimit(boolean enabled) {
+        internal_native_SetEnableConeLimit(native_address, enabled);
+    }
+
+    public static void internal_native_SetEnableConeLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_SetEnableConeLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetConeAngle() {
+        return internal_native_GetConeAngle(native_address);
+    }
+
+    public static float internal_native_GetConeAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetConeAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetConeAngle(float radians) {
+        internal_native_SetConeAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetConeAngle(long this_addr, float radians) {
+        try {
+            FFMHandles.internal_native_SetConeAngle__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean GetEnableTwistLimit() {
+        return internal_native_GetEnableTwistLimit(native_address);
+    }
+
+    public static boolean internal_native_GetEnableTwistLimit(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_GetEnableTwistLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetEnableTwistLimit(boolean enabled) {
+        internal_native_SetEnableTwistLimit(native_address, enabled);
+    }
+
+    public static void internal_native_SetEnableTwistLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_SetEnableTwistLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetLowerTwistAngle() {
+        return internal_native_GetLowerTwistAngle(native_address);
+    }
+
+    public static float internal_native_GetLowerTwistAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetLowerTwistAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetLowerTwistAngle(float radians) {
+        internal_native_SetLowerTwistAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetLowerTwistAngle(long this_addr, float radians) {
+        try {
+            FFMHandles.internal_native_SetLowerTwistAngle__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetUpperTwistAngle() {
+        return internal_native_GetUpperTwistAngle(native_address);
+    }
+
+    public static float internal_native_GetUpperTwistAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetUpperTwistAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetUpperTwistAngle(float radians) {
+        internal_native_SetUpperTwistAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetUpperTwistAngle(long this_addr, float radians) {
+        try {
+            FFMHandles.internal_native_SetUpperTwistAngle__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public boolean GetEnableMotor() {
         return internal_native_GetEnableMotor(native_address);
     }
@@ -495,6 +615,26 @@ public final class B3SphericalJointDef extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_setdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetEnableConeLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getenableconelimit", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetEnableConeLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_setenableconelimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetConeAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getconeangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetConeAngle__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_setconeangle", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetEnableTwistLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getenabletwistlimit", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetEnableTwistLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_setenabletwistlimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetLowerTwistAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getlowertwistangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetLowerTwistAngle__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_setlowertwistangle", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetUpperTwistAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getuppertwistangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetUpperTwistAngle__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_setuppertwistangle", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
         static final java.lang.invoke.MethodHandle internal_native_GetEnableMotor__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3sphericaljointdef_getenablemotor", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 

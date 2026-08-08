@@ -61,6 +61,14 @@ public final class B3Hull extends NativeObject {
         return null;
     }
 
+    public static B3Hull CreateFromPoints(B3Vec3Array points, int maxVertexCount) {
+        return null;
+    }
+
+    public static B3Hull CloneAndTransform(B3Hull hull, B3Transform transform, B3Vec3 scale) {
+        return null;
+    }
+
     public boolean IsValid() {
         return false;
     }
@@ -74,5 +82,9 @@ public final class B3Hull extends NativeObject {
 
     public int GetFaceCount() {
         return 0;
+    }
+
+    public B3Vec3 GetPoint(int index) {
+        return null;
     }
 }

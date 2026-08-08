@@ -3,41 +3,51 @@ package com.github.xpenatan.box3d.sample.shared.samples;
 import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
 import com.github.xpenatan.box3d.B3BodyDef;
-import com.github.xpenatan.box3d.B3Capsule;
-import com.github.xpenatan.box3d.B3DistanceJointDef;
-import com.github.xpenatan.box3d.B3Filter;
 import com.github.xpenatan.box3d.B3Hull;
-import com.github.xpenatan.box3d.B3MotionLocks;
-import com.github.xpenatan.box3d.B3Quat;
+import com.github.xpenatan.box3d.B3Mesh;
 import com.github.xpenatan.box3d.B3ShapeDef;
-import com.github.xpenatan.box3d.B3Sphere;
-import com.github.xpenatan.box3d.B3SphericalJointDef;
 import com.github.xpenatan.box3d.B3Vec3;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/** Exact default scene from {@code BenchmarkExplosion}; C does not explode automatically. */
 final class BenchmarkExplosionSample extends AbstractBox3DSample {
-    private final List<B3Body> bodies = new ArrayList<B3Body>();
-    private int steps;
+    private B3Mesh gridMesh;
+    private B3Hull cylinder;
 
     BenchmarkExplosionSample() {
-        addGroundBox(35.0f);
-        for(int y = 0; y < 7; y++) {
-            for(int x = 0; x < 7; x++) {
-                for(int z = 0; z < 4; z++) {
-                    bodies.add(addDynamicSphere(-5.0f + x * 1.5f, 1.0f + y * 1.2f, -3.0f + z * 1.5f, 0.35f));
-                }
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        gridMesh = B3Mesh.CreateGrid(40, 40, 1.0f, 0, true);
+        B3Body ground = createBody(B3.StaticBody(), 0.0f, 0.0f, 0.0f, null);
+        B3Vec3 unitScale = new B3Vec3(1.0f, 1.0f, 1.0f);
+        dispose(ground.CreateMeshShape(shapeDef, gridMesh, unitScale));
+        addBoxShape(ground, 20.0f, 1.0f, 0.1f, 0.0f, 1.0f, -20.0f, null,
+                0.0f, 0.6f, 0.0f, 0.0f);
+        addBoxShape(ground, 20.0f, 1.0f, 0.1f, 0.0f, 1.0f, 20.0f, null,
+                0.0f, 0.6f, 0.0f, 0.0f);
+        addBoxShape(ground, 0.1f, 1.0f, 20.0f, -20.0f, 1.0f, 0.0f, null,
+                0.0f, 0.6f, 0.0f, 0.0f);
+        addBoxShape(ground, 0.1f, 1.0f, 20.0f, 20.0f, 1.0f, 0.0f, null,
+                0.0f, 0.6f, 0.0f, 0.0f);
+        dispose(ground, unitScale);
+
+        cylinder = B3Hull.CreateCylinder(0.5f, 0.2f, 0.0f, 15);
+        B3BodyDef bodyDef = new B3BodyDef();
+        bodyDef.SetType(B3.DynamicBody());
+        shapeDef.SetExplosionScale(2.0f);
+        B3Vec3 position = new B3Vec3();
+        for(int i = -16; i <= 16; ++i) {
+            for(int k = -16; k <= 16; ++k) {
+                position.Set(i, 0.0f, k);
+                bodyDef.SetPosition(position);
+                B3Body body = world().CreateBody(bodyDef);
+                dispose(body.CreateHullShape(shapeDef, cylinder), body);
             }
         }
+        dispose(position, bodyDef, shapeDef);
     }
 
     @Override
-    public void step(float deltaSeconds) {
-        steps++;
-        if(steps == 10) {
-            SamplePortUtil.applyRadialImpulse(bodies, 0.0f, 2.0f, 0.0f, 800.0f);
-        }
-        super.step(deltaSeconds);
+    public void dispose() {
+        super.dispose();
+        dispose(cylinder, gridMesh);
     }
 }

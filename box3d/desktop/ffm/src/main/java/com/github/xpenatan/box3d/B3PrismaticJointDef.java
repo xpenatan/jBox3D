@@ -242,6 +242,54 @@ public final class B3PrismaticJointDef extends NativeObject {
         }
     }
 
+    public void SetForceThreshold(float force) {
+        internal_native_SetForceThreshold(native_address, force);
+    }
+
+    public static void internal_native_SetForceThreshold(long this_addr, float force) {
+        try {
+            FFMHandles.internal_native_SetForceThreshold__JF.invokeExact(this_addr, force);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetTorqueThreshold(float torque) {
+        internal_native_SetTorqueThreshold(native_address, torque);
+    }
+
+    public static void internal_native_SetTorqueThreshold(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetTorqueThreshold__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    public static float internal_native_GetConstraintHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetConstraintHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetConstraintHertz(float hertz) {
+        internal_native_SetConstraintHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetConstraintHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetConstraintHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public boolean GetEnableSpring() {
         return internal_native_GetEnableSpring(native_address);
     }
@@ -515,6 +563,14 @@ public final class B3PrismaticJointDef extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetCollideConnected__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_getcollideconnected", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetCollideConnected__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_setcollideconnected", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetForceThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_setforcethreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetTorqueThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_settorquethreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetConstraintHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_getconstrainthertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetConstraintHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_setconstrainthertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
         static final java.lang.invoke.MethodHandle internal_native_GetEnableSpring__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3prismaticjointdef_getenablespring", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 

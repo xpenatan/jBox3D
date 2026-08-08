@@ -106,6 +106,13 @@ public final class B3ShapeDef extends NativeObject {
     public void SetInvokeContactCreation(boolean invokeContactCreation) {
     }
 
+    public boolean GetEnableSpeculativeContact() {
+        return false;
+    }
+
+    public void SetEnableSpeculativeContact(boolean enabled) {
+    }
+
     public boolean GetUpdateBodyMass() {
         return false;
     }

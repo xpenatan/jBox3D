@@ -77,6 +77,19 @@ public final class B3PrismaticJointDef extends NativeObject {
     public void SetCollideConnected(boolean collide) {
     }
 
+    public void SetForceThreshold(float force) {
+    }
+
+    public void SetTorqueThreshold(float torque) {
+    }
+
+    public float GetConstraintHertz() {
+        return 0;
+    }
+
+    public void SetConstraintHertz(float hertz) {
+    }
+
     public boolean GetEnableSpring() {
         return false;
     }

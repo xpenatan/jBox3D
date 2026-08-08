@@ -10,6 +10,8 @@ import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Shape extends NativeObject {
 
+    private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_0;
+
     private B3Filter B3Filter_TEMP_GEN_0;
 
     private B3RayResult B3RayResult_TEMP_GEN_0;
@@ -144,6 +146,26 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr", "restitution"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetRestitution(restitution);")
     public static native void internal_native_SetRestitution(int this_addr, float restitution);
+
+    public B3SurfaceMaterial GetSurfaceMaterial() {
+        int addr = internal_native_GetSurfaceMaterial_addr(native_address);
+        if (addr == 0)
+            return B3SurfaceMaterial.NULL;
+        if (B3SurfaceMaterial_TEMP_GEN_0 == null)
+            B3SurfaceMaterial_TEMP_GEN_0 = B3SurfaceMaterial.native_new();
+        B3SurfaceMaterial_TEMP_GEN_0.internal_reset(addr, false);
+        return B3SurfaceMaterial_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetSurfaceMaterial();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetSurfaceMaterial_addr(int this_addr);
+
+    public void SetSurfaceMaterial(B3SurfaceMaterial material) {
+        internal_native_SetSurfaceMaterial(native_address, material.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "material_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetSurfaceMaterial(material_addr);")
+    public static native void internal_native_SetSurfaceMaterial(int this_addr, int material_addr);
 
     public B3Filter GetFilter() {
         int addr = internal_native_GetFilter_addr(native_address);

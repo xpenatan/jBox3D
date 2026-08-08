@@ -26,6 +26,10 @@ public final class B3 extends NativeObject {
         return new B3((byte) 0, (char) 0);
     }
 
+    public static boolean IsDoublePrecision() {
+        return false;
+    }
+
     public static int StaticBody() {
         return 0;
     }
@@ -68,6 +72,13 @@ public final class B3 extends NativeObject {
 
     public static int GetMaxWorldCount() {
         return 0;
+    }
+
+    public static float GetStallThreshold() {
+        return 0;
+    }
+
+    public static void SetStallThreshold(float seconds) {
     }
 
     public static long DefaultMaskBits() {

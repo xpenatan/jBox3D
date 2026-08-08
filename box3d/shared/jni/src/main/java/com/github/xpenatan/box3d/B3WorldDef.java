@@ -12,6 +12,8 @@ public final class B3WorldDef extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     static public final B3WorldDef NULL = B3WorldDef.native_new();
 
     public B3WorldDef() {
@@ -209,5 +211,27 @@ public final class B3WorldDef extends NativeObject {
 
     public static void internal_native_SetWorkerCount(long this_addr, int workerCount) {
         com.github.xpenatan.box3d.natives.JNI_B3WorldDef.internal_native_SetWorkerCount(this_addr, workerCount);
+    }
+
+    public B3Capacity GetCapacity() {
+        long addr = internal_native_GetCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetCapacity_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3WorldDef.internal_native_GetCapacity_addr(this_addr);
+    }
+
+    public void SetCapacity(B3Capacity capacity) {
+        internal_native_SetCapacity(native_address, capacity.native_address);
+    }
+
+    public static void internal_native_SetCapacity(long this_addr, long capacity_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3WorldDef.internal_native_SetCapacity(this_addr, capacity_addr);
     }
 }

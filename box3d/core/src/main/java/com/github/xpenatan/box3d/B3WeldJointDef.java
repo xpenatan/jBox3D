@@ -77,6 +77,12 @@ public final class B3WeldJointDef extends NativeObject {
     public void SetCollideConnected(boolean collide) {
     }
 
+    public void SetForceThreshold(float force) {
+    }
+
+    public void SetTorqueThreshold(float torque) {
+    }
+
     public float GetConstraintHertz() {
         return 0;
     }

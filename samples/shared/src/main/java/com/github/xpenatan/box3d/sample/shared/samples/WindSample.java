@@ -17,6 +17,7 @@ final class WindSample extends AbstractBox3DSample {
     private static final int COUNT = 10;
 
     private final B3Shape[] shapes = new B3Shape[COUNT];
+    private final SampleRandom random = new SampleRandom();
     private float noiseX;
     private float noiseY;
     private float noiseZ;
@@ -53,6 +54,8 @@ final class WindSample extends AbstractBox3DSample {
 
     @Override
     public void step(float deltaSeconds) {
+        super.step(deltaSeconds);
+
         float windX = 6.0f * (1.0f + noiseX);
         float windY = 6.0f * noiseY;
         float windZ = 6.0f * noiseZ;
@@ -65,7 +68,6 @@ final class WindSample extends AbstractBox3DSample {
         noiseX = lerp(noiseX, randomNoise(), 0.05f);
         noiseY = lerp(noiseY, randomNoise(), 0.05f);
         noiseZ = lerp(noiseZ, randomNoise(), 0.05f);
-        super.step(deltaSeconds);
     }
 
     private void setLocalPositionA(B3SphericalJointDef jointDef, float x, float y, float z) {
@@ -85,6 +87,6 @@ final class WindSample extends AbstractBox3DSample {
     }
 
     private float randomNoise() {
-        return (float)(Math.random() * 0.6 - 0.3);
+        return random.nextFloat(-0.3f, 0.3f);
     }
 }

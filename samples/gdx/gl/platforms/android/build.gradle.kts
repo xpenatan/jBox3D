@@ -18,6 +18,7 @@ val gdxNativeConfigurations = gdxNativeClassifiers.keys.associateWith { abi ->
     }
 }
 val stagedGdxJniLibsDir = layout.buildDirectory.dir("generated/gdxJniLibs")
+val sharedSampleResourcesDir = project(":samples:shared").layout.buildDirectory.dir("resources/main")
 
 val stageGdxJniLibs by tasks.registering(Copy::class) {
     gdxNativeConfigurations.forEach { (abi, configuration) ->
@@ -74,7 +75,7 @@ android {
         named("main") {
             assets.srcDirs(
                 project(":samples:gdx:core").projectDir.resolve("src/main/resources"),
-                project(":samples:shared").projectDir.resolve("src/main/resources")
+                sharedSampleResourcesDir.get().asFile
             )
             jniLibs.srcDirs(stagedGdxJniLibsDir.get().asFile)
         }
@@ -97,6 +98,12 @@ tasks.matching { task ->
     task.name == "mergeDebugJniLibFolders" || task.name == "mergeReleaseJniLibFolders"
 }.configureEach {
     dependsOn(stageGdxJniLibs)
+}
+
+tasks.matching { task ->
+    task.name == "mergeDebugAssets" || task.name == "mergeReleaseAssets"
+}.configureEach {
+    dependsOn(":samples:shared:processResources")
 }
 
 fun adbExecutable(): String {

@@ -12,6 +12,8 @@ public final class B3Quat extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
     static public final B3Quat NULL = B3Quat.native_new();
 
     public B3Quat() {
@@ -98,5 +100,66 @@ public final class B3Quat extends NativeObject {
 
     public static void internal_native_Set(long this_addr, float x, float y, float z, float w) {
         com.github.xpenatan.box3d.natives.JNI_B3Quat.internal_native_Set(this_addr, x, y, z, w);
+    }
+
+    public void Normalize() {
+        internal_native_Normalize(native_address);
+    }
+
+    public static void internal_native_Normalize(long this_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Quat.internal_native_Normalize(this_addr);
+    }
+
+    public B3Vec3 RotateVector(B3Vec3 vector) {
+        long addr = internal_native_RotateVector_addr(native_address, vector.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    public static long internal_native_RotateVector_addr(long this_addr, long vector_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Quat.internal_native_RotateVector_addr(this_addr, vector_addr);
+    }
+
+    public static B3Quat ComputeBetweenUnitVectors(B3Vec3 from, B3Vec3 to) {
+        long addr = internal_native_ComputeBetweenUnitVectors_addr(from.native_address, to.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        B3Quat B3Quat_NEW = B3Quat.native_new();
+        B3Quat_NEW.internal_reset(addr, true);
+        return B3Quat_NEW;
+    }
+
+    public static long internal_native_ComputeBetweenUnitVectors_addr(long from_addr, long to_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Quat.internal_native_ComputeBetweenUnitVectors_addr(from_addr, to_addr);
+    }
+
+    public static B3Quat Mul(B3Quat a, B3Quat b) {
+        long addr = internal_native_Mul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        B3Quat B3Quat_NEW = B3Quat.native_new();
+        B3Quat_NEW.internal_reset(addr, true);
+        return B3Quat_NEW;
+    }
+
+    public static long internal_native_Mul_addr(long a_addr, long b_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Quat.internal_native_Mul_addr(a_addr, b_addr);
+    }
+
+    public static B3Quat InvMul(B3Quat a, B3Quat b) {
+        long addr = internal_native_InvMul_addr(a.native_address, b.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        B3Quat B3Quat_NEW = B3Quat.native_new();
+        B3Quat_NEW.internal_reset(addr, true);
+        return B3Quat_NEW;
+    }
+
+    public static long internal_native_InvMul_addr(long a_addr, long b_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Quat.internal_native_InvMul_addr(a_addr, b_addr);
     }
 }

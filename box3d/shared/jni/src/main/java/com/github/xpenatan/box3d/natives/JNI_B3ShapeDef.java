@@ -58,6 +58,10 @@ final public class JNI_B3ShapeDef {
 
     public static native void internal_native_SetInvokeContactCreation(long this_addr, boolean invokeContactCreation);
 
+    public static native boolean internal_native_GetEnableSpeculativeContact(long this_addr);
+
+    public static native void internal_native_SetEnableSpeculativeContact(long this_addr, boolean enabled);
+
     public static native boolean internal_native_GetUpdateBodyMass(long this_addr);
 
     public static native void internal_native_SetUpdateBodyMass(long this_addr, boolean updateBodyMass);

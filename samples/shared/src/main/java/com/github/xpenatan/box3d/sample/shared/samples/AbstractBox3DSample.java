@@ -3,6 +3,7 @@ package com.github.xpenatan.box3d.sample.shared.samples;
 import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
 import com.github.xpenatan.box3d.B3BodyDef;
+import com.github.xpenatan.box3d.B3Capacity;
 import com.github.xpenatan.box3d.B3Capsule;
 import com.github.xpenatan.box3d.B3Hull;
 import com.github.xpenatan.box3d.B3MotionLocks;
@@ -13,6 +14,7 @@ import com.github.xpenatan.box3d.B3Sphere;
 import com.github.xpenatan.box3d.B3SurfaceMaterial;
 import com.github.xpenatan.box3d.B3Transform;
 import com.github.xpenatan.box3d.B3Vec3;
+import com.github.xpenatan.box3d.B3Vec3Array;
 import com.github.xpenatan.box3d.B3World;
 import com.github.xpenatan.box3d.B3WorldDef;
 import com.github.xpenatan.box3d.sample.shared.Box3DLaunchShape;
@@ -26,16 +28,37 @@ abstract class AbstractBox3DSample implements Box3DSample {
     private Box3DSampleSettings activeSettings;
 
     AbstractBox3DSample() {
-        this(4);
+        this(4, 0, 0, 0, 0, 0);
     }
 
     AbstractBox3DSample(int subStepCount) {
+        this(subStepCount, 0, 0, 0, 0, 0);
+    }
+
+    AbstractBox3DSample(int staticShapeCount, int dynamicShapeCount, int staticBodyCount, int dynamicBodyCount,
+            int contactCount) {
+        this(4, staticShapeCount, dynamicShapeCount, staticBodyCount, dynamicBodyCount, contactCount);
+    }
+
+    private AbstractBox3DSample(int subStepCount, int staticShapeCount, int dynamicShapeCount, int staticBodyCount,
+            int dynamicBodyCount, int contactCount) {
         B3WorldDef worldDef = new B3WorldDef();
         B3Vec3 gravity = new B3Vec3(0.0f, -10.0f, 0.0f);
         worldDef.SetGravity(gravity);
+        B3Capacity capacity = null;
+        if(staticShapeCount != 0 || dynamicShapeCount != 0 || staticBodyCount != 0 || dynamicBodyCount != 0
+                || contactCount != 0) {
+            capacity = new B3Capacity();
+            capacity.SetStaticShapeCount(staticShapeCount);
+            capacity.SetDynamicShapeCount(dynamicShapeCount);
+            capacity.SetStaticBodyCount(staticBodyCount);
+            capacity.SetDynamicBodyCount(dynamicBodyCount);
+            capacity.SetContactCount(contactCount);
+            worldDef.SetCapacity(capacity);
+        }
         world = new B3World(worldDef);
         this.fallbackSubStepCount = subStepCount;
-        dispose(gravity, worldDef);
+        dispose(capacity, gravity, worldDef);
     }
 
     @Override
@@ -104,13 +127,14 @@ abstract class AbstractBox3DSample implements Box3DSample {
         dispose(world);
     }
 
-    protected void addGroundBox(float halfWidth, float halfHeight, float halfDepth) {
-        addBox(B3.StaticBody(), 0.0f, -halfHeight, 0.0f, halfWidth, halfHeight, halfDepth, null, 0.0f, 0.6f,
+    protected B3Body addGroundBox(float halfWidth, float halfHeight, float halfDepth) {
+        return addBox(B3.StaticBody(), 0.0f, -halfHeight, 0.0f, halfWidth, halfHeight, halfDepth, null, 0.0f, 0.6f,
                 0.0f, 0.0f);
     }
 
-    protected void addGroundBox(float halfWidth) {
-        addGroundBox(halfWidth, 0.25f, halfWidth);
+    protected B3Body addGroundBox(float halfWidth) {
+        // Matches Sample::AddGroundBox in the pinned Box3D sample suite.
+        return addGroundBox(halfWidth, 1.0f, halfWidth);
     }
 
     protected B3Body addStaticBox(float x, float y, float z, float halfWidth, float halfHeight, float halfDepth,
@@ -120,8 +144,7 @@ abstract class AbstractBox3DSample implements Box3DSample {
     }
 
     protected B3Body addDynamicBox(float x, float y, float z, float halfWidth, float halfHeight, float halfDepth) {
-        return addBox(B3.DynamicBody(), x, y, z, halfWidth, halfHeight, halfDepth, null, 1.0f, 0.6f, 0.0f,
-                0.0f);
+        return addBox(B3.DynamicBody(), x, y, z, halfWidth, halfHeight, halfDepth, null, new B3ShapeDef());
     }
 
     protected B3Body addDynamicBox(float x, float y, float z, float halfWidth, float halfHeight, float halfDepth,
@@ -150,7 +173,7 @@ abstract class AbstractBox3DSample implements Box3DSample {
 
     protected B3Body addDynamicCylinder(float x, float y, float z, float height, float radius, int sides) {
         B3BodyDef bodyDef = bodyDef(B3.DynamicBody(), x, y, z, null);
-        B3ShapeDef shapeDef = shapeDef(1.0f, 0.6f, 0.0f, 0.0f);
+        B3ShapeDef shapeDef = new B3ShapeDef();
         B3Hull hull = B3Hull.CreateCylinder(height, radius, 0.0f, sides);
         B3Body body = world.CreateBody(bodyDef);
         dispose(body.CreateHullShape(shapeDef, hull));
@@ -159,7 +182,14 @@ abstract class AbstractBox3DSample implements Box3DSample {
     }
 
     protected B3Body addDynamicSphere(float x, float y, float z, float radius) {
-        return addDynamicSphere(x, y, z, radius, 1.0f, 0.6f, 0.0f, 0.0f);
+        B3BodyDef bodyDef = bodyDef(B3.DynamicBody(), x, y, z, null);
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        B3Vec3 center = new B3Vec3(0.0f, 0.0f, 0.0f);
+        B3Sphere sphere = new B3Sphere(center, radius);
+        B3Body body = world.CreateBody(bodyDef);
+        dispose(body.CreateSphereShape(shapeDef, sphere));
+        dispose(sphere, center, shapeDef, bodyDef);
+        return body;
     }
 
     protected B3Body addDynamicSphere(float x, float y, float z, float radius, float density, float friction,
@@ -176,7 +206,7 @@ abstract class AbstractBox3DSample implements Box3DSample {
 
     protected B3Body addDynamicCapsule(float x, float y, float z, float halfLength, float radius) {
         B3BodyDef bodyDef = bodyDef(B3.DynamicBody(), x, y, z, null);
-        B3ShapeDef shapeDef = shapeDef(1.0f, 0.6f, 0.0f, 0.0f);
+        B3ShapeDef shapeDef = new B3ShapeDef();
         B3Vec3 center1 = new B3Vec3(0.0f, -halfLength, 0.0f);
         B3Vec3 center2 = new B3Vec3(0.0f, halfLength, 0.0f);
         B3Capsule capsule = new B3Capsule(center1, center2, radius);
@@ -188,10 +218,17 @@ abstract class AbstractBox3DSample implements Box3DSample {
 
     protected B3Body addDynamicCapsule(float x, float y, float z, float halfLength, float radius, B3Quat rotation,
             float density, float friction, float restitution, float rollingResistance) {
-        B3BodyDef bodyDef = bodyDef(B3.DynamicBody(), x, y, z, rotation);
+        return addCapsule(B3.DynamicBody(), x, y, z, -halfLength, 0.0f, 0.0f, halfLength, 0.0f, 0.0f, radius,
+                rotation, density, friction, restitution, rollingResistance);
+    }
+
+    protected B3Body addCapsule(int bodyType, float x, float y, float z, float center1X, float center1Y,
+            float center1Z, float center2X, float center2Y, float center2Z, float radius, B3Quat rotation,
+            float density, float friction, float restitution, float rollingResistance) {
+        B3BodyDef bodyDef = bodyDef(bodyType, x, y, z, rotation);
         B3ShapeDef shapeDef = shapeDef(density, friction, restitution, rollingResistance);
-        B3Vec3 center1 = new B3Vec3(-halfLength, 0.0f, 0.0f);
-        B3Vec3 center2 = new B3Vec3(halfLength, 0.0f, 0.0f);
+        B3Vec3 center1 = new B3Vec3(center1X, center1Y, center1Z);
+        B3Vec3 center2 = new B3Vec3(center2X, center2Y, center2Z);
         B3Capsule capsule = new B3Capsule(center1, center2, radius);
         B3Body body = world.CreateBody(bodyDef);
         dispose(body.CreateCapsuleShape(shapeDef, capsule));
@@ -201,8 +238,36 @@ abstract class AbstractBox3DSample implements Box3DSample {
 
     protected B3Body addHull(B3Hull hull, int bodyType, float x, float y, float z, B3Quat rotation, float density,
             float friction, float restitution, float rollingResistance) {
-        B3BodyDef bodyDef = bodyDef(bodyType, x, y, z, rotation);
+        return addHull(hull, bodyType, x, y, z, rotation,
+                shapeDef(density, friction, restitution, rollingResistance));
+    }
+
+    protected B3Body addHull(B3Hull hull, int bodyType, float x, float y, float z, B3Quat rotation) {
+        return addHull(hull, bodyType, x, y, z, rotation, new B3ShapeDef());
+    }
+
+    protected void addHullShape(B3Body body, B3Hull hull, float density, float friction, float restitution,
+            float rollingResistance) {
         B3ShapeDef shapeDef = shapeDef(density, friction, restitution, rollingResistance);
+        dispose(body.CreateHullShape(shapeDef, hull), shapeDef);
+    }
+
+    protected B3Hull createHull(float[][] vertices) {
+        B3Vec3Array points = new B3Vec3Array(vertices.length);
+        for(int i = 0; i < vertices.length; i++) {
+            float[] vertex = vertices[i];
+            B3Vec3 point = new B3Vec3(vertex[0], vertex[1], vertex[2]);
+            points.SetValue(i, point);
+            dispose(point);
+        }
+        B3Hull hull = B3Hull.CreateFromPoints(points, vertices.length);
+        dispose(points);
+        return hull;
+    }
+
+    private B3Body addHull(B3Hull hull, int bodyType, float x, float y, float z, B3Quat rotation,
+            B3ShapeDef shapeDef) {
+        B3BodyDef bodyDef = bodyDef(bodyType, x, y, z, rotation);
         B3Body body = world.CreateBody(bodyDef);
         dispose(body.CreateHullShape(shapeDef, hull));
         dispose(shapeDef, bodyDef);
@@ -398,10 +463,41 @@ abstract class AbstractBox3DSample implements Box3DSample {
         return new B3Quat(0.0f, 0.0f, (float)Math.sin(half), (float)Math.cos(half));
     }
 
+    protected void addDebugAxes(float x, float y, float z, float size) {
+        B3Vec3 origin = new B3Vec3(x, y, z);
+        B3Vec3 xEnd = new B3Vec3(x + size, y, z);
+        B3Vec3 yEnd = new B3Vec3(x, y + size, z);
+        B3Vec3 zEnd = new B3Vec3(x, y, z + size);
+        world.AddDebugSegment(origin, xEnd, 0xFF0000);
+        world.AddDebugSegment(origin, yEnd, 0x00FF00);
+        world.AddDebugSegment(origin, zEnd, 0x0000FF);
+        dispose(zEnd, yEnd, xEnd, origin);
+    }
+
+    protected void addDebugGroundGrid(int size) {
+        float halfExtent = size;
+        float step = 2.0f * halfExtent / size;
+        for(int i = 0; i <= size; ++i) {
+            float offset = -halfExtent + i * step;
+            B3Vec3 x1 = new B3Vec3(-halfExtent, 0.0f, offset);
+            B3Vec3 x2 = new B3Vec3(halfExtent, 0.0f, offset);
+            B3Vec3 z1 = new B3Vec3(offset, 0.0f, -halfExtent);
+            B3Vec3 z2 = new B3Vec3(offset, 0.0f, halfExtent);
+            world.AddDebugSegment(x1, x2, 0x4D4D4D);
+            world.AddDebugSegment(z1, z2, 0x4D4D4D);
+            dispose(z2, z1, x2, x1);
+        }
+    }
+
     private B3Body addBox(int bodyType, float x, float y, float z, float halfWidth, float halfHeight, float halfDepth,
             B3Quat rotation, float density, float friction, float restitution, float rollingResistance) {
+        return addBox(bodyType, x, y, z, halfWidth, halfHeight, halfDepth, rotation,
+                shapeDef(density, friction, restitution, rollingResistance));
+    }
+
+    private B3Body addBox(int bodyType, float x, float y, float z, float halfWidth, float halfHeight, float halfDepth,
+            B3Quat rotation, B3ShapeDef shapeDef) {
         B3BodyDef bodyDef = bodyDef(bodyType, x, y, z, rotation);
-        B3ShapeDef shapeDef = shapeDef(density, friction, restitution, rollingResistance);
         B3Hull hull = B3Hull.CreateBox(halfWidth, halfHeight, halfDepth);
         B3Body body = world.CreateBody(bodyDef);
         dispose(body.CreateHullShape(shapeDef, hull));

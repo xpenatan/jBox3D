@@ -24,8 +24,6 @@ import com.github.xpenatan.box3d.B3WheelJointDef;
 
 final class MotionLocksSample extends AbstractBox3DSample {
     private final B3Body[] bodies = new B3Body[4];
-    private float timer;
-    private int lockMode;
 
     MotionLocksSample() {
         addGroundBox(20.0f);
@@ -34,32 +32,12 @@ final class MotionLocksSample extends AbstractBox3DSample {
         B3ShapeDef shapeDef = shapeDef(1.0f, 0.6f, 0.0f, 0.0f);
         B3Hull box = B3Hull.CreateBox(1.0f, 1.0f, 0.5f);
 
-        createDistanceRow(ground, shapeDef, box, 0, -7.5f, 10.0f);
-        createPrismaticRow(ground, shapeDef, box, 1, -2.5f, 10.0f);
-        createRevoluteRow(ground, shapeDef, box, 2, 2.5f, 10.0f);
-        createWeldRow(ground, shapeDef, box, 3, 7.5f, 10.0f);
+        createDistanceRow(ground, shapeDef, box, 0, -12.5f, 10.0f);
+        createPrismaticRow(ground, shapeDef, box, 1, -7.5f, 10.0f);
+        createRevoluteRow(ground, shapeDef, box, 2, -2.5f, 10.0f);
+        createWeldRow(ground, shapeDef, box, 3, 2.5f, 10.0f);
 
         dispose(box, shapeDef);
-    }
-
-    @Override
-    public void step(float deltaSeconds) {
-        timer += deltaSeconds;
-        if(timer > 2.0f) {
-            timer = 0.0f;
-            lockMode = (lockMode + 1) % 4;
-            B3MotionLocks locks = motionLocks(lockMode == 1, false, true, false, lockMode == 2, lockMode == 3);
-            for(int i = 0; i < bodies.length; i++) {
-                bodies[i].SetMotionLocks(locks);
-                bodies[i].SetAwake(true);
-            }
-            dispose(locks);
-        }
-
-        B3Vec3 impulse = new B3Vec3(25.0f, 0.0f, 0.0f);
-        bodies[0].ApplyLinearImpulseToCenter(impulse, true);
-        dispose(impulse);
-        super.step(deltaSeconds);
     }
 
     private void createDistanceRow(B3Body ground, B3ShapeDef shapeDef, B3Hull box, int index, float x, float y) {
@@ -70,6 +48,8 @@ final class MotionLocksSample extends AbstractBox3DSample {
         JointSampleUtil.setLocalPositionA(jointDef, x, y + 3.0f, 0.0f);
         JointSampleUtil.setLocalPositionB(jointDef, 0.0f, 1.0f, 0.0f);
         jointDef.SetLength(2.0f);
+        jointDef.SetForceThreshold(20000.0f);
+        jointDef.SetTorqueThreshold(10000.0f);
         jointDef.SetCollideConnected(true);
         dispose(world().CreateDistanceJoint(jointDef));
         dispose(jointDef);
@@ -82,6 +62,8 @@ final class MotionLocksSample extends AbstractBox3DSample {
         jointDef.SetBodyIdB(body.GetId());
         JointSampleUtil.setLocalPositionA(jointDef, x - 1.0f, y, 0.0f);
         JointSampleUtil.setLocalPositionB(jointDef, -1.0f, 0.0f, 0.0f);
+        jointDef.SetForceThreshold(20000.0f);
+        jointDef.SetTorqueThreshold(10000.0f);
         jointDef.SetCollideConnected(true);
         dispose(world().CreatePrismaticJoint(jointDef));
         dispose(jointDef);
@@ -94,6 +76,8 @@ final class MotionLocksSample extends AbstractBox3DSample {
         jointDef.SetBodyIdB(body.GetId());
         JointSampleUtil.setLocalPositionA(jointDef, x - 1.0f, y, 0.0f);
         JointSampleUtil.setLocalPositionB(jointDef, -1.0f, 0.0f, 0.0f);
+        jointDef.SetForceThreshold(20000.0f);
+        jointDef.SetTorqueThreshold(10000.0f);
         jointDef.SetCollideConnected(true);
         dispose(world().CreateRevoluteJoint(jointDef));
         dispose(jointDef);
@@ -108,6 +92,8 @@ final class MotionLocksSample extends AbstractBox3DSample {
         JointSampleUtil.setLocalPositionB(jointDef, -1.0f, 0.0f, 0.0f);
         jointDef.SetAngularHertz(2.0f);
         jointDef.SetAngularDampingRatio(0.5f);
+        jointDef.SetForceThreshold(20000.0f);
+        jointDef.SetTorqueThreshold(10000.0f);
         jointDef.SetCollideConnected(true);
         dispose(world().CreateWeldJoint(jointDef));
         dispose(jointDef);

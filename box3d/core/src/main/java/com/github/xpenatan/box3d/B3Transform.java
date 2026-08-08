@@ -45,4 +45,12 @@ public final class B3Transform extends NativeObject {
 
     public void SetQ(B3Quat rotation) {
     }
+
+    public B3Vec3 TransformPoint(B3Vec3 point) {
+        return null;
+    }
+
+    public static B3Transform InvMul(B3Transform a, B3Transform b) {
+        return null;
+    }
 }

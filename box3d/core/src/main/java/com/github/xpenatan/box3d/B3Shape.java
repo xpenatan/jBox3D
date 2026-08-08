@@ -76,6 +76,13 @@ public final class B3Shape extends NativeObject {
     public void SetRestitution(float restitution) {
     }
 
+    public B3SurfaceMaterial GetSurfaceMaterial() {
+        return null;
+    }
+
+    public void SetSurfaceMaterial(B3SurfaceMaterial material) {
+    }
+
     public B3Filter GetFilter() {
         return null;
     }

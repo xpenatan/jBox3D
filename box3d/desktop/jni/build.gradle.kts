@@ -41,6 +41,10 @@ tasks.named<Copy>("processTestResources") {
     currentPlatformJniBuildTask?.let { dependsOn(it) }
 }
 
+tasks.named<Jar>("jar") {
+    currentPlatformJniBuildTask?.let { dependsOn(it) }
+}
+
 tasks.named<Test>("test") {
     currentPlatformJniBuildTask?.let { dependsOn(it) }
 }

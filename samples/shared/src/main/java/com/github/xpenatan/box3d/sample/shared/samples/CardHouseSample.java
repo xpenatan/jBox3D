@@ -9,7 +9,7 @@ final class CardHouseSample extends AbstractBox3DSample {
         addGroundBox(10.0f);
 
         float cardHeight = 0.2f;
-        float cardThickness = 0.01f;
+        float cardThickness = 0.001f;
         float cardDepth = 0.1f;
         float angle0 = radians(25.0f);
         float angle1 = radians(-25.0f);
@@ -27,13 +27,13 @@ final class CardHouseSample extends AbstractBox3DSample {
             float x = z0;
             for(int i = 0; i < rows; i++) {
                 if(i != rows - 1) {
-                    addHull(card, B3.DynamicBody(), x + 0.25f, y + cardHeight - 0.015f, 0.0f, flat, 1.0f, 0.7f,
-                            0.0f, 0.0f);
+                    addHull(card, B3.DynamicBody(), x + 0.25f, y + cardHeight - 0.015f, 0.0f, flat, 1000.0f,
+                            0.7f, 0.0f, 0.05f);
                 }
 
-                addHull(card, B3.DynamicBody(), x, y, 0.0f, leanLeft, 1.0f, 0.7f, 0.0f, 0.0f);
+                addHull(card, B3.DynamicBody(), x, y, 0.0f, leanLeft, 1000.0f, 0.7f, 0.0f, 0.05f);
                 x += 0.175f;
-                addHull(card, B3.DynamicBody(), x, y, 0.0f, leanRight, 1.0f, 0.7f, 0.0f, 0.0f);
+                addHull(card, B3.DynamicBody(), x, y, 0.0f, leanRight, 1000.0f, 0.7f, 0.0f, 0.05f);
                 x += 0.175f;
             }
             y += cardHeight * 2.0f - 0.03f;

@@ -338,6 +338,30 @@ public final class B3ShapeDef extends NativeObject {
         }
     }
 
+    public boolean GetEnableSpeculativeContact() {
+        return internal_native_GetEnableSpeculativeContact(native_address);
+    }
+
+    public static boolean internal_native_GetEnableSpeculativeContact(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_GetEnableSpeculativeContact__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetEnableSpeculativeContact(boolean enabled) {
+        internal_native_SetEnableSpeculativeContact(native_address, enabled);
+    }
+
+    public static void internal_native_SetEnableSpeculativeContact(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_SetEnableSpeculativeContact__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public boolean GetUpdateBodyMass() {
         return internal_native_GetUpdateBodyMass(native_address);
     }
@@ -411,6 +435,10 @@ public final class B3ShapeDef extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetInvokeContactCreation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shapedef_getinvokecontactcreation", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetInvokeContactCreation__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shapedef_setinvokecontactcreation", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetEnableSpeculativeContact__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shapedef_getenablespeculativecontact", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetEnableSpeculativeContact__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shapedef_setenablespeculativecontact", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 
         static final java.lang.invoke.MethodHandle internal_native_GetUpdateBodyMass__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shapedef_getupdatebodymass", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 

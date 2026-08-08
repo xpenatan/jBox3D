@@ -227,6 +227,76 @@ public final class B3SphericalJointDef extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_setdampingratio")
     public static native void internal_native_SetDampingRatio(long this_addr, float ratio);
 
+    public boolean GetEnableConeLimit() {
+        return internal_native_GetEnableConeLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_getenableconelimit")
+    public static native boolean internal_native_GetEnableConeLimit(long this_addr);
+
+    public void SetEnableConeLimit(boolean enabled) {
+        internal_native_SetEnableConeLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_setenableconelimit")
+    public static native void internal_native_SetEnableConeLimit(long this_addr, boolean enabled);
+
+    public float GetConeAngle() {
+        return internal_native_GetConeAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_getconeangle")
+    public static native float internal_native_GetConeAngle(long this_addr);
+
+    public void SetConeAngle(float radians) {
+        internal_native_SetConeAngle(native_address, radians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_setconeangle")
+    public static native void internal_native_SetConeAngle(long this_addr, float radians);
+
+    public boolean GetEnableTwistLimit() {
+        return internal_native_GetEnableTwistLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_getenabletwistlimit")
+    public static native boolean internal_native_GetEnableTwistLimit(long this_addr);
+
+    public void SetEnableTwistLimit(boolean enabled) {
+        internal_native_SetEnableTwistLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_setenabletwistlimit")
+    public static native void internal_native_SetEnableTwistLimit(long this_addr, boolean enabled);
+
+    public float GetLowerTwistAngle() {
+        return internal_native_GetLowerTwistAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_getlowertwistangle")
+    public static native float internal_native_GetLowerTwistAngle(long this_addr);
+
+    public void SetLowerTwistAngle(float radians) {
+        internal_native_SetLowerTwistAngle(native_address, radians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_setlowertwistangle")
+    public static native void internal_native_SetLowerTwistAngle(long this_addr, float radians);
+
+    public float GetUpperTwistAngle() {
+        return internal_native_GetUpperTwistAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_getuppertwistangle")
+    public static native float internal_native_GetUpperTwistAngle(long this_addr);
+
+    public void SetUpperTwistAngle(float radians) {
+        internal_native_SetUpperTwistAngle(native_address, radians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3sphericaljointdef_setuppertwistangle")
+    public static native void internal_native_SetUpperTwistAngle(long this_addr, float radians);
+
     public boolean GetEnableMotor() {
         return internal_native_GetEnableMotor(native_address);
     }

@@ -1,29 +1,57 @@
 package com.github.xpenatan.box3d.sample.shared.samples;
 
-import com.github.xpenatan.box3d.B3;
-import com.github.xpenatan.box3d.B3Body;
-import com.github.xpenatan.box3d.B3BodyDef;
 import com.github.xpenatan.box3d.B3Hull;
 import com.github.xpenatan.box3d.B3Quat;
-import com.github.xpenatan.box3d.B3ShapeDef;
+import com.github.xpenatan.box3d.B3Transform;
 import com.github.xpenatan.box3d.B3Vec3;
+import com.github.xpenatan.box3d.B3Vec3Array;
 
+/** Exact Benchmark/Hull scene and per-step hull workload. */
 final class BenchmarkHullSample extends AbstractBox3DSample {
+    private final B3Vec3Array points;
+    private final B3Hull hull;
+    private final B3Transform identityTransform;
+    private final B3Vec3 reflectionScale;
+
     BenchmarkHullSample() {
-        addGroundBox(50.0f);
-        B3ShapeDef shapeDef = shapeDef(1.0f, 0.6f, 0.0f, 0.05f);
-        for(int y = 0; y < 8; y++) {
-            for(int x = 0; x < 8; x++) {
-                for(int z = 0; z < 8; z++) {
-                    B3Hull rock = B3Hull.CreateRock(0.45f);
-                    B3Quat rotation = rotationY((x * 31.0f + z * 17.0f) * 0.017453292f);
-                    B3Body body = createBody(B3.DynamicBody(), -7.0f + x * 2.0f, 1.0f + y * 1.2f,
-                            -7.0f + z * 2.0f, rotation);
-                    dispose(body.CreateHullShape(shapeDef, rock));
-                    dispose(rotation, rock);
-                }
-            }
+        SampleRandom random = new SampleRandom(42);
+        points = new B3Vec3Array(64);
+        for(int i = 0; i < 64; i++) {
+            B3Vec3 point = new B3Vec3(random.nextFloat(-1.0f, 1.0f), random.nextFloat(-1.0f, 1.0f),
+                    random.nextFloat(-1.0f, 1.0f));
+            points.SetValue(i, point);
+            dispose(point);
         }
-        dispose(shapeDef);
+        hull = B3Hull.CreateFromPoints(points, 64);
+        reflectionScale = new B3Vec3(-1.0f, 1.0f, 1.0f);
+        B3Vec3 zero = new B3Vec3(0.0f, 0.0f, 0.0f);
+        B3Quat identity = new B3Quat();
+        identityTransform = new B3Transform(zero, identity);
+        B3Hull transformed = B3Hull.CloneAndTransform(hull, identityTransform, reflectionScale);
+
+        B3Vec3 one = new B3Vec3(1.0f, 1.0f, 1.0f);
+        B3Vec3 left = new B3Vec3(-2.0f, 0.0f, 0.0f);
+        B3Vec3 right = new B3Vec3(2.0f, 0.0f, 0.0f);
+        B3Transform transform1 = new B3Transform(left, identity);
+        B3Transform transform2 = new B3Transform(right, identity);
+        world().AddDebugHull(hull, transform1, one, 0x008000);
+        world().AddDebugHull(transformed, transform2, one, 0xFFFF00);
+        dispose(transform2, transform1, right, left, one, transformed, identity, zero);
+    }
+
+    @Override
+    public void step(float deltaSeconds) {
+        for(int i = 0; i < 2000; i++) {
+            B3Hull created = B3Hull.CreateFromPoints(points, 64);
+            B3Hull cloned = B3Hull.CloneAndTransform(hull, identityTransform, reflectionScale);
+            dispose(cloned, created);
+        }
+        super.step(deltaSeconds);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        dispose(reflectionScale, identityTransform, hull, points);
     }
 }

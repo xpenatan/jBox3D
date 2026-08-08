@@ -17,6 +17,8 @@ import java.lang.invoke.MethodHandle;
 
 public final class B3Shape extends NativeObject {
 
+    private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_0;
+
     private B3Filter B3Filter_TEMP_GEN_0;
 
     private B3RayResult B3RayResult_TEMP_GEN_0;
@@ -222,6 +224,36 @@ public final class B3Shape extends NativeObject {
     public static void internal_native_SetRestitution(long this_addr, float restitution) {
         try {
             FFMHandles.internal_native_SetRestitution__JF.invokeExact(this_addr, restitution);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3SurfaceMaterial GetSurfaceMaterial() {
+        long addr = internal_native_GetSurfaceMaterial_addr(native_address);
+        if (addr == 0)
+            return B3SurfaceMaterial.NULL;
+        if (B3SurfaceMaterial_TEMP_GEN_0 == null)
+            B3SurfaceMaterial_TEMP_GEN_0 = B3SurfaceMaterial.native_new();
+        B3SurfaceMaterial_TEMP_GEN_0.internal_reset(addr, false);
+        return B3SurfaceMaterial_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetSurfaceMaterial_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetSurfaceMaterial_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSurfaceMaterial(B3SurfaceMaterial material) {
+        internal_native_SetSurfaceMaterial(native_address, material.native_address);
+    }
+
+    public static void internal_native_SetSurfaceMaterial(long this_addr, long material_addr) {
+        try {
+            FFMHandles.internal_native_SetSurfaceMaterial__JJ.invokeExact(this_addr, material_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -486,6 +518,10 @@ public final class B3Shape extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetRestitution__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shape_getrestitution", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetRestitution__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shape_setrestitution", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSurfaceMaterial_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3shape_getsurfacematerial_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSurfaceMaterial__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3shape_setsurfacematerial", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetFilter_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3shape_getfilter_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 

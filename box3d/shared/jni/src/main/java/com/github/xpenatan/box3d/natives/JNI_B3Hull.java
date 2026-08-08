@@ -30,6 +30,10 @@ final public class JNI_B3Hull {
 
     public static native long internal_native_CreateRock_addr(float radius);
 
+    public static native long internal_native_CreateFromPoints_addr(long points_addr, int maxVertexCount);
+
+    public static native long internal_native_CloneAndTransform_addr(long hull_addr, long transform_addr, long scale_addr);
+
     public static native boolean internal_native_IsValid(long this_addr);
 
     public static native void internal_native_Destroy(long this_addr);
@@ -37,4 +41,6 @@ final public class JNI_B3Hull {
     public static native int internal_native_GetVertexCount(long this_addr);
 
     public static native int internal_native_GetFaceCount(long this_addr);
+
+    public static native long internal_native_GetPoint_addr(long this_addr, int index);
 }
