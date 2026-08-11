@@ -12,7 +12,7 @@ javaMain = "1.8"
 javaWeb = "17"
 javaFFM = "25"
 
-androidGradlePlugin = "9.3.1"
+androidGradlePlugin = "9.1.0"
 androidCompileSdk = "36"
 androidTargetSdk = "36"
 androidMinSdk = "21"
