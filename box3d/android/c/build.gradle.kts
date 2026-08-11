@@ -45,22 +45,10 @@ android {
     }
 
     publishing {
-        singleVariant("release")
-    }
-}
-
-val mavenSourcesJar = tasks.register<Jar>("mavenSourcesJar") {
-    archiveClassifier.set("sources")
-    from(android.sourceSets["main"].java.srcDirs)
-    from(rootProject.file("README.md")) {
-        into("META-INF")
-    }
-}
-
-val mavenJavadocJar = tasks.register<Jar>("mavenJavadocJar") {
-    archiveClassifier.set("javadoc")
-    from(rootProject.file("README.md")) {
-        into("META-INF")
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 
@@ -80,8 +68,6 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             artifactId = moduleName
-            artifact(mavenSourcesJar)
-            artifact(mavenJavadocJar)
         }
     }
 }
