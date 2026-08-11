@@ -419,7 +419,8 @@ abstract class AbstractBox3DSample implements Box3DSample {
     }
 
     private void attachLaunchSphere(B3Body body) {
-        B3ShapeDef shapeDef = shapeDef(4.0f, 0.6f, 0.0f, 0.0f);
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        shapeDef.SetDensity(shapeDef.GetDensity() * 4.0f);
         B3Vec3 center = new B3Vec3(0.0f, 0.0f, 0.0f);
         B3Sphere sphere = new B3Sphere(center, 0.25f);
         dispose(body.CreateSphereShape(shapeDef, sphere));
