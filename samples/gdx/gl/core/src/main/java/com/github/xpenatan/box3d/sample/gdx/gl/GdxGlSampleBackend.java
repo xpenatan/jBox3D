@@ -42,7 +42,7 @@ public final class GdxGlSampleBackend implements Box3DGdxSampleBackend {
 
     @Override
     public void clearScreen() {
-        Gdx.gl.glClearColor(0.04f, 0.045f, 0.06f, 1.0f);
+        Gdx.gl.glClearColor(0.18f, 0.27f, 0.39f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
     }

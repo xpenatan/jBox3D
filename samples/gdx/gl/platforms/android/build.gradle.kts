@@ -20,7 +20,7 @@ val gdxNativeConfigurations = gdxNativeClassifiers.keys.associateWith { abi ->
 val stagedGdxJniLibsDir = layout.buildDirectory.dir("generated/gdxJniLibs")
 val sharedSampleResourcesDir = project(":samples:shared").layout.buildDirectory.dir("resources/main")
 
-val stageGdxJniLibs by tasks.registering(Copy::class) {
+val stageGdxJniLibs = tasks.register<Copy>("stageGdxJniLibs") {
     gdxNativeConfigurations.forEach { (abi, configuration) ->
         from(configuration.incoming.artifactView { }.files.elements.map { files ->
             files.map { zipTree(it.asFile) }
@@ -73,11 +73,13 @@ android {
 
     sourceSets {
         named("main") {
-            assets.srcDirs(
-                project(":samples:gdx:core").projectDir.resolve("src/main/resources"),
-                sharedSampleResourcesDir.get().asFile
+            assets.directories.addAll(
+                listOf(
+                    project(":samples:gdx:core").projectDir.resolve("src/main/resources").absolutePath,
+                    sharedSampleResourcesDir.get().asFile.absolutePath
+                )
             )
-            jniLibs.srcDirs(stagedGdxJniLibsDir.get().asFile)
+            jniLibs.directories.add(stagedGdxJniLibsDir.get().asFile.absolutePath)
         }
     }
 

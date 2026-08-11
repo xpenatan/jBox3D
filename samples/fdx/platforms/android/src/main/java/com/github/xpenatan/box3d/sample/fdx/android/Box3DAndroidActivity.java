@@ -24,7 +24,8 @@ public class Box3DAndroidActivity extends AndroidApplicationActivity {
 
     @Override
     protected ApplicationListener createApplicationListener() {
-        return new Box3DFdxSampleApplication(exitAfterFrames());
+        int workerCount = Math.max(1, Math.min(Runtime.getRuntime().availableProcessors() / 2, 8));
+        return new Box3DFdxSampleApplication(exitAfterFrames(), workerCount);
     }
 
     protected String graphicsName() {

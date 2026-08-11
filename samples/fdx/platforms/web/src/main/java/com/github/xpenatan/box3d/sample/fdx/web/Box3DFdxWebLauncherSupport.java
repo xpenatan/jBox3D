@@ -29,7 +29,8 @@ final class Box3DFdxWebLauncherSupport {
             config.graphics(new WebGLProvider());
         }
 
-        new WebApplicationBackend().start(config, new Box3DFdxSampleApplication(exitAfterFrames));
+        new WebApplicationBackend().start(config,
+                new Box3DFdxSampleApplication(exitAfterFrames, 1));
     }
 
     private static void applySampleOptions(String[] args) {

@@ -30,8 +30,8 @@ gdxTeaVM {
         targetFileName.set("jbox3d-gdx")
         optimization.set(OptimizationLevel.AGGRESSIVE)
         obfuscated.set(false)
-        minHeapSizeMb.set(64)
-        maxHeapSizeMb.set(512)
+        minHeapSizeMb.set(128)
+        maxHeapSizeMb.set(1024)
         buildType.set("Debug")
         consoleLog.set(true)
     }

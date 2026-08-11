@@ -165,6 +165,14 @@ public class B3DebugDrawEm extends NativeObject {
         return false;
     }
 
+    public int GetDrawnCompoundChildCount() {
+        return 0;
+    }
+
+    public int GetTotalCompoundChildCount() {
+        return 0;
+    }
+
     public B3DebugDrawEm() {
         long addr = internal_native_create_addr();
         internal_reset(addr, true);

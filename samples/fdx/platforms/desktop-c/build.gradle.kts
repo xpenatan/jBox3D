@@ -11,17 +11,17 @@ java {
     targetCompatibility = JavaVersion.toVersion(libs.versions.javaFFM.get())
 }
 
-val glRuntimeClasspath by configurations.creating {
+val glRuntimeClasspath = configurations.create("glRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
 
-val vulkanRuntimeClasspath by configurations.creating {
+val vulkanRuntimeClasspath = configurations.create("vulkanRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
 
-val wgpuJniRuntimeClasspath by configurations.creating {
+val wgpuJniRuntimeClasspath = configurations.create("wgpuJniRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -29,14 +29,17 @@ val wgpuJniRuntimeClasspath by configurations.creating {
     }
 }
 
-val box3dRuntimeClasspath by configurations.creating {
+val box3dRuntimeClasspath = configurations.create("box3dRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
 
+val d3d12RuntimeClasspath = files()
+
 dependencies {
     implementation(project(":samples:fdx:core"))
     implementation(libs.bundles.fdxDesktopCore)
+    implementation(libs.fdxD3D12Core)
 
     glRuntimeClasspath(libs.fdxGlDesktop)
     vulkanRuntimeClasspath(libs.fdxVulkanDesktop)
@@ -67,3 +70,5 @@ registerDesktopSampleBuild("box3d_fdx_desktop_wgpu_${box3dRuntimeName}_build",
     "Builds the jBox3D libfdx desktop WGPU sample compile path with Box3D TeaVM C.", wgpuJniRuntimeClasspath)
 registerDesktopSampleBuild("box3d_fdx_desktop_vulkan_${box3dRuntimeName}_build",
     "Builds the jBox3D libfdx desktop Vulkan sample compile path with Box3D TeaVM C.", vulkanRuntimeClasspath)
+registerDesktopSampleBuild("box3d_fdx_desktop_d3d12_${box3dRuntimeName}_build",
+    "Builds the jBox3D libfdx desktop Direct3D 12 sample compile path with Box3D TeaVM C.", d3d12RuntimeClasspath)

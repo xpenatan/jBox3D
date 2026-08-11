@@ -507,6 +507,30 @@ public class B3DebugDrawEm extends NativeObject {
         }
     }
 
+    public int GetDrawnCompoundChildCount() {
+        return internal_native_GetDrawnCompoundChildCount(native_address);
+    }
+
+    public static int internal_native_GetDrawnCompoundChildCount(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetDrawnCompoundChildCount__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public int GetTotalCompoundChildCount() {
+        return internal_native_GetTotalCompoundChildCount(native_address);
+    }
+
+    public static int internal_native_GetTotalCompoundChildCount(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetTotalCompoundChildCount__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public B3DebugDrawEm() {
         long addr = internal_native_create_addr();
         internal_reset(addr, true);
@@ -753,6 +777,10 @@ public class B3DebugDrawEm extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_SetDrawIslands__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_setdrawislands", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 
         static final java.lang.invoke.MethodHandle internal_native_GetDrawIslands__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_getdrawislands", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDrawnCompoundChildCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_getdrawncompoundchildcount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetTotalCompoundChildCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugdrawem_gettotalcompoundchildcount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3debugdrawem_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
 

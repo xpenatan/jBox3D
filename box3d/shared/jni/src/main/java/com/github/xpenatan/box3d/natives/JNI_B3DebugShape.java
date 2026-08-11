@@ -16,7 +16,11 @@ final public class JNI_B3DebugShape {
 
     public static native long internal_native_GetShapeId(long this_addr);
 
+    public static native long internal_native_GetGeometryId(long this_addr);
+
     public static native int internal_native_GetType(long this_addr);
+
+    public static native long internal_native_GetScale_addr(long this_addr);
 
     public static native long internal_native_GetSphere_addr(long this_addr);
 

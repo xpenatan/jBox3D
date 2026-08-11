@@ -327,6 +327,22 @@ public class B3DebugDrawEm extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3DebugDrawEm.internal_native_GetDrawIslands(this_addr);
     }
 
+    public int GetDrawnCompoundChildCount() {
+        return internal_native_GetDrawnCompoundChildCount(native_address);
+    }
+
+    public static int internal_native_GetDrawnCompoundChildCount(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3DebugDrawEm.internal_native_GetDrawnCompoundChildCount(this_addr);
+    }
+
+    public int GetTotalCompoundChildCount() {
+        return internal_native_GetTotalCompoundChildCount(native_address);
+    }
+
+    public static int internal_native_GetTotalCompoundChildCount(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3DebugDrawEm.internal_native_GetTotalCompoundChildCount(this_addr);
+    }
+
     public B3DebugDrawEm() {
         long addr = internal_native_create_addr();
         internal_reset(addr, true);

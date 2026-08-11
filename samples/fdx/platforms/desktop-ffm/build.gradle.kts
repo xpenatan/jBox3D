@@ -13,17 +13,17 @@ java {
     targetCompatibility = JavaVersion.toVersion(libs.versions.javaFFM.get())
 }
 
-val glRuntimeClasspath by configurations.creating {
+val glRuntimeClasspath = configurations.create("glRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
 
-val vulkanRuntimeClasspath by configurations.creating {
+val vulkanRuntimeClasspath = configurations.create("vulkanRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
 
-val wgpuJniRuntimeClasspath by configurations.creating {
+val wgpuJniRuntimeClasspath = configurations.create("wgpuJniRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
     attributes {
@@ -31,14 +31,17 @@ val wgpuJniRuntimeClasspath by configurations.creating {
     }
 }
 
-val box3dRuntimeClasspath by configurations.creating {
+val box3dRuntimeClasspath = configurations.create("box3dRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
 
+val d3d12RuntimeClasspath = files()
+
 dependencies {
     implementation(project(":samples:fdx:core"))
     implementation(libs.bundles.fdxDesktopCore)
+    implementation(libs.fdxD3D12Core)
 
     glRuntimeClasspath(libs.fdxGlDesktop)
     vulkanRuntimeClasspath(libs.fdxVulkanDesktop)
@@ -73,7 +76,10 @@ fun JavaExec.configureSampleRun(descriptionText: String, graphics: String, graph
         "jbox3d.sample.sample",
         "jbox3d.sample.sampleIndex",
         "jbox3d.sample.validateAll",
-        "jbox3d.sample.autoThrowAfterFrames"
+        "jbox3d.sample.autoThrowAfterFrames",
+        "jbox3d.sample.screenshot",
+        "jbox3d.sample.screenshotAfterFrames",
+        "jbox3d.sample.debugView"
     ).forEach { property ->
         System.getProperty(property)?.takeIf { it.isNotBlank() }?.let {
             systemProperty(property, it)
@@ -103,6 +109,8 @@ registerDesktopSampleBuild("box3d_fdx_desktop_wgpu_${box3dRuntimeName}_build",
     "Builds the jBox3D libfdx desktop WGPU sample with Box3D ${box3dRuntimeName.uppercase()}.", wgpuJniRuntimeClasspath)
 registerDesktopSampleBuild("box3d_fdx_desktop_vulkan_${box3dRuntimeName}_build",
     "Builds the jBox3D libfdx desktop Vulkan sample with Box3D ${box3dRuntimeName.uppercase()}.", vulkanRuntimeClasspath)
+registerDesktopSampleBuild("box3d_fdx_desktop_d3d12_${box3dRuntimeName}_build",
+    "Builds the jBox3D libfdx desktop Direct3D 12 sample with Box3D ${box3dRuntimeName.uppercase()}.", d3d12RuntimeClasspath)
 
 tasks.register<JavaExec>("box3d_fdx_desktop_gl_${box3dRuntimeName}_run") {
     configureSampleRun("Runs the jBox3D libfdx desktop OpenGL sample with Box3D ${box3dRuntimeName.uppercase()}.",
@@ -122,5 +130,12 @@ tasks.register<JavaExec>("box3d_fdx_desktop_vulkan_${box3dRuntimeName}_run") {
     configureSampleRun("Runs the jBox3D libfdx desktop Vulkan sample with Box3D ${box3dRuntimeName.uppercase()}.",
         "vulkan", "Vulkan", vulkanRuntimeClasspath)
     dependsOn("box3d_fdx_desktop_vulkan_${box3dRuntimeName}_build")
+    useJava25Launcher()
+}
+
+tasks.register<JavaExec>("box3d_fdx_desktop_d3d12_${box3dRuntimeName}_run") {
+    configureSampleRun("Runs the jBox3D libfdx desktop Direct3D 12 sample with Box3D ${box3dRuntimeName.uppercase()}.",
+        "d3d12", "Direct3D 12", d3d12RuntimeClasspath)
+    dependsOn("box3d_fdx_desktop_d3d12_${box3dRuntimeName}_build")
     useJava25Launcher()
 }

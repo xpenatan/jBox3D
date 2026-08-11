@@ -106,16 +106,12 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private boolean preserveCameraOnSampleChange;
     private boolean initialScrollAligned;
 
-    public Box3DGdxSampleApplication(Box3DGdxSampleBackend backend) {
-        this(backend, 0L);
-    }
-
-    public Box3DGdxSampleApplication(Box3DGdxSampleBackend backend, long exitAfterFrames) {
+    public Box3DGdxSampleApplication(Box3DGdxSampleBackend backend, long exitAfterFrames, int workerCount) {
         if(backend == null) {
             throw new GdxRuntimeException("Sample backend cannot be null");
         }
         this.backend = backend;
-        controller = new Box3DSampleController(this, exitAfterFrames);
+        controller = new Box3DSampleController(this, exitAfterFrames, workerCount);
         controller.setStepListener(bodyDrag::step);
     }
 
@@ -312,7 +308,11 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         workersSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settings.setWorkerCount(Math.round(workersSlider.getValue()));
+                int workerCount = Math.round(workersSlider.getValue());
+                if(workerCount != settings.workerCount()) {
+                    settings.setWorkerCount(workerCount);
+                    controller.restartSample();
+                }
                 updateSimulationLabels();
             }
         });

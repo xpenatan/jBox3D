@@ -441,7 +441,9 @@ interface B3WheelJointDef {
 interface B3DebugShape {
     void B3DebugShape();
     long long GetShapeId();
+    long long GetGeometryId();
     long GetType();
+    [Value] B3Vec3 GetScale();
     [Value] B3Sphere GetSphere();
     [Value] B3Capsule GetCapsule();
     long GetHullEdgeCount();
@@ -1190,6 +1192,8 @@ interface B3DebugDrawEm {
     boolean GetDrawContactForces();
     void SetDrawIslands(boolean enabled);
     boolean GetDrawIslands();
+    long GetDrawnCompoundChildCount();
+    long GetTotalCompoundChildCount();
 };
 
 [JSImplementation="B3DebugDrawEm"]

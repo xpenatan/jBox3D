@@ -17,25 +17,27 @@ import java.lang.invoke.MethodHandle;
 
 public final class B3DebugShape extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     private B3Sphere B3Sphere_TEMP_GEN_0;
 
     private B3Capsule B3Capsule_TEMP_GEN_0;
 
-    private B3Vec3 B3Vec3_TEMP_GEN_0;
-
     private B3Vec3 B3Vec3_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_2;
 
     private B3Sphere B3Sphere_TEMP_GEN_1;
 
     private B3Capsule B3Capsule_TEMP_GEN_1;
-
-    private B3Vec3 B3Vec3_TEMP_GEN_2;
 
     private B3Vec3 B3Vec3_TEMP_GEN_3;
 
     private B3Vec3 B3Vec3_TEMP_GEN_4;
 
     private B3Vec3 B3Vec3_TEMP_GEN_5;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_6;
 
     static public final B3DebugShape NULL = B3DebugShape.native_new();
 
@@ -90,6 +92,18 @@ public final class B3DebugShape extends NativeObject {
         }
     }
 
+    public long GetGeometryId() {
+        return internal_native_GetGeometryId(native_address);
+    }
+
+    public static long internal_native_GetGeometryId(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetGeometryId__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public int GetType() {
         return internal_native_GetType(native_address);
     }
@@ -97,6 +111,24 @@ public final class B3DebugShape extends NativeObject {
     public static int internal_native_GetType(long this_addr) {
         try {
             return (int) FFMHandles.internal_native_GetType__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetScale() {
+        long addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetScale_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetScale_addr__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -154,10 +186,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetHullEdgeVertex0_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_0 == null)
-            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_0;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
     }
 
     public static long internal_native_GetHullEdgeVertex0_addr(long this_addr, int index) {
@@ -172,10 +204,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetHullEdgeVertex1_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_1 == null)
-            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_1;
+        if (B3Vec3_TEMP_GEN_2 == null)
+            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_2;
     }
 
     public static long internal_native_GetHullEdgeVertex1_addr(long this_addr, int index) {
@@ -262,10 +294,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleVertex0_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_2 == null)
-            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_2;
+        if (B3Vec3_TEMP_GEN_3 == null)
+            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_3;
     }
 
     public static long internal_native_GetTriangleVertex0_addr(long this_addr, int index) {
@@ -280,10 +312,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleVertex1_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_3 == null)
-            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_3;
+        if (B3Vec3_TEMP_GEN_4 == null)
+            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_4;
     }
 
     public static long internal_native_GetTriangleVertex1_addr(long this_addr, int index) {
@@ -298,10 +330,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleVertex2_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_4 == null)
-            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_4;
+        if (B3Vec3_TEMP_GEN_5 == null)
+            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_5;
     }
 
     public static long internal_native_GetTriangleVertex2_addr(long this_addr, int index) {
@@ -316,10 +348,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleNormal_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_5 == null)
-            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_5;
+        if (B3Vec3_TEMP_GEN_6 == null)
+            B3Vec3_TEMP_GEN_6 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_6.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_6;
     }
 
     public static long internal_native_GetTriangleNormal_addr(long this_addr, int index) {
@@ -338,7 +370,11 @@ public final class B3DebugShape extends NativeObject {
 
         static final java.lang.invoke.MethodHandle internal_native_GetShapeId__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugshape_getshapeid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetGeometryId__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugshape_getgeometryid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_GetType__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3debugshape_gettype", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetScale_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3debugshape_getscale_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetSphere_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3debugshape_getsphere_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 

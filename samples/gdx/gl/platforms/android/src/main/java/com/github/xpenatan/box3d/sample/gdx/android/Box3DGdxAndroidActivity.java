@@ -20,7 +20,8 @@ public final class Box3DGdxAndroidActivity extends AndroidApplication {
         config.useImmersiveMode = true;
         config.useWakelock = true;
         config.useGL30 = true;
-        initialize(new Box3DGdxSampleApplication(new GdxGlSampleBackend(), exitAfterFrames()), config);
+        int workerCount = Math.max(1, Math.min(Runtime.getRuntime().availableProcessors() / 2, 8));
+        initialize(new Box3DGdxSampleApplication(new GdxGlSampleBackend(), exitAfterFrames(), workerCount), config);
     }
 
     private void applySampleOptions() {
@@ -33,6 +34,8 @@ public final class Box3DGdxAndroidActivity extends AndroidApplication {
         setSystemPropertyFromExtra(intent, "jbox3d.sample.validateAll");
         setSystemPropertyFromExtra(intent, "jbox3d.sample.autoThrowAfterFrames");
         setSystemPropertyFromExtra(intent, "jbox3d.sample.openSamplesMenu");
+        setSystemPropertyFromExtra(intent, "jbox3d.sample.debugVisualization");
+        setSystemPropertyFromExtra(intent, "jbox3d.sample.debugVisualizationIndex");
     }
 
     private void setSystemPropertyFromExtra(Intent intent, String key) {

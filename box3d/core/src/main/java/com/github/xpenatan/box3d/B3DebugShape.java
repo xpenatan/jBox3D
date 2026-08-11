@@ -33,8 +33,16 @@ public final class B3DebugShape extends NativeObject {
         return 0;
     }
 
+    public long GetGeometryId() {
+        return 0;
+    }
+
     public int GetType() {
         return 0;
+    }
+
+    public B3Vec3 GetScale() {
+        return null;
     }
 
     public B3Sphere GetSphere() {

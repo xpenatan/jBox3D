@@ -12,7 +12,7 @@ public final class Box3DSampleController {
     private final Box3DSampleHost host;
     private final long exitAfterFrames;
     private final List<Box3DSampleEntry> entries;
-    private final Box3DSampleSettings settings = new Box3DSampleSettings();
+    private final Box3DSampleSettings settings;
     private Box3DSample sample;
     private volatile boolean box3dLoaded;
     private volatile Throwable box3dLoadError;
@@ -22,12 +22,13 @@ public final class Box3DSampleController {
     private float stepAccumulator;
     private Box3DSampleStepListener stepListener;
 
-    public Box3DSampleController(Box3DSampleHost host, long exitAfterFrames) {
+    public Box3DSampleController(Box3DSampleHost host, long exitAfterFrames, int workerCount) {
         if(host == null) {
             throw new IllegalArgumentException("Box3DSampleHost cannot be null");
         }
         this.host = host;
         this.exitAfterFrames = exitAfterFrames;
+        settings = new Box3DSampleSettings(workerCount);
         entries = Box3DSampleRegistry.entries();
         selectedIndex = resolveInitialSampleIndex();
     }
@@ -143,7 +144,7 @@ public final class Box3DSampleController {
         disposeSample();
         stepAccumulator = 0.0f;
         Box3DSampleEntry entry = selectedEntry();
-        sample = entry.create();
+        sample = entry.create(settings);
         host.onSampleChanged(entry, sample);
     }
 

@@ -22,7 +22,7 @@ public final class Box3DGdxWebLauncher {
         config.showDownloadLogs = true;
         config.useGL30 = true;
 
-        new WebApplication(new Box3DGdxSampleApplication(new GdxGlSampleBackend(), exitAfterFrames), config);
+        new WebApplication(new Box3DGdxSampleApplication(new GdxGlSampleBackend(), exitAfterFrames, 1), config);
     }
 
     private static void applySampleOptions(String[] args) {
@@ -31,6 +31,8 @@ public final class Box3DGdxWebLauncher {
         setPropertyFromOption(args, "--validate-all=", "jbox3d.sample.validateAll");
         setPropertyFromOption(args, "--auto-throw-after-frames=", "jbox3d.sample.autoThrowAfterFrames");
         setPropertyFromOption(args, "--open-samples-menu=", "jbox3d.sample.openSamplesMenu");
+        setPropertyFromOption(args, "--debug-visualization=", "jbox3d.sample.debugVisualization");
+        setPropertyFromOption(args, "--debug-visualization-index=", "jbox3d.sample.debugVisualizationIndex");
     }
 
     private static void setPropertyFromOption(String[] args, String prefix, String property) {
@@ -100,6 +102,12 @@ public final class Box3DGdxWebLauncher {
         }
         else if("openSamplesMenu".equals(name) || "open-samples-menu".equals(name)) {
             args.add("--open-samples-menu=" + value);
+        }
+        else if("debugVisualization".equals(name) || "debug-visualization".equals(name)) {
+            args.add("--debug-visualization=" + value);
+        }
+        else if("debugVisualizationIndex".equals(name) || "debug-visualization-index".equals(name)) {
+            args.add("--debug-visualization-index=" + value);
         }
     }
 

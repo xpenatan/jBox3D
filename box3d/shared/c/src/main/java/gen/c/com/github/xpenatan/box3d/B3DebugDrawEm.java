@@ -393,6 +393,20 @@ public class B3DebugDrawEm extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugdrawem_getdrawislands")
     public static native boolean internal_native_GetDrawIslands(long this_addr);
 
+    public int GetDrawnCompoundChildCount() {
+        return internal_native_GetDrawnCompoundChildCount(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugdrawem_getdrawncompoundchildcount")
+    public static native int internal_native_GetDrawnCompoundChildCount(long this_addr);
+
+    public int GetTotalCompoundChildCount() {
+        return internal_native_GetTotalCompoundChildCount(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugdrawem_gettotalcompoundchildcount")
+    public static native int internal_native_GetTotalCompoundChildCount(long this_addr);
+
     public B3DebugDrawEm() {
         long addr = internal_native_create_addr();
         internal_reset(addr, true);

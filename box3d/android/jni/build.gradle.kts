@@ -15,7 +15,7 @@ android {
 
     sourceSets {
         named("main") {
-            jniLibs.srcDirs("$projectDir/../../builder/build/c++/libs/android")
+            jniLibs.directories.add(file("$projectDir/../../builder/build/c++/libs/android").absolutePath)
         }
     }
 
@@ -36,7 +36,7 @@ android {
     }
 }
 
-val mavenSourcesJar by tasks.registering(Jar::class) {
+val mavenSourcesJar = tasks.register<Jar>("mavenSourcesJar") {
     archiveClassifier.set("sources")
     from(android.sourceSets["main"].java.srcDirs)
     from(rootProject.file("README.md")) {
@@ -44,7 +44,7 @@ val mavenSourcesJar by tasks.registering(Jar::class) {
     }
 }
 
-val mavenJavadocJar by tasks.registering(Jar::class) {
+val mavenJavadocJar = tasks.register<Jar>("mavenJavadocJar") {
     archiveClassifier.set("javadoc")
     from(rootProject.file("README.md")) {
         into("META-INF")

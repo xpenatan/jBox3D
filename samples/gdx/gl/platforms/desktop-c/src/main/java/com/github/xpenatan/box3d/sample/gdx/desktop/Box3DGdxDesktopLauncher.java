@@ -12,14 +12,18 @@ public final class Box3DGdxDesktopLauncher {
     public static void main(String[] args) {
         long exitAfterFrames = Long.parseLong(option(args, "--exit-after-frames=",
                 System.getProperty("jbox3d.sample.exitAfterFrames", "0")));
+        int workerCount = Integer.parseInt(option(args, "--workers=", "8"));
         setPropertyFromOption(args, "--sample=", "jbox3d.sample.sample");
         setPropertyFromOption(args, "--sample-index=", "jbox3d.sample.sampleIndex");
         setPropertyFromOption(args, "--validate-all=", "jbox3d.sample.validateAll");
         setPropertyFromOption(args, "--auto-throw-after-frames=", "jbox3d.sample.autoThrowAfterFrames");
         setPropertyFromOption(args, "--screenshot=", "jbox3d.sample.screenshot");
         setPropertyFromOption(args, "--screenshot-after-frames=", "jbox3d.sample.screenshotAfterFrames");
+        setPropertyFromOption(args, "--debug-visualization=", "jbox3d.sample.debugVisualization");
+        setPropertyFromOption(args, "--debug-visualization-index=", "jbox3d.sample.debugVisualizationIndex");
 
         GLFWApplicationConfiguration config = new GLFWApplicationConfiguration();
+        config.setOpenGLEmulation(GLFWApplicationConfiguration.GLEmulation.GL30, 3, 3);
         config.setTitle("jBox3D libGDX c");
         config.setWindowedMode(960, 540);
         config.useVsync(false);
@@ -29,7 +33,8 @@ public final class Box3DGdxDesktopLauncher {
             System.setProperty("jbox3d.sample.openSamplesMenu", "true");
         }
 
-        new GLFWApplication(new Box3DGdxSampleApplication(new GdxGlSampleBackend(), exitAfterFrames), config);
+        new GLFWApplication(
+                new Box3DGdxSampleApplication(new GdxGlSampleBackend(), exitAfterFrames, workerCount), config);
     }
 
     private static String option(String[] args, String prefix, String fallback) {

@@ -32,12 +32,12 @@ static B3Transform toTransform(b3WorldTransform transform) {
     return B3Transform(b3ToRelativeTransform(transform, b3Pos_zero));
 }
 
-static void drawShapeCallback(void* userShape, b3WorldTransform transform, b3HexColor color, void* context) {
+void drawShapeCallback(void* userShape, b3WorldTransform transform, b3HexColor color, void* context) {
     B3DebugDrawEm* draw = static_cast<B3DebugDrawEm*>(context);
     if(draw == nullptr || userShape == nullptr) {
         return;
     }
-    draw->DrawShape(static_cast<B3DebugShape*>(userShape), toTransform(transform), static_cast<int>(color));
+    draw->DrawDebugShape(static_cast<B3DebugShape*>(userShape), transform, static_cast<int>(color));
 }
 
 static void drawSegmentCallback(b3Pos p1, b3Pos p2, b3HexColor color, void* context) {
@@ -1351,9 +1351,16 @@ struct B3HeightFieldDebugContext {
 
 B3DebugShape::B3DebugShape()
     : m_shapeId(0),
+      m_geometryId(0),
       m_type(-1),
+      m_scale(b3Vec3_one),
       m_sphere(),
       m_capsule(),
+      m_geometrySource(this),
+      m_compound(nullptr),
+      m_localTransform(b3Transform_identity),
+      m_compoundChildren(),
+      m_ownedCompoundGeometries(),
       m_spheres(),
       m_capsules(),
       m_hullEdgeVertices0(),
@@ -1366,9 +1373,16 @@ B3DebugShape::B3DebugShape()
 
 B3DebugShape::B3DebugShape(const b3DebugShape& shape)
     : m_shapeId(static_cast<long long>(b3StoreShapeId(shape.shapeId))),
+      m_geometryId(0),
       m_type(static_cast<int>(shape.type)),
+      m_scale(b3Vec3_one),
       m_sphere(),
       m_capsule(),
+      m_geometrySource(this),
+      m_compound(nullptr),
+      m_localTransform(b3Transform_identity),
+      m_compoundChildren(),
+      m_ownedCompoundGeometries(),
       m_spheres(),
       m_capsules(),
       m_hullEdgeVertices0(),
@@ -1379,24 +1393,41 @@ B3DebugShape::B3DebugShape(const b3DebugShape& shape)
       m_triangleNormals() {
     b3Transform identity = b3Transform_identity;
     if(shape.type == b3_sphereShape && shape.sphere != nullptr) {
+        m_geometryId = -1;
         m_sphere = B3Sphere(*shape.sphere);
         AddSphere(*shape.sphere, identity);
     }
     else if(shape.type == b3_capsuleShape && shape.capsule != nullptr) {
+        m_geometryId = -2;
         m_capsule = B3Capsule(*shape.capsule);
         AddCapsule(*shape.capsule, identity);
     }
     else if(shape.type == b3_hullShape && shape.hull != nullptr) {
+        m_geometryId = static_cast<long long>(reinterpret_cast<intptr_t>(this));
         AddHull(shape.hull, identity);
     }
     else if(shape.type == b3_meshShape && shape.mesh != nullptr) {
-        AddMesh(shape.mesh, identity);
+        m_geometryId = static_cast<long long>(reinterpret_cast<intptr_t>(this));
+        m_scale = B3Vec3(shape.mesh->scale);
+        b3Mesh unscaledMesh{shape.mesh->data, b3Vec3_one};
+        AddMesh(&unscaledMesh, identity);
     }
     else if(shape.type == b3_heightShape && shape.heightField != nullptr) {
+        m_geometryId = static_cast<long long>(reinterpret_cast<intptr_t>(this));
         AddHeightField(shape.heightField, identity);
     }
     else if(shape.type == b3_compoundShape && shape.compound != nullptr) {
+        m_geometryId = static_cast<long long>(reinterpret_cast<intptr_t>(this));
         AddCompound(shape.compound);
+    }
+}
+
+B3DebugShape::~B3DebugShape() {
+    for(B3DebugShape* child : m_compoundChildren) {
+        delete child;
+    }
+    for(B3DebugShape* geometry : m_ownedCompoundGeometries) {
+        delete geometry;
     }
 }
 
@@ -1404,8 +1435,16 @@ long long B3DebugShape::GetShapeId() const {
     return m_shapeId;
 }
 
+long long B3DebugShape::GetGeometryId() const {
+    return m_geometryId;
+}
+
 int B3DebugShape::GetType() const {
     return m_type;
+}
+
+B3Vec3 B3DebugShape::GetScale() const {
+    return m_scale;
 }
 
 B3Sphere B3DebugShape::GetSphere() const {
@@ -1417,15 +1456,15 @@ B3Capsule B3DebugShape::GetCapsule() const {
 }
 
 int B3DebugShape::GetHullEdgeCount() const {
-    return static_cast<int>(m_hullEdgeVertices0.size());
+    return static_cast<int>(m_geometrySource->m_hullEdgeVertices0.size());
 }
 
 B3Vec3 B3DebugShape::GetHullEdgeVertex0(int index) const {
-    return getIndexedVec3(m_hullEdgeVertices0, index);
+    return getIndexedVec3(m_geometrySource->m_hullEdgeVertices0, index);
 }
 
 B3Vec3 B3DebugShape::GetHullEdgeVertex1(int index) const {
-    return getIndexedVec3(m_hullEdgeVertices1, index);
+    return getIndexedVec3(m_geometrySource->m_hullEdgeVertices1, index);
 }
 
 int B3DebugShape::GetSphereCount() const {
@@ -1451,23 +1490,23 @@ B3Capsule B3DebugShape::GetCapsuleAt(int index) const {
 }
 
 int B3DebugShape::GetTriangleCount() const {
-    return static_cast<int>(m_triangleVertices0.size());
+    return static_cast<int>(m_geometrySource->m_triangleVertices0.size());
 }
 
 B3Vec3 B3DebugShape::GetTriangleVertex0(int index) const {
-    return getIndexedVec3(m_triangleVertices0, index);
+    return getIndexedVec3(m_geometrySource->m_triangleVertices0, index);
 }
 
 B3Vec3 B3DebugShape::GetTriangleVertex1(int index) const {
-    return getIndexedVec3(m_triangleVertices1, index);
+    return getIndexedVec3(m_geometrySource->m_triangleVertices1, index);
 }
 
 B3Vec3 B3DebugShape::GetTriangleVertex2(int index) const {
-    return getIndexedVec3(m_triangleVertices2, index);
+    return getIndexedVec3(m_geometrySource->m_triangleVertices2, index);
 }
 
 B3Vec3 B3DebugShape::GetTriangleNormal(int index) const {
-    return getIndexedVec3(m_triangleNormals, index);
+    return getIndexedVec3(m_geometrySource->m_triangleNormals, index);
 }
 
 void B3DebugShape::AddSphere(const b3Sphere& sphere, b3Transform transform) {
@@ -1592,24 +1631,72 @@ void B3DebugShape::AddCompound(const b3CompoundData* compound) {
     if(compound == nullptr) {
         return;
     }
-    b3Transform identity = b3Transform_identity;
-    for(int i = 0; i < compound->sphereCount; i++) {
-        b3CompoundSphere sphere = b3GetCompoundSphere(compound, i);
-        AddSphere(sphere.sphere, identity);
+    m_compound = compound;
+    int childCount = compound->capsuleCount + compound->hullCount + compound->meshCount + compound->sphereCount;
+    m_compoundChildren.reserve(static_cast<size_t>(childCount));
+    for(int i = 0; i < childCount; i++) {
+        b3ChildShape child = b3GetCompoundChild(compound, i);
+        B3DebugShape* debugChild = new B3DebugShape();
+        debugChild->m_shapeId = m_shapeId;
+        debugChild->m_type = static_cast<int>(child.type);
+        debugChild->m_localTransform = child.transform;
+
+        if(child.type == b3_sphereShape) {
+            debugChild->m_geometryId = -1;
+            debugChild->m_sphere = B3Sphere(child.sphere);
+            debugChild->AddSphere(child.sphere, b3Transform_identity);
+        }
+        else if(child.type == b3_capsuleShape) {
+            debugChild->m_geometryId = -2;
+            debugChild->m_capsule = B3Capsule(child.capsule);
+            debugChild->AddCapsule(child.capsule, b3Transform_identity);
+        }
+        else if(child.type == b3_hullShape && child.hull != nullptr) {
+            B3DebugShape* geometry = FindOrCreateHullGeometry(child.hull);
+            debugChild->m_geometrySource = geometry;
+            debugChild->m_geometryId = geometry->m_geometryId;
+        }
+        else if(child.type == b3_meshShape && child.mesh.data != nullptr) {
+            B3DebugShape* geometry = FindOrCreateMeshGeometry(child.mesh.data);
+            debugChild->m_geometrySource = geometry;
+            debugChild->m_geometryId = geometry->m_geometryId;
+            debugChild->m_scale = B3Vec3(child.mesh.scale);
+        }
+        m_compoundChildren.push_back(debugChild);
     }
-    for(int i = 0; i < compound->capsuleCount; i++) {
-        b3CompoundCapsule capsule = b3GetCompoundCapsule(compound, i);
-        AddCapsule(capsule.capsule, identity);
+}
+
+B3DebugShape* B3DebugShape::FindOrCreateHullGeometry(const b3HullData* hull) {
+    for(B3DebugShape* geometry : m_ownedCompoundGeometries) {
+        if(geometry->m_type == b3_hullShape && geometry->m_geometrySource == geometry
+                && geometry->m_geometryId == static_cast<long long>(reinterpret_cast<intptr_t>(hull))) {
+            return geometry;
+        }
     }
-    for(int i = 0; i < compound->hullCount; i++) {
-        b3CompoundHull hull = b3GetCompoundHull(compound, i);
-        AddHull(hull.hull, hull.transform);
+    B3DebugShape* geometry = new B3DebugShape();
+    geometry->m_shapeId = m_shapeId;
+    geometry->m_type = b3_hullShape;
+    geometry->m_geometryId = static_cast<long long>(reinterpret_cast<intptr_t>(hull));
+    geometry->AddHull(hull, b3Transform_identity);
+    m_ownedCompoundGeometries.push_back(geometry);
+    return geometry;
+}
+
+B3DebugShape* B3DebugShape::FindOrCreateMeshGeometry(const b3MeshData* meshData) {
+    for(B3DebugShape* geometry : m_ownedCompoundGeometries) {
+        if(geometry->m_type == b3_meshShape && geometry->m_geometrySource == geometry
+                && geometry->m_geometryId == static_cast<long long>(reinterpret_cast<intptr_t>(meshData))) {
+            return geometry;
+        }
     }
-    for(int i = 0; i < compound->meshCount; i++) {
-        b3CompoundMesh compoundMesh = b3GetCompoundMesh(compound, i);
-        b3Mesh mesh{compoundMesh.meshData, compoundMesh.scale};
-        AddMesh(&mesh, compoundMesh.transform);
-    }
+    B3DebugShape* geometry = new B3DebugShape();
+    geometry->m_shapeId = m_shapeId;
+    geometry->m_type = b3_meshShape;
+    geometry->m_geometryId = static_cast<long long>(reinterpret_cast<intptr_t>(meshData));
+    b3Mesh mesh{meshData, b3Vec3_one};
+    geometry->AddMesh(&mesh, b3Transform_identity);
+    m_ownedCompoundGeometries.push_back(geometry);
+    return geometry;
 }
 
 bool B3DebugShape::AddHeightFieldTriangle(b3Vec3 v0, b3Vec3 v1, b3Vec3 v2, int, void* context) {
@@ -3810,7 +3897,10 @@ void B3Shape::ApplyWind(const B3Vec3& wind, float drag, float lift, float maxSpe
     b3Shape_ApplyWind(m_shapeId, wind.value, drag, lift, maxSpeed, wake);
 }
 
-B3DebugDrawEm::B3DebugDrawEm() : m_draw(b3DefaultDebugDraw()) {
+B3DebugDrawEm::B3DebugDrawEm()
+    : m_draw(b3DefaultDebugDraw()),
+      m_drawnCompoundChildCount(0),
+      m_totalCompoundChildCount(0) {
     m_draw.DrawShapeFcn = drawShapeCallback;
     m_draw.DrawSegmentFcn = drawSegmentCallback;
     m_draw.DrawTransformFcn = drawTransformCallback;
@@ -3829,6 +3919,8 @@ B3DebugDrawEm::~B3DebugDrawEm() {
 }
 
 void B3DebugDrawEm::DrawWorld(B3World* world, long long maskBits) {
+    m_drawnCompoundChildCount = 0;
+    m_totalCompoundChildCount = 0;
     if(world != nullptr && world->IsValid()) {
         b3World_Draw(world->GetHandle(), &m_draw, static_cast<uint64_t>(maskBits));
         world->DrawDebugOverlay(this);
@@ -3961,6 +4053,58 @@ void B3DebugDrawEm::SetDrawIslands(bool enabled) {
 
 bool B3DebugDrawEm::GetDrawIslands() const {
     return m_draw.drawIslands;
+}
+
+int B3DebugDrawEm::GetDrawnCompoundChildCount() const {
+    return m_drawnCompoundChildCount;
+}
+
+int B3DebugDrawEm::GetTotalCompoundChildCount() const {
+    return m_totalCompoundChildCount;
+}
+
+struct B3CompoundDebugDrawContext {
+    B3DebugDrawEm* draw;
+    B3DebugShape* parent;
+    b3Transform bodyTransform;
+    int color;
+};
+
+void B3DebugDrawEm::DrawDebugShape(B3DebugShape* shape, b3WorldTransform transform, int color) {
+    if(shape == nullptr) {
+        return;
+    }
+    b3Transform bodyTransform = b3ToRelativeTransform(transform, b3Pos_zero);
+    if(shape->m_compound == nullptr) {
+        DrawShape(shape, B3Transform(bodyTransform), color);
+        return;
+    }
+
+    int childCount = static_cast<int>(shape->m_compoundChildren.size());
+    m_totalCompoundChildCount += childCount;
+    if(childCount == 0) {
+        return;
+    }
+
+    b3AABB localBounds = b3AABB_Transform(b3InvertTransform(bodyTransform), m_draw.drawingBounds);
+    B3CompoundDebugDrawContext context{this, shape, bodyTransform, color};
+    b3QueryCompound(shape->m_compound, localBounds, DrawCompoundChild, &context);
+}
+
+bool B3DebugDrawEm::DrawCompoundChild(const b3CompoundData*, int childIndex, void* contextPointer) {
+    B3CompoundDebugDrawContext* context = static_cast<B3CompoundDebugDrawContext*>(contextPointer);
+    if(context == nullptr || context->draw == nullptr || context->parent == nullptr
+            || childIndex < 0 || childIndex >= static_cast<int>(context->parent->m_compoundChildren.size())) {
+        return true;
+    }
+    B3DebugShape* child = context->parent->m_compoundChildren[static_cast<size_t>(childIndex)];
+    if(child == nullptr) {
+        return true;
+    }
+    b3Transform childTransform = b3MulTransforms(context->bodyTransform, child->m_localTransform);
+    context->draw->DrawShape(child, B3Transform(childTransform), context->color);
+    context->draw->m_drawnCompoundChildCount += 1;
+    return true;
 }
 
 void B3DebugDrawEm::DrawShape(B3DebugShape*, const B3Transform&, int) {
@@ -4136,17 +4280,17 @@ void B3World::AddDebugHull(const B3Hull& hull, const B3Transform& transform, con
     if(scaledHull == nullptr) {
         return;
     }
-    B3DebugShape debugShape;
-    debugShape.m_type = static_cast<int>(b3_hullShape);
-    debugShape.AddHull(scaledHull, b3Transform_identity);
+    std::unique_ptr<B3DebugShape> debugShape(new B3DebugShape());
+    debugShape->m_type = static_cast<int>(b3_hullShape);
+    debugShape->AddHull(scaledHull, b3Transform_identity);
     b3DestroyHull(scaledHull);
     m_debugHulls.push_back({std::move(debugShape), transform.value, static_cast<uint32_t>(color)});
 }
 
 void B3World::AddDebugTriangle(const B3Vec3& p1, const B3Vec3& p2, const B3Vec3& p3, long color) {
-    B3DebugShape debugShape;
-    debugShape.m_type = static_cast<int>(b3_meshShape);
-    debugShape.AddTriangle(p1.value, p2.value, p3.value);
+    std::unique_ptr<B3DebugShape> debugShape(new B3DebugShape());
+    debugShape->m_type = static_cast<int>(b3_meshShape);
+    debugShape->AddTriangle(p1.value, p2.value, p3.value);
     m_debugHulls.push_back({std::move(debugShape), b3Transform_identity, static_cast<uint32_t>(color)});
 }
 
@@ -4174,7 +4318,7 @@ void B3World::DrawDebugOverlay(B3DebugDrawEm* draw) const {
         draw->DrawBox(B3Vec3(box.extents), B3Transform(box.transform), static_cast<int>(box.color));
     }
     for(const DebugHull& hull : m_debugHulls) {
-        draw->DrawShape(const_cast<B3DebugShape*>(&hull.shape), B3Transform(hull.transform),
+        draw->DrawShape(hull.shape.get(), B3Transform(hull.transform),
                         static_cast<int>(hull.color));
     }
 }

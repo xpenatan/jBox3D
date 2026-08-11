@@ -19,6 +19,7 @@ import io.github.libfdx.core.FdxException;
 import io.github.libfdx.core.Logger;
 import io.github.libfdx.display.Display;
 import io.github.libfdx.graphics.GraphicsContext;
+import io.github.libfdx.graphics.FrameBuffer;
 import io.github.libfdx.graphics.camera.Camera;
 import io.github.libfdx.graphics.camera.CameraProjection;
 import io.github.libfdx.graphics.camera.controller.FreeCameraController3D;
@@ -27,19 +28,28 @@ import io.github.libfdx.input.Key;
 import io.github.libfdx.input.MouseButton;
 import io.github.libfdx.ui.Ui;
 import io.github.libfdx.ui.UiBooleanState;
+import io.github.libfdx.ui.UiColor;
+import io.github.libfdx.ui.UiDrawable;
 import io.github.libfdx.ui.UiFloatState;
+import io.github.libfdx.ui.UiFonts;
 import io.github.libfdx.ui.UiIntState;
 import io.github.libfdx.ui.UiRoot;
 import io.github.libfdx.ui.UiScope;
 import io.github.libfdx.ui.UiState;
+import io.github.libfdx.ui.UiStyle;
+import io.github.libfdx.ui.UiTextAlign;
+import io.github.libfdx.ui.UiTextStyle;
+import io.github.libfdx.ui.UiTheme;
 import io.github.libfdx.ui.UiToolkit;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public final class Box3DFdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
     private static final int SELECTOR_HIT_WIDTH = 310;
     private static final float FPS_UPDATE_INTERVAL = 0.25f;
-    private static final long SAMPLE_DOUBLE_CLICK_NANOS = 450_000_000L;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS = 12;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS_SQUARED =
             THROW_CLICK_MAX_DRAG_PIXELS * THROW_CLICK_MAX_DRAG_PIXELS;
@@ -53,12 +63,13 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private final UiFloatState hertzState = Ui.state(60.0f);
     private final UiFloatState workerState = Ui.state(1.0f);
     private final UiFloatState recycleCentimeterState = Ui.state(5.0f);
+    private final UiIntState selectorTab = Ui.state(0);
     private final UiBooleanState sleepEnabledState = Ui.state(true);
     private final UiBooleanState warmStartingEnabledState = Ui.state(true);
     private final UiBooleanState continuousEnabledState = Ui.state(true);
     private final UiIntState launchShapeIndex = Ui.state(Box3DLaunchShape.SPHERE.ordinal());
     private final UiFloatState launchSpeedState = Ui.state(Box3DSampleSettings.DEFAULT_LAUNCH_SPEED);
-    private final UiIntState debugVisualizationIndex = Ui.state(Box3DDebugVisualization.SOLID.index());
+    private final UiIntState debugVisualizationIndex = Ui.state(Box3DDebugVisualization.SOLID_WIRE.index());
     private final UiFloatState shadowBiasState = Ui.state(Box3DSampleSettings.DEFAULT_SHADOW_BIAS);
     private final float[] dragRayOrigin = new float[3];
     private final float[] dragRayDirection = new float[3];
@@ -79,6 +90,9 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private float fpsElapsed;
     private int fpsFrames;
     private boolean fpsHasValue;
+    private String screenshotPath;
+    private long screenshotAfterFrames;
+    private boolean screenshotWritten;
     private int autoThrowAfterFrames;
     private boolean autoThrowDone;
     private int validateFramesPerSample;
@@ -88,16 +102,10 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private boolean throwClickPending;
     private int throwClickX;
     private int throwClickY;
-    private int lastSampleClickIndex = -1;
-    private long lastSampleClickNanos;
     private boolean preserveCameraOnSampleChange;
 
-    public Box3DFdxSampleApplication() {
-        this(0L);
-    }
-
-    public Box3DFdxSampleApplication(long exitAfterFrames) {
-        controller = new Box3DSampleController(this, exitAfterFrames);
+    public Box3DFdxSampleApplication(long exitAfterFrames, int workerCount) {
+        controller = new Box3DSampleController(this, exitAfterFrames, workerCount);
         controller.setStepListener(bodyDrag::step);
     }
 
@@ -109,8 +117,13 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         logger = fdx.logger();
         graphics = fdx.graphics().main();
         input = fdx.input();
+        screenshotPath = System.getProperty("jbox3d.sample.screenshot", "").trim();
+        screenshotAfterFrames = Math.max(1L,
+                Long.parseLong(System.getProperty("jbox3d.sample.screenshotAfterFrames", "3")));
         autoThrowAfterFrames = parsePositiveInt(System.getProperty("jbox3d.sample.autoThrowAfterFrames"), 0);
         validateFramesPerSample = parsePositiveInt(System.getProperty("jbox3d.sample.validateAll"), 0);
+        debugVisualizationIndex.set(parseDebugVisualization(
+                System.getProperty("jbox3d.sample.debugView", "Solid + Wire")).index());
         camera = new Camera()
                 .projection(CameraProjection.PERSPECTIVE)
                 .fieldOfView(60.0f)
@@ -118,9 +131,10 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         configureCamera(controller.selectedEntry().camera());
         resetFlyCameraController();
 
-        uiRoot = new UiToolkit(fdx.files()).root(display, graphics).input(input);
+        uiRoot = new UiToolkit(fdx.files()).theme(sampleTheme()).root(display, graphics).input(input);
         uiRoot.setContent(this::buildSelector);
         activeSampleName.set(controller.selectedEntry().displayName());
+        workerState.set(controller.settings().workerCount());
 
         controller.create();
     }
@@ -156,6 +170,7 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
             uiRoot.update(application.deltaTime());
             uiRoot.render();
         }
+        writeScreenshotIfRequested();
     }
 
     @Override
@@ -216,99 +231,219 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         }
     }
 
-    private void buildSelector(UiScope ui) {
+    void buildSelector(UiScope ui) {
         ui.row(Ui.modifier().fill().padding(12.0f).gap(12.0f), page -> {
-            page.panel(Ui.modifier().width(286.0f).padding(10.0f).gap(6.0f), panel -> {
-                panel.text("jBox3D Samples");
-                panel.text(activeSampleName.get());
-                panel.scrollView(Ui.modifier().fillWidth().height(660.0f), controls -> {
-                    controls.scrollView(Ui.modifier().fillWidth().height(210.0f), list -> {
-                        String previousCategory = "";
-                        for(int i = 0; i < controller.entries().size(); i++) {
-                            Box3DSampleEntry entry = controller.entries().get(i);
-                            if(!entry.category().equals(previousCategory)) {
-                                previousCategory = entry.category();
-                                list.text(previousCategory);
-                            }
-                            final int sampleIndex = i;
-                            list.button(entry.name(), Ui.modifier().fillWidth().height(30.0f),
-                                    () -> selectSampleOnDoubleClick(sampleIndex));
-                        }
+            page.panel(Ui.modifier().width(286.0f).fillHeight().padding(10.0f).gap(6.0f)
+                    .style("sample-panel").validationId("sample-panel"), panel -> {
+                panel.text("jBox3D Samples", Ui.modifier().fillWidth().style("title"));
+                panel.text("Selected sample", Ui.modifier().fillWidth().style("eyebrow"));
+                panel.text(activeSampleName.get(), Ui.modifier().fillWidth().height(24.0f)
+                        .style("selected-sample"));
+                panel.tabs(Ui.modifier().fillWidth().height(34.0f).validationId("selector-tabs"),
+                        selectorTab, "Samples", "Settings");
+                if(selectorTab.get() == 0) {
+                    panel.scrollView(Ui.modifier().fillWidth().minHeight(80.0f).weight(1.0f)
+                                    .padding(4.0f).gap(2.0f).style("sample-list")
+                                    .validationId("sample-list"),
+                            this::buildSampleList);
+                    panel.divider(Ui.modifier().fillWidth().height(1.0f));
+                    panel.row(Ui.modifier().fillWidth().height(34.0f).gap(6.0f), actions -> {
+                        actions.button("Reset Test", Ui.modifier().weight(1.0f).height(34.0f)
+                                .validationId("reset-test"), this::resetTest);
+                        actions.button("Reset Camera", Ui.modifier().weight(1.0f).height(34.0f)
+                                .validationId("reset-camera"), this::resetCamera);
                     });
-                    controls.button("Reset Test", Ui.modifier().fillWidth().height(32.0f), this::resetTest);
-                    controls.button("Reset Camera", Ui.modifier().fillWidth().height(32.0f), this::resetCamera);
-                    controls.checkbox("Ctrl Drag Bodies", Ui.modifier().fillWidth().height(28.0f), dragBodiesEnabled);
-
-                    controls.text("Solver");
-                    controls.text("Sub-steps: " + Math.round(subStepState.get()));
-                    controls.slider(Ui.modifier().fillWidth().height(24.0f), subStepState,
-                            Box3DSampleSettings.MIN_SUB_STEPS, Box3DSampleSettings.MAX_SUB_STEPS);
-                    controls.text("Hertz: " + Math.round(hertzState.get()));
-                    controls.slider(Ui.modifier().fillWidth().height(24.0f), hertzState,
-                            Box3DSampleSettings.MIN_HERTZ, Box3DSampleSettings.MAX_HERTZ);
-                    controls.text("Workers: " + Math.round(workerState.get()));
-                    controls.slider(Ui.modifier().fillWidth().height(24.0f), workerState,
-                            Box3DSampleSettings.MIN_WORKERS, Box3DSampleSettings.MAX_WORKERS);
-                    controls.text("Recycle: " + round(recycleCentimeterState.get(), 10.0f) + " cm");
-                    controls.slider(Ui.modifier().fillWidth().height(24.0f), recycleCentimeterState,
-                            Box3DSampleSettings.MIN_RECYCLE_CENTIMETERS,
-                            Box3DSampleSettings.MAX_RECYCLE_CENTIMETERS);
-                    controls.checkbox("Sleep", Ui.modifier().fillWidth().height(28.0f), sleepEnabledState);
-                    controls.checkbox("Warm Starting", Ui.modifier().fillWidth().height(28.0f),
-                            warmStartingEnabledState);
-                    controls.checkbox("Continuous", Ui.modifier().fillWidth().height(28.0f), continuousEnabledState);
-
-                    Box3DLaunchShape activeShape = Box3DLaunchShape.byIndex(launchShapeIndex.get());
-                    controls.text("Throw: " + activeShape.label());
-                    controls.scrollView(Ui.modifier().fillWidth().height(112.0f), list -> {
-                        Box3DLaunchShape[] shapes = Box3DLaunchShape.values();
-                        for(int i = 0; i < shapes.length; i++) {
-                            Box3DLaunchShape shape = shapes[i];
-                            final int shapeIndex = i;
-                            String label = shape == activeShape ? "> " + shape.label() : shape.label();
-                            list.button(label, Ui.modifier().fillWidth().height(28.0f),
-                                    () -> selectLaunchShape(shapeIndex));
-                        }
-                    });
-                    controls.text("Speed: " + Math.round(launchSpeedState.get()) + " m/s");
-                    controls.slider(Ui.modifier().fillWidth().height(24.0f), launchSpeedState,
-                            Box3DSampleSettings.MIN_LAUNCH_SPEED, Box3DSampleSettings.MAX_LAUNCH_SPEED);
-                    controls.button("Throw Shape", Ui.modifier().fillWidth().height(32.0f), this::throwSelectedShape);
-
-                    controls.text("Shadow Bias: " + round(shadowBiasState.get(), 1000.0f));
-                    controls.slider(Ui.modifier().fillWidth().height(24.0f), shadowBiasState,
-                            Box3DSampleSettings.MIN_SHADOW_BIAS, Box3DSampleSettings.MAX_SHADOW_BIAS);
-                    Box3DDebugVisualization activeDebug = Box3DDebugVisualization.byIndex(debugVisualizationIndex.get());
-                    controls.text("Debug View: " + activeDebug.label());
-                    controls.scrollView(Ui.modifier().fillWidth().height(126.0f), list -> {
-                        Box3DDebugVisualization[] visualizations = Box3DDebugVisualization.values();
-                        for(int i = 0; i < visualizations.length; i++) {
-                            Box3DDebugVisualization visualization = visualizations[i];
-                            final int visualizationIndex = i;
-                            String label = visualization == activeDebug ? "> " + visualization.label()
-                                    : visualization.label();
-                            list.button(label, Ui.modifier().fillWidth().height(28.0f),
-                                    () -> selectDebugVisualization(visualizationIndex));
-                        }
-                    });
-                });
+                    panel.checkbox("Ctrl Drag Bodies", Ui.modifier().fillWidth().height(28.0f),
+                            dragBodiesEnabled);
+                }
+                else {
+                    panel.scrollView(Ui.modifier().fillWidth().minHeight(80.0f).weight(1.0f)
+                                    .padding(6.0f).gap(6.0f).style("settings-list")
+                                    .validationId("settings-list"),
+                            this::buildSettings);
+                }
             });
+            page.spacer(Ui.modifier().weight(1.0f));
             page.panel(Ui.modifier().width(96.0f).padding(8.0f), panel -> {
-                panel.text(fpsText.get());
+                panel.text(fpsText.get(), Ui.modifier().fillWidth().style("fps"));
             });
         });
     }
 
-    private void selectSampleOnDoubleClick(int index) {
-        long now = System.nanoTime();
-        if(lastSampleClickIndex != index || now - lastSampleClickNanos > SAMPLE_DOUBLE_CLICK_NANOS) {
-            lastSampleClickIndex = index;
-            lastSampleClickNanos = now;
-            return;
+    void buildSampleList(UiScope list) {
+        String previousCategory = "";
+        for(int i = 0; i < controller.entries().size(); i++) {
+            Box3DSampleEntry entry = controller.entries().get(i);
+            if(!entry.category().equals(previousCategory)) {
+                previousCategory = entry.category();
+                list.text(previousCategory, Ui.modifier().fillWidth().height(24.0f).style("sample-category"));
+            }
+            final int sampleIndex = i;
+            boolean selected = sampleIndex == controller.selectedIndex();
+            list.button(entry.name(), Ui.modifier().fillWidth().height(30.0f)
+                            .style(selected ? "sample-row-selected" : "sample-row")
+                            .validationId("sample-" + sampleIndex)
+                            .semanticLabel((selected ? "Selected sample: " : "Select sample: ") + entry.displayName()),
+                    () -> selectSample(sampleIndex));
         }
-        lastSampleClickIndex = -1;
-        lastSampleClickNanos = 0L;
-        selectSample(index);
+    }
+
+    private void buildSettings(UiScope controls) {
+        controls.text("Solver", Ui.modifier().fillWidth().style("section"));
+        controls.text("Sub-steps: " + Math.round(subStepState.get()));
+        controls.slider(Ui.modifier().fillWidth().height(24.0f), subStepState,
+                Box3DSampleSettings.MIN_SUB_STEPS, Box3DSampleSettings.MAX_SUB_STEPS);
+        controls.text("Hertz: " + Math.round(hertzState.get()));
+        controls.slider(Ui.modifier().fillWidth().height(24.0f), hertzState,
+                Box3DSampleSettings.MIN_HERTZ, Box3DSampleSettings.MAX_HERTZ);
+        controls.text("Workers: " + Math.round(workerState.get()));
+        controls.slider(Ui.modifier().fillWidth().height(24.0f), workerState,
+                Box3DSampleSettings.MIN_WORKERS, Box3DSampleSettings.MAX_WORKERS);
+        controls.text("Recycle: " + round(recycleCentimeterState.get(), 10.0f) + " cm");
+        controls.slider(Ui.modifier().fillWidth().height(24.0f), recycleCentimeterState,
+                Box3DSampleSettings.MIN_RECYCLE_CENTIMETERS,
+                Box3DSampleSettings.MAX_RECYCLE_CENTIMETERS);
+        controls.checkbox("Sleep", Ui.modifier().fillWidth().height(28.0f), sleepEnabledState);
+        controls.checkbox("Warm Starting", Ui.modifier().fillWidth().height(28.0f), warmStartingEnabledState);
+        controls.checkbox("Continuous", Ui.modifier().fillWidth().height(28.0f), continuousEnabledState);
+
+        Box3DLaunchShape activeShape = Box3DLaunchShape.byIndex(launchShapeIndex.get());
+        controls.text("Throw: " + activeShape.label(), Ui.modifier().fillWidth().style("section"));
+        controls.scrollView(Ui.modifier().fillWidth().height(112.0f).padding(3.0f).gap(2.0f)
+                .style("option-list"), list -> {
+            Box3DLaunchShape[] shapes = Box3DLaunchShape.values();
+            for(int i = 0; i < shapes.length; i++) {
+                Box3DLaunchShape shape = shapes[i];
+                final int shapeIndex = i;
+                list.button(shape.label(), Ui.modifier().fillWidth().height(28.0f)
+                                .style(shape == activeShape ? "option-row-selected" : "option-row"),
+                        () -> selectLaunchShape(shapeIndex));
+            }
+        });
+        controls.text("Speed: " + Math.round(launchSpeedState.get()) + " m/s");
+        controls.slider(Ui.modifier().fillWidth().height(24.0f), launchSpeedState,
+                Box3DSampleSettings.MIN_LAUNCH_SPEED, Box3DSampleSettings.MAX_LAUNCH_SPEED);
+        controls.button("Throw Shape", Ui.modifier().fillWidth().height(32.0f), this::throwSelectedShape);
+
+        controls.text("Shadow Bias: " + round(shadowBiasState.get(), 1000.0f));
+        controls.slider(Ui.modifier().fillWidth().height(24.0f), shadowBiasState,
+                Box3DSampleSettings.MIN_SHADOW_BIAS, Box3DSampleSettings.MAX_SHADOW_BIAS);
+        Box3DDebugVisualization activeDebug = Box3DDebugVisualization.byIndex(debugVisualizationIndex.get());
+        controls.text("Debug View: " + activeDebug.label(), Ui.modifier().fillWidth().style("section"));
+        controls.scrollView(Ui.modifier().fillWidth().height(126.0f).padding(3.0f).gap(2.0f)
+                .style("option-list"), list -> {
+            Box3DDebugVisualization[] visualizations = Box3DDebugVisualization.values();
+            for(int i = 0; i < visualizations.length; i++) {
+                Box3DDebugVisualization visualization = visualizations[i];
+                final int visualizationIndex = i;
+                list.button(visualization.label(), Ui.modifier().fillWidth().height(28.0f)
+                                .style(visualization == activeDebug ? "option-row-selected" : "option-row"),
+                        () -> selectDebugVisualization(visualizationIndex));
+            }
+        });
+    }
+
+    static UiTheme sampleTheme() {
+        UiColor textColor = UiColor.rgba8888(0xf2f6fbff);
+        UiColor mutedColor = UiColor.rgba8888(0x9fabb9ff);
+        UiColor accentColor = UiColor.rgba8888(0x66b8ffff);
+        UiTextStyle bodyText = UiTextStyle.text()
+                .font(UiFonts.defaultFont(14.0f))
+                .size(14.0f)
+                .lineHeight(18.0f)
+                .color(textColor);
+        UiTextStyle buttonText = bodyText.align(UiTextAlign.CENTER).wrap(false).ellipsis(true);
+        UiTextStyle rowText = bodyText.align(UiTextAlign.START).wrap(false).ellipsis(true);
+        UiTextStyle titleText = UiTextStyle.text()
+                .font(UiFonts.defaultFont(20.0f))
+                .size(20.0f)
+                .lineHeight(25.0f)
+                .color(UiColor.WHITE)
+                .wrap(false)
+                .ellipsis(true);
+        UiTextStyle sectionText = UiTextStyle.text()
+                .font(UiFonts.defaultFont(13.0f))
+                .size(13.0f)
+                .lineHeight(17.0f)
+                .color(accentColor)
+                .wrap(false)
+                .ellipsis(true);
+        UiTextStyle eyebrowText = UiTextStyle.text()
+                .font(UiFonts.defaultFont(11.0f))
+                .size(11.0f)
+                .lineHeight(14.0f)
+                .color(mutedColor)
+                .wrap(false)
+                .ellipsis(true);
+        UiTextStyle selectedSampleText = bodyText.color(UiColor.WHITE).wrap(false).ellipsis(true);
+
+        UiStyle button = UiStyle.button()
+                .padding(8.0f, 5.0f)
+                .text(buttonText)
+                .background(UiDrawable.color(UiColor.rgba8888(0x2b3a4aff)))
+                .hover(UiStyle.button().padding(8.0f, 5.0f).text(buttonText)
+                        .background(UiDrawable.color(UiColor.rgba8888(0x3a5067ff))))
+                .pressed(UiStyle.button().padding(8.0f, 5.0f).text(buttonText)
+                        .background(UiDrawable.color(UiColor.rgba8888(0x21303fff))));
+        UiStyle row = UiStyle.button()
+                .padding(10.0f, 5.0f)
+                .text(rowText)
+                .background(UiDrawable.color(UiColor.rgba8888(0x111923ff)))
+                .hover(UiStyle.button().padding(10.0f, 5.0f).text(rowText)
+                        .background(UiDrawable.color(UiColor.rgba8888(0x1d2d3dff))))
+                .pressed(UiStyle.button().padding(10.0f, 5.0f).text(rowText)
+                        .background(UiDrawable.color(UiColor.rgba8888(0x0b121aff))));
+        UiStyle selectedRow = UiStyle.button()
+                .padding(10.0f, 5.0f)
+                .text(rowText.color(UiColor.WHITE))
+                .background(UiDrawable.color(UiColor.rgba8888(0x286da8ff)))
+                .hover(UiStyle.button().padding(10.0f, 5.0f).text(rowText.color(UiColor.WHITE))
+                        .background(UiDrawable.color(UiColor.rgba8888(0x3486c8ff))))
+                .pressed(UiStyle.button().padding(10.0f, 5.0f).text(rowText.color(UiColor.WHITE))
+                        .background(UiDrawable.color(UiColor.rgba8888(0x205784ff))));
+        UiStyle checkbox = UiStyle.style()
+                .text(bodyText.wrap(false).ellipsis(true))
+                .background(UiDrawable.color(UiColor.rgba8888(0x263442ff)))
+                .foreground(UiDrawable.color(accentColor));
+        UiStyle slider = UiStyle.style()
+                .background(UiDrawable.color(UiColor.rgba8888(0x263442ff)))
+                .foreground(UiDrawable.color(accentColor));
+        UiStyle divider = UiStyle.style()
+                .foreground(UiDrawable.color(UiColor.rgba8888(0x344555ff)));
+        UiStyle tabs = UiStyle.style()
+                .padding(2.0f)
+                .text(buttonText)
+                .background(UiDrawable.color(UiColor.rgba8888(0x111923ff)))
+                .foreground(UiDrawable.color(accentColor));
+
+        return Ui.darkTheme()
+                .colors(UiColor.rgba8888(0x090e14ff), textColor)
+                .text(UiStyle.style().text(bodyText))
+                .button(button)
+                .checkbox(checkbox)
+                .slider(slider)
+                .divider(divider)
+                .tabs(tabs)
+                .style("sample-panel", UiStyle.style()
+                        .background(UiDrawable.color(UiColor.rgba8888(0x111923f2))))
+                .style("sample-list", UiStyle.style()
+                        .background(UiDrawable.color(UiColor.rgba8888(0x0b1118f2))))
+                .style("settings-list", UiStyle.style()
+                        .background(UiDrawable.color(UiColor.rgba8888(0x0d151df2))))
+                .style("option-list", UiStyle.style()
+                        .background(UiDrawable.color(UiColor.rgba8888(0x090f15f2))))
+                .style("sample-row", row)
+                .style("sample-row-selected", selectedRow)
+                .style("option-row", row)
+                .style("option-row-selected", selectedRow)
+                .style("title", UiStyle.style().text(titleText))
+                .style("section", UiStyle.style().text(sectionText))
+                .style("eyebrow", UiStyle.style().text(eyebrowText))
+                .style("sample-category", UiStyle.style().padding(8.0f, 3.0f).text(eyebrowText))
+                .style("selected-sample", UiStyle.style().padding(8.0f, 3.0f)
+                        .text(selectedSampleText)
+                        .background(UiDrawable.color(UiColor.rgba8888(0x1b2b3aff))))
+                .style("fps", UiStyle.style().text(bodyText.align(UiTextAlign.CENTER).wrap(false)));
     }
 
     private void selectSample(int index) {
@@ -341,7 +476,11 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         Box3DSampleSettings settings = controller.settings();
         settings.setSubStepCount(Math.round(subStepState.get()));
         settings.setHertz(hertzState.get());
-        settings.setWorkerCount(Math.round(workerState.get()));
+        int workerCount = Math.round(workerState.get());
+        if(workerCount != settings.workerCount()) {
+            settings.setWorkerCount(workerCount);
+            controller.restartSample();
+        }
         settings.setRecycleCentimeters(recycleCentimeterState.get());
         settings.setSleepEnabled(sleepEnabledState.get());
         settings.setWarmStartingEnabled(warmStartingEnabledState.get());
@@ -615,6 +754,55 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         autoThrowDone = true;
     }
 
+    private void writeScreenshotIfRequested() {
+        if(screenshotWritten || screenshotPath.length() == 0 || !controller.isReady()
+                || controller.renderedFrames() < screenshotAfterFrames) {
+            return;
+        }
+
+        FrameBuffer frameBuffer = graphics.currentFrame().frameBuffer();
+        if(!frameBuffer.supportsReadPixelsRgba8()) {
+            throw new FdxException("The active libFDX graphics provider does not support framebuffer capture");
+        }
+        try {
+            writePpm(screenshotPath, frameBuffer.width(), frameBuffer.height(),
+                    frameBuffer.readPixelsRgba8());
+            screenshotWritten = true;
+            logger.info("Wrote jBox3D libFDX screenshot: " + screenshotPath);
+        }
+        catch(Exception exception) {
+            throw new FdxException("Could not write jBox3D libFDX screenshot: " + screenshotPath,
+                    exception);
+        }
+    }
+
+    private static void writePpm(String path, int width, int height, ByteBuffer rgba) throws Exception {
+        if(width <= 0 || height <= 0 || rgba == null || rgba.limit() < width * height * 4) {
+            throw new FdxException("Framebuffer capture does not contain a complete RGBA8 image");
+        }
+        File file = new File(path);
+        File parent = file.getParentFile();
+        if(parent != null && !parent.isDirectory() && !parent.mkdirs()) {
+            throw new FdxException("Could not create screenshot directory: " + parent);
+        }
+        try(FileOutputStream output = new FileOutputStream(file)) {
+            output.write(("P6\n" + width + " " + height + "\n255\n")
+                    .getBytes(StandardCharsets.US_ASCII));
+            byte[] row = new byte[width * 3];
+            for(int y = height - 1; y >= 0; y--) {
+                int source = y * width * 4;
+                int target = 0;
+                for(int x = 0; x < width; x++) {
+                    row[target++] = rgba.get(source);
+                    row[target++] = rgba.get(source + 1);
+                    row[target++] = rgba.get(source + 2);
+                    source += 4;
+                }
+                output.write(row);
+            }
+        }
+    }
+
     private static int parsePositiveInt(String value, int fallback) {
         if(value == null || value.trim().length() == 0) {
             return fallback;
@@ -625,6 +813,20 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         catch(NumberFormatException ignored) {
             return fallback;
         }
+    }
+
+    private static Box3DDebugVisualization parseDebugVisualization(String value) {
+        String trimmed = value != null ? value.trim() : "";
+        String normalized = trimmed.replace('-', '_').replace(' ', '_');
+        Box3DDebugVisualization[] values = Box3DDebugVisualization.values();
+        for(int i = 0; i < values.length; i++) {
+            Box3DDebugVisualization visualization = values[i];
+            if(visualization.name().equalsIgnoreCase(normalized)
+                    || visualization.label().equalsIgnoreCase(trimmed)) {
+                return visualization;
+            }
+        }
+        throw new FdxException("Unknown jbox3d.sample.debugView: " + value);
     }
 
     private static float round(float value, float scale) {

@@ -6,7 +6,7 @@ plugins {
 
 val box3dRuntimeName = "ffm"
 val box3dRuntimeProject = ":box3d:desktop:ffm"
-val box3dRuntimeClasspath by configurations.creating {
+val box3dRuntimeClasspath = configurations.create("box3dRuntimeClasspath") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
@@ -64,7 +64,9 @@ tasks.register<JavaExec>("box3d_gdx_desktop_${box3dRuntimeName}_run") {
         "jbox3d.sample.autoThrowAfterFrames",
         "jbox3d.sample.screenshot",
         "jbox3d.sample.screenshotAfterFrames",
-        "jbox3d.sample.openSamplesMenu"
+        "jbox3d.sample.openSamplesMenu",
+        "jbox3d.sample.debugVisualization",
+        "jbox3d.sample.debugVisualizationIndex"
     ).forEach { property ->
         System.getProperty(property)?.takeIf { it.isNotBlank() }?.let {
             systemProperty(property, it)

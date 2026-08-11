@@ -32,7 +32,6 @@ val jbox3dMavenVersion = libs.versions.jbox3dMavenVersion.get()
 
 allprojects {
     repositories {
-        mavenLocal()
         google()
         mavenCentral()
         maven { url = uri("https://central.sonatype.com/repository/maven-snapshots/") }

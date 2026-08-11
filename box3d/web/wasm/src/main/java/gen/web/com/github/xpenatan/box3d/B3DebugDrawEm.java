@@ -296,6 +296,20 @@ public class B3DebugDrawEm extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3DebugDrawEm);var returnedJSObj = jsObj.GetDrawIslands();return returnedJSObj;")
     public static native boolean internal_native_GetDrawIslands(int this_addr);
 
+    public int GetDrawnCompoundChildCount() {
+        return internal_native_GetDrawnCompoundChildCount(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3DebugDrawEm);var returnedJSObj = jsObj.GetDrawnCompoundChildCount();return returnedJSObj;")
+    public static native int internal_native_GetDrawnCompoundChildCount(int this_addr);
+
+    public int GetTotalCompoundChildCount() {
+        return internal_native_GetTotalCompoundChildCount(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3DebugDrawEm);var returnedJSObj = jsObj.GetTotalCompoundChildCount();return returnedJSObj;")
+    public static native int internal_native_GetTotalCompoundChildCount(int this_addr);
+
     public B3DebugDrawEm() {
         int addr = internal_native_create_addr();
         internal_reset(addr, true);

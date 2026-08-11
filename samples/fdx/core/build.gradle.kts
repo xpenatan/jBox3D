@@ -8,6 +8,9 @@ dependencies {
     api(libs.fdxBox3dExt)
 
     api(libs.bundles.fdxCore)
+
+    testImplementation(project(":box3d:core"))
+    testImplementation(libs.junit)
 }
 
 java {

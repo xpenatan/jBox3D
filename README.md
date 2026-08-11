@@ -66,7 +66,7 @@ FdxBox3DConverter.toBox3D(fdxVector, reusableBox3dVector);
 
 ## Samples
 
-The sample suite includes a libGDX OpenGL renderer, plus libFDX OpenGL, WebGPU, and Vulkan renderers where supported.
+The sample suite includes a libGDX OpenGL renderer, plus libFDX OpenGL, WebGPU, Vulkan, and Direct3D 12 renderers where supported.
 
 ## Documentation
 

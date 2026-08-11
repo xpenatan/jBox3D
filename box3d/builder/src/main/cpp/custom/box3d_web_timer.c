@@ -5,10 +5,36 @@
 
 #include "box3d/base.h"
 
+#include <emscripten/em_math.h>
 #include <emscripten/emscripten.h>
+#include <math.h>
+#include <stdarg.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+// Emscripten lowers integer-only printf calls in side modules to iprintf.
+// The jParser main module exports vfprintf and stdout, but not this forwarding
+// entry point, so provide it in the side module without changing Box3D source.
+int iprintf( const char* format, ... )
+{
+    va_list args;
+    va_start( args, format );
+    int result = vfprintf( stdout, format, args );
+    va_end( args );
+    return result;
+}
+
+double pow( double base, double exponent )
+{
+    return emscripten_math_pow( base, exponent );
+}
+
+double ldexp( double value, int exponent )
+{
+    return scalbn( value, exponent );
+}
 
 int atoi( const char* string )
 {

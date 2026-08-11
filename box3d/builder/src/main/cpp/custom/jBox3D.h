@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <limits>
+#include <memory>
 #include <vector>
 
 #define TINYOBJLOADER_USE_MAPBOX_EARCUT
@@ -511,9 +512,12 @@ class B3DebugShape {
 public:
     B3DebugShape();
     explicit B3DebugShape(const b3DebugShape& shape);
+    ~B3DebugShape();
 
     long long GetShapeId() const;
+    long long GetGeometryId() const;
     int GetType() const;
+    B3Vec3 GetScale() const;
     B3Sphere GetSphere() const;
     B3Capsule GetCapsule() const;
     int GetHullEdgeCount() const;
@@ -531,6 +535,7 @@ public:
 
 private:
     friend class B3World;
+    friend class B3DebugDrawEm;
 
     void AddSphere(const b3Sphere& sphere, b3Transform transform);
     void AddCapsule(const b3Capsule& capsule, b3Transform transform);
@@ -540,12 +545,21 @@ private:
     void AddMesh(const b3Mesh* mesh, b3Transform transform);
     void AddHeightField(const b3HeightFieldData* heightField, b3Transform transform);
     void AddCompound(const b3CompoundData* compound);
+    B3DebugShape* FindOrCreateHullGeometry(const b3HullData* hull);
+    B3DebugShape* FindOrCreateMeshGeometry(const b3MeshData* mesh);
     static bool AddHeightFieldTriangle(b3Vec3 v0, b3Vec3 v1, b3Vec3 v2, int triangleIndex, void* context);
 
     long long m_shapeId;
+    long long m_geometryId;
     int m_type;
+    B3Vec3 m_scale;
     B3Sphere m_sphere;
     B3Capsule m_capsule;
+    const B3DebugShape* m_geometrySource;
+    const b3CompoundData* m_compound;
+    b3Transform m_localTransform;
+    std::vector<B3DebugShape*> m_compoundChildren;
+    std::vector<B3DebugShape*> m_ownedCompoundGeometries;
     std::vector<B3Sphere> m_spheres;
     std::vector<B3Capsule> m_capsules;
     std::vector<B3Vec3> m_hullEdgeVertices0;
@@ -1489,6 +1503,8 @@ public:
     bool GetDrawContactForces() const;
     void SetDrawIslands(bool enabled);
     bool GetDrawIslands() const;
+    int GetDrawnCompoundChildCount() const;
+    int GetTotalCompoundChildCount() const;
 
     virtual void DrawShape(B3DebugShape* shape, const B3Transform& transform, int color);
     virtual void DrawSegment(const B3Vec3& p1, const B3Vec3& p2, int color);
@@ -1500,7 +1516,14 @@ public:
     virtual void DrawBox(const B3Vec3& extents, const B3Transform& transform, int color);
 
 private:
+    friend void drawShapeCallback(void* userShape, b3WorldTransform transform, b3HexColor color, void* context);
+
+    void DrawDebugShape(B3DebugShape* shape, b3WorldTransform transform, int color);
+    static bool DrawCompoundChild(const b3CompoundData* compound, int childIndex, void* context);
+
     b3DebugDraw m_draw;
+    int m_drawnCompoundChildCount;
+    int m_totalCompoundChildCount;
 };
 
 class B3CustomFilterEm {
@@ -1611,7 +1634,7 @@ private:
         uint32_t color;
     };
     struct DebugHull {
-        B3DebugShape shape;
+        std::unique_ptr<B3DebugShape> shape;
         b3Transform transform;
         uint32_t color;
     };

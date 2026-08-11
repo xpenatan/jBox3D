@@ -3,6 +3,7 @@ plugins {
 }
 
 val moduleName = "core"
+group = libs.versions.jbox3dGroup.get()
 
 dependencies {
     api(libs.bundles.jParserCore)

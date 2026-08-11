@@ -12,7 +12,7 @@ javaMain = "1.8"
 javaWeb = "17"
 javaFFM = "25"
 
-androidGradlePlugin = "9.1.1"
+androidGradlePlugin = "9.3.1"
 androidCompileSdk = "36"
 androidTargetSdk = "36"
 androidMinSdk = "21"
@@ -83,6 +83,7 @@ fdxCamera = { module = "io.github.libfdx:camera", version.ref = "libfdx" }
 fdxDisplay = { module = "io.github.libfdx:display", version.ref = "libfdx" }
 fdxUiKit = { module = "io.github.libfdx:ui_kit", version.ref = "libfdx" }
 fdxBackendDesktop = { module = "io.github.libfdx:backend_desktop", version.ref = "libfdx" }
+fdxD3D12Core = { module = "io.github.libfdx:d3d12_core", version.ref = "libfdx" }
 fdxWGPUCore = { module = "io.github.libfdx:wgpu_core", version.ref = "libfdx" }
 fdxGlDesktop = { module = "io.github.libfdx:gl_desktop", version.ref = "libfdx" }
 fdxVulkanDesktop = { module = "io.github.libfdx:vulkan_desktop", version.ref = "libfdx" }

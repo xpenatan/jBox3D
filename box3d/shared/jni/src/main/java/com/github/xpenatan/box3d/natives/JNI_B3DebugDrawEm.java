@@ -78,5 +78,9 @@ final public class JNI_B3DebugDrawEm {
 
     public static native boolean internal_native_GetDrawIslands(long this_addr);
 
+    public static native int internal_native_GetDrawnCompoundChildCount(long this_addr);
+
+    public static native int internal_native_GetTotalCompoundChildCount(long this_addr);
+
     public static native long internal_native_create_addr();
 }

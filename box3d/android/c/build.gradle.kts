@@ -7,7 +7,7 @@ val cLibsDir = "$projectDir/../../builder/build/c++/libs/android"
 val stagedJniLibsDir = layout.buildDirectory.dir("generated/cJniLibs")
 val androidAbis = listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
 
-val stageCJniLibs by tasks.registering(Copy::class) {
+val stageCJniLibs = tasks.register<Copy>("stageCJniLibs") {
     androidAbis.forEach { abi ->
         from("$cLibsDir/$abi/teavm_c") {
             include("*.so")
@@ -28,7 +28,7 @@ android {
 
     sourceSets {
         named("main") {
-            jniLibs.srcDirs(stagedJniLibsDir.get().asFile)
+            jniLibs.directories.add(stagedJniLibsDir.get().asFile.absolutePath)
         }
     }
 
@@ -49,7 +49,7 @@ android {
     }
 }
 
-val mavenSourcesJar by tasks.registering(Jar::class) {
+val mavenSourcesJar = tasks.register<Jar>("mavenSourcesJar") {
     archiveClassifier.set("sources")
     from(android.sourceSets["main"].java.srcDirs)
     from(rootProject.file("README.md")) {
@@ -57,7 +57,7 @@ val mavenSourcesJar by tasks.registering(Jar::class) {
     }
 }
 
-val mavenJavadocJar by tasks.registering(Jar::class) {
+val mavenJavadocJar = tasks.register<Jar>("mavenJavadocJar") {
     archiveClassifier.set("javadoc")
     from(rootProject.file("README.md")) {
         into("META-INF")

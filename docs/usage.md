@@ -40,6 +40,32 @@ jbox3dMavenVersion = "0.1.0.0"
 
 Set `jbox3dUseMavenArtifacts` back to `"false"` to use the projects and native outputs from the local checkout. Snapshot dependencies are refreshed on every Gradle invocation.
 
+## Develop against a local libFDX checkout
+
+When the sibling `../libfdx` checkout exists, jBox3D automatically includes it
+as a composite build. jBox3D registers its own projects for composite dependency
+substitution, so libFDX's `box3d_ext` module compiles directly against the
+`:box3d:core` project in this checkout. No flag is needed for the normal local
+development command:
+
+```powershell
+.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_run
+```
+
+The default local checkout is `../libfdx`. Override it and require that checkout
+without editing the build:
+
+```powershell
+.\gradlew.bat "-Plibfdx.local=true" "-Plibfdx.localPath=E:/src/libfdx" tasks
+```
+
+The default `libfdx.local=auto` mode uses composite substitution when the
+configured checkout exists and otherwise resolves published libFDX artifacts.
+Set `-Plibfdx.local=false` to explicitly test published artifacts. Required
+local mode (`true`) fails immediately when the configured checkout is missing.
+No mode publishes or resolves jBox3D through a local Maven repository, and no
+older-API compatibility path is provided.
+
 ## Project layout
 
 | Area | Modules | Purpose |
@@ -120,16 +146,18 @@ libGDX OpenGL:
 .\gradlew.bat :samples:gdx:gl:platforms:desktop-c:gdx_teavm_glfw_run
 ```
 
-libFDX OpenGL, WebGPU, and Vulkan:
+libFDX OpenGL, WebGPU, Vulkan, and Direct3D 12 (Windows):
 
 ```powershell
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_gl_jni_run
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_wgpu_jni_run
 .\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_vulkan_jni_run
+.\gradlew.bat :samples:fdx:platforms:desktop-jni:box3d_fdx_desktop_d3d12_jni_run
 
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_gl_ffm_run
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_wgpu_ffm_run
 .\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_vulkan_ffm_run
+.\gradlew.bat :samples:fdx:platforms:desktop-ffm:box3d_fdx_desktop_d3d12_ffm_run
 ```
 
 The libFDX desktop C module currently provides compile-path validation rather than runnable launchers:
@@ -138,6 +166,7 @@ The libFDX desktop C module currently provides compile-path validation rather th
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_gl_c_build
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_wgpu_c_build
 .\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_vulkan_c_build
+.\gradlew.bat :samples:fdx:platforms:desktop-c:box3d_fdx_desktop_d3d12_c_build
 ```
 
 ### Web

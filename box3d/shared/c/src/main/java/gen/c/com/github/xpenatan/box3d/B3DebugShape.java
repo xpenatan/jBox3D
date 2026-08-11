@@ -10,25 +10,27 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3DebugShape extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     private B3Sphere B3Sphere_TEMP_GEN_0;
 
     private B3Capsule B3Capsule_TEMP_GEN_0;
 
-    private B3Vec3 B3Vec3_TEMP_GEN_0;
-
     private B3Vec3 B3Vec3_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_2;
 
     private B3Sphere B3Sphere_TEMP_GEN_1;
 
     private B3Capsule B3Capsule_TEMP_GEN_1;
-
-    private B3Vec3 B3Vec3_TEMP_GEN_2;
 
     private B3Vec3 B3Vec3_TEMP_GEN_3;
 
     private B3Vec3 B3Vec3_TEMP_GEN_4;
 
     private B3Vec3 B3Vec3_TEMP_GEN_5;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_6;
 
     static public final B3DebugShape NULL = B3DebugShape.native_new();
 
@@ -68,12 +70,32 @@ public final class B3DebugShape extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_getshapeid")
     public static native long internal_native_GetShapeId(long this_addr);
 
+    public long GetGeometryId() {
+        return internal_native_GetGeometryId(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_getgeometryid")
+    public static native long internal_native_GetGeometryId(long this_addr);
+
     public int GetType() {
         return internal_native_GetType(native_address);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gettype")
     public static native int internal_native_GetType(long this_addr);
+
+    public B3Vec3 GetScale() {
+        long addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_getscale_addr")
+    public static native long internal_native_GetScale_addr(long this_addr);
 
     public B3Sphere GetSphere() {
         long addr = internal_native_GetSphere_addr(native_address);
@@ -112,10 +134,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetHullEdgeVertex0_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_0 == null)
-            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_0;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gethulledgevertex0_addr")
@@ -125,10 +147,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetHullEdgeVertex1_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_1 == null)
-            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_1;
+        if (B3Vec3_TEMP_GEN_2 == null)
+            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_2;
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gethulledgevertex1_addr")
@@ -185,10 +207,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleVertex0_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_2 == null)
-            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_2;
+        if (B3Vec3_TEMP_GEN_3 == null)
+            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_3;
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gettrianglevertex0_addr")
@@ -198,10 +220,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleVertex1_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_3 == null)
-            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_3;
+        if (B3Vec3_TEMP_GEN_4 == null)
+            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_4;
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gettrianglevertex1_addr")
@@ -211,10 +233,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleVertex2_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_4 == null)
-            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_4;
+        if (B3Vec3_TEMP_GEN_5 == null)
+            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_5;
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gettrianglevertex2_addr")
@@ -224,10 +246,10 @@ public final class B3DebugShape extends NativeObject {
         long addr = internal_native_GetTriangleNormal_addr(native_address, index);
         if (addr == 0)
             return B3Vec3.NULL;
-        if (B3Vec3_TEMP_GEN_5 == null)
-            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
-        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
-        return B3Vec3_TEMP_GEN_5;
+        if (B3Vec3_TEMP_GEN_6 == null)
+            B3Vec3_TEMP_GEN_6 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_6.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_6;
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3debugshape_gettrianglenormal_addr")

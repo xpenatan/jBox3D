@@ -4,7 +4,7 @@ public final class Box3DSampleSettings {
     public static final int MIN_SUB_STEPS = 1;
     public static final int MAX_SUB_STEPS = 50;
     public static final int MIN_WORKERS = 1;
-    public static final int MAX_WORKERS = 32;
+    public static final int MAX_WORKERS = 8;
     public static final float MIN_HERTZ = 5.0f;
     public static final float MAX_HERTZ = 240.0f;
     public static final float MIN_RECYCLE_CENTIMETERS = 0.0f;
@@ -19,7 +19,7 @@ public final class Box3DSampleSettings {
 
     private int subStepCount = 4;
     private float hertz = 60.0f;
-    private int workerCount = 1;
+    private int workerCount;
     private float recycleDistance = 0.05f;
     private boolean sleepEnabled = true;
     private boolean warmStartingEnabled = true;
@@ -27,6 +27,10 @@ public final class Box3DSampleSettings {
     private int launchShapeIndex;
     private float launchSpeed = DEFAULT_LAUNCH_SPEED;
     private float shadowBias = DEFAULT_SHADOW_BIAS;
+
+    public Box3DSampleSettings(int workerCount) {
+        setWorkerCount(workerCount);
+    }
 
     public int subStepCount() {
         return subStepCount;

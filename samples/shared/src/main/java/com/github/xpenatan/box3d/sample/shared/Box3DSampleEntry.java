@@ -38,7 +38,7 @@ public final class Box3DSampleEntry {
         return camera;
     }
 
-    Box3DSample create() {
-        return factory.create();
+    Box3DSample create(Box3DSampleSettings settings) {
+        return Box3DSampleCreationContext.create(factory, settings);
     }
 }

@@ -78,7 +78,6 @@ final class ClassRingSample extends AbstractBox3DSample {
         world().EnableSleeping(settings.sleepEnabled());
         world().EnableWarmStarting(settings.warmStartingEnabled());
         world().EnableContinuous(settings.continuousEnabled());
-        world().SetWorkerCount(settings.workerCount());
         world().SetContactRecycleDistance(settings.recycleDistance());
         world().Step(TIME_STEP, SUB_STEP_COUNT);
     }

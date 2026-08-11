@@ -19,6 +19,7 @@ import com.github.xpenatan.box3d.B3World;
 import com.github.xpenatan.box3d.B3WorldDef;
 import com.github.xpenatan.box3d.sample.shared.Box3DLaunchShape;
 import com.github.xpenatan.box3d.sample.shared.Box3DSample;
+import com.github.xpenatan.box3d.sample.shared.Box3DSampleCreationContext;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleSettings;
 import com.github.xpenatan.jParser.api.NativeObject;
 
@@ -45,6 +46,7 @@ abstract class AbstractBox3DSample implements Box3DSample {
         B3WorldDef worldDef = new B3WorldDef();
         B3Vec3 gravity = new B3Vec3(0.0f, -10.0f, 0.0f);
         worldDef.SetGravity(gravity);
+        worldDef.SetWorkerCount(Box3DSampleCreationContext.workerCount());
         B3Capacity capacity = null;
         if(staticShapeCount != 0 || dynamicShapeCount != 0 || staticBodyCount != 0 || dynamicBodyCount != 0
                 || contactCount != 0) {
@@ -81,7 +83,6 @@ abstract class AbstractBox3DSample implements Box3DSample {
             world.EnableSleeping(settings.sleepEnabled());
             world.EnableWarmStarting(settings.warmStartingEnabled());
             world.EnableContinuous(settings.continuousEnabled());
-            world.SetWorkerCount(settings.workerCount());
             world.SetContactRecycleDistance(settings.recycleDistance());
             subStepCount = settings.subStepCount();
             step = Math.max(1.0f / Box3DSampleSettings.MAX_HERTZ,
