@@ -26,6 +26,8 @@ import io.github.libfdx.graphics.camera.controller.FreeCameraController3D;
 import io.github.libfdx.input.Input;
 import io.github.libfdx.input.Key;
 import io.github.libfdx.input.MouseButton;
+import io.github.libfdx.math.Ray;
+import io.github.libfdx.math.Vector3;
 import io.github.libfdx.ui.Ui;
 import io.github.libfdx.ui.UiBooleanState;
 import io.github.libfdx.ui.UiColor;
@@ -71,10 +73,8 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
     private final UiFloatState launchSpeedState = Ui.state(Box3DSampleSettings.DEFAULT_LAUNCH_SPEED);
     private final UiIntState debugVisualizationIndex = Ui.state(Box3DDebugVisualization.SOLID_WIRE.index());
     private final UiFloatState shadowBiasState = Ui.state(Box3DSampleSettings.DEFAULT_SHADOW_BIAS);
-    private final float[] dragRayOrigin = new float[3];
-    private final float[] dragRayDirection = new float[3];
-    private final float[] throwRayOrigin = new float[3];
-    private final float[] throwRayDirection = new float[3];
+    private final Ray dragRay = new Ray();
+    private final Ray throwRay = new Ray();
     private Application application;
     private Display display;
     private Logger logger;
@@ -512,15 +512,20 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         if(camera == null || !controller.isReady()) {
             return;
         }
-        pickRay(framebufferWidth() / 2, framebufferHeight() / 2, throwRayOrigin, throwRayDirection);
-        throwShape(throwRayOrigin, throwRayDirection);
+        int width = displayWidth();
+        int height = displayHeight();
+        camera.getPickRay(width * 0.5f, height * 0.5f,
+                0.0f, 0.0f, width, height, throwRay);
+        throwShape(throwRay);
     }
 
-    private void throwShape(float[] origin, float[] direction) {
+    private void throwShape(Ray ray) {
         if(!controller.isReady()) {
             return;
         }
-        controller.launchShape(origin[0], origin[1], origin[2], direction[0], direction[1], direction[2]);
+        Vector3 origin = ray.origin();
+        Vector3 direction = ray.direction();
+        controller.launchShape(origin.x(), origin.y(), origin.z(), direction.x(), direction.y(), direction.z());
     }
 
     private void configureCamera(Box3DSampleCamera sampleCamera) {
@@ -599,8 +604,9 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         boolean justReleased = !leftPressed && dragButtonDown;
         if(!leftPressed) {
             if(justReleased && throwClickPending) {
-                pickRay(throwClickX, throwClickY, throwRayOrigin, throwRayDirection);
-                throwShape(throwRayOrigin, throwRayDirection);
+                camera.getPickRay(throwClickX, throwClickY,
+                        0.0f, 0.0f, displayWidth(), displayHeight(), throwRay);
+                throwShape(throwRay);
             }
             bodyDrag.end();
             dragButtonDown = false;
@@ -623,15 +629,18 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
 
         if(bodyDrag.isEnabled() && ctrlPressed && (!overUi || bodyDrag.isDragging())) {
             throwClickPending = false;
-            pickRay(pointerX, pointerY, dragRayOrigin, dragRayDirection);
+            camera.getPickRay(pointerX, pointerY,
+                    0.0f, 0.0f, displayWidth(), displayHeight(), dragRay);
+            Vector3 origin = dragRay.origin();
+            Vector3 direction = dragRay.direction();
             boolean canStart = !bodyDrag.isDragging() && !overUi;
             if(canStart) {
-                bodyDrag.begin(controller.world(), dragRayOrigin[0], dragRayOrigin[1], dragRayOrigin[2],
-                        dragRayDirection[0], dragRayDirection[1], dragRayDirection[2]);
+                bodyDrag.begin(controller.world(), origin.x(), origin.y(), origin.z(),
+                        direction.x(), direction.y(), direction.z());
             }
             else {
-                bodyDrag.updateTarget(dragRayOrigin[0], dragRayOrigin[1], dragRayOrigin[2], dragRayDirection[0],
-                        dragRayDirection[1], dragRayDirection[2]);
+                bodyDrag.updateTarget(origin.x(), origin.y(), origin.z(),
+                        direction.x(), direction.y(), direction.z());
             }
         }
         else {
@@ -650,64 +659,6 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         bodyDrag.end();
         dragButtonDown = false;
         throwClickPending = false;
-    }
-
-    private void pickRay(int screenX, int screenY, float[] origin, float[] direction) {
-        float width = Math.max(1.0f, framebufferWidth());
-        float height = Math.max(1.0f, framebufferHeight());
-        float ndcX = screenX / width * 2.0f - 1.0f;
-        float ndcY = 1.0f - screenY / height * 2.0f;
-
-        float forwardX = camera.direction().x();
-        float forwardY = camera.direction().y();
-        float forwardZ = camera.direction().z();
-        float upX = camera.up().x();
-        float upY = camera.up().y();
-        float upZ = camera.up().z();
-
-        float rightX = forwardY * upZ - forwardZ * upY;
-        float rightY = forwardZ * upX - forwardX * upZ;
-        float rightZ = forwardX * upY - forwardY * upX;
-        float rightInvLength = inverseLength(rightX, rightY, rightZ);
-        if(rightInvLength == 0.0f) {
-            rightX = 1.0f;
-            rightY = 0.0f;
-            rightZ = 0.0f;
-        }
-        else {
-            rightX *= rightInvLength;
-            rightY *= rightInvLength;
-            rightZ *= rightInvLength;
-        }
-
-        upX = rightY * forwardZ - rightZ * forwardY;
-        upY = rightZ * forwardX - rightX * forwardZ;
-        upZ = rightX * forwardY - rightY * forwardX;
-        float upInvLength = inverseLength(upX, upY, upZ);
-        if(upInvLength != 0.0f) {
-            upX *= upInvLength;
-            upY *= upInvLength;
-            upZ *= upInvLength;
-        }
-
-        float verticalScale = (float)Math.tan(Math.toRadians(camera.fieldOfView()) * 0.5f);
-        float horizontalScale = verticalScale * (width / height);
-        float rayX = forwardX + rightX * ndcX * horizontalScale + upX * ndcY * verticalScale;
-        float rayY = forwardY + rightY * ndcX * horizontalScale + upY * ndcY * verticalScale;
-        float rayZ = forwardZ + rightZ * ndcX * horizontalScale + upZ * ndcY * verticalScale;
-        float rayInvLength = inverseLength(rayX, rayY, rayZ);
-
-        origin[0] = camera.position().x();
-        origin[1] = camera.position().y();
-        origin[2] = camera.position().z();
-        direction[0] = rayInvLength != 0.0f ? rayX * rayInvLength : forwardX;
-        direction[1] = rayInvLength != 0.0f ? rayY * rayInvLength : forwardY;
-        direction[2] = rayInvLength != 0.0f ? rayZ * rayInvLength : forwardZ;
-    }
-
-    private static float inverseLength(float x, float y, float z) {
-        float length = (float)Math.sqrt(x * x + y * y + z * z);
-        return length > 0.000001f ? 1.0f / length : 0.0f;
     }
 
     private void updateFps(float deltaSeconds) {
@@ -840,6 +791,16 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
 
     private int framebufferHeight() {
         int height = display.framebufferHeight() > 0 ? display.framebufferHeight() : display.height();
+        return height > 0 ? height : 540;
+    }
+
+    private int displayWidth() {
+        int width = display.width() > 0 ? display.width() : display.framebufferWidth();
+        return width > 0 ? width : 960;
+    }
+
+    private int displayHeight() {
+        int height = display.height() > 0 ? display.height() : display.framebufferHeight();
         return height > 0 ? height : 540;
     }
 }
