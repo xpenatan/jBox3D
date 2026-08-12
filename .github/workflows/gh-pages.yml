@@ -46,6 +46,14 @@ jobs:
           test -f box3d/builder/build/c++/libs/emscripten/box3d.js
           test -f box3d/builder/build/c++/libs/emscripten/box3d.wasm
 
+      - name: Build libFDX web samples
+        run: |
+          ./gradlew --no-daemon \
+            :samples:fdx:platforms:web:box3d_fdx_webgl_js_build \
+            :samples:fdx:platforms:web:box3d_fdx_webgl_wasm_build \
+            :samples:fdx:platforms:web:box3d_fdx_webgpu_js_build \
+            :samples:fdx:platforms:web:box3d_fdx_webgpu_wasm_build
+
       - name: Build libGDX web samples
         run: |
           ./gradlew --no-daemon \
@@ -56,10 +64,14 @@ jobs:
         run: |
           pages_dir="samples/gdx/gl/platforms/web/build/pages"
           rm -rf "$pages_dir"
-          mkdir -p "$pages_dir/gdx/gl/js" "$pages_dir/gdx/gl/wasm"
+          mkdir -p "$pages_dir/fdx/js" "$pages_dir/fdx/wasm" \
+            "$pages_dir/gdx/gl/js" "$pages_dir/gdx/gl/wasm"
+          cp -R samples/fdx/platforms/web/build/dist/web-js/webapp/. "$pages_dir/fdx/js/"
+          cp -R samples/fdx/platforms/web/build/dist/web-wasm/webapp/. "$pages_dir/fdx/wasm/"
           cp -R samples/gdx/gl/platforms/web/build/dist/js/webapp/. "$pages_dir/gdx/gl/js/"
           cp -R samples/gdx/gl/platforms/web/build/dist/wasm/webapp/. "$pages_dir/gdx/gl/wasm/"
-          rm -rf "$pages_dir/gdx/gl/js/WEB-INF" "$pages_dir/gdx/gl/wasm/WEB-INF"
+          rm -rf "$pages_dir/fdx/js/WEB-INF" "$pages_dir/fdx/wasm/WEB-INF" \
+            "$pages_dir/gdx/gl/js/WEB-INF" "$pages_dir/gdx/gl/wasm/WEB-INF"
           cp samples/gdx/gl/platforms/web/src/main/pages/index.html "$pages_dir/index.html"
 
       - name: Upload GitHub Pages artifact

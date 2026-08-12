@@ -86,13 +86,9 @@
       transition: border-color 140ms ease, transform 140ms ease;
     }
 
-    .card:not(.todo):hover {
+    .card:hover {
       border-color: var(--accent-2);
       transform: translateY(-2px);
-    }
-
-    .card.todo {
-      opacity: 0.62;
     }
 
     .tag {
@@ -105,11 +101,6 @@
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-    }
-
-    .todo .tag {
-      border-color: rgba(89, 186, 241, 0.35);
-      color: var(--accent);
     }
 
     h2 {
@@ -128,6 +119,26 @@
     </header>
 
     <section class="grid" aria-label="Available sample builds">
+      <a class="card" href="fdx/js/">
+        <span class="tag">Live</span>
+        <h2>libFDX WebGL JS</h2>
+      </a>
+
+      <a class="card" href="fdx/wasm/">
+        <span class="tag">Live</span>
+        <h2>libFDX WebGL Wasm</h2>
+      </a>
+
+      <a class="card" href="fdx/js/webgpu.html">
+        <span class="tag">Live</span>
+        <h2>libFDX WebGPU JS</h2>
+      </a>
+
+      <a class="card" href="fdx/wasm/webgpu.html">
+        <span class="tag">Live</span>
+        <h2>libFDX WebGPU Wasm</h2>
+      </a>
+
       <a class="card" href="gdx/gl/js/">
         <span class="tag">Live</span>
         <h2>libGDX WebGL JS</h2>
@@ -137,26 +148,6 @@
         <span class="tag">Live</span>
         <h2>libGDX WebGL Wasm</h2>
       </a>
-
-      <div class="card todo" aria-disabled="true">
-        <span class="tag">TODO</span>
-        <h2>libFDX WebGL JS</h2>
-      </div>
-
-      <div class="card todo" aria-disabled="true">
-        <span class="tag">TODO</span>
-        <h2>libFDX WebGL Wasm</h2>
-      </div>
-
-      <div class="card todo" aria-disabled="true">
-        <span class="tag">TODO</span>
-        <h2>libFDX WebGPU JS</h2>
-      </div>
-
-      <div class="card todo" aria-disabled="true">
-        <span class="tag">TODO</span>
-        <h2>libFDX WebGPU Wasm</h2>
-      </div>
     </section>
   </main>
 </body>
