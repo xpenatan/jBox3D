@@ -39,6 +39,13 @@ android {
     }
 }
 
+// AGP 9.1's bundled Dokka cannot parse JDK 25 versions. This packaging-only
+// module has no Java or Kotlin sources, so retain the empty javadoc artifact
+// while skipping the incompatible documentation generation work.
+tasks.matching { task -> task.name == "javaDocReleaseGeneration" }.configureEach {
+    enabled = false
+}
+
 dependencies {
     api(project(":box3d:shared:jni"))
     api(libs.bundles.jParserAndroidJni)
