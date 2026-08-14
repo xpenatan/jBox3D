@@ -49,6 +49,11 @@ public final class GdxGlSampleRenderer implements Box3DGdxSampleRenderer {
     }
 
     @Override
+    public void setDrawDistance(float drawDistance) {
+        renderer.setDrawDistance(drawDistance);
+    }
+
+    @Override
     public B3DebugDrawEm debugDraw() {
         return renderer;
     }

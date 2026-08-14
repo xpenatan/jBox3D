@@ -14,7 +14,11 @@ dependencies {
     implementation(libs.bundles.fdxWeb)
 }
 
+val sharedSampleResourcesDir = project(":samples:shared").layout.buildDirectory.dir("resources/main")
+
 libfdx {
+    assets(sharedSampleResourcesDir)
+
     js {
         mainClass.set("com.github.xpenatan.box3d.sample.fdx.web.Box3DFdxWebJsLauncher")
         htmlTitle.set("jBox3D libfdx - WebGL JS")
@@ -33,6 +37,10 @@ libfdx {
 
 val jsWebappDir = layout.buildDirectory.dir("dist/web-js/webapp")
 val wasmWebappDir = layout.buildDirectory.dir("dist/web-wasm/webapp")
+
+tasks.matching { it.name == "libfdx_web_js_prepare" || it.name == "libfdx_web_wasm_prepare" }.configureEach {
+    dependsOn(":samples:shared:processResources")
+}
 
 fun registerBox3DRuntimeScriptCopy(
     taskName: String,
@@ -197,14 +205,5 @@ fun writeWebGpuPage(
         defaultArgs,
         "mainClassArgs: [\"--graphics=webgpu\"],"
     )
-    val spreadEntryCall = "return entry.apply(root, config.mainClassArgs);"
-    if(!loaderWithGraphicsArg.contains(spreadEntryCall)) {
-        throw GradleException("Could not configure WebGPU entry arguments in ${loaderFile.absolutePath}")
-    }
-    outputLoaderFile.writeText(
-        loaderWithGraphicsArg.replace(
-            spreadEntryCall,
-            "return entry(config.mainClassArgs);"
-        )
-    )
+    outputLoaderFile.writeText(loaderWithGraphicsArg)
 }

@@ -52,6 +52,7 @@ import java.nio.charset.StandardCharsets;
 public final class Box3DFdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
     private static final int SELECTOR_HIT_WIDTH = 310;
     private static final float FPS_UPDATE_INTERVAL = 0.25f;
+    private static final float SAMPLE_DRAW_DISTANCE_MARGIN = 100.0f;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS = 12;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS_SQUARED =
             THROW_CLICK_MAX_DRAG_PIXELS * THROW_CLICK_MAX_DRAG_PIXELS;
@@ -183,6 +184,7 @@ public final class Box3DFdxSampleApplication extends ApplicationAdapter implemen
         else {
             debugRenderer.clearShapeCache();
         }
+        debugRenderer.setDrawDistance(entry.camera().radius + SAMPLE_DRAW_DISTANCE_MARGIN);
         bodyDrag.end();
         if(!preserveCameraOnSampleChange) {
             configureCamera(entry.camera());

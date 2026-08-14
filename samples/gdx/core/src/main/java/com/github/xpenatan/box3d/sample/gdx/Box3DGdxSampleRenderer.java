@@ -20,5 +20,7 @@ public interface Box3DGdxSampleRenderer extends Disposable {
 
     void setShadowBias(float shadowBias);
 
+    void setDrawDistance(float drawDistance);
+
     B3DebugDrawEm debugDraw();
 }

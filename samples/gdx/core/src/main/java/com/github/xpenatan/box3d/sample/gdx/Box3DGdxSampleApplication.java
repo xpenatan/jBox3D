@@ -48,6 +48,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private static final float FLY_LOOK_RADIANS_PER_PIXEL = 0.0026f;
     private static final float FLY_SPEED = 10.0f;
     private static final float FLY_MAX_PITCH = (float)Math.toRadians(89.0f);
+    private static final float SAMPLE_DRAW_DISTANCE_MARGIN = 100.0f;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS = 12;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS_SQUARED =
             THROW_CLICK_MAX_DRAG_PIXELS * THROW_CLICK_MAX_DRAG_PIXELS;
@@ -174,6 +175,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         else {
             debugRenderer.clearShapeCache();
         }
+        debugRenderer.setDrawDistance(entry.camera().radius + SAMPLE_DRAW_DISTANCE_MARGIN);
         bodyDrag.end();
         if(!preserveCameraOnSampleChange) {
             configureCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), entry.camera());

@@ -36,6 +36,7 @@ final class Box3DFdxWebLauncherSupport {
     private static void applySampleOptions(String[] args) {
         setPropertyFromOption(args, "--sample=", "jbox3d.sample.sample");
         setPropertyFromOption(args, "--sample-index=", "jbox3d.sample.sampleIndex");
+        setPropertyFromOption(args, "--validate-all=", "jbox3d.sample.validateAll");
     }
 
     private static void setPropertyFromOption(String[] args, String prefix, String property) {

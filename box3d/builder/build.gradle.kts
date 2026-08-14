@@ -116,3 +116,34 @@ jParser {
         }
     }
 }
+
+tasks.matching { it.name == "jParser_build_web_wasm" }.configureEach {
+    doLast {
+        val customFilterFile = project.file(
+            "../web/wasm/src/main/java/gen/web/com/github/xpenatan/box3d/B3CustomFilterEm.java"
+        )
+        val generated = customFilterFile.readText()
+        val callbackMethod = "public boolean Filter(int shapeIdA, int shapeIdB) {"
+        val callbackInterface = "boolean Filter(int shapeIdA, int shapeIdB);"
+        check(generated.contains(callbackMethod) && generated.contains(callbackInterface)) {
+            "The generated web custom-filter callback signature has changed"
+        }
+        customFilterFile.writeText(
+            generated
+                .replace(
+                    callbackMethod,
+                    "public boolean Filter(org.teavm.jso.core.JSBigInt shapeIdA, " +
+                        "org.teavm.jso.core.JSBigInt shapeIdB) {"
+                )
+                .replace(
+                    "return internal_Filter(shapeIdA, shapeIdB);",
+                    "return internal_Filter(shapeIdA.longValue(), shapeIdB.longValue());"
+                )
+                .replace(
+                    callbackInterface,
+                    "boolean Filter(org.teavm.jso.core.JSBigInt shapeIdA, " +
+                        "org.teavm.jso.core.JSBigInt shapeIdB);"
+                )
+        )
+    }
+}

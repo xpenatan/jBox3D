@@ -189,6 +189,16 @@ libFDX OpenGL and WebGPU:
 .\gradlew.bat :samples:fdx:platforms:web:box3d_fdx_webgpu_wasm_run
 ```
 
+Stage the complete GitHub Pages site with renderer and runtime directory levels:
+
+```powershell
+.\gradlew.bat :samples:gdx:gl:platforms:web:box3d_web_samples_pages_build
+```
+
+The libFDX pages are written to `fdx/gl/js/`, `fdx/gl/wasm/`,
+`fdx/webgpu/js/`, and `fdx/webgpu/wasm/`. Each directory has its own
+`index.html`; public URLs do not use `webgpu.html`.
+
 ### Android
 
 Build the JNI runtime, then install and launch a sample through `adb`:

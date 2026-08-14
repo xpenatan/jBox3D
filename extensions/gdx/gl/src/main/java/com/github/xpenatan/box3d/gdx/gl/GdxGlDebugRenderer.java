@@ -110,6 +110,7 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     private boolean drawWireframe = true;
     private boolean shadowsEnabled = true;
     private float shadowBias = DEFAULT_SHADOW_BIAS;
+    private float drawDistance = DEFAULT_DRAW_DISTANCE;
     private int lineCommandCount;
     private int visibleInstanceCount;
     private int shadowInstanceCount;
@@ -232,11 +233,10 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     }
 
     private void updateDrawingBounds(Camera camera) {
-        // Match Camera::DrawBounds in the pinned Box3D sample. The draw/cull
-        // distance is deliberately independent of the projection far plane;
+        // Keep the draw/cull distance independent of the projection far plane;
         // using camera.far here makes large compounds such as Village submit
-        // their entire world instead of only nearby children.
-        float drawDistance = DEFAULT_DRAW_DISTANCE;
+        // their entire world instead of only nearby children. Sample hosts can
+        // configure this distance for cameras whose initial radius exceeds the default.
         drawingLowerBound.Set(drawOrigin.x - drawDistance, drawOrigin.y - drawDistance,
                 drawOrigin.z - drawDistance);
         drawingUpperBound.Set(drawOrigin.x + drawDistance, drawOrigin.y + drawDistance,
@@ -300,6 +300,17 @@ public class GdxGlDebugRenderer extends B3DebugDrawEm {
     public void setShadowBias(float shadowBias) {
         this.shadowBias = Math.max(0.0f, shadowBias);
         modelShaderProvider.setShadowBias(this.shadowBias);
+    }
+
+    public float getDrawDistance() {
+        return drawDistance;
+    }
+
+    public void setDrawDistance(float drawDistance) {
+        if(!Float.isFinite(drawDistance) || drawDistance <= 0.0f) {
+            throw new GdxRuntimeException("Debug draw distance must be finite and greater than zero");
+        }
+        this.drawDistance = drawDistance;
     }
 
     public void setSolidColor(float red, float green, float blue, float alpha) {
