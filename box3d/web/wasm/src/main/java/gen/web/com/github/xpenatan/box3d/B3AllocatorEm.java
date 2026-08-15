@@ -42,14 +42,14 @@ public class B3AllocatorEm extends NativeObject {
     private void setupCallback() {
         Allocate Allocate = new Allocate() {
 
-            public int Allocate(int size, int alignment) {
-                return (int)internal_Allocate(size, alignment);
+            public long Allocate(int size, int alignment) {
+                return internal_Allocate(size, alignment);
             }
         };
         Free Free = new Free() {
 
-            public void Free(org.teavm.jso.core.JSBigInt address) {
-                internal_Free(address.longValue());
+            public void Free(int address) {
+                internal_Free(address);
             }
         };
         internal_native_setupCallback(native_address, Allocate, Free);
@@ -79,12 +79,12 @@ public class B3AllocatorEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface Allocate extends org.teavm.jso.JSObject {
 
-        int Allocate(int size, int alignment);
+        long Allocate(int size, int alignment);
     }
 
     @org.teavm.jso.JSFunctor()
     public interface Free extends org.teavm.jso.JSObject {
 
-        void Free(org.teavm.jso.core.JSBigInt address);
+        void Free(int address);
     }
 }

@@ -44,8 +44,8 @@ public class B3TreeBoxCastCallbackEm extends NativeObject {
     private void setupCallback() {
         BoxCast BoxCast = new BoxCast() {
 
-            public float BoxCast(int input_addr, int proxyId, org.teavm.jso.core.JSBigInt userData) {
-                return internal_BoxCast(input_addr, proxyId, userData.longValue());
+            public float BoxCast(int input_addr, int proxyId, int userData) {
+                return internal_BoxCast(input_addr, proxyId, userData);
             }
         };
         internal_native_setupCallback(native_address, BoxCast);
@@ -71,6 +71,6 @@ public class B3TreeBoxCastCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface BoxCast extends org.teavm.jso.JSObject {
 
-        float BoxCast(int input_addr, int proxyId, org.teavm.jso.core.JSBigInt userData);
+        float BoxCast(int input_addr, int proxyId, int userData);
     }
 }

@@ -42,8 +42,8 @@ public class B3TreeQueryCallbackEm extends NativeObject {
     private void setupCallback() {
         Query Query = new Query() {
 
-            public boolean Query(int proxyId, org.teavm.jso.core.JSBigInt userData) {
-                return internal_Query(proxyId, userData.longValue());
+            public boolean Query(int proxyId, int userData) {
+                return internal_Query(proxyId, userData);
             }
         };
         internal_native_setupCallback(native_address, Query);
@@ -66,6 +66,6 @@ public class B3TreeQueryCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface Query extends org.teavm.jso.JSObject {
 
-        boolean Query(int proxyId, org.teavm.jso.core.JSBigInt userData);
+        boolean Query(int proxyId, int userData);
     }
 }

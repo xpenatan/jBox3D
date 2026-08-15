@@ -42,8 +42,8 @@ public class B3RestitutionCallbackEm extends NativeObject {
     private void setupCallback() {
         MixRestitution MixRestitution = new MixRestitution() {
 
-            public float MixRestitution(float restitutionA, org.teavm.jso.core.JSBigInt userMaterialIdA, float restitutionB, org.teavm.jso.core.JSBigInt userMaterialIdB) {
-                return internal_MixRestitution(restitutionA, userMaterialIdA.longValue(), restitutionB, userMaterialIdB.longValue());
+            public float MixRestitution(float restitutionA, int userMaterialIdA, float restitutionB, int userMaterialIdB) {
+                return internal_MixRestitution(restitutionA, userMaterialIdA, restitutionB, userMaterialIdB);
             }
         };
         internal_native_setupCallback(native_address, MixRestitution);
@@ -66,6 +66,6 @@ public class B3RestitutionCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface MixRestitution extends org.teavm.jso.JSObject {
 
-        float MixRestitution(float restitutionA, org.teavm.jso.core.JSBigInt userMaterialIdA, float restitutionB, org.teavm.jso.core.JSBigInt userMaterialIdB);
+        float MixRestitution(float restitutionA, int userMaterialIdA, float restitutionB, int userMaterialIdB);
     }
 }

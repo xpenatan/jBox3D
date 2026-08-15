@@ -46,8 +46,8 @@ public class B3PreSolveCallbackEm extends NativeObject {
     private void setupCallback() {
         PreSolve PreSolve = new PreSolve() {
 
-            public boolean PreSolve(org.teavm.jso.core.JSBigInt shapeIdA, org.teavm.jso.core.JSBigInt shapeIdB, int point_addr, int normal_addr) {
-                return internal_PreSolve(shapeIdA.longValue(), shapeIdB.longValue(), point_addr, normal_addr);
+            public boolean PreSolve(int shapeIdA, int shapeIdB, int point_addr, int normal_addr) {
+                return internal_PreSolve(shapeIdA, shapeIdB, point_addr, normal_addr);
             }
         };
         internal_native_setupCallback(native_address, PreSolve);
@@ -76,6 +76,6 @@ public class B3PreSolveCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface PreSolve extends org.teavm.jso.JSObject {
 
-        boolean PreSolve(org.teavm.jso.core.JSBigInt shapeIdA, org.teavm.jso.core.JSBigInt shapeIdB, int point_addr, int normal_addr);
+        boolean PreSolve(int shapeIdA, int shapeIdB, int point_addr, int normal_addr);
     }
 }

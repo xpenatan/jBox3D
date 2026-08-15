@@ -42,8 +42,8 @@ public class B3FrictionCallbackEm extends NativeObject {
     private void setupCallback() {
         MixFriction MixFriction = new MixFriction() {
 
-            public float MixFriction(float frictionA, org.teavm.jso.core.JSBigInt userMaterialIdA, float frictionB, org.teavm.jso.core.JSBigInt userMaterialIdB) {
-                return internal_MixFriction(frictionA, userMaterialIdA.longValue(), frictionB, userMaterialIdB.longValue());
+            public float MixFriction(float frictionA, int userMaterialIdA, float frictionB, int userMaterialIdB) {
+                return internal_MixFriction(frictionA, userMaterialIdA, frictionB, userMaterialIdB);
             }
         };
         internal_native_setupCallback(native_address, MixFriction);
@@ -66,6 +66,6 @@ public class B3FrictionCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface MixFriction extends org.teavm.jso.JSObject {
 
-        float MixFriction(float frictionA, org.teavm.jso.core.JSBigInt userMaterialIdA, float frictionB, org.teavm.jso.core.JSBigInt userMaterialIdB);
+        float MixFriction(float frictionA, int userMaterialIdA, float frictionB, int userMaterialIdB);
     }
 }

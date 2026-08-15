@@ -44,8 +44,8 @@ public class B3TreeRayCastCallbackEm extends NativeObject {
     private void setupCallback() {
         RayCast RayCast = new RayCast() {
 
-            public float RayCast(int input_addr, int proxyId, org.teavm.jso.core.JSBigInt userData) {
-                return internal_RayCast(input_addr, proxyId, userData.longValue());
+            public float RayCast(int input_addr, int proxyId, int userData) {
+                return internal_RayCast(input_addr, proxyId, userData);
             }
         };
         internal_native_setupCallback(native_address, RayCast);
@@ -71,6 +71,6 @@ public class B3TreeRayCastCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface RayCast extends org.teavm.jso.JSObject {
 
-        float RayCast(int input_addr, int proxyId, org.teavm.jso.core.JSBigInt userData);
+        float RayCast(int input_addr, int proxyId, int userData);
     }
 }

@@ -42,8 +42,8 @@ public class B3TreeClosestCallbackEm extends NativeObject {
     private void setupCallback() {
         QueryClosest QueryClosest = new QueryClosest() {
 
-            public float QueryClosest(float distanceSquaredMin, int proxyId, org.teavm.jso.core.JSBigInt userData) {
-                return internal_QueryClosest(distanceSquaredMin, proxyId, userData.longValue());
+            public float QueryClosest(float distanceSquaredMin, int proxyId, int userData) {
+                return internal_QueryClosest(distanceSquaredMin, proxyId, userData);
             }
         };
         internal_native_setupCallback(native_address, QueryClosest);
@@ -66,6 +66,6 @@ public class B3TreeClosestCallbackEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface QueryClosest extends org.teavm.jso.JSObject {
 
-        float QueryClosest(float distanceSquaredMin, int proxyId, org.teavm.jso.core.JSBigInt userData);
+        float QueryClosest(float distanceSquaredMin, int proxyId, int userData);
     }
 }
