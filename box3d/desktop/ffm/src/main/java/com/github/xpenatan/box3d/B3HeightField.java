@@ -17,6 +17,8 @@ import java.lang.invoke.MethodHandle;
 
 public final class B3HeightField extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     static public final B3HeightField NULL = B3HeightField.native_new();
 
     public B3HeightField() {
@@ -58,6 +60,23 @@ public final class B3HeightField extends NativeObject {
         }
     }
 
+    public static B3HeightField CreateFromDef(B3HeightFieldDef def) {
+        long addr = internal_native_CreateFromDef_addr(def.native_address);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    public static long internal_native_CreateFromDef_addr(long def_addr) {
+        try {
+            return (long) FFMHandles.internal_native_CreateFromDef_addr__J.invokeExact(def_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public static B3HeightField CreateGrid(int rowCount, int columnCount, B3Vec3 scale, boolean makeHoles) {
         long addr = internal_native_CreateGrid_addr(rowCount, columnCount, scale.native_address, makeHoles);
         if (addr == 0)
@@ -92,6 +111,23 @@ public final class B3HeightField extends NativeObject {
         }
     }
 
+    public static B3HeightField Load(String fileName) {
+        long addr = internal_native_Load_addr(fileName);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    public static long internal_native_Load_addr(String fileName) {
+        try {
+            return (long) FFMHandles.internal_native_Load_addr__Ljava_lang_String_2.invokeExact(com.github.xpenatan.jparser.runtime.helper.NativeUtils.toCString(fileName));
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public boolean IsValid() {
         return internal_native_IsValid(native_address);
     }
@@ -116,18 +152,70 @@ public final class B3HeightField extends NativeObject {
         }
     }
 
+    public int GetRowCount() {
+        return internal_native_GetRowCount(native_address);
+    }
+
+    public static int internal_native_GetRowCount(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetRowCount__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public int GetColumnCount() {
+        return internal_native_GetColumnCount(native_address);
+    }
+
+    public static int internal_native_GetColumnCount(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetColumnCount__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetScale() {
+        long addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetScale_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetScale_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3heightfield_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_deleteNative__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3heightfield_deletenative", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_CreateFromDef_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3heightfield_createfromdef_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_CreateGrid_addr__IIJZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3heightfield_creategrid_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 
         static final java.lang.invoke.MethodHandle internal_native_CreateWave_addr__IIJFFZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3heightfield_createwave_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_BOOLEAN));
 
+        static final java.lang.invoke.MethodHandle internal_native_Load_addr__Ljava_lang_String_2 = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3heightfield_load_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.ADDRESS));
+
         static final java.lang.invoke.MethodHandle internal_native_IsValid__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3heightfield_isvalid", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_Destroy__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3heightfield_destroy", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRowCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3heightfield_getrowcount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetColumnCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3heightfield_getcolumncount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetScale_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3heightfield_getscale_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
     }
 }

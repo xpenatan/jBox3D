@@ -10,6 +10,8 @@ import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3HeightField extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     static public final B3HeightField NULL = B3HeightField.native_new();
 
     public B3HeightField() {
@@ -41,6 +43,18 @@ public final class B3HeightField extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3HeightField);box3d.destroy(jsObj);")
     public static native void internal_native_deleteNative(int this_addr);
 
+    public static B3HeightField CreateFromDef(B3HeightFieldDef def) {
+        int addr = internal_native_CreateFromDef_addr(def.native_address);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"def_addr"}, script = "var returnedJSObj = box3d.B3HeightField.prototype.CreateFromDef(def_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_CreateFromDef_addr(int def_addr);
+
     public static B3HeightField CreateGrid(int rowCount, int columnCount, B3Vec3 scale, boolean makeHoles) {
         int addr = internal_native_CreateGrid_addr(rowCount, columnCount, scale.native_address, makeHoles);
         if (addr == 0)
@@ -65,6 +79,18 @@ public final class B3HeightField extends NativeObject {
     @org.teavm.jso.JSBody(params = {"rowCount", "columnCount", "scale_addr", "rowFrequency", "columnFrequency", "makeHoles"}, script = "var returnedJSObj = box3d.B3HeightField.prototype.CreateWave(rowCount, columnCount, scale_addr, rowFrequency, columnFrequency, makeHoles);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
     public static native int internal_native_CreateWave_addr(int rowCount, int columnCount, int scale_addr, float rowFrequency, float columnFrequency, boolean makeHoles);
 
+    public static B3HeightField Load(String fileName) {
+        int addr = internal_native_Load_addr(fileName);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"fileName"}, script = "var returnedJSObj = box3d.B3HeightField.prototype.Load(fileName);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_Load_addr(String fileName);
+
     public boolean IsValid() {
         return internal_native_IsValid(native_address);
     }
@@ -78,4 +104,31 @@ public final class B3HeightField extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3HeightField);jsObj.Destroy();")
     public static native void internal_native_Destroy(int this_addr);
+
+    public int GetRowCount() {
+        return internal_native_GetRowCount(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3HeightField);var returnedJSObj = jsObj.GetRowCount();return returnedJSObj;")
+    public static native int internal_native_GetRowCount(int this_addr);
+
+    public int GetColumnCount() {
+        return internal_native_GetColumnCount(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3HeightField);var returnedJSObj = jsObj.GetColumnCount();return returnedJSObj;")
+    public static native int internal_native_GetColumnCount(int this_addr);
+
+    public B3Vec3 GetScale() {
+        int addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3HeightField);var returnedJSObj = jsObj.GetScale();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetScale_addr(int this_addr);
 }

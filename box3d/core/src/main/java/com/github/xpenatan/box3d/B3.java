@@ -34,6 +34,30 @@ public final class B3 extends NativeObject {
         return 0;
     }
 
+    public static B3CosSin ComputeCosSin(float radians) {
+        return null;
+    }
+
+    public static B3Quat MakeQuatFromMatrix(B3Matrix3 matrix) {
+        return null;
+    }
+
+    public static B3Matrix3 Steiner(float mass, B3Vec3 origin) {
+        return null;
+    }
+
+    public static B3Vec3 PointToSegmentDistance(B3Vec3 a, B3Vec3 b, B3Vec3 q) {
+        return null;
+    }
+
+    public static B3SegmentDistanceResult LineDistance(B3Vec3 p1, B3Vec3 d1, B3Vec3 p2, B3Vec3 d2) {
+        return null;
+    }
+
+    public static B3SegmentDistanceResult SegmentDistance(B3Vec3 p1, B3Vec3 q1, B3Vec3 p2, B3Vec3 q2) {
+        return null;
+    }
+
     public static boolean IsValidFloat(float value) {
         return false;
     }
@@ -47,6 +71,26 @@ public final class B3 extends NativeObject {
     }
 
     public static boolean IsValidTransform(B3Transform value) {
+        return false;
+    }
+
+    public static boolean IsValidMatrix3(B3Matrix3 value) {
+        return false;
+    }
+
+    public static boolean IsValidPlane(B3Plane value) {
+        return false;
+    }
+
+    public static boolean IsValidPosition(B3Vec3 value) {
+        return false;
+    }
+
+    public static boolean IsValidWorldTransform(B3Transform value) {
+        return false;
+    }
+
+    public static boolean IsValidRay(B3RayCastInput value) {
         return false;
     }
 
@@ -134,6 +178,48 @@ public final class B3 extends NativeObject {
     }
 
     public static void SetStallThreshold(float seconds) {
+    }
+
+    public static int GetByteCount() {
+        return 0;
+    }
+
+    public static long GetTicks() {
+        return 0;
+    }
+
+    public static float GetMilliseconds(long ticks) {
+        return 0;
+    }
+
+    public static long Hash(long hash, B3ByteArray data) {
+        return 0;
+    }
+
+    public static int InternalAssert(String condition, String fileName, int lineNumber) {
+        return 0;
+    }
+
+    public static void SetAllocatorCallback(B3AllocatorEm callback) {
+    }
+
+    public static void SetAssertCallback(B3AssertCallbackEm callback) {
+    }
+
+    public static void SetLogCallback(B3LogCallbackEm callback) {
+    }
+
+    public static long AllocateMemory(int size, int alignment) {
+        return 0;
+    }
+
+    public static void FreeMemory(long address) {
+    }
+
+    public static void Yield() {
+    }
+
+    public static void Sleep(int milliseconds) {
     }
 
     public static long DefaultMaskBits() {

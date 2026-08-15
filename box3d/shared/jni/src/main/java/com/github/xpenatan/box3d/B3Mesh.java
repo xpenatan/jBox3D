@@ -10,6 +10,8 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Mesh extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     static public final B3Mesh NULL = B3Mesh.native_new();
 
     public B3Mesh() {
@@ -201,5 +203,40 @@ public final class B3Mesh extends NativeObject {
 
     public static void internal_native_SetTriangleMaterialIndex(long this_addr, int triangleIndex, int materialIndex) {
         com.github.xpenatan.box3d.natives.JNI_B3Mesh.internal_native_SetTriangleMaterialIndex(this_addr, triangleIndex, materialIndex);
+    }
+
+    public B3Vec3 GetScale() {
+        long addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetScale_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Mesh.internal_native_GetScale_addr(this_addr);
+    }
+
+    public int GetTreeHeight() {
+        return internal_native_GetTreeHeight(native_address);
+    }
+
+    public static int internal_native_GetTreeHeight(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Mesh.internal_native_GetTreeHeight(this_addr);
+    }
+
+    public B3MeshQueryResult Query(B3AABB bounds) {
+        long addr = internal_native_Query_addr(native_address, bounds.native_address);
+        if (addr == 0)
+            return B3MeshQueryResult.NULL;
+        B3MeshQueryResult B3MeshQueryResult_NEW = B3MeshQueryResult.native_new();
+        B3MeshQueryResult_NEW.internal_reset(addr, true);
+        return B3MeshQueryResult_NEW;
+    }
+
+    public static long internal_native_Query_addr(long this_addr, long bounds_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Mesh.internal_native_Query_addr(this_addr, bounds_addr);
     }
 }

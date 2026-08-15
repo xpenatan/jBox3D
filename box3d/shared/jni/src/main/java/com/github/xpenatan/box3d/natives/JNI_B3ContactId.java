@@ -23,4 +23,8 @@ final public class JNI_B3ContactId {
     public static native int internal_native_GetValue2(long this_addr);
 
     public static native boolean internal_native_IsNull(long this_addr);
+
+    public static native boolean internal_native_IsValid(long this_addr);
+
+    public static native long internal_native_GetData_addr(long this_addr);
 }

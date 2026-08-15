@@ -1,4 +1,14 @@
 [Prefix="JBox3D::"]
+interface B3ByteArray {
+    void B3ByteArray();
+    void B3ByteArray(long size);
+    long GetSize();
+    long GetValue(long index);
+    void SetValue(long index, long value);
+    void Resize(long size);
+};
+
+[Prefix="JBox3D::"]
 interface B3Vec3 {
     void B3Vec3();
     void B3Vec3(float x, float y, float z);
@@ -9,6 +19,13 @@ interface B3Vec3 {
     void SetY(float y);
     void SetZ(float z);
     void Set(float x, float y, float z);
+};
+
+[Prefix="JBox3D::"]
+interface B3CosSin {
+    void B3CosSin();
+    float GetCosine();
+    float GetSine();
 };
 
 [Prefix="JBox3D::"]
@@ -37,6 +54,46 @@ interface B3Transform {
     void SetQ([Const, Ref] B3Quat rotation);
     [Value] B3Vec3 TransformPoint([Const, Ref] B3Vec3 point);
     static B3Transform InvMul([Const, Ref] B3Transform a, [Const, Ref] B3Transform b); //[-NEW_OBJECT]
+};
+
+[Prefix="JBox3D::"]
+interface B3Matrix3 {
+    void B3Matrix3();
+    void B3Matrix3([Const, Ref] B3Vec3 columnX, [Const, Ref] B3Vec3 columnY, [Const, Ref] B3Vec3 columnZ);
+    [Value] B3Vec3 GetColumnX();
+    void SetColumnX([Const, Ref] B3Vec3 column);
+    [Value] B3Vec3 GetColumnY();
+    void SetColumnY([Const, Ref] B3Vec3 column);
+    [Value] B3Vec3 GetColumnZ();
+    void SetColumnZ([Const, Ref] B3Vec3 column);
+};
+
+[Prefix="JBox3D::"]
+interface B3Plane {
+    void B3Plane();
+    void B3Plane([Const, Ref] B3Vec3 normal, float offset);
+    [Value] B3Vec3 GetNormal();
+    void SetNormal([Const, Ref] B3Vec3 normal);
+    float GetOffset();
+    void SetOffset(float offset);
+};
+
+[Prefix="JBox3D::"]
+interface B3SegmentDistanceResult {
+    void B3SegmentDistanceResult();
+    [Value] B3Vec3 GetPoint1();
+    float GetFraction1();
+    [Value] B3Vec3 GetPoint2();
+    float GetFraction2();
+};
+
+[Prefix="JBox3D::"]
+interface B3Timer {
+    void B3Timer();
+    float GetMilliseconds();
+    float GetMillisecondsAndReset();
+    void Reset();
+    long long GetTicks();
 };
 
 [Prefix="JBox3D::"]
@@ -530,6 +587,59 @@ interface B3Capacity {
 };
 
 [Prefix="JBox3D::"]
+interface B3Profile {
+    void B3Profile();
+    float GetStep();
+    float GetPairs();
+    float GetCollide();
+    float GetSolve();
+    float GetSolverSetup();
+    float GetConstraints();
+    float GetPrepareConstraints();
+    float GetIntegrateVelocities();
+    float GetWarmStart();
+    float GetSolveImpulses();
+    float GetIntegratePositions();
+    float GetRelaxImpulses();
+    float GetApplyRestitution();
+    float GetStoreImpulses();
+    float GetSplitIslands();
+    float GetTransforms();
+    float GetSensorHits();
+    float GetJointEvents();
+    float GetHitEvents();
+    float GetRefit();
+    float GetBullets();
+    float GetSleepIslands();
+    float GetSensors();
+};
+
+[Prefix="JBox3D::"]
+interface B3Counters {
+    void B3Counters();
+    long GetBodyCount();
+    long GetShapeCount();
+    long GetContactCount();
+    long GetJointCount();
+    long GetIslandCount();
+    long GetStackUsed();
+    long GetArenaCapacity();
+    long GetStaticTreeHeight();
+    long GetTreeHeight();
+    long GetSatCallCount();
+    long GetSatCacheHitCount();
+    long GetByteCount();
+    long GetTaskCount();
+    long GetColorCount(long index);
+    long GetManifoldCount(long index);
+    long GetAwakeContactCount();
+    long GetRecycledContactCount();
+    long GetDistanceIterations();
+    long GetPushBackIterations();
+    long GetRootIterations();
+};
+
+[Prefix="JBox3D::"]
 interface B3ExplosionDef {
     void B3ExplosionDef();
     long long GetMaskBits();
@@ -647,6 +757,51 @@ interface B3ContactId {
     long GetValue1();
     long GetValue2();
     boolean IsNull();
+    boolean IsValid();
+    B3ContactData GetData(); //[-NEW_OBJECT]
+};
+
+[Prefix="JBox3D::"]
+interface B3ManifoldPoint {
+    void B3ManifoldPoint();
+    [Value] B3Vec3 GetAnchorA();
+    [Value] B3Vec3 GetAnchorB();
+    float GetSeparation();
+    float GetBaseSeparation();
+    float GetNormalImpulse();
+    float GetTotalNormalImpulse();
+    float GetNormalVelocity();
+    long GetFeatureId();
+    long GetTriangleIndex();
+    boolean GetPersisted();
+};
+
+[Prefix="JBox3D::"]
+interface B3Manifold {
+    void B3Manifold();
+    long GetPointCount();
+    [Value] B3ManifoldPoint GetPoint(long index);
+    [Value] B3Vec3 GetNormal();
+    float GetTwistImpulse();
+    [Value] B3Vec3 GetFrictionImpulse();
+    [Value] B3Vec3 GetRollingImpulse();
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactData {
+    void B3ContactData();
+    [Value] B3ContactId GetContactId();
+    long long GetShapeIdA();
+    long long GetShapeIdB();
+    long GetManifoldCount();
+    [Value] B3Manifold GetManifold(long index);
+};
+
+[Prefix="JBox3D::"]
+interface B3ContactDataArray {
+    void B3ContactDataArray();
+    long GetSize();
+    [Value] B3ContactData GetValue(long index);
 };
 
 [Prefix="JBox3D::"]
@@ -756,6 +911,87 @@ interface B3ContactEvents {
 };
 
 [Prefix="JBox3D::"]
+interface B3Recording {
+    void B3Recording();
+    void B3Recording(long byteCapacity);
+    static B3Recording Load([Const] DOMString path); //[-NEW_OBJECT]
+    boolean IsValid();
+    void Destroy();
+    long GetSize();
+    B3ByteArray GetData(); //[-NEW_OBJECT]
+    boolean Save([Const] DOMString path);
+    boolean ValidateReplay(long workerCount);
+};
+
+[Prefix="JBox3D::"]
+interface B3RecPlayerInfo {
+    void B3RecPlayerInfo();
+    long GetFrameCount();
+    long GetWorkerCount();
+    float GetTimeStep();
+    long GetSubStepCount();
+    float GetLengthScale();
+    [Value] B3AABB GetBounds();
+};
+
+[Prefix="JBox3D::"]
+interface B3RecQueryInfo {
+    void B3RecQueryInfo();
+    long GetType();
+    [Value] B3QueryFilter GetFilter();
+    [Value] B3AABB GetAABB();
+    [Value] B3Vec3 GetOrigin();
+    [Value] B3Vec3 GetTranslation();
+    long GetHitCount();
+    long long GetKey();
+    long long GetId();
+    void GetName([Ref] NativeString name);
+};
+
+[Prefix="JBox3D::"]
+interface B3RecQueryHit {
+    void B3RecQueryHit();
+    long long GetShapeId();
+    [Value] B3Vec3 GetPoint();
+    [Value] B3Vec3 GetNormal();
+    float GetFraction();
+};
+
+[Prefix="JBox3D::"]
+interface B3RecPlayer {
+    void B3RecPlayer();
+    void B3RecPlayer([Const, Ref] B3ByteArray data, long workerCount);
+    boolean IsValid();
+    void Destroy();
+    boolean StepFrame();
+    void SubStepFrame();
+    void Restart();
+    void SeekFrame(long targetFrame);
+    B3World GetWorld(); //[-NEW_OBJECT]
+    long long GetWorldId();
+    long GetFrame();
+    long GetFrameCount();
+    boolean IsAtEnd();
+    boolean IsAtPreStep();
+    boolean HasDiverged();
+    [Value] B3RecPlayerInfo GetInfo();
+    long GetDivergeFrame();
+    void SetWorkerCount(long count);
+    void SetKeyframePolicy(long long budgetBytes, long minIntervalFrames);
+    long long GetKeyframeBudget();
+    long GetKeyframeMinInterval();
+    long GetKeyframeInterval();
+    long long GetKeyframeBytes();
+    long GetBodyCount();
+    long long GetBodyId(long index);
+    void SetDebugShapeCallbacks();
+    void DrawFrameQueries(B3DebugDrawEm draw, long queryIndex, long selectedIndex);
+    long GetFrameQueryCount();
+    [Value] B3RecQueryInfo GetFrameQuery(long index);
+    [Value] B3RecQueryHit GetFrameQueryHit(long queryIndex, long hitIndex);
+};
+
+[Prefix="JBox3D::"]
 interface B3Vec3Array {
     void B3Vec3Array(long size);
     long GetSize();
@@ -833,6 +1069,114 @@ interface B3CastOutput {
     float GetFraction();
     long GetIterations();
     boolean GetHit();
+};
+
+[Prefix="JBox3D::"]
+interface B3RayCastInput {
+    void B3RayCastInput();
+    void B3RayCastInput([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation, float maxFraction);
+    [Value] B3Vec3 GetOrigin();
+    void SetOrigin([Const, Ref] B3Vec3 origin);
+    [Value] B3Vec3 GetTranslation();
+    void SetTranslation([Const, Ref] B3Vec3 translation);
+    float GetMaxFraction();
+    void SetMaxFraction(float fraction);
+};
+
+[Prefix="JBox3D::"]
+interface B3BoxCastInput {
+    void B3BoxCastInput();
+    void B3BoxCastInput([Const, Ref] B3AABB box, [Const, Ref] B3Vec3 translation, float maxFraction);
+    [Value] B3AABB GetBox();
+    void SetBox([Const, Ref] B3AABB box);
+    [Value] B3Vec3 GetTranslation();
+    void SetTranslation([Const, Ref] B3Vec3 translation);
+    float GetMaxFraction();
+    void SetMaxFraction(float fraction);
+};
+
+[Prefix="JBox3D::"]
+interface B3TreeStats {
+    void B3TreeStats();
+    long GetNodeVisits();
+    long GetLeafVisits();
+};
+
+[Prefix="JBox3D::"]
+interface B3TreeClosestResult {
+    void B3TreeClosestResult();
+    [Value] B3TreeStats GetStats();
+    float GetMinDistanceSquared();
+};
+
+[Prefix="JBox3D::"]
+interface B3TreeQueryCallbackEm {
+};
+
+[JSImplementation="B3TreeQueryCallbackEm"]
+interface B3TreeQueryCallbackImplCustom : B3TreeQueryCallbackEm {
+    void B3TreeQueryCallbackImplCustom();
+    boolean Query(long proxyId, long long userData);
+};
+
+[Prefix="JBox3D::"]
+interface B3TreeClosestCallbackEm {
+};
+
+[JSImplementation="B3TreeClosestCallbackEm"]
+interface B3TreeClosestCallbackImplCustom : B3TreeClosestCallbackEm {
+    void B3TreeClosestCallbackImplCustom();
+    float QueryClosest(float distanceSquaredMin, long proxyId, long long userData);
+};
+
+[Prefix="JBox3D::"]
+interface B3TreeRayCastCallbackEm {
+};
+
+[JSImplementation="B3TreeRayCastCallbackEm"]
+interface B3TreeRayCastCallbackImplCustom : B3TreeRayCastCallbackEm {
+    void B3TreeRayCastCallbackImplCustom();
+    float RayCast([Const, Ref] B3RayCastInput input, long proxyId, long long userData);
+};
+
+[Prefix="JBox3D::"]
+interface B3TreeBoxCastCallbackEm {
+};
+
+[JSImplementation="B3TreeBoxCastCallbackEm"]
+interface B3TreeBoxCastCallbackImplCustom : B3TreeBoxCastCallbackEm {
+    void B3TreeBoxCastCallbackImplCustom();
+    float BoxCast([Const, Ref] B3BoxCastInput input, long proxyId, long long userData);
+};
+
+[Prefix="JBox3D::"]
+interface B3DynamicTree {
+    void B3DynamicTree();
+    void B3DynamicTree(long proxyCapacity);
+    static B3DynamicTree Load([Const] DOMString fileName, float scale); //[-NEW_OBJECT]
+    boolean IsValid();
+    void Destroy();
+    long CreateProxy([Const, Ref] B3AABB aabb, long long categoryBits, long long userData);
+    void DestroyProxy(long proxyId);
+    void MoveProxy(long proxyId, [Const, Ref] B3AABB aabb);
+    void EnlargeProxy(long proxyId, [Const, Ref] B3AABB aabb);
+    void SetCategoryBits(long proxyId, long long categoryBits);
+    long long GetCategoryBits(long proxyId);
+    long long GetUserData(long proxyId);
+    [Value] B3AABB GetAABB(long proxyId);
+    [Value] B3TreeStats Query([Const, Ref] B3AABB aabb, long long maskBits, boolean requireAllBits, B3TreeQueryCallbackEm callback);
+    [Value] B3TreeClosestResult QueryClosest([Const, Ref] B3Vec3 point, long long maskBits, boolean requireAllBits, B3TreeClosestCallbackEm callback, float minDistanceSquared);
+    [Value] B3TreeStats RayCast([Const, Ref] B3RayCastInput input, long long maskBits, boolean requireAllBits, B3TreeRayCastCallbackEm callback);
+    [Value] B3TreeStats BoxCast([Const, Ref] B3BoxCastInput input, long long maskBits, boolean requireAllBits, B3TreeBoxCastCallbackEm callback);
+    long GetHeight();
+    float GetAreaRatio();
+    [Value] B3AABB GetRootBounds();
+    long GetProxyCount();
+    long Rebuild(boolean fullBuild);
+    long GetByteCount();
+    void Validate();
+    void ValidateNoEnlarged();
+    void Save([Const] DOMString fileName);
 };
 
 [Prefix="JBox3D::"]
@@ -953,6 +1297,22 @@ interface B3MeshDef {
 };
 
 [Prefix="JBox3D::"]
+interface B3MeshTriangle {
+    void B3MeshTriangle();
+    [Value] B3Vec3 GetA();
+    [Value] B3Vec3 GetB();
+    [Value] B3Vec3 GetC();
+    long GetTriangleIndex();
+};
+
+[Prefix="JBox3D::"]
+interface B3MeshQueryResult {
+    void B3MeshQueryResult();
+    long GetSize();
+    [Value] B3MeshTriangle GetValue(long index);
+};
+
+[Prefix="JBox3D::"]
 interface B3Mesh {
     void B3Mesh();
     static B3Mesh CreateFromDef([Const, Ref] B3MeshDef def); //[-NEW_OBJECT]
@@ -970,15 +1330,43 @@ interface B3Mesh {
     long GetMaterialCount();
     long GetTriangleMaterialIndex(long triangleIndex);
     void SetTriangleMaterialIndex(long triangleIndex, long materialIndex);
+    [Value] B3Vec3 GetScale();
+    long GetTreeHeight();
+    B3MeshQueryResult Query([Const, Ref] B3AABB bounds); //[-NEW_OBJECT]
+};
+
+[Prefix="JBox3D::"]
+interface B3HeightFieldDef {
+    void B3HeightFieldDef(long countX, long countZ);
+    long GetCountX();
+    long GetCountZ();
+    float GetHeight(long x, long z);
+    void SetHeight(long x, long z, float height);
+    long GetMaterialIndex(long x, long z);
+    void SetMaterialIndex(long x, long z, long materialIndex);
+    [Value] B3Vec3 GetScale();
+    void SetScale([Const, Ref] B3Vec3 scale);
+    float GetGlobalMinimumHeight();
+    void SetGlobalMinimumHeight(float height);
+    float GetGlobalMaximumHeight();
+    void SetGlobalMaximumHeight(float height);
+    boolean GetClockwiseWinding();
+    void SetClockwiseWinding(boolean clockwise);
+    void Dump([Const] DOMString fileName);
 };
 
 [Prefix="JBox3D::"]
 interface B3HeightField {
     void B3HeightField();
+    static B3HeightField CreateFromDef([Const, Ref] B3HeightFieldDef def); //[-NEW_OBJECT]
     static B3HeightField CreateGrid(long rowCount, long columnCount, [Const, Ref] B3Vec3 scale, boolean makeHoles); //[-NEW_OBJECT]
     static B3HeightField CreateWave(long rowCount, long columnCount, [Const, Ref] B3Vec3 scale, float rowFrequency, float columnFrequency, boolean makeHoles); //[-NEW_OBJECT]
+    static B3HeightField Load([Const] DOMString fileName); //[-NEW_OBJECT]
     boolean IsValid();
     void Destroy();
+    long GetRowCount();
+    long GetColumnCount();
+    [Value] B3Vec3 GetScale();
 };
 
 [Prefix="JBox3D::"]
@@ -1006,12 +1394,26 @@ interface B3CompoundDef {
 interface B3Compound {
     void B3Compound();
     static B3Compound CreateFromDef([Const, Ref] B3CompoundDef def); //[-NEW_OBJECT]
+    static B3Compound CreateFromBytes([Const, Ref] B3ByteArray bytes); //[-NEW_OBJECT]
     boolean IsValid();
     void Destroy();
     long GetCapsuleCount();
     long GetHullCount();
     long GetMeshCount();
     long GetSphereCount();
+    [Value] B3SurfaceMaterial GetMaterial(long index);
+    [Value] B3Capsule GetCapsule(long index);
+    long GetCapsuleMaterialIndex(long index);
+    B3Hull GetHull(long index); //[-NEW_OBJECT]
+    [Value] B3Transform GetHullTransform(long index);
+    long GetHullMaterialIndex(long index);
+    B3Mesh GetMesh(long index); //[-NEW_OBJECT]
+    [Value] B3Transform GetMeshTransform(long index);
+    [Value] B3Vec3 GetMeshScale(long index);
+    long GetMeshMaterialIndex(long meshIndex, long sourceMaterialIndex);
+    [Value] B3Sphere GetSphere(long index);
+    long GetSphereMaterialIndex(long index);
+    B3ByteArray ToBytes(); //[-NEW_OBJECT]
 };
 
 [Prefix="JBox3D::"]
@@ -1086,10 +1488,14 @@ interface B3Body {
     void EnableContactRecycling(boolean enabled);
     void EnableHitEvents(boolean enabled);
     long long GetWorldId();
+    long long GetUserData();
+    void SetUserData(long long userData);
     long GetShapeCount();
     long long GetShapeId(long index);
     long GetJointCount();
     long long GetJointId(long index);
+    long GetContactCapacity();
+    B3ContactDataArray GetContactData(); //[-NEW_OBJECT]
     [Value] B3AABB ComputeAABB();
     [Value] B3Vec3 GetClosestPoint([Const, Ref] B3Vec3 target);
     float GetClosestPointDistance([Const, Ref] B3Vec3 target);
@@ -1117,6 +1523,8 @@ interface B3Joint {
     long long GetBodyIdA();
     long long GetBodyIdB();
     long long GetWorldId();
+    long long GetUserData();
+    void SetUserData(long long userData);
     [Value] B3Transform GetLocalFrameA();
     void SetLocalFrameA([Const, Ref] B3Transform localFrame);
     [Value] B3Transform GetLocalFrameB();
@@ -1318,6 +1726,8 @@ interface B3Shape {
     long GetType();
     long long GetBodyId();
     long long GetWorldId();
+    long long GetUserData();
+    void SetUserData(long long userData);
     boolean IsSensor();
     void GetName([Ref] NativeString name);
     void SetName([Const] DOMString name);
@@ -1349,8 +1759,11 @@ interface B3Shape {
     void SetCapsule([Const, Ref] B3Capsule capsule);
     B3Hull GetHull(); //[-NEW_OBJECT]
     void SetHull([Const, Ref] B3Hull hull);
+    B3Mesh GetMesh(); //[-NEW_OBJECT]
+    B3HeightField GetHeightField(); //[-NEW_OBJECT]
     void SetMesh([Const, Ref] B3Mesh mesh, [Const, Ref] B3Vec3 scale);
     long GetContactCapacity();
+    B3ContactDataArray GetContactData(); //[-NEW_OBJECT]
     long GetSensorCapacity();
     long long GetSensorShapeId(long index);
     [Value] B3AABB GetAABB();
@@ -1367,6 +1780,89 @@ interface B3CustomFilterEm {
 interface B3CustomFilterImplCustom : B3CustomFilterEm {
     void B3CustomFilterImplCustom();
     boolean Filter(long long shapeIdA, long long shapeIdB);
+};
+
+[Prefix="JBox3D::"]
+interface B3PreSolveCallbackEm {
+};
+
+[JSImplementation="B3PreSolveCallbackEm"]
+interface B3PreSolveCallbackImplCustom : B3PreSolveCallbackEm {
+    void B3PreSolveCallbackImplCustom();
+    boolean PreSolve(long long shapeIdA, long long shapeIdB, [Const, Ref] B3Vec3 point, [Const, Ref] B3Vec3 normal);
+};
+
+[Prefix="JBox3D::"]
+interface B3FrictionCallbackEm {
+};
+
+[JSImplementation="B3FrictionCallbackEm"]
+interface B3FrictionCallbackImplCustom : B3FrictionCallbackEm {
+    void B3FrictionCallbackImplCustom();
+    float MixFriction(float frictionA, long long userMaterialIdA, float frictionB, long long userMaterialIdB);
+};
+
+[Prefix="JBox3D::"]
+interface B3RestitutionCallbackEm {
+};
+
+[JSImplementation="B3RestitutionCallbackEm"]
+interface B3RestitutionCallbackImplCustom : B3RestitutionCallbackEm {
+    void B3RestitutionCallbackImplCustom();
+    float MixRestitution(float restitutionA, long long userMaterialIdA, float restitutionB, long long userMaterialIdB);
+};
+
+[Prefix="JBox3D::"]
+interface B3CastResult {
+    void B3CastResult();
+    long long GetShapeId();
+    [Value] B3Vec3 GetPoint();
+    [Value] B3Vec3 GetNormal();
+    float GetFraction();
+    long long GetUserMaterialId();
+    long GetTriangleIndex();
+    long GetChildIndex();
+};
+
+[Prefix="JBox3D::"]
+interface B3CastResultCallbackEm {
+};
+
+[JSImplementation="B3CastResultCallbackEm"]
+interface B3CastResultCallbackImplCustom : B3CastResultCallbackEm {
+    void B3CastResultCallbackImplCustom();
+    float ReportHit([Const, Ref] B3CastResult result);
+};
+
+[Prefix="JBox3D::"]
+interface B3AllocatorEm {
+};
+
+[JSImplementation="B3AllocatorEm"]
+interface B3AllocatorImplCustom : B3AllocatorEm {
+    void B3AllocatorImplCustom();
+    long long Allocate(long size, long alignment);
+    void Free(long long address);
+};
+
+[Prefix="JBox3D::"]
+interface B3AssertCallbackEm {
+};
+
+[JSImplementation="B3AssertCallbackEm"]
+interface B3AssertCallbackImplCustom : B3AssertCallbackEm {
+    void B3AssertCallbackImplCustom();
+    boolean Assert([Const] DOMString condition, [Const] DOMString fileName, long lineNumber);
+};
+
+[Prefix="JBox3D::"]
+interface B3LogCallbackEm {
+};
+
+[JSImplementation="B3LogCallbackEm"]
+interface B3LogCallbackImplCustom : B3LogCallbackEm {
+    void B3LogCallbackImplCustom();
+    void Log([Const] DOMString message);
 };
 
 [Prefix="JBox3D::"]
@@ -1398,12 +1894,22 @@ interface B3World {
     long GetWorkerCount();
     void SetWorkerCount(long workerCount);
     long GetAwakeBodyCount();
+    [Value] B3Profile GetProfile();
+    [Value] B3Counters GetCounters();
     [Value] B3Capacity GetMaxCapacity();
+    long long GetUserData();
+    void SetUserData(long long userData);
     void Explode([Const, Ref] B3ExplosionDef def);
     void DumpMemoryStats();
+    void DumpShapeBounds(long bodyType);
     void RebuildStaticTree();
     void EnableSpeculative(boolean enabled);
+    void StartRecording(B3Recording recording);
+    void StopRecording();
     void SetCustomFilterCallback(B3CustomFilterEm callback);
+    void SetPreSolveCallback(B3PreSolveCallbackEm callback);
+    void SetFrictionCallback(B3FrictionCallbackEm callback);
+    void SetRestitutionCallback(B3RestitutionCallbackEm callback);
     void ClearDebugOverlay();
     void AddDebugSegment([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 p2, long color);
     void AddDebugPoint([Const, Ref] B3Vec3 point, float size, long color);
@@ -1428,6 +1934,7 @@ interface B3World {
     B3SensorEvents GetSensorEvents(); //[-NEW_OBJECT]
     B3ContactEvents GetContactEvents(); //[-NEW_OBJECT]
     [Value] B3RayResult CastRayClosest([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
+    [Value] B3TreeStats CastRay([Const, Ref] B3Vec3 origin, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter, B3CastResultCallbackEm callback);
     long CountOverlapsAABB([Const, Ref] B3AABB bounds, [Const, Ref] B3QueryFilter filter);
     [Value] B3RayResult CastSphereClosest([Const, Ref] B3Vec3 origin, float radius, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter);
     [Value] B3RayResult CastShapeClosest([Const, Ref] B3Vec3 origin, [Const, Ref] B3ShapeProxy proxy, [Const, Ref] B3Vec3 translation, [Const, Ref] B3QueryFilter filter, boolean initialOverlap);
@@ -1493,10 +2000,21 @@ interface B3DebugDrawImplCustom : B3DebugDrawEm {
 interface B3 {
     static boolean IsDoublePrecision();
     static float Atan2(float y, float x);
+    [Value] static B3CosSin ComputeCosSin(float radians);
+    [Value] static B3Quat MakeQuatFromMatrix([Const, Ref] B3Matrix3 matrix);
+    [Value] static B3Matrix3 Steiner(float mass, [Const, Ref] B3Vec3 origin);
+    [Value] static B3Vec3 PointToSegmentDistance([Const, Ref] B3Vec3 a, [Const, Ref] B3Vec3 b, [Const, Ref] B3Vec3 q);
+    [Value] static B3SegmentDistanceResult LineDistance([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 d1, [Const, Ref] B3Vec3 p2, [Const, Ref] B3Vec3 d2);
+    [Value] static B3SegmentDistanceResult SegmentDistance([Const, Ref] B3Vec3 p1, [Const, Ref] B3Vec3 q1, [Const, Ref] B3Vec3 p2, [Const, Ref] B3Vec3 q2);
     static boolean IsValidFloat(float value);
     static boolean IsValidVec3([Const, Ref] B3Vec3 value);
     static boolean IsValidQuat([Const, Ref] B3Quat value);
     static boolean IsValidTransform([Const, Ref] B3Transform value);
+    static boolean IsValidMatrix3([Const, Ref] B3Matrix3 value);
+    static boolean IsValidPlane([Const, Ref] B3Plane value);
+    static boolean IsValidPosition([Const, Ref] B3Vec3 value);
+    static boolean IsValidWorldTransform([Const, Ref] B3Transform value);
+    static boolean IsValidRay([Const, Ref] B3RayCastInput value);
     static boolean IsValidAABB([Const, Ref] B3AABB value);
     static boolean IsBoundedAABB([Const, Ref] B3AABB value);
     static boolean IsSaneAABB([Const, Ref] B3AABB value);
@@ -1519,5 +2037,17 @@ interface B3 {
     static long GetMaxWorldCount();
     static float GetStallThreshold();
     static void SetStallThreshold(float seconds);
+    static long GetByteCount();
+    static long long GetTicks();
+    static float GetMilliseconds(long long ticks);
+    static long long Hash(long long hash, [Const, Ref] B3ByteArray data);
+    static long InternalAssert([Const] DOMString condition, [Const] DOMString fileName, long lineNumber);
+    static void SetAllocatorCallback(B3AllocatorEm callback);
+    static void SetAssertCallback(B3AssertCallbackEm callback);
+    static void SetLogCallback(B3LogCallbackEm callback);
+    static long long AllocateMemory(long size, long alignment);
+    static void FreeMemory(long long address);
+    static void Yield();
+    static void Sleep(long milliseconds);
     static long long DefaultMaskBits();
 };

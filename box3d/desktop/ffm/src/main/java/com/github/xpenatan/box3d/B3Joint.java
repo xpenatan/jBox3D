@@ -173,6 +173,30 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    public static long internal_native_GetUserData(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetUserData__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    public static void internal_native_SetUserData(long this_addr, long userData) {
+        try {
+            FFMHandles.internal_native_SetUserData__JJ.invokeExact(this_addr, userData);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public B3Transform GetLocalFrameA() {
         long addr = internal_native_GetLocalFrameA_addr(native_address);
         if (addr == 0)
@@ -2420,6 +2444,10 @@ public final class B3Joint extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetBodyIdB__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getbodyidb", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetWorldId__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getworldid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetUserData__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getuserdata", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetUserData__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setuserdata", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetLocalFrameA_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getlocalframea_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 

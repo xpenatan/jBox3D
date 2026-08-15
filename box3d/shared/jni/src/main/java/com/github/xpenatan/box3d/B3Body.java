@@ -779,6 +779,22 @@ public final class B3Body extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3Body.internal_native_GetWorldId(this_addr);
     }
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    public static long internal_native_GetUserData(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Body.internal_native_GetUserData(this_addr);
+    }
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    public static void internal_native_SetUserData(long this_addr, long userData) {
+        com.github.xpenatan.box3d.natives.JNI_B3Body.internal_native_SetUserData(this_addr, userData);
+    }
+
     public int GetShapeCount() {
         return internal_native_GetShapeCount(native_address);
     }
@@ -809,6 +825,27 @@ public final class B3Body extends NativeObject {
 
     public static long internal_native_GetJointId(long this_addr, int index) {
         return com.github.xpenatan.box3d.natives.JNI_B3Body.internal_native_GetJointId(this_addr, index);
+    }
+
+    public int GetContactCapacity() {
+        return internal_native_GetContactCapacity(native_address);
+    }
+
+    public static int internal_native_GetContactCapacity(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Body.internal_native_GetContactCapacity(this_addr);
+    }
+
+    public B3ContactDataArray GetContactData() {
+        long addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    public static long internal_native_GetContactData_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Body.internal_native_GetContactData_addr(this_addr);
     }
 
     public B3AABB ComputeAABB() {

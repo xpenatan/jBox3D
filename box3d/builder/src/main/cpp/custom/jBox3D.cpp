@@ -1,4 +1,8 @@
 // Included by jBox3D.h. Do not compile this file directly.
+#if defined(_MSC_VER)
+#include <malloc.h>
+#endif
+
 namespace JBox3D {
 
 static b3BodyId loadBodyId(long long value) {
@@ -95,6 +99,176 @@ static bool customFilterCallback(b3ShapeId shapeIdA, b3ShapeId shapeIdB, void* c
                                                    static_cast<long long>(b3StoreShapeId(shapeIdB)));
 }
 
+static bool preSolveCallback(b3ShapeId shapeIdA, b3ShapeId shapeIdB, b3Pos point, b3Vec3 normal, void* context) {
+    B3PreSolveCallbackEm* callback = static_cast<B3PreSolveCallbackEm*>(context);
+    return callback == nullptr || callback->PreSolve(static_cast<long long>(b3StoreShapeId(shapeIdA)),
+                                                      static_cast<long long>(b3StoreShapeId(shapeIdB)),
+                                                      B3Vec3(b3ToVec3(point)), B3Vec3(normal));
+}
+
+static float castResultCallback(b3ShapeId shapeId, b3Pos point, b3Vec3 normal, float fraction,
+                                uint64_t userMaterialId, int triangleIndex, int childIndex, void* context) {
+    B3CastResultCallbackEm* callback = static_cast<B3CastResultCallbackEm*>(context);
+    if(callback == nullptr) return fraction;
+    B3CastResult result(static_cast<long long>(b3StoreShapeId(shapeId)), B3Vec3(b3ToVec3(point)),
+                        B3Vec3(normal), fraction, static_cast<long long>(userMaterialId),
+                        triangleIndex, childIndex);
+    return callback->ReportHit(result);
+}
+
+static B3AllocatorEm* g_allocatorCallback = nullptr;
+static B3AssertCallbackEm* g_assertCallback = nullptr;
+static B3LogCallbackEm* g_logCallback = nullptr;
+
+static void* allocatorCallback(int32_t size, int32_t alignment) {
+    if(g_allocatorCallback == nullptr) return nullptr;
+    return reinterpret_cast<void*>(static_cast<uintptr_t>(g_allocatorCallback->Allocate(size, alignment)));
+}
+
+static void freeCallback(void* memory) {
+    if(g_allocatorCallback != nullptr) {
+        g_allocatorCallback->Free(static_cast<long long>(reinterpret_cast<uintptr_t>(memory)));
+    }
+}
+
+static int assertCallback(const char* condition, const char* fileName, int lineNumber) {
+    return g_assertCallback != nullptr && g_assertCallback->Assert(condition, fileName, lineNumber) ? 1 : 0;
+}
+
+static void logCallback(const char* message) {
+    if(g_logCallback != nullptr) {
+        g_logCallback->Log(message);
+    }
+}
+
+template<size_t... Values>
+struct B3IndexSequence {
+};
+
+template<size_t Count, size_t... Values>
+struct B3MakeIndexSequence : B3MakeIndexSequence<Count - 1, Count - 1, Values...> {
+};
+
+template<size_t... Values>
+struct B3MakeIndexSequence<0, Values...> {
+    typedef B3IndexSequence<Values...> type;
+};
+
+static B3FrictionCallbackEm* g_frictionCallbacks[B3_MAX_WORLDS]{};
+static B3RestitutionCallbackEm* g_restitutionCallbacks[B3_MAX_WORLDS]{};
+
+template<size_t Index>
+static float frictionCallbackSlot(float frictionA, uint64_t userMaterialIdA,
+                                  float frictionB, uint64_t userMaterialIdB) {
+    B3FrictionCallbackEm* callback = g_frictionCallbacks[Index];
+    return callback != nullptr
+        ? callback->MixFriction(frictionA, static_cast<long long>(userMaterialIdA),
+                                frictionB, static_cast<long long>(userMaterialIdB))
+        : std::sqrt(frictionA * frictionB);
+}
+
+template<size_t Index>
+static float restitutionCallbackSlot(float restitutionA, uint64_t userMaterialIdA,
+                                     float restitutionB, uint64_t userMaterialIdB) {
+    B3RestitutionCallbackEm* callback = g_restitutionCallbacks[Index];
+    return callback != nullptr
+        ? callback->MixRestitution(restitutionA, static_cast<long long>(userMaterialIdA),
+                                   restitutionB, static_cast<long long>(userMaterialIdB))
+        : (restitutionA > restitutionB ? restitutionA : restitutionB);
+}
+
+template<size_t... Values>
+static std::array<b3FrictionCallback*, sizeof...(Values)> makeFrictionCallbacks(B3IndexSequence<Values...>) {
+    return {{&frictionCallbackSlot<Values>...}};
+}
+
+template<size_t... Values>
+static std::array<b3RestitutionCallback*, sizeof...(Values)> makeRestitutionCallbacks(B3IndexSequence<Values...>) {
+    return {{&restitutionCallbackSlot<Values>...}};
+}
+
+static const std::array<b3FrictionCallback*, B3_MAX_WORLDS> g_frictionCallbackSlots =
+    makeFrictionCallbacks(B3MakeIndexSequence<B3_MAX_WORLDS>::type());
+static const std::array<b3RestitutionCallback*, B3_MAX_WORLDS> g_restitutionCallbackSlots =
+    makeRestitutionCallbacks(B3MakeIndexSequence<B3_MAX_WORLDS>::type());
+
+static int getWorldCallbackSlot(b3WorldId worldId) {
+    return worldId.index1 > 0 && worldId.index1 <= B3_MAX_WORLDS ? static_cast<int>(worldId.index1) - 1 : -1;
+}
+
+static bool meshQueryCallback(b3Vec3 a, b3Vec3 b, b3Vec3 c, int triangleIndex, void* context) {
+    B3MeshQueryResult* result = static_cast<B3MeshQueryResult*>(context);
+    if(result != nullptr) {
+        result->Add(a, b, c, triangleIndex);
+    }
+    return true;
+}
+
+static bool dynamicTreeQueryCallback(int proxyId, uint64_t userData, void* context) {
+    B3TreeQueryCallbackEm* callback = static_cast<B3TreeQueryCallbackEm*>(context);
+    return callback == nullptr || callback->Query(proxyId, static_cast<long long>(userData));
+}
+
+static float dynamicTreeClosestCallback(float distanceSquaredMin, int proxyId, uint64_t userData, void* context) {
+    B3TreeClosestCallbackEm* callback = static_cast<B3TreeClosestCallbackEm*>(context);
+    return callback != nullptr ? callback->QueryClosest(distanceSquaredMin, proxyId, static_cast<long long>(userData))
+                               : distanceSquaredMin;
+}
+
+static float dynamicTreeRayCastCallback(const b3RayCastInput* input, int proxyId, uint64_t userData, void* context) {
+    B3TreeRayCastCallbackEm* callback = static_cast<B3TreeRayCastCallbackEm*>(context);
+    if(callback == nullptr || input == nullptr) return input != nullptr ? input->maxFraction : 0.0f;
+    B3RayCastInput wrapped(*input);
+    return callback->RayCast(wrapped, proxyId, static_cast<long long>(userData));
+}
+
+static float dynamicTreeBoxCastCallback(const b3BoxCastInput* input, int proxyId, uint64_t userData, void* context) {
+    B3TreeBoxCastCallbackEm* callback = static_cast<B3TreeBoxCastCallbackEm*>(context);
+    if(callback == nullptr || input == nullptr) return input != nullptr ? input->maxFraction : 0.0f;
+    B3BoxCastInput wrapped(*input);
+    return callback->BoxCast(wrapped, proxyId, static_cast<long long>(userData));
+}
+
+B3ByteArray::B3ByteArray() = default;
+
+B3ByteArray::B3ByteArray(int size) : m_values(static_cast<size_t>(size > 0 ? size : 0), 0) {
+}
+
+B3ByteArray::B3ByteArray(const uint8_t* data, int size) {
+    if(data != nullptr && size > 0) {
+        m_values.assign(data, data + size);
+    }
+}
+
+int B3ByteArray::GetSize() const {
+    return static_cast<int>(m_values.size());
+}
+
+int B3ByteArray::GetValue(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_values.size())) {
+        return 0;
+    }
+    return static_cast<int>(m_values[static_cast<size_t>(index)]);
+}
+
+void B3ByteArray::SetValue(int index, int value) {
+    if(index >= 0 && index < static_cast<int>(m_values.size())) {
+        m_values[static_cast<size_t>(index)] = static_cast<uint8_t>(value);
+    }
+}
+
+void B3ByteArray::Resize(int size) {
+    m_values.resize(static_cast<size_t>(size > 0 ? size : 0));
+}
+
+const uint8_t* B3ByteArray::GetData() const {
+    return m_values.empty() ? nullptr : m_values.data();
+}
+
+uint8_t* B3ByteArray::GetMutableData() {
+    return m_values.empty() ? nullptr : m_values.data();
+}
+
 B3Vec3::B3Vec3() : value(b3Vec3_zero) {
 }
 
@@ -130,6 +304,20 @@ void B3Vec3::SetZ(float z) {
 
 void B3Vec3::Set(float x, float y, float z) {
     value = {x, y, z};
+}
+
+B3CosSin::B3CosSin() : value{1.0f, 0.0f} {
+}
+
+B3CosSin::B3CosSin(b3CosSin value) : value(value) {
+}
+
+float B3CosSin::GetCosine() const {
+    return value.cosine;
+}
+
+float B3CosSin::GetSine() const {
+    return value.sine;
 }
 
 B3Quat::B3Quat() : value(b3Quat_identity) {
@@ -212,6 +400,67 @@ B3Vec3 B3Transform::TransformPoint(const B3Vec3& point) const {
 
 B3Transform* B3Transform::InvMul(const B3Transform& a, const B3Transform& b) {
     return new B3Transform(b3InvMulTransforms(a.value, b.value));
+}
+
+B3Matrix3::B3Matrix3() : value(b3Mat3_zero) {
+}
+
+B3Matrix3::B3Matrix3(const B3Vec3& columnX, const B3Vec3& columnY, const B3Vec3& columnZ)
+    : value{columnX.value, columnY.value, columnZ.value} {
+}
+
+B3Matrix3::B3Matrix3(b3Matrix3 value) : value(value) {
+}
+
+B3Vec3 B3Matrix3::GetColumnX() const { return B3Vec3(value.cx); }
+void B3Matrix3::SetColumnX(const B3Vec3& column) { value.cx = column.value; }
+B3Vec3 B3Matrix3::GetColumnY() const { return B3Vec3(value.cy); }
+void B3Matrix3::SetColumnY(const B3Vec3& column) { value.cy = column.value; }
+B3Vec3 B3Matrix3::GetColumnZ() const { return B3Vec3(value.cz); }
+void B3Matrix3::SetColumnZ(const B3Vec3& column) { value.cz = column.value; }
+
+B3Plane::B3Plane() : value{b3Vec3_axisY, 0.0f} {
+}
+
+B3Plane::B3Plane(const B3Vec3& normal, float offset) : value{normal.value, offset} {
+}
+
+B3Plane::B3Plane(b3Plane value) : value(value) {
+}
+
+B3Vec3 B3Plane::GetNormal() const { return B3Vec3(value.normal); }
+void B3Plane::SetNormal(const B3Vec3& normal) { value.normal = normal.value; }
+float B3Plane::GetOffset() const { return value.offset; }
+void B3Plane::SetOffset(float offset) { value.offset = offset; }
+
+B3SegmentDistanceResult::B3SegmentDistanceResult() : m_value{} {
+}
+
+B3SegmentDistanceResult::B3SegmentDistanceResult(b3SegmentDistanceResult value) : m_value(value) {
+}
+
+B3Vec3 B3SegmentDistanceResult::GetPoint1() const { return B3Vec3(m_value.point1); }
+float B3SegmentDistanceResult::GetFraction1() const { return m_value.fraction1; }
+B3Vec3 B3SegmentDistanceResult::GetPoint2() const { return B3Vec3(m_value.point2); }
+float B3SegmentDistanceResult::GetFraction2() const { return m_value.fraction2; }
+
+B3Timer::B3Timer() : m_ticks(b3GetTicks()) {
+}
+
+float B3Timer::GetMilliseconds() const {
+    return b3GetMilliseconds(m_ticks);
+}
+
+float B3Timer::GetMillisecondsAndReset() {
+    return b3GetMillisecondsAndReset(&m_ticks);
+}
+
+void B3Timer::Reset() {
+    m_ticks = b3GetTicks();
+}
+
+long long B3Timer::GetTicks() const {
+    return static_cast<long long>(m_ticks);
 }
 
 B3AABB::B3AABB() : value{b3Vec3_zero, b3Vec3_zero} {
@@ -1920,6 +2169,67 @@ void B3Capacity::SetContactCount(int count) {
     value.contactCount = count;
 }
 
+B3Profile::B3Profile() : m_value{} {
+}
+
+B3Profile::B3Profile(b3Profile value) : m_value(value) {
+}
+
+float B3Profile::GetStep() const { return m_value.step; }
+float B3Profile::GetPairs() const { return m_value.pairs; }
+float B3Profile::GetCollide() const { return m_value.collide; }
+float B3Profile::GetSolve() const { return m_value.solve; }
+float B3Profile::GetSolverSetup() const { return m_value.solverSetup; }
+float B3Profile::GetConstraints() const { return m_value.constraints; }
+float B3Profile::GetPrepareConstraints() const { return m_value.prepareConstraints; }
+float B3Profile::GetIntegrateVelocities() const { return m_value.integrateVelocities; }
+float B3Profile::GetWarmStart() const { return m_value.warmStart; }
+float B3Profile::GetSolveImpulses() const { return m_value.solveImpulses; }
+float B3Profile::GetIntegratePositions() const { return m_value.integratePositions; }
+float B3Profile::GetRelaxImpulses() const { return m_value.relaxImpulses; }
+float B3Profile::GetApplyRestitution() const { return m_value.applyRestitution; }
+float B3Profile::GetStoreImpulses() const { return m_value.storeImpulses; }
+float B3Profile::GetSplitIslands() const { return m_value.splitIslands; }
+float B3Profile::GetTransforms() const { return m_value.transforms; }
+float B3Profile::GetSensorHits() const { return m_value.sensorHits; }
+float B3Profile::GetJointEvents() const { return m_value.jointEvents; }
+float B3Profile::GetHitEvents() const { return m_value.hitEvents; }
+float B3Profile::GetRefit() const { return m_value.refit; }
+float B3Profile::GetBullets() const { return m_value.bullets; }
+float B3Profile::GetSleepIslands() const { return m_value.sleepIslands; }
+float B3Profile::GetSensors() const { return m_value.sensors; }
+
+B3Counters::B3Counters() : m_value{} {
+}
+
+B3Counters::B3Counters(b3Counters value) : m_value(value) {
+}
+
+int B3Counters::GetBodyCount() const { return m_value.bodyCount; }
+int B3Counters::GetShapeCount() const { return m_value.shapeCount; }
+int B3Counters::GetContactCount() const { return m_value.contactCount; }
+int B3Counters::GetJointCount() const { return m_value.jointCount; }
+int B3Counters::GetIslandCount() const { return m_value.islandCount; }
+int B3Counters::GetStackUsed() const { return m_value.stackUsed; }
+int B3Counters::GetArenaCapacity() const { return m_value.arenaCapacity; }
+int B3Counters::GetStaticTreeHeight() const { return m_value.staticTreeHeight; }
+int B3Counters::GetTreeHeight() const { return m_value.treeHeight; }
+int B3Counters::GetSatCallCount() const { return m_value.satCallCount; }
+int B3Counters::GetSatCacheHitCount() const { return m_value.satCacheHitCount; }
+int B3Counters::GetByteCount() const { return m_value.byteCount; }
+int B3Counters::GetTaskCount() const { return m_value.taskCount; }
+int B3Counters::GetColorCount(int index) const {
+    return index >= 0 && index < 24 ? m_value.colorCounts[index] : 0;
+}
+int B3Counters::GetManifoldCount(int index) const {
+    return index >= 0 && index < B3_CONTACT_MANIFOLD_COUNT_BUCKETS ? m_value.manifoldCounts[index] : 0;
+}
+int B3Counters::GetAwakeContactCount() const { return m_value.awakeContactCount; }
+int B3Counters::GetRecycledContactCount() const { return m_value.recycledContactCount; }
+int B3Counters::GetDistanceIterations() const { return m_value.distanceIterations; }
+int B3Counters::GetPushBackIterations() const { return m_value.pushBackIterations; }
+int B3Counters::GetRootIterations() const { return m_value.rootIterations; }
+
 B3ExplosionDef::B3ExplosionDef() : value(b3DefaultExplosionDef()) {
 }
 
@@ -2321,9 +2631,94 @@ bool B3ContactId::IsNull() const {
     return values[0] == 0;
 }
 
+bool B3ContactId::IsValid() const {
+    return !IsNull() && b3Contact_IsValid(Load());
+}
+
+B3ContactData* B3ContactId::GetData() const {
+    if(!IsValid()) {
+        return new B3ContactData();
+    }
+    return new B3ContactData(b3Contact_GetData(Load()));
+}
+
 b3ContactId B3ContactId::Load() const {
     uint32_t copy[3] = {values[0], values[1], values[2]};
     return b3LoadContactId(copy);
+}
+
+B3ManifoldPoint::B3ManifoldPoint() : m_value{} {
+}
+
+B3ManifoldPoint::B3ManifoldPoint(b3ManifoldPoint value) : m_value(value) {
+}
+
+B3Vec3 B3ManifoldPoint::GetAnchorA() const { return B3Vec3(m_value.anchorA); }
+B3Vec3 B3ManifoldPoint::GetAnchorB() const { return B3Vec3(m_value.anchorB); }
+float B3ManifoldPoint::GetSeparation() const { return m_value.separation; }
+float B3ManifoldPoint::GetBaseSeparation() const { return m_value.baseSeparation; }
+float B3ManifoldPoint::GetNormalImpulse() const { return m_value.normalImpulse; }
+float B3ManifoldPoint::GetTotalNormalImpulse() const { return m_value.totalNormalImpulse; }
+float B3ManifoldPoint::GetNormalVelocity() const { return m_value.normalVelocity; }
+long B3ManifoldPoint::GetFeatureId() const { return static_cast<long>(m_value.featureId); }
+int B3ManifoldPoint::GetTriangleIndex() const { return m_value.triangleIndex; }
+bool B3ManifoldPoint::GetPersisted() const { return m_value.persisted; }
+
+B3Manifold::B3Manifold() : m_value{} {
+}
+
+B3Manifold::B3Manifold(b3Manifold value) : m_value(value) {
+}
+
+int B3Manifold::GetPointCount() const { return m_value.pointCount; }
+B3ManifoldPoint B3Manifold::GetPoint(int index) const {
+    if(index < 0 || index >= m_value.pointCount) {
+        return B3ManifoldPoint();
+    }
+    return B3ManifoldPoint(m_value.points[index]);
+}
+B3Vec3 B3Manifold::GetNormal() const { return B3Vec3(m_value.normal); }
+float B3Manifold::GetTwistImpulse() const { return m_value.twistImpulse; }
+B3Vec3 B3Manifold::GetFrictionImpulse() const { return B3Vec3(m_value.frictionImpulse); }
+B3Vec3 B3Manifold::GetRollingImpulse() const { return B3Vec3(m_value.rollingImpulse); }
+
+B3ContactData::B3ContactData()
+    : m_contactId(b3_nullContactId), m_shapeIdA(b3_nullShapeId), m_shapeIdB(b3_nullShapeId) {
+}
+
+B3ContactData::B3ContactData(const b3ContactData& value)
+    : m_contactId(value.contactId), m_shapeIdA(value.shapeIdA), m_shapeIdB(value.shapeIdB) {
+    if(value.manifolds != nullptr && value.manifoldCount > 0) {
+        m_manifolds.assign(value.manifolds, value.manifolds + value.manifoldCount);
+    }
+}
+
+B3ContactId B3ContactData::GetContactId() const { return B3ContactId(m_contactId); }
+long long B3ContactData::GetShapeIdA() const { return static_cast<long long>(b3StoreShapeId(m_shapeIdA)); }
+long long B3ContactData::GetShapeIdB() const { return static_cast<long long>(b3StoreShapeId(m_shapeIdB)); }
+int B3ContactData::GetManifoldCount() const { return static_cast<int>(m_manifolds.size()); }
+B3Manifold B3ContactData::GetManifold(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_manifolds.size())) {
+        return B3Manifold();
+    }
+    return B3Manifold(m_manifolds[static_cast<size_t>(index)]);
+}
+
+B3ContactDataArray::B3ContactDataArray() = default;
+
+B3ContactDataArray::B3ContactDataArray(const std::vector<b3ContactData>& values) {
+    m_values.reserve(values.size());
+    for(const b3ContactData& value : values) {
+        m_values.emplace_back(value);
+    }
+}
+
+int B3ContactDataArray::GetSize() const { return static_cast<int>(m_values.size()); }
+B3ContactData B3ContactDataArray::GetValue(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_values.size())) {
+        return B3ContactData();
+    }
+    return m_values[static_cast<size_t>(index)];
 }
 
 B3RayResult::B3RayResult() : value{} {
@@ -2642,6 +3037,181 @@ B3ContactHitEvent B3ContactEvents::GetHitEvent(int index) const {
     return hitEvents[static_cast<size_t>(index)];
 }
 
+B3Recording::B3Recording() : m_recording(b3CreateRecording(0)) {
+}
+
+B3Recording::B3Recording(int byteCapacity) : m_recording(b3CreateRecording(byteCapacity)) {
+}
+
+B3Recording::B3Recording(b3Recording* recording) : m_recording(recording) {
+}
+
+B3Recording::~B3Recording() {
+    Destroy();
+}
+
+B3Recording* B3Recording::Load(const char* path) {
+    return new B3Recording(b3LoadRecordingFromFile(path != nullptr ? path : ""));
+}
+
+bool B3Recording::IsValid() const { return m_recording != nullptr; }
+
+void B3Recording::Destroy() {
+    if(m_recording != nullptr) {
+        b3DestroyRecording(m_recording);
+        m_recording = nullptr;
+    }
+}
+
+int B3Recording::GetSize() const {
+    return m_recording != nullptr ? b3Recording_GetSize(m_recording) : 0;
+}
+
+B3ByteArray* B3Recording::GetData() const {
+    if(m_recording == nullptr) return new B3ByteArray();
+    return new B3ByteArray(b3Recording_GetData(m_recording), b3Recording_GetSize(m_recording));
+}
+
+bool B3Recording::Save(const char* path) const {
+    return m_recording != nullptr && b3SaveRecordingToFile(m_recording, path != nullptr ? path : "");
+}
+
+bool B3Recording::ValidateReplay(int workerCount) const {
+    if(m_recording == nullptr) return false;
+    return b3ValidateReplay(b3Recording_GetData(m_recording), b3Recording_GetSize(m_recording), workerCount);
+}
+
+b3Recording* B3Recording::GetHandle() const { return m_recording; }
+
+B3RecPlayerInfo::B3RecPlayerInfo() : m_value{} {
+}
+
+B3RecPlayerInfo::B3RecPlayerInfo(b3RecPlayerInfo value) : m_value(value) {
+}
+
+int B3RecPlayerInfo::GetFrameCount() const { return m_value.frameCount; }
+int B3RecPlayerInfo::GetWorkerCount() const { return m_value.workerCount; }
+float B3RecPlayerInfo::GetTimeStep() const { return m_value.timeStep; }
+int B3RecPlayerInfo::GetSubStepCount() const { return m_value.subStepCount; }
+float B3RecPlayerInfo::GetLengthScale() const { return m_value.lengthScale; }
+B3AABB B3RecPlayerInfo::GetBounds() const { return B3AABB(m_value.bounds); }
+
+B3RecQueryInfo::B3RecQueryInfo()
+    : m_type(b3_recQueryOverlapAABB), m_filter(b3DefaultQueryFilter()), m_aabb{}, m_origin(b3Pos_zero),
+      m_translation{}, m_hitCount(0), m_key(0), m_id(0) {
+}
+
+B3RecQueryInfo::B3RecQueryInfo(const b3RecQueryInfo& value)
+    : m_type(value.type), m_filter(value.filter), m_aabb(value.aabb), m_origin(value.origin),
+      m_translation(value.translation), m_hitCount(value.hitCount), m_key(value.key), m_id(value.id),
+      m_name(value.name != nullptr ? value.name : "") {
+}
+
+int B3RecQueryInfo::GetType() const { return static_cast<int>(m_type); }
+B3QueryFilter B3RecQueryInfo::GetFilter() const { return B3QueryFilter(m_filter); }
+B3AABB B3RecQueryInfo::GetAABB() const { return B3AABB(m_aabb); }
+B3Vec3 B3RecQueryInfo::GetOrigin() const { return B3Vec3(b3ToVec3(m_origin)); }
+B3Vec3 B3RecQueryInfo::GetTranslation() const { return B3Vec3(m_translation); }
+int B3RecQueryInfo::GetHitCount() const { return m_hitCount; }
+long long B3RecQueryInfo::GetKey() const { return static_cast<long long>(m_key); }
+long long B3RecQueryInfo::GetId() const { return static_cast<long long>(m_id); }
+void B3RecQueryInfo::GetName(NativeString& name) const { name = m_name; }
+
+B3RecQueryHit::B3RecQueryHit() : m_value{} {
+}
+
+B3RecQueryHit::B3RecQueryHit(b3RecQueryHit value) : m_value(value) {
+}
+
+long long B3RecQueryHit::GetShapeId() const { return static_cast<long long>(b3StoreShapeId(m_value.shape)); }
+B3Vec3 B3RecQueryHit::GetPoint() const { return B3Vec3(b3ToVec3(m_value.point)); }
+B3Vec3 B3RecQueryHit::GetNormal() const { return B3Vec3(m_value.normal); }
+float B3RecQueryHit::GetFraction() const { return m_value.fraction; }
+
+B3RecPlayer::B3RecPlayer() : m_player(nullptr) {
+}
+
+B3RecPlayer::B3RecPlayer(const B3ByteArray& data, int workerCount)
+    : m_player(b3RecPlayer_Create(data.GetData(), data.GetSize(), workerCount)) {
+}
+
+B3RecPlayer::~B3RecPlayer() {
+    Destroy();
+}
+
+bool B3RecPlayer::IsValid() const { return m_player != nullptr; }
+
+void B3RecPlayer::Destroy() {
+    if(m_player != nullptr) {
+        b3RecPlayer_Destroy(m_player);
+        m_player = nullptr;
+    }
+}
+
+bool B3RecPlayer::StepFrame() { return m_player != nullptr && b3RecPlayer_StepFrame(m_player); }
+void B3RecPlayer::SubStepFrame() { if(m_player != nullptr) b3RecPlayer_SubStepFrame(m_player); }
+void B3RecPlayer::Restart() { if(m_player != nullptr) b3RecPlayer_Restart(m_player); }
+void B3RecPlayer::SeekFrame(int targetFrame) { if(m_player != nullptr) b3RecPlayer_SeekFrame(m_player, targetFrame); }
+B3World* B3RecPlayer::GetWorld() const {
+    return new B3World(m_player != nullptr ? b3RecPlayer_GetWorldId(m_player) : b3_nullWorldId, false);
+}
+long long B3RecPlayer::GetWorldId() const {
+    return static_cast<long long>(b3StoreWorldId(m_player != nullptr ? b3RecPlayer_GetWorldId(m_player) : b3_nullWorldId));
+}
+int B3RecPlayer::GetFrame() const { return m_player != nullptr ? b3RecPlayer_GetFrame(m_player) : 0; }
+int B3RecPlayer::GetFrameCount() const { return m_player != nullptr ? b3RecPlayer_GetFrameCount(m_player) : 0; }
+bool B3RecPlayer::IsAtEnd() const { return m_player == nullptr || b3RecPlayer_IsAtEnd(m_player); }
+bool B3RecPlayer::IsAtPreStep() const { return m_player != nullptr && b3RecPlayer_IsAtPreStep(m_player); }
+bool B3RecPlayer::HasDiverged() const { return m_player != nullptr && b3RecPlayer_HasDiverged(m_player); }
+B3RecPlayerInfo B3RecPlayer::GetInfo() const {
+    return B3RecPlayerInfo(m_player != nullptr ? b3RecPlayer_GetInfo(m_player) : b3RecPlayerInfo{});
+}
+int B3RecPlayer::GetDivergeFrame() const { return m_player != nullptr ? b3RecPlayer_GetDivergeFrame(m_player) : -1; }
+void B3RecPlayer::SetWorkerCount(int count) { if(m_player != nullptr) b3RecPlayer_SetWorkerCount(m_player, count); }
+void B3RecPlayer::SetKeyframePolicy(long long budgetBytes, int minIntervalFrames) {
+    if(m_player != nullptr) b3RecPlayer_SetKeyframePolicy(m_player, static_cast<size_t>(budgetBytes), minIntervalFrames);
+}
+long long B3RecPlayer::GetKeyframeBudget() const {
+    return m_player != nullptr ? static_cast<long long>(b3RecPlayer_GetKeyframeBudget(m_player)) : 0;
+}
+int B3RecPlayer::GetKeyframeMinInterval() const {
+    return m_player != nullptr ? b3RecPlayer_GetKeyframeMinInterval(m_player) : 0;
+}
+int B3RecPlayer::GetKeyframeInterval() const {
+    return m_player != nullptr ? b3RecPlayer_GetKeyframeInterval(m_player) : 0;
+}
+long long B3RecPlayer::GetKeyframeBytes() const {
+    return m_player != nullptr ? static_cast<long long>(b3RecPlayer_GetKeyframeBytes(m_player)) : 0;
+}
+int B3RecPlayer::GetBodyCount() const { return m_player != nullptr ? b3RecPlayer_GetBodyCount(m_player) : 0; }
+long long B3RecPlayer::GetBodyId(int index) const {
+    if(m_player == nullptr || index < 0 || index >= b3RecPlayer_GetBodyCount(m_player)) return 0;
+    return static_cast<long long>(b3StoreBodyId(b3RecPlayer_GetBodyId(m_player, index)));
+}
+void B3RecPlayer::SetDebugShapeCallbacks() {
+    if(m_player != nullptr) b3RecPlayer_SetDebugShapeCallbacks(m_player, createDebugShape, destroyDebugShape, nullptr);
+}
+void B3RecPlayer::DrawFrameQueries(B3DebugDrawEm* draw, int queryIndex, int selectedIndex) {
+    if(m_player != nullptr && draw != nullptr) {
+        b3RecPlayer_DrawFrameQueries(m_player, &draw->m_draw, queryIndex, selectedIndex);
+    }
+}
+int B3RecPlayer::GetFrameQueryCount() const {
+    return m_player != nullptr ? b3RecPlayer_GetFrameQueryCount(m_player) : 0;
+}
+B3RecQueryInfo B3RecPlayer::GetFrameQuery(int index) const {
+    if(m_player == nullptr || index < 0 || index >= b3RecPlayer_GetFrameQueryCount(m_player)) return B3RecQueryInfo();
+    return B3RecQueryInfo(b3RecPlayer_GetFrameQuery(m_player, index));
+}
+B3RecQueryHit B3RecPlayer::GetFrameQueryHit(int queryIndex, int hitIndex) const {
+    if(m_player == nullptr || queryIndex < 0 || queryIndex >= b3RecPlayer_GetFrameQueryCount(m_player)) {
+        return B3RecQueryHit();
+    }
+    b3RecQueryInfo info = b3RecPlayer_GetFrameQuery(m_player, queryIndex);
+    if(hitIndex < 0 || hitIndex >= info.hitCount) return B3RecQueryHit();
+    return B3RecQueryHit(b3RecPlayer_GetFrameQueryHit(m_player, queryIndex, hitIndex));
+}
+
 B3Vec3Array::B3Vec3Array(int size) : m_values(static_cast<size_t>(size > 0 ? size : 0)) {
 }
 
@@ -2670,6 +3240,10 @@ B3Hull::B3Hull() : m_hull(nullptr), m_boxHull{}, m_ownsHull(false) {
 }
 
 B3Hull::B3Hull(b3HullData* hull) : m_hull(hull), m_boxHull{}, m_ownsHull(true) {
+}
+
+B3Hull::B3Hull(const b3HullData* hull, bool ownsHull)
+    : m_hull(const_cast<b3HullData*>(hull)), m_boxHull{}, m_ownsHull(ownsHull) {
 }
 
 B3Hull::B3Hull(b3BoxHull boxHull) : m_hull(nullptr), m_boxHull(boxHull), m_ownsHull(false) {
@@ -2900,6 +3474,170 @@ B3Vec3 B3CastOutput::GetPoint() const { return B3Vec3(m_output.point); }
 float B3CastOutput::GetFraction() const { return m_output.fraction; }
 int B3CastOutput::GetIterations() const { return m_output.iterations; }
 bool B3CastOutput::GetHit() const { return m_output.hit; }
+
+B3RayCastInput::B3RayCastInput() : value{} {
+    value.maxFraction = 1.0f;
+}
+
+B3RayCastInput::B3RayCastInput(const B3Vec3& origin, const B3Vec3& translation, float maxFraction)
+    : value{origin.value, translation.value, maxFraction} {
+}
+
+B3RayCastInput::B3RayCastInput(b3RayCastInput value) : value(value) {
+}
+
+B3Vec3 B3RayCastInput::GetOrigin() const { return B3Vec3(value.origin); }
+void B3RayCastInput::SetOrigin(const B3Vec3& origin) { value.origin = origin.value; }
+B3Vec3 B3RayCastInput::GetTranslation() const { return B3Vec3(value.translation); }
+void B3RayCastInput::SetTranslation(const B3Vec3& translation) { value.translation = translation.value; }
+float B3RayCastInput::GetMaxFraction() const { return value.maxFraction; }
+void B3RayCastInput::SetMaxFraction(float fraction) { value.maxFraction = fraction; }
+
+B3BoxCastInput::B3BoxCastInput() : value{} {
+    value.maxFraction = 1.0f;
+}
+
+B3BoxCastInput::B3BoxCastInput(const B3AABB& box, const B3Vec3& translation, float maxFraction)
+    : value{box.value, translation.value, maxFraction} {
+}
+
+B3BoxCastInput::B3BoxCastInput(b3BoxCastInput value) : value(value) {
+}
+
+B3AABB B3BoxCastInput::GetBox() const { return B3AABB(value.box); }
+void B3BoxCastInput::SetBox(const B3AABB& box) { value.box = box.value; }
+B3Vec3 B3BoxCastInput::GetTranslation() const { return B3Vec3(value.translation); }
+void B3BoxCastInput::SetTranslation(const B3Vec3& translation) { value.translation = translation.value; }
+float B3BoxCastInput::GetMaxFraction() const { return value.maxFraction; }
+void B3BoxCastInput::SetMaxFraction(float fraction) { value.maxFraction = fraction; }
+
+B3TreeStats::B3TreeStats() : m_value{} {
+}
+
+B3TreeStats::B3TreeStats(b3TreeStats value) : m_value(value) {
+}
+
+int B3TreeStats::GetNodeVisits() const { return m_value.nodeVisits; }
+int B3TreeStats::GetLeafVisits() const { return m_value.leafVisits; }
+
+B3TreeClosestResult::B3TreeClosestResult() : m_stats{}, m_minDistanceSquared(0.0f) {
+}
+
+B3TreeClosestResult::B3TreeClosestResult(b3TreeStats stats, float minDistanceSquared)
+    : m_stats(stats), m_minDistanceSquared(minDistanceSquared) {
+}
+
+B3TreeStats B3TreeClosestResult::GetStats() const { return B3TreeStats(m_stats); }
+float B3TreeClosestResult::GetMinDistanceSquared() const { return m_minDistanceSquared; }
+
+B3TreeQueryCallbackEm::B3TreeQueryCallbackEm() = default;
+B3TreeQueryCallbackEm::~B3TreeQueryCallbackEm() = default;
+bool B3TreeQueryCallbackEm::Query(int, long long) { return true; }
+
+B3TreeClosestCallbackEm::B3TreeClosestCallbackEm() = default;
+B3TreeClosestCallbackEm::~B3TreeClosestCallbackEm() = default;
+float B3TreeClosestCallbackEm::QueryClosest(float distanceSquaredMin, int, long long) {
+    return distanceSquaredMin;
+}
+
+B3TreeRayCastCallbackEm::B3TreeRayCastCallbackEm() = default;
+B3TreeRayCastCallbackEm::~B3TreeRayCastCallbackEm() = default;
+float B3TreeRayCastCallbackEm::RayCast(const B3RayCastInput& input, int, long long) {
+    return input.value.maxFraction;
+}
+
+B3TreeBoxCastCallbackEm::B3TreeBoxCastCallbackEm() = default;
+B3TreeBoxCastCallbackEm::~B3TreeBoxCastCallbackEm() = default;
+float B3TreeBoxCastCallbackEm::BoxCast(const B3BoxCastInput& input, int, long long) {
+    return input.value.maxFraction;
+}
+
+B3DynamicTree::B3DynamicTree() : B3DynamicTree(16) {
+}
+
+B3DynamicTree::B3DynamicTree(int proxyCapacity)
+    : m_tree(b3DynamicTree_Create(proxyCapacity > 0 ? proxyCapacity : 16)), m_destroyed(false) {
+}
+
+B3DynamicTree::B3DynamicTree(b3DynamicTree tree)
+    : m_tree(tree), m_destroyed(tree.version != B3_DYNAMIC_TREE_VERSION) {
+}
+
+B3DynamicTree::~B3DynamicTree() {
+    Destroy();
+}
+
+B3DynamicTree* B3DynamicTree::Load(const char* fileName, float scale) {
+    return new B3DynamicTree(b3DynamicTree_Load(fileName != nullptr ? fileName : "", scale));
+}
+
+bool B3DynamicTree::IsValid() const {
+    return !m_destroyed && m_tree.version == B3_DYNAMIC_TREE_VERSION;
+}
+
+void B3DynamicTree::Destroy() {
+    if(IsValid()) {
+        b3DynamicTree_Destroy(&m_tree);
+    }
+    m_tree = {};
+    m_destroyed = true;
+}
+
+int B3DynamicTree::CreateProxy(const B3AABB& aabb, long long categoryBits, long long userData) {
+    return b3DynamicTree_CreateProxy(&m_tree, aabb.value, static_cast<uint64_t>(categoryBits),
+                                     static_cast<uint64_t>(userData));
+}
+void B3DynamicTree::DestroyProxy(int proxyId) { b3DynamicTree_DestroyProxy(&m_tree, proxyId); }
+void B3DynamicTree::MoveProxy(int proxyId, const B3AABB& aabb) { b3DynamicTree_MoveProxy(&m_tree, proxyId, aabb.value); }
+void B3DynamicTree::EnlargeProxy(int proxyId, const B3AABB& aabb) { b3DynamicTree_EnlargeProxy(&m_tree, proxyId, aabb.value); }
+void B3DynamicTree::SetCategoryBits(int proxyId, long long categoryBits) {
+    b3DynamicTree_SetCategoryBits(&m_tree, proxyId, static_cast<uint64_t>(categoryBits));
+}
+long long B3DynamicTree::GetCategoryBits(int proxyId) {
+    return static_cast<long long>(b3DynamicTree_GetCategoryBits(&m_tree, proxyId));
+}
+long long B3DynamicTree::GetUserData(int proxyId) const {
+    return static_cast<long long>(b3DynamicTree_GetUserData(&m_tree, proxyId));
+}
+B3AABB B3DynamicTree::GetAABB(int proxyId) const { return B3AABB(b3DynamicTree_GetAABB(&m_tree, proxyId)); }
+B3TreeStats B3DynamicTree::Query(const B3AABB& aabb, long long maskBits, bool requireAllBits,
+                                 B3TreeQueryCallbackEm* callback) const {
+    if(callback == nullptr) return B3TreeStats();
+    return B3TreeStats(b3DynamicTree_Query(&m_tree, aabb.value, static_cast<uint64_t>(maskBits), requireAllBits,
+                                           dynamicTreeQueryCallback, callback));
+}
+B3TreeClosestResult B3DynamicTree::QueryClosest(const B3Vec3& point, long long maskBits, bool requireAllBits,
+                                                B3TreeClosestCallbackEm* callback,
+                                                float minDistanceSquared) const {
+    if(callback == nullptr) return B3TreeClosestResult({}, minDistanceSquared);
+    b3TreeStats stats = b3DynamicTree_QueryClosest(&m_tree, point.value, static_cast<uint64_t>(maskBits),
+                                                   requireAllBits, dynamicTreeClosestCallback, callback,
+                                                   &minDistanceSquared);
+    return B3TreeClosestResult(stats, minDistanceSquared);
+}
+B3TreeStats B3DynamicTree::RayCast(const B3RayCastInput& input, long long maskBits, bool requireAllBits,
+                                   B3TreeRayCastCallbackEm* callback) const {
+    if(callback == nullptr) return B3TreeStats();
+    return B3TreeStats(b3DynamicTree_RayCast(&m_tree, &input.value, static_cast<uint64_t>(maskBits), requireAllBits,
+                                             dynamicTreeRayCastCallback, callback));
+}
+B3TreeStats B3DynamicTree::BoxCast(const B3BoxCastInput& input, long long maskBits, bool requireAllBits,
+                                   B3TreeBoxCastCallbackEm* callback) const {
+    if(callback == nullptr) return B3TreeStats();
+    return B3TreeStats(b3DynamicTree_BoxCast(&m_tree, &input.value, static_cast<uint64_t>(maskBits), requireAllBits,
+                                             dynamicTreeBoxCastCallback, callback));
+}
+int B3DynamicTree::GetHeight() const { return b3DynamicTree_GetHeight(&m_tree); }
+float B3DynamicTree::GetAreaRatio() const { return b3DynamicTree_GetAreaRatio(&m_tree); }
+B3AABB B3DynamicTree::GetRootBounds() const { return B3AABB(b3DynamicTree_GetRootBounds(&m_tree)); }
+int B3DynamicTree::GetProxyCount() const { return b3DynamicTree_GetProxyCount(&m_tree); }
+int B3DynamicTree::Rebuild(bool fullBuild) { return b3DynamicTree_Rebuild(&m_tree, fullBuild); }
+int B3DynamicTree::GetByteCount() const { return b3DynamicTree_GetByteCount(&m_tree); }
+void B3DynamicTree::Validate() const { b3DynamicTree_Validate(&m_tree); }
+void B3DynamicTree::ValidateNoEnlarged() const { b3DynamicTree_ValidateNoEnlarged(&m_tree); }
+void B3DynamicTree::Save(const char* fileName) const {
+    b3DynamicTree_Save(&m_tree, fileName != nullptr ? fileName : "");
+}
 
 B3Sweep::B3Sweep() : m_sweep{} {
     m_sweep.q1 = b3Quat_identity;
@@ -3409,10 +4147,39 @@ b3MeshData* B3MeshDef::CreateMeshData() const {
     return b3CreateMesh(&def, nullptr, 0);
 }
 
-B3Mesh::B3Mesh() : m_mesh(nullptr) {
+B3MeshTriangle::B3MeshTriangle() : m_a{}, m_b{}, m_c{}, m_triangleIndex(-1) {
 }
 
-B3Mesh::B3Mesh(b3MeshData* mesh) : m_mesh(mesh) {
+B3MeshTriangle::B3MeshTriangle(b3Vec3 a, b3Vec3 b, b3Vec3 c, int triangleIndex)
+    : m_a(a), m_b(b), m_c(c), m_triangleIndex(triangleIndex) {
+}
+
+B3Vec3 B3MeshTriangle::GetA() const { return B3Vec3(m_a); }
+B3Vec3 B3MeshTriangle::GetB() const { return B3Vec3(m_b); }
+B3Vec3 B3MeshTriangle::GetC() const { return B3Vec3(m_c); }
+int B3MeshTriangle::GetTriangleIndex() const { return m_triangleIndex; }
+
+B3MeshQueryResult::B3MeshQueryResult() = default;
+
+int B3MeshQueryResult::GetSize() const { return static_cast<int>(m_values.size()); }
+B3MeshTriangle B3MeshQueryResult::GetValue(int index) const {
+    if(index < 0 || index >= static_cast<int>(m_values.size())) {
+        return B3MeshTriangle();
+    }
+    return m_values[static_cast<size_t>(index)];
+}
+void B3MeshQueryResult::Add(b3Vec3 a, b3Vec3 b, b3Vec3 c, int triangleIndex) {
+    m_values.emplace_back(a, b, c, triangleIndex);
+}
+
+B3Mesh::B3Mesh() : m_mesh(nullptr), m_scale(b3Vec3_one), m_ownsMesh(false) {
+}
+
+B3Mesh::B3Mesh(b3MeshData* mesh) : m_mesh(mesh), m_scale(b3Vec3_one), m_ownsMesh(true) {
+}
+
+B3Mesh::B3Mesh(const b3Mesh& mesh)
+    : m_mesh(const_cast<b3MeshData*>(mesh.data)), m_scale(mesh.scale), m_ownsMesh(false) {
 }
 
 B3Mesh::~B3Mesh() {
@@ -3499,10 +4266,11 @@ B3Mesh* B3Mesh::CreateFromObj(const char* objText, float scale, bool zUp, bool u
 bool B3Mesh::IsValid() const { return m_mesh != nullptr; }
 
 void B3Mesh::Destroy() {
-    if(m_mesh != nullptr) {
+    if(m_mesh != nullptr && m_ownsMesh) {
         b3DestroyMesh(m_mesh);
-        m_mesh = nullptr;
     }
+    m_mesh = nullptr;
+    m_ownsMesh = false;
 }
 
 int B3Mesh::GetVertexCount() const { return m_mesh != nullptr ? m_mesh->vertexCount : 0; }
@@ -3516,23 +4284,96 @@ int B3Mesh::GetTriangleMaterialIndex(int triangleIndex) const {
     return materialIndices != nullptr ? materialIndices[triangleIndex] : 0;
 }
 void B3Mesh::SetTriangleMaterialIndex(int triangleIndex, int materialIndex) {
-    if(m_mesh == nullptr || triangleIndex < 0 || triangleIndex >= m_mesh->triangleCount) {
+    if(m_mesh == nullptr || !m_ownsMesh || triangleIndex < 0 || triangleIndex >= m_mesh->triangleCount) {
         return;
     }
     uint8_t* materialIndices = reinterpret_cast<uint8_t*>(reinterpret_cast<intptr_t>(m_mesh) + m_mesh->materialOffset);
     materialIndices[triangleIndex] = static_cast<uint8_t>(materialIndex);
     m_mesh->materialCount = b3MaxInt(m_mesh->materialCount, materialIndex + 1);
 }
+B3Vec3 B3Mesh::GetScale() const { return B3Vec3(m_scale); }
+int B3Mesh::GetTreeHeight() const { return m_mesh != nullptr ? b3GetHeight(m_mesh) : 0; }
+B3MeshQueryResult* B3Mesh::Query(const B3AABB& bounds) const {
+    B3MeshQueryResult* result = new B3MeshQueryResult();
+    if(m_mesh != nullptr) {
+        b3Mesh mesh{m_mesh, m_scale};
+        b3QueryMesh(&mesh, bounds.value, meshQueryCallback, result);
+    }
+    return result;
+}
 const b3MeshData* B3Mesh::GetHandle() const { return m_mesh; }
 
-B3HeightField::B3HeightField() : m_heightField(nullptr) {
+B3HeightFieldDef::B3HeightFieldDef(int countX, int countZ)
+    : m_countX(countX > 1 ? countX : 2), m_countZ(countZ > 1 ? countZ : 2),
+      m_heights(static_cast<size_t>((countX > 1 ? countX : 2) * (countZ > 1 ? countZ : 2)), 0.0f),
+      m_materialIndices(static_cast<size_t>((countX > 1 ? countX - 1 : 1) * (countZ > 1 ? countZ - 1 : 1)), 0),
+      m_scale(b3Vec3_one), m_globalMinimumHeight(-1.0f), m_globalMaximumHeight(1.0f),
+      m_clockwiseWinding(false) {
 }
 
-B3HeightField::B3HeightField(b3HeightFieldData* heightField) : m_heightField(heightField) {
+int B3HeightFieldDef::GetCountX() const { return m_countX; }
+int B3HeightFieldDef::GetCountZ() const { return m_countZ; }
+float B3HeightFieldDef::GetHeight(int x, int z) const {
+    if(x < 0 || x >= m_countX || z < 0 || z >= m_countZ) return 0.0f;
+    return m_heights[static_cast<size_t>(z * m_countX + x)];
+}
+void B3HeightFieldDef::SetHeight(int x, int z, float height) {
+    if(x >= 0 && x < m_countX && z >= 0 && z < m_countZ) {
+        m_heights[static_cast<size_t>(z * m_countX + x)] = height;
+    }
+}
+int B3HeightFieldDef::GetMaterialIndex(int x, int z) const {
+    if(x < 0 || x >= m_countX - 1 || z < 0 || z >= m_countZ - 1) return 0;
+    return static_cast<int>(m_materialIndices[static_cast<size_t>(z * (m_countX - 1) + x)]);
+}
+void B3HeightFieldDef::SetMaterialIndex(int x, int z, int materialIndex) {
+    if(x >= 0 && x < m_countX - 1 && z >= 0 && z < m_countZ - 1) {
+        m_materialIndices[static_cast<size_t>(z * (m_countX - 1) + x)] = static_cast<uint8_t>(materialIndex);
+    }
+}
+B3Vec3 B3HeightFieldDef::GetScale() const { return B3Vec3(m_scale); }
+void B3HeightFieldDef::SetScale(const B3Vec3& scale) { m_scale = scale.value; }
+float B3HeightFieldDef::GetGlobalMinimumHeight() const { return m_globalMinimumHeight; }
+void B3HeightFieldDef::SetGlobalMinimumHeight(float height) { m_globalMinimumHeight = height; }
+float B3HeightFieldDef::GetGlobalMaximumHeight() const { return m_globalMaximumHeight; }
+void B3HeightFieldDef::SetGlobalMaximumHeight(float height) { m_globalMaximumHeight = height; }
+bool B3HeightFieldDef::GetClockwiseWinding() const { return m_clockwiseWinding; }
+void B3HeightFieldDef::SetClockwiseWinding(bool clockwise) { m_clockwiseWinding = clockwise; }
+b3HeightFieldDef B3HeightFieldDef::GetValue() const {
+    b3HeightFieldDef def{};
+    def.heights = const_cast<float*>(m_heights.data());
+    def.materialIndices = const_cast<uint8_t*>(m_materialIndices.data());
+    def.scale = m_scale;
+    def.countX = m_countX;
+    def.countZ = m_countZ;
+    def.globalMinimumHeight = m_globalMinimumHeight;
+    def.globalMaximumHeight = m_globalMaximumHeight;
+    def.clockwiseWinding = m_clockwiseWinding;
+    return def;
+}
+void B3HeightFieldDef::Dump(const char* fileName) const {
+    b3HeightFieldDef def = GetValue();
+    b3DumpHeightData(&def, fileName != nullptr ? fileName : "");
+}
+
+B3HeightField::B3HeightField() : m_heightField(nullptr), m_ownsHeightField(false) {
+}
+
+B3HeightField::B3HeightField(b3HeightFieldData* heightField)
+    : m_heightField(heightField), m_ownsHeightField(true) {
+}
+
+B3HeightField::B3HeightField(const b3HeightFieldData* heightField, bool ownsHeightField)
+    : m_heightField(const_cast<b3HeightFieldData*>(heightField)), m_ownsHeightField(ownsHeightField) {
 }
 
 B3HeightField::~B3HeightField() {
     Destroy();
+}
+
+B3HeightField* B3HeightField::CreateFromDef(const B3HeightFieldDef& source) {
+    b3HeightFieldDef def = source.GetValue();
+    return new B3HeightField(b3CreateHeightField(&def));
 }
 
 B3HeightField* B3HeightField::CreateGrid(int rowCount, int columnCount, const B3Vec3& scale, bool makeHoles) {
@@ -3545,15 +4386,23 @@ B3HeightField* B3HeightField::CreateWave(int rowCount, int columnCount, const B3
                                           makeHoles));
 }
 
+B3HeightField* B3HeightField::Load(const char* fileName) {
+    return new B3HeightField(b3LoadHeightField(fileName != nullptr ? fileName : ""));
+}
+
 bool B3HeightField::IsValid() const { return m_heightField != nullptr; }
 
 void B3HeightField::Destroy() {
-    if(m_heightField != nullptr) {
+    if(m_heightField != nullptr && m_ownsHeightField) {
         b3DestroyHeightField(m_heightField);
-        m_heightField = nullptr;
     }
+    m_heightField = nullptr;
+    m_ownsHeightField = false;
 }
 
+int B3HeightField::GetRowCount() const { return m_heightField != nullptr ? m_heightField->rowCount : 0; }
+int B3HeightField::GetColumnCount() const { return m_heightField != nullptr ? m_heightField->columnCount : 0; }
+B3Vec3 B3HeightField::GetScale() const { return B3Vec3(m_heightField != nullptr ? m_heightField->scale : b3Vec3_zero); }
 const b3HeightFieldData* B3HeightField::GetHandle() const { return m_heightField; }
 
 B3SurfaceMaterialArray::B3SurfaceMaterialArray(int size)
@@ -3642,10 +4491,10 @@ b3CompoundData* B3CompoundDef::CreateCompoundData() const {
     return b3CreateCompound(&def);
 }
 
-B3Compound::B3Compound() : m_compound(nullptr) {
+B3Compound::B3Compound() : m_compound(nullptr), m_ownsCompound(false) {
 }
 
-B3Compound::B3Compound(b3CompoundData* compound) : m_compound(compound) {
+B3Compound::B3Compound(b3CompoundData* compound) : m_compound(compound), m_ownsCompound(true) {
 }
 
 B3Compound::~B3Compound() {
@@ -3656,19 +4505,92 @@ B3Compound* B3Compound::CreateFromDef(const B3CompoundDef& def) {
     return new B3Compound(def.CreateCompoundData());
 }
 
+B3Compound* B3Compound::CreateFromBytes(const B3ByteArray& bytes) {
+    B3Compound* result = new B3Compound();
+    if(bytes.GetData() == nullptr || bytes.GetSize() <= 0) {
+        return result;
+    }
+    result->m_serializedStorage.assign(bytes.GetData(), bytes.GetData() + bytes.GetSize());
+    result->m_compound = b3ConvertBytesToCompound(result->m_serializedStorage.data(), bytes.GetSize());
+    if(result->m_compound == nullptr) {
+        result->m_serializedStorage.clear();
+    }
+    return result;
+}
+
 bool B3Compound::IsValid() const { return m_compound != nullptr; }
 
 void B3Compound::Destroy() {
-    if(m_compound != nullptr) {
+    if(m_compound != nullptr && m_ownsCompound) {
         b3DestroyCompound(m_compound);
-        m_compound = nullptr;
     }
+    m_compound = nullptr;
+    m_ownsCompound = false;
+    m_serializedStorage.clear();
 }
 
 int B3Compound::GetCapsuleCount() const { return m_compound != nullptr ? m_compound->capsuleCount : 0; }
 int B3Compound::GetHullCount() const { return m_compound != nullptr ? m_compound->hullCount : 0; }
 int B3Compound::GetMeshCount() const { return m_compound != nullptr ? m_compound->meshCount : 0; }
 int B3Compound::GetSphereCount() const { return m_compound != nullptr ? m_compound->sphereCount : 0; }
+B3SurfaceMaterial B3Compound::GetMaterial(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->materialCount) return B3SurfaceMaterial();
+    return B3SurfaceMaterial(b3GetCompoundMaterials(m_compound)[index]);
+}
+B3Capsule B3Compound::GetCapsule(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->capsuleCount) return B3Capsule();
+    return B3Capsule(b3GetCompoundCapsule(m_compound, index).capsule);
+}
+int B3Compound::GetCapsuleMaterialIndex(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->capsuleCount) return -1;
+    return b3GetCompoundCapsule(m_compound, index).materialIndex;
+}
+B3Hull* B3Compound::GetHull(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->hullCount) return new B3Hull();
+    return new B3Hull(b3GetCompoundHull(m_compound, index).hull, false);
+}
+B3Transform B3Compound::GetHullTransform(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->hullCount) return B3Transform();
+    return B3Transform(b3GetCompoundHull(m_compound, index).transform);
+}
+int B3Compound::GetHullMaterialIndex(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->hullCount) return -1;
+    return b3GetCompoundHull(m_compound, index).materialIndex;
+}
+B3Mesh* B3Compound::GetMesh(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->meshCount) return new B3Mesh();
+    b3CompoundMesh child = b3GetCompoundMesh(m_compound, index);
+    return new B3Mesh(b3Mesh{child.meshData, child.scale});
+}
+B3Transform B3Compound::GetMeshTransform(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->meshCount) return B3Transform();
+    return B3Transform(b3GetCompoundMesh(m_compound, index).transform);
+}
+B3Vec3 B3Compound::GetMeshScale(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->meshCount) return B3Vec3();
+    return B3Vec3(b3GetCompoundMesh(m_compound, index).scale);
+}
+int B3Compound::GetMeshMaterialIndex(int meshIndex, int sourceMaterialIndex) const {
+    if(m_compound == nullptr || meshIndex < 0 || meshIndex >= m_compound->meshCount ||
+       sourceMaterialIndex < 0 || sourceMaterialIndex >= B3_MAX_COMPOUND_MESH_MATERIALS) return -1;
+    return b3GetCompoundMesh(m_compound, meshIndex).materialIndices[sourceMaterialIndex];
+}
+B3Sphere B3Compound::GetSphere(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->sphereCount) return B3Sphere();
+    return B3Sphere(b3GetCompoundSphere(m_compound, index).sphere);
+}
+int B3Compound::GetSphereMaterialIndex(int index) const {
+    if(m_compound == nullptr || index < 0 || index >= m_compound->sphereCount) return -1;
+    return b3GetCompoundSphere(m_compound, index).materialIndex;
+}
+B3ByteArray* B3Compound::ToBytes() {
+    if(m_compound == nullptr) return new B3ByteArray();
+    int byteCount = m_compound->byteCount;
+    uint8_t* bytes = b3ConvertCompoundToBytes(m_compound);
+    B3ByteArray* result = new B3ByteArray(bytes, byteCount);
+    m_compound = b3ConvertBytesToCompound(bytes, byteCount);
+    return result;
+}
 const b3CompoundData* B3Compound::GetHandle() const { return m_compound; }
 
 B3Body::B3Body() : m_bodyId(b3_nullBodyId) {
@@ -3976,6 +4898,14 @@ long long B3Body::GetWorldId() const {
     return static_cast<long long>(b3StoreWorldId(b3Body_GetWorld(m_bodyId)));
 }
 
+long long B3Body::GetUserData() const {
+    return static_cast<long long>(reinterpret_cast<uintptr_t>(b3Body_GetUserData(m_bodyId)));
+}
+
+void B3Body::SetUserData(long long userData) {
+    b3Body_SetUserData(m_bodyId, reinterpret_cast<void*>(static_cast<uintptr_t>(userData)));
+}
+
 int B3Body::GetShapeCount() const {
     return b3Body_GetShapeCount(m_bodyId);
 }
@@ -4008,6 +4938,18 @@ long long B3Body::GetJointId(int index) const {
         return static_cast<long long>(b3StoreJointId(b3_nullJointId));
     }
     return static_cast<long long>(b3StoreJointId(joints[static_cast<size_t>(index)]));
+}
+
+int B3Body::GetContactCapacity() const {
+    return b3Body_GetContactCapacity(m_bodyId);
+}
+
+B3ContactDataArray* B3Body::GetContactData() const {
+    int capacity = b3Body_GetContactCapacity(m_bodyId);
+    std::vector<b3ContactData> values(static_cast<size_t>(capacity > 0 ? capacity : 0));
+    int count = capacity > 0 ? b3Body_GetContactData(m_bodyId, values.data(), capacity) : 0;
+    values.resize(static_cast<size_t>(count > 0 ? count : 0));
+    return new B3ContactDataArray(values);
 }
 
 B3AABB B3Body::ComputeAABB() const {
@@ -4162,6 +5104,14 @@ long long B3Joint::GetBodyIdB() const {
 
 long long B3Joint::GetWorldId() const {
     return static_cast<long long>(b3StoreWorldId(b3Joint_GetWorld(m_jointId)));
+}
+
+long long B3Joint::GetUserData() const {
+    return static_cast<long long>(reinterpret_cast<uintptr_t>(b3Joint_GetUserData(m_jointId)));
+}
+
+void B3Joint::SetUserData(long long userData) {
+    b3Joint_SetUserData(m_jointId, reinterpret_cast<void*>(static_cast<uintptr_t>(userData)));
 }
 
 B3Transform B3Joint::GetLocalFrameA() const {
@@ -4936,6 +5886,14 @@ long long B3Shape::GetWorldId() const {
     return static_cast<long long>(b3StoreWorldId(b3Shape_GetWorld(m_shapeId)));
 }
 
+long long B3Shape::GetUserData() const {
+    return static_cast<long long>(reinterpret_cast<uintptr_t>(b3Shape_GetUserData(m_shapeId)));
+}
+
+void B3Shape::SetUserData(long long userData) {
+    b3Shape_SetUserData(m_shapeId, reinterpret_cast<void*>(static_cast<uintptr_t>(userData)));
+}
+
 bool B3Shape::IsSensor() const {
     return b3Shape_IsSensor(m_shapeId);
 }
@@ -5067,6 +6025,14 @@ B3Hull* B3Shape::GetHull() const {
     return new B3Hull(hull != nullptr ? b3CloneHull(hull) : nullptr);
 }
 
+B3Mesh* B3Shape::GetMesh() const {
+    return new B3Mesh(b3Shape_GetMesh(m_shapeId));
+}
+
+B3HeightField* B3Shape::GetHeightField() const {
+    return new B3HeightField(b3Shape_GetHeightField(m_shapeId), false);
+}
+
 void B3Shape::SetHull(const B3Hull& hull) {
     const b3HullData* hullData = hull.GetHandle();
     if(hullData != nullptr) {
@@ -5083,6 +6049,14 @@ void B3Shape::SetMesh(const B3Mesh& mesh, const B3Vec3& scale) {
 
 int B3Shape::GetContactCapacity() const {
     return b3Shape_GetContactCapacity(m_shapeId);
+}
+
+B3ContactDataArray* B3Shape::GetContactData() const {
+    int capacity = b3Shape_GetContactCapacity(m_shapeId);
+    std::vector<b3ContactData> values(static_cast<size_t>(capacity > 0 ? capacity : 0));
+    int count = capacity > 0 ? b3Shape_GetContactData(m_shapeId, values.data(), capacity) : 0;
+    values.resize(static_cast<size_t>(count > 0 ? count : 0));
+    return new B3ContactDataArray(values);
 }
 
 int B3Shape::GetSensorCapacity() const {
@@ -5360,10 +6334,69 @@ bool B3CustomFilterEm::Filter(long long, long long) {
     return true;
 }
 
+B3PreSolveCallbackEm::B3PreSolveCallbackEm() = default;
+B3PreSolveCallbackEm::~B3PreSolveCallbackEm() = default;
+bool B3PreSolveCallbackEm::PreSolve(long long, long long, const B3Vec3&, const B3Vec3&) { return true; }
+
+B3FrictionCallbackEm::B3FrictionCallbackEm() = default;
+B3FrictionCallbackEm::~B3FrictionCallbackEm() = default;
+float B3FrictionCallbackEm::MixFriction(float frictionA, long long, float frictionB, long long) {
+    return std::sqrt(frictionA * frictionB);
+}
+
+B3RestitutionCallbackEm::B3RestitutionCallbackEm() = default;
+B3RestitutionCallbackEm::~B3RestitutionCallbackEm() = default;
+float B3RestitutionCallbackEm::MixRestitution(float restitutionA, long long, float restitutionB, long long) {
+    return restitutionA > restitutionB ? restitutionA : restitutionB;
+}
+
+B3CastResult::B3CastResult()
+    : m_shapeId(0), m_fraction(0.0f), m_userMaterialId(0), m_triangleIndex(-1), m_childIndex(-1) {
+}
+
+B3CastResult::B3CastResult(long long shapeId, const B3Vec3& point, const B3Vec3& normal, float fraction,
+                           long long userMaterialId, int triangleIndex, int childIndex)
+    : m_shapeId(shapeId), m_point(point), m_normal(normal), m_fraction(fraction),
+      m_userMaterialId(userMaterialId), m_triangleIndex(triangleIndex), m_childIndex(childIndex) {
+}
+
+long long B3CastResult::GetShapeId() const { return m_shapeId; }
+B3Vec3 B3CastResult::GetPoint() const { return m_point; }
+B3Vec3 B3CastResult::GetNormal() const { return m_normal; }
+float B3CastResult::GetFraction() const { return m_fraction; }
+long long B3CastResult::GetUserMaterialId() const { return m_userMaterialId; }
+int B3CastResult::GetTriangleIndex() const { return m_triangleIndex; }
+int B3CastResult::GetChildIndex() const { return m_childIndex; }
+
+B3CastResultCallbackEm::B3CastResultCallbackEm() = default;
+B3CastResultCallbackEm::~B3CastResultCallbackEm() = default;
+float B3CastResultCallbackEm::ReportHit(const B3CastResult& result) {
+    return result.GetFraction();
+}
+
+B3AllocatorEm::B3AllocatorEm() = default;
+B3AllocatorEm::~B3AllocatorEm() = default;
+long long B3AllocatorEm::Allocate(int size, int alignment) { return B3::AllocateMemory(size, alignment); }
+void B3AllocatorEm::Free(long long address) { B3::FreeMemory(address); }
+
+B3AssertCallbackEm::B3AssertCallbackEm() = default;
+B3AssertCallbackEm::~B3AssertCallbackEm() = default;
+bool B3AssertCallbackEm::Assert(const char*, const char*, int) { return false; }
+
+B3LogCallbackEm::B3LogCallbackEm() = default;
+B3LogCallbackEm::~B3LogCallbackEm() = default;
+void B3LogCallbackEm::Log(const char*) {
+}
+
 B3World::B3World() : B3World(B3WorldDef()) {
 }
 
-B3World::B3World(const B3WorldDef& def) : m_worldId(b3CreateWorld(&def.value)), m_destroyed(false) {
+B3World::B3World(const B3WorldDef& def)
+    : m_worldId(b3CreateWorld(&def.value)), m_destroyed(false), m_ownsWorld(true) {
+}
+
+B3World::B3World(b3WorldId worldId, bool ownsWorld)
+    : m_worldId(worldId), m_destroyed(B3_IS_NULL(worldId)), m_ownsWorld(ownsWorld) {
 }
 
 B3World::~B3World() {
@@ -5379,11 +6412,19 @@ bool B3World::IsValid() const {
 }
 
 void B3World::Destroy() {
-    if(IsValid()) {
-        b3DestroyWorld(m_worldId);
+    if(m_ownsWorld) {
+        int callbackSlot = getWorldCallbackSlot(m_worldId);
+        if(callbackSlot >= 0) {
+            g_frictionCallbacks[callbackSlot] = nullptr;
+            g_restitutionCallbacks[callbackSlot] = nullptr;
+        }
+        if(IsValid()) {
+            b3DestroyWorld(m_worldId);
+        }
     }
     m_worldId = b3_nullWorldId;
     m_destroyed = true;
+    m_ownsWorld = false;
 }
 
 void B3World::Step(float timeStep, int subStepCount) {
@@ -5474,8 +6515,24 @@ int B3World::GetAwakeBodyCount() const {
     return b3World_GetAwakeBodyCount(m_worldId);
 }
 
+B3Profile B3World::GetProfile() const {
+    return B3Profile(b3World_GetProfile(m_worldId));
+}
+
+B3Counters B3World::GetCounters() const {
+    return B3Counters(b3World_GetCounters(m_worldId));
+}
+
 B3Capacity B3World::GetMaxCapacity() const {
     return B3Capacity(b3World_GetMaxCapacity(m_worldId));
+}
+
+long long B3World::GetUserData() const {
+    return static_cast<long long>(reinterpret_cast<uintptr_t>(b3World_GetUserData(m_worldId)));
+}
+
+void B3World::SetUserData(long long userData) {
+    b3World_SetUserData(m_worldId, reinterpret_cast<void*>(static_cast<uintptr_t>(userData)));
 }
 
 void B3World::Explode(const B3ExplosionDef& def) {
@@ -5486,6 +6543,10 @@ void B3World::DumpMemoryStats() {
     b3World_DumpMemoryStats(m_worldId);
 }
 
+void B3World::DumpShapeBounds(int bodyType) {
+    b3World_DumpShapeBounds(m_worldId, static_cast<b3BodyType>(bodyType));
+}
+
 void B3World::RebuildStaticTree() {
     b3World_RebuildStaticTree(m_worldId);
 }
@@ -5494,8 +6555,37 @@ void B3World::EnableSpeculative(bool enabled) {
     b3World_EnableSpeculative(m_worldId, enabled);
 }
 
+void B3World::StartRecording(B3Recording* recording) {
+    if(recording != nullptr && recording->GetHandle() != nullptr) {
+        b3World_StartRecording(m_worldId, recording->GetHandle());
+    }
+}
+
+void B3World::StopRecording() {
+    b3World_StopRecording(m_worldId);
+}
+
 void B3World::SetCustomFilterCallback(B3CustomFilterEm* callback) {
     b3World_SetCustomFilterCallback(m_worldId, callback != nullptr ? customFilterCallback : nullptr, callback);
+}
+
+void B3World::SetPreSolveCallback(B3PreSolveCallbackEm* callback) {
+    b3World_SetPreSolveCallback(m_worldId, callback != nullptr ? preSolveCallback : nullptr, callback);
+}
+
+void B3World::SetFrictionCallback(B3FrictionCallbackEm* callback) {
+    int callbackSlot = getWorldCallbackSlot(m_worldId);
+    if(callbackSlot < 0) return;
+    g_frictionCallbacks[callbackSlot] = callback;
+    b3World_SetFrictionCallback(m_worldId, callback != nullptr ? g_frictionCallbackSlots[callbackSlot] : nullptr);
+}
+
+void B3World::SetRestitutionCallback(B3RestitutionCallbackEm* callback) {
+    int callbackSlot = getWorldCallbackSlot(m_worldId);
+    if(callbackSlot < 0) return;
+    g_restitutionCallbacks[callbackSlot] = callback;
+    b3World_SetRestitutionCallback(m_worldId,
+                                   callback != nullptr ? g_restitutionCallbackSlots[callbackSlot] : nullptr);
 }
 
 void B3World::ClearDebugOverlay() {
@@ -5644,6 +6734,13 @@ B3RayResult B3World::CastRayClosest(const B3Vec3& origin, const B3Vec3& translat
     return B3RayResult(b3World_CastRayClosest(m_worldId, origin.value, translation.value, filter.value));
 }
 
+B3TreeStats B3World::CastRay(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter,
+                             B3CastResultCallbackEm* callback) const {
+    if(callback == nullptr) return B3TreeStats();
+    return B3TreeStats(b3World_CastRay(m_worldId, b3ToPos(origin.value), translation.value, filter.value,
+                                       castResultCallback, callback));
+}
+
 int B3World::CountOverlapsAABB(const B3AABB& bounds, const B3QueryFilter& filter) const {
     struct Context {
         int count;
@@ -5778,6 +6875,32 @@ float B3::Atan2(float y, float x) {
     return b3Atan2(y, x);
 }
 
+B3CosSin B3::ComputeCosSin(float radians) {
+    return B3CosSin(b3ComputeCosSin(radians));
+}
+
+B3Quat B3::MakeQuatFromMatrix(const B3Matrix3& matrix) {
+    return B3Quat(b3MakeQuatFromMatrix(&matrix.value));
+}
+
+B3Matrix3 B3::Steiner(float mass, const B3Vec3& origin) {
+    return B3Matrix3(b3Steiner(mass, origin.value));
+}
+
+B3Vec3 B3::PointToSegmentDistance(const B3Vec3& a, const B3Vec3& b, const B3Vec3& q) {
+    return B3Vec3(b3PointToSegmentDistance(a.value, b.value, q.value));
+}
+
+B3SegmentDistanceResult B3::LineDistance(const B3Vec3& p1, const B3Vec3& d1,
+                                         const B3Vec3& p2, const B3Vec3& d2) {
+    return B3SegmentDistanceResult(b3LineDistance(p1.value, d1.value, p2.value, d2.value));
+}
+
+B3SegmentDistanceResult B3::SegmentDistance(const B3Vec3& p1, const B3Vec3& q1,
+                                            const B3Vec3& p2, const B3Vec3& q2) {
+    return B3SegmentDistanceResult(b3SegmentDistance(p1.value, q1.value, p2.value, q2.value));
+}
+
 bool B3::IsValidFloat(float value) {
     return b3IsValidFloat(value);
 }
@@ -5792,6 +6915,26 @@ bool B3::IsValidQuat(const B3Quat& value) {
 
 bool B3::IsValidTransform(const B3Transform& value) {
     return b3IsValidTransform(value.value);
+}
+
+bool B3::IsValidMatrix3(const B3Matrix3& value) {
+    return b3IsValidMatrix3(value.value);
+}
+
+bool B3::IsValidPlane(const B3Plane& value) {
+    return b3IsValidPlane(value.value);
+}
+
+bool B3::IsValidPosition(const B3Vec3& value) {
+    return b3IsValidPosition(b3ToPos(value.value));
+}
+
+bool B3::IsValidWorldTransform(const B3Transform& value) {
+    return b3IsValidWorldTransform(b3MakeWorldTransform(value.value));
+}
+
+bool B3::IsValidRay(const B3RayCastInput& value) {
+    return b3IsValidRay(&value.value);
 }
 
 bool B3::IsValidAABB(const B3AABB& value) {
@@ -5880,6 +7023,79 @@ float B3::GetStallThreshold() {
 
 void B3::SetStallThreshold(float seconds) {
     b3SetStallThreshold(seconds);
+}
+
+int B3::GetByteCount() {
+    return b3GetByteCount();
+}
+
+long long B3::GetTicks() {
+    return static_cast<long long>(b3GetTicks());
+}
+
+float B3::GetMilliseconds(long long ticks) {
+    return b3GetMilliseconds(static_cast<uint64_t>(ticks));
+}
+
+long long B3::Hash(long long hash, const B3ByteArray& data) {
+    return static_cast<long long>(b3Hash(static_cast<uint32_t>(hash), data.GetData(), data.GetSize()));
+}
+
+int B3::InternalAssert(const char* condition, const char* fileName, int lineNumber) {
+#if !defined(NDEBUG) || defined(B3_ENABLE_ASSERT)
+    return b3InternalAssert(condition != nullptr ? condition : "", fileName != nullptr ? fileName : "", lineNumber);
+#else
+    (void)condition;
+    (void)fileName;
+    (void)lineNumber;
+    return 0;
+#endif
+}
+
+void B3::SetAllocatorCallback(B3AllocatorEm* callback) {
+    g_allocatorCallback = callback;
+    b3SetAllocator(callback != nullptr ? allocatorCallback : nullptr, callback != nullptr ? freeCallback : nullptr);
+}
+
+void B3::SetAssertCallback(B3AssertCallbackEm* callback) {
+    g_assertCallback = callback;
+    b3SetAssertFcn(assertCallback);
+}
+
+void B3::SetLogCallback(B3LogCallbackEm* callback) {
+    g_logCallback = callback;
+    b3SetLogFcn(logCallback);
+}
+
+long long B3::AllocateMemory(int size, int alignment) {
+    if(size <= 0) return 0;
+    size_t nativeAlignment = static_cast<size_t>(alignment > 0 ? alignment : 16);
+    if(nativeAlignment < sizeof(void*)) nativeAlignment = sizeof(void*);
+#if defined(_MSC_VER)
+    return static_cast<long long>(reinterpret_cast<uintptr_t>(_aligned_malloc(static_cast<size_t>(size), nativeAlignment)));
+#else
+    void* memory = nullptr;
+    if(posix_memalign(&memory, nativeAlignment, static_cast<size_t>(size)) != 0) return 0;
+    return static_cast<long long>(reinterpret_cast<uintptr_t>(memory));
+#endif
+}
+
+void B3::FreeMemory(long long address) {
+    void* memory = reinterpret_cast<void*>(static_cast<uintptr_t>(address));
+    if(memory == nullptr) return;
+#if defined(_MSC_VER)
+    _aligned_free(memory);
+#else
+    std::free(memory);
+#endif
+}
+
+void B3::Yield() {
+    b3Yield();
+}
+
+void B3::Sleep(int milliseconds) {
+    b3Sleep(milliseconds);
 }
 
 long long B3::DefaultMaskBits() {

@@ -29,6 +29,10 @@ public final class B3HeightField extends NativeObject {
         return new B3HeightField((byte) 0, (char) 0);
     }
 
+    public static B3HeightField CreateFromDef(B3HeightFieldDef def) {
+        return null;
+    }
+
     public static B3HeightField CreateGrid(int rowCount, int columnCount, B3Vec3 scale, boolean makeHoles) {
         return null;
     }
@@ -37,10 +41,26 @@ public final class B3HeightField extends NativeObject {
         return null;
     }
 
+    public static B3HeightField Load(String fileName) {
+        return null;
+    }
+
     public boolean IsValid() {
         return false;
     }
 
     public void Destroy() {
+    }
+
+    public int GetRowCount() {
+        return 0;
+    }
+
+    public int GetColumnCount() {
+        return 0;
+    }
+
+    public B3Vec3 GetScale() {
+        return null;
     }
 }

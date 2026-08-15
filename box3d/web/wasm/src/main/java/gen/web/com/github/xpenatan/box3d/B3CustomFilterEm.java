@@ -42,8 +42,8 @@ public class B3CustomFilterEm extends NativeObject {
     private void setupCallback() {
         Filter Filter = new Filter() {
 
-            public boolean Filter(int shapeIdA, int shapeIdB) {
-                return internal_Filter(shapeIdA, shapeIdB);
+            public boolean Filter(org.teavm.jso.core.JSBigInt shapeIdA, org.teavm.jso.core.JSBigInt shapeIdB) {
+                return internal_Filter(shapeIdA.longValue(), shapeIdB.longValue());
             }
         };
         internal_native_setupCallback(native_address, Filter);
@@ -66,6 +66,6 @@ public class B3CustomFilterEm extends NativeObject {
     @org.teavm.jso.JSFunctor()
     public interface Filter extends org.teavm.jso.JSObject {
 
-        boolean Filter(int shapeIdA, int shapeIdB);
+        boolean Filter(org.teavm.jso.core.JSBigInt shapeIdA, org.teavm.jso.core.JSBigInt shapeIdB);
     }
 }

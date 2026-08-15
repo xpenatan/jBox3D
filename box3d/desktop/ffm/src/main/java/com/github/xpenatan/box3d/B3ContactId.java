@@ -119,6 +119,35 @@ public final class B3ContactId extends NativeObject {
         }
     }
 
+    public boolean IsValid() {
+        return internal_native_IsValid(native_address);
+    }
+
+    public static boolean internal_native_IsValid(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsValid__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3ContactData GetData() {
+        long addr = internal_native_GetData_addr(native_address);
+        if (addr == 0)
+            return B3ContactData.NULL;
+        B3ContactData B3ContactData_NEW = B3ContactData.native_new();
+        B3ContactData_NEW.internal_reset(addr, true);
+        return B3ContactData_NEW;
+    }
+
+    public static long internal_native_GetData_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetData_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3contactid_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
@@ -134,5 +163,9 @@ public final class B3ContactId extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetValue2__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3contactid_getvalue2", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_IsNull__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3contactid_isnull", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsValid__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3contactid_isvalid", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetData_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3contactid_getdata_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
     }
 }

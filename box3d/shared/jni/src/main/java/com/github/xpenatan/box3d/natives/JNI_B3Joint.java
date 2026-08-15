@@ -30,6 +30,10 @@ final public class JNI_B3Joint {
 
     public static native long internal_native_GetWorldId(long this_addr);
 
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public static native void internal_native_SetUserData(long this_addr, long userData);
+
     public static native long internal_native_GetLocalFrameA_addr(long this_addr);
 
     public static native void internal_native_SetLocalFrameA(long this_addr, long localFrame_addr);

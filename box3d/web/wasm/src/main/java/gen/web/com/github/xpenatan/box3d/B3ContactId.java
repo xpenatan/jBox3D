@@ -76,4 +76,23 @@ public final class B3ContactId extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3ContactId);var returnedJSObj = jsObj.IsNull();return returnedJSObj;")
     public static native boolean internal_native_IsNull(int this_addr);
+
+    public boolean IsValid() {
+        return internal_native_IsValid(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3ContactId);var returnedJSObj = jsObj.IsValid();return returnedJSObj;")
+    public static native boolean internal_native_IsValid(int this_addr);
+
+    public B3ContactData GetData() {
+        int addr = internal_native_GetData_addr(native_address);
+        if (addr == 0)
+            return B3ContactData.NULL;
+        B3ContactData B3ContactData_NEW = B3ContactData.native_new();
+        B3ContactData_NEW.internal_reset(addr, true);
+        return B3ContactData_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3ContactId);var returnedJSObj = jsObj.GetData();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetData_addr(int this_addr);
 }

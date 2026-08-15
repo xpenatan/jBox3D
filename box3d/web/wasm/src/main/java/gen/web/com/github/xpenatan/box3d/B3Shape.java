@@ -110,6 +110,20 @@ public final class B3Shape extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetWorldId();return returnedJSObj;")
     public static native long internal_native_GetWorldId(int this_addr);
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetUserData();return returnedJSObj;")
+    public static native long internal_native_GetUserData(int this_addr);
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "userData"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetUserData(userData);")
+    public static native void internal_native_SetUserData(int this_addr, long userData);
+
     public boolean IsSensor() {
         return internal_native_IsSensor(native_address);
     }
@@ -368,6 +382,30 @@ public final class B3Shape extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "hull_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetHull(hull_addr);")
     public static native void internal_native_SetHull(int this_addr, int hull_addr);
 
+    public B3Mesh GetMesh() {
+        int addr = internal_native_GetMesh_addr(native_address);
+        if (addr == 0)
+            return B3Mesh.NULL;
+        B3Mesh B3Mesh_NEW = B3Mesh.native_new();
+        B3Mesh_NEW.internal_reset(addr, true);
+        return B3Mesh_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetMesh();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetMesh_addr(int this_addr);
+
+    public B3HeightField GetHeightField() {
+        int addr = internal_native_GetHeightField_addr(native_address);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetHeightField();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetHeightField_addr(int this_addr);
+
     public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
         internal_native_SetMesh(native_address, mesh.native_address, scale.native_address);
     }
@@ -381,6 +419,18 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetContactCapacity();return returnedJSObj;")
     public static native int internal_native_GetContactCapacity(int this_addr);
+
+    public B3ContactDataArray GetContactData() {
+        int addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetContactData();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetContactData_addr(int this_addr);
 
     public int GetSensorCapacity() {
         return internal_native_GetSensorCapacity(native_address);

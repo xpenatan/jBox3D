@@ -17,6 +17,8 @@ import java.lang.invoke.MethodHandle;
 
 public final class B3Mesh extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     static public final B3Mesh NULL = B3Mesh.native_new();
 
     public B3Mesh() {
@@ -278,6 +280,53 @@ public final class B3Mesh extends NativeObject {
         }
     }
 
+    public B3Vec3 GetScale() {
+        long addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetScale_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetScale_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public int GetTreeHeight() {
+        return internal_native_GetTreeHeight(native_address);
+    }
+
+    public static int internal_native_GetTreeHeight(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetTreeHeight__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3MeshQueryResult Query(B3AABB bounds) {
+        long addr = internal_native_Query_addr(native_address, bounds.native_address);
+        if (addr == 0)
+            return B3MeshQueryResult.NULL;
+        B3MeshQueryResult B3MeshQueryResult_NEW = B3MeshQueryResult.native_new();
+        B3MeshQueryResult_NEW.internal_reset(addr, true);
+        return B3MeshQueryResult_NEW;
+    }
+
+    public static long internal_native_Query_addr(long this_addr, long bounds_addr) {
+        try {
+            return (long) FFMHandles.internal_native_Query_addr__JJ.invokeExact(this_addr, bounds_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     private static final class FFMHandles {
 
         static final java.lang.invoke.MethodHandle internal_native_create_addr__ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3mesh_create_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG));
@@ -313,5 +362,11 @@ public final class B3Mesh extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetTriangleMaterialIndex__JI = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3mesh_gettrianglematerialindex", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
 
         static final java.lang.invoke.MethodHandle internal_native_SetTriangleMaterialIndex__JII = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3mesh_settrianglematerialindex", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetScale_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3mesh_getscale_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetTreeHeight__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3mesh_gettreeheight", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_Query_addr__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3mesh_query_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
     }
 }

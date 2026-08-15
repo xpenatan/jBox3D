@@ -120,8 +120,23 @@ public final class B3World extends NativeObject {
         return 0;
     }
 
+    public B3Profile GetProfile() {
+        return null;
+    }
+
+    public B3Counters GetCounters() {
+        return null;
+    }
+
     public B3Capacity GetMaxCapacity() {
         return null;
+    }
+
+    public long GetUserData() {
+        return 0;
+    }
+
+    public void SetUserData(long userData) {
     }
 
     public void Explode(B3ExplosionDef def) {
@@ -130,13 +145,31 @@ public final class B3World extends NativeObject {
     public void DumpMemoryStats() {
     }
 
+    public void DumpShapeBounds(int bodyType) {
+    }
+
     public void RebuildStaticTree() {
     }
 
     public void EnableSpeculative(boolean enabled) {
     }
 
+    public void StartRecording(B3Recording recording) {
+    }
+
+    public void StopRecording() {
+    }
+
     public void SetCustomFilterCallback(B3CustomFilterEm callback) {
+    }
+
+    public void SetPreSolveCallback(B3PreSolveCallbackEm callback) {
+    }
+
+    public void SetFrictionCallback(B3FrictionCallbackEm callback) {
+    }
+
+    public void SetRestitutionCallback(B3RestitutionCallbackEm callback) {
     }
 
     public void ClearDebugOverlay() {
@@ -223,6 +256,10 @@ public final class B3World extends NativeObject {
     }
 
     public B3RayResult CastRayClosest(B3Vec3 origin, B3Vec3 translation, B3QueryFilter filter) {
+        return null;
+    }
+
+    public B3TreeStats CastRay(B3Vec3 origin, B3Vec3 translation, B3QueryFilter filter, B3CastResultCallbackEm callback) {
         return null;
     }
 

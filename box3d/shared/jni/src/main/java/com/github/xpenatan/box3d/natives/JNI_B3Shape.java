@@ -28,6 +28,10 @@ final public class JNI_B3Shape {
 
     public static native long internal_native_GetWorldId(long this_addr);
 
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public static native void internal_native_SetUserData(long this_addr, long userData);
+
     public static native boolean internal_native_IsSensor(long this_addr);
 
     public static native void internal_native_GetName(long this_addr, long name_addr);
@@ -90,9 +94,15 @@ final public class JNI_B3Shape {
 
     public static native void internal_native_SetHull(long this_addr, long hull_addr);
 
+    public static native long internal_native_GetMesh_addr(long this_addr);
+
+    public static native long internal_native_GetHeightField_addr(long this_addr);
+
     public static native void internal_native_SetMesh(long this_addr, long mesh_addr, long scale_addr);
 
     public static native int internal_native_GetContactCapacity(long this_addr);
+
+    public static native long internal_native_GetContactData_addr(long this_addr);
 
     public static native int internal_native_GetSensorCapacity(long this_addr);
 

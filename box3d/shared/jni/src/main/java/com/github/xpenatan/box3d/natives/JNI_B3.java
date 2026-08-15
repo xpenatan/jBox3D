@@ -16,6 +16,18 @@ final public class JNI_B3 {
 
     public static native float internal_native_Atan2(float y, float x);
 
+    public static native long internal_native_ComputeCosSin_addr(float radians);
+
+    public static native long internal_native_MakeQuatFromMatrix_addr(long matrix_addr);
+
+    public static native long internal_native_Steiner_addr(float mass, long origin_addr);
+
+    public static native long internal_native_PointToSegmentDistance_addr(long a_addr, long b_addr, long q_addr);
+
+    public static native long internal_native_LineDistance_addr(long p1_addr, long d1_addr, long p2_addr, long d2_addr);
+
+    public static native long internal_native_SegmentDistance_addr(long p1_addr, long q1_addr, long p2_addr, long q2_addr);
+
     public static native boolean internal_native_IsValidFloat(float value);
 
     public static native boolean internal_native_IsValidVec3(long value_addr);
@@ -23,6 +35,16 @@ final public class JNI_B3 {
     public static native boolean internal_native_IsValidQuat(long value_addr);
 
     public static native boolean internal_native_IsValidTransform(long value_addr);
+
+    public static native boolean internal_native_IsValidMatrix3(long value_addr);
+
+    public static native boolean internal_native_IsValidPlane(long value_addr);
+
+    public static native boolean internal_native_IsValidPosition(long value_addr);
+
+    public static native boolean internal_native_IsValidWorldTransform(long value_addr);
+
+    public static native boolean internal_native_IsValidRay(long value_addr);
 
     public static native boolean internal_native_IsValidAABB(long value_addr);
 
@@ -67,6 +89,30 @@ final public class JNI_B3 {
     public static native float internal_native_GetStallThreshold();
 
     public static native void internal_native_SetStallThreshold(float seconds);
+
+    public static native int internal_native_GetByteCount();
+
+    public static native long internal_native_GetTicks();
+
+    public static native float internal_native_GetMilliseconds(long ticks);
+
+    public static native long internal_native_Hash(long hash, long data_addr);
+
+    public static native int internal_native_InternalAssert(String condition, String fileName, int lineNumber);
+
+    public static native void internal_native_SetAllocatorCallback(long callback_addr);
+
+    public static native void internal_native_SetAssertCallback(long callback_addr);
+
+    public static native void internal_native_SetLogCallback(long callback_addr);
+
+    public static native long internal_native_AllocateMemory(int size, int alignment);
+
+    public static native void internal_native_FreeMemory(long address);
+
+    public static native void internal_native_Yield();
+
+    public static native void internal_native_Sleep(int milliseconds);
 
     public static native long internal_native_DefaultMaskBits();
 }

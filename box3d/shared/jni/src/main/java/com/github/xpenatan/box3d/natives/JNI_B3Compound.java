@@ -16,6 +16,8 @@ final public class JNI_B3Compound {
 
     public static native long internal_native_CreateFromDef_addr(long def_addr);
 
+    public static native long internal_native_CreateFromBytes_addr(long bytes_addr);
+
     public static native boolean internal_native_IsValid(long this_addr);
 
     public static native void internal_native_Destroy(long this_addr);
@@ -27,4 +29,30 @@ final public class JNI_B3Compound {
     public static native int internal_native_GetMeshCount(long this_addr);
 
     public static native int internal_native_GetSphereCount(long this_addr);
+
+    public static native long internal_native_GetMaterial_addr(long this_addr, int index);
+
+    public static native long internal_native_GetCapsule_addr(long this_addr, int index);
+
+    public static native int internal_native_GetCapsuleMaterialIndex(long this_addr, int index);
+
+    public static native long internal_native_GetHull_addr(long this_addr, int index);
+
+    public static native long internal_native_GetHullTransform_addr(long this_addr, int index);
+
+    public static native int internal_native_GetHullMaterialIndex(long this_addr, int index);
+
+    public static native long internal_native_GetMesh_addr(long this_addr, int index);
+
+    public static native long internal_native_GetMeshTransform_addr(long this_addr, int index);
+
+    public static native long internal_native_GetMeshScale_addr(long this_addr, int index);
+
+    public static native int internal_native_GetMeshMaterialIndex(long this_addr, int meshIndex, int sourceMaterialIndex);
+
+    public static native long internal_native_GetSphere_addr(long this_addr, int index);
+
+    public static native int internal_native_GetSphereMaterialIndex(long this_addr, int index);
+
+    public static native long internal_native_ToBytes_addr(long this_addr);
 }

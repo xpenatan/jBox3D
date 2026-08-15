@@ -119,6 +119,22 @@ public final class B3Shape extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetWorldId(this_addr);
     }
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    public static long internal_native_GetUserData(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetUserData(this_addr);
+    }
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    public static void internal_native_SetUserData(long this_addr, long userData) {
+        com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_SetUserData(this_addr, userData);
+    }
+
     public boolean IsSensor() {
         return internal_native_IsSensor(native_address);
     }
@@ -408,6 +424,32 @@ public final class B3Shape extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_SetHull(this_addr, hull_addr);
     }
 
+    public B3Mesh GetMesh() {
+        long addr = internal_native_GetMesh_addr(native_address);
+        if (addr == 0)
+            return B3Mesh.NULL;
+        B3Mesh B3Mesh_NEW = B3Mesh.native_new();
+        B3Mesh_NEW.internal_reset(addr, true);
+        return B3Mesh_NEW;
+    }
+
+    public static long internal_native_GetMesh_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetMesh_addr(this_addr);
+    }
+
+    public B3HeightField GetHeightField() {
+        long addr = internal_native_GetHeightField_addr(native_address);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    public static long internal_native_GetHeightField_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetHeightField_addr(this_addr);
+    }
+
     public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
         internal_native_SetMesh(native_address, mesh.native_address, scale.native_address);
     }
@@ -422,6 +464,19 @@ public final class B3Shape extends NativeObject {
 
     public static int internal_native_GetContactCapacity(long this_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetContactCapacity(this_addr);
+    }
+
+    public B3ContactDataArray GetContactData() {
+        long addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    public static long internal_native_GetContactData_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Shape.internal_native_GetContactData_addr(this_addr);
     }
 
     public int GetSensorCapacity() {

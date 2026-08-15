@@ -126,6 +126,22 @@ public final class B3Joint extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWorldId(this_addr);
     }
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    public static long internal_native_GetUserData(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetUserData(this_addr);
+    }
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    public static void internal_native_SetUserData(long this_addr, long userData) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetUserData(this_addr, userData);
+    }
+
     public B3Transform GetLocalFrameA() {
         long addr = internal_native_GetLocalFrameA_addr(native_address);
         if (addr == 0)

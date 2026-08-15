@@ -116,6 +116,20 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWorldId();return returnedJSObj;")
     public static native long internal_native_GetWorldId(int this_addr);
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetUserData();return returnedJSObj;")
+    public static native long internal_native_GetUserData(int this_addr);
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "userData"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetUserData(userData);")
+    public static native void internal_native_SetUserData(int this_addr, long userData);
+
     public B3Transform GetLocalFrameA() {
         int addr = internal_native_GetLocalFrameA_addr(native_address);
         if (addr == 0)

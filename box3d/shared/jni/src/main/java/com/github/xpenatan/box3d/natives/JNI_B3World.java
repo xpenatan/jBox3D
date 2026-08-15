@@ -66,17 +66,37 @@ final public class JNI_B3World {
 
     public static native int internal_native_GetAwakeBodyCount(long this_addr);
 
+    public static native long internal_native_GetProfile_addr(long this_addr);
+
+    public static native long internal_native_GetCounters_addr(long this_addr);
+
     public static native long internal_native_GetMaxCapacity_addr(long this_addr);
+
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public static native void internal_native_SetUserData(long this_addr, long userData);
 
     public static native void internal_native_Explode(long this_addr, long def_addr);
 
     public static native void internal_native_DumpMemoryStats(long this_addr);
 
+    public static native void internal_native_DumpShapeBounds(long this_addr, int bodyType);
+
     public static native void internal_native_RebuildStaticTree(long this_addr);
 
     public static native void internal_native_EnableSpeculative(long this_addr, boolean enabled);
 
+    public static native void internal_native_StartRecording(long this_addr, long recording_addr);
+
+    public static native void internal_native_StopRecording(long this_addr);
+
     public static native void internal_native_SetCustomFilterCallback(long this_addr, long callback_addr);
+
+    public static native void internal_native_SetPreSolveCallback(long this_addr, long callback_addr);
+
+    public static native void internal_native_SetFrictionCallback(long this_addr, long callback_addr);
+
+    public static native void internal_native_SetRestitutionCallback(long this_addr, long callback_addr);
 
     public static native void internal_native_ClearDebugOverlay(long this_addr);
 
@@ -125,6 +145,8 @@ final public class JNI_B3World {
     public static native long internal_native_GetContactEvents_addr(long this_addr);
 
     public static native long internal_native_CastRayClosest_addr(long this_addr, long origin_addr, long translation_addr, long filter_addr);
+
+    public static native long internal_native_CastRay_addr(long this_addr, long origin_addr, long translation_addr, long filter_addr, long callback_addr);
 
     public static native int internal_native_CountOverlapsAABB(long this_addr, long bounds_addr, long filter_addr);
 

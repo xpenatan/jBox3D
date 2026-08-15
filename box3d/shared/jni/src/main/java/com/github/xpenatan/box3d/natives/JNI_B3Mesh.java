@@ -43,4 +43,10 @@ final public class JNI_B3Mesh {
     public static native int internal_native_GetTriangleMaterialIndex(long this_addr, int triangleIndex);
 
     public static native void internal_native_SetTriangleMaterialIndex(long this_addr, int triangleIndex, int materialIndex);
+
+    public static native long internal_native_GetScale_addr(long this_addr);
+
+    public static native int internal_native_GetTreeHeight(long this_addr);
+
+    public static native long internal_native_Query_addr(long this_addr, long bounds_addr);
 }

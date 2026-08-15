@@ -10,6 +10,8 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3HeightField extends NativeObject {
 
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
     static public final B3HeightField NULL = B3HeightField.native_new();
 
     public B3HeightField() {
@@ -43,6 +45,19 @@ public final class B3HeightField extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_deleteNative(this_addr);
     }
 
+    public static B3HeightField CreateFromDef(B3HeightFieldDef def) {
+        long addr = internal_native_CreateFromDef_addr(def.native_address);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    public static long internal_native_CreateFromDef_addr(long def_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_CreateFromDef_addr(def_addr);
+    }
+
     public static B3HeightField CreateGrid(int rowCount, int columnCount, B3Vec3 scale, boolean makeHoles) {
         long addr = internal_native_CreateGrid_addr(rowCount, columnCount, scale.native_address, makeHoles);
         if (addr == 0)
@@ -69,6 +84,19 @@ public final class B3HeightField extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_CreateWave_addr(rowCount, columnCount, scale_addr, rowFrequency, columnFrequency, makeHoles);
     }
 
+    public static B3HeightField Load(String fileName) {
+        long addr = internal_native_Load_addr(fileName);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    public static long internal_native_Load_addr(String fileName) {
+        return com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_Load_addr(fileName);
+    }
+
     public boolean IsValid() {
         return internal_native_IsValid(native_address);
     }
@@ -83,5 +111,35 @@ public final class B3HeightField extends NativeObject {
 
     public static void internal_native_Destroy(long this_addr) {
         com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_Destroy(this_addr);
+    }
+
+    public int GetRowCount() {
+        return internal_native_GetRowCount(native_address);
+    }
+
+    public static int internal_native_GetRowCount(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_GetRowCount(this_addr);
+    }
+
+    public int GetColumnCount() {
+        return internal_native_GetColumnCount(native_address);
+    }
+
+    public static int internal_native_GetColumnCount(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_GetColumnCount(this_addr);
+    }
+
+    public B3Vec3 GetScale() {
+        long addr = internal_native_GetScale_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetScale_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3HeightField.internal_native_GetScale_addr(this_addr);
     }
 }

@@ -116,6 +116,20 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getworldid")
     public static native long internal_native_GetWorldId(long this_addr);
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getuserdata")
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setuserdata")
+    public static native void internal_native_SetUserData(long this_addr, long userData);
+
     public B3Transform GetLocalFrameA() {
         long addr = internal_native_GetLocalFrameA_addr(native_address);
         if (addr == 0)

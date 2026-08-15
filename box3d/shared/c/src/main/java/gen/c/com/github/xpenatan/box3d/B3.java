@@ -10,6 +10,18 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3 extends NativeObject {
 
+    static private B3CosSin B3CosSin_TEMP_STATIC_GEN_0;
+
+    static private B3Quat B3Quat_TEMP_STATIC_GEN_0;
+
+    static private B3Matrix3 B3Matrix3_TEMP_STATIC_GEN_0;
+
+    static private B3Vec3 B3Vec3_TEMP_STATIC_GEN_0;
+
+    static private B3SegmentDistanceResult B3SegmentDistanceResult_TEMP_STATIC_GEN_0;
+
+    static private B3SegmentDistanceResult B3SegmentDistanceResult_TEMP_STATIC_GEN_1;
+
     static public final B3 NULL = B3.native_new();
 
     /**
@@ -47,6 +59,84 @@ public final class B3 extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_atan2")
     public static native float internal_native_Atan2(float y, float x);
 
+    public static B3CosSin ComputeCosSin(float radians) {
+        long addr = internal_native_ComputeCosSin_addr(radians);
+        if (addr == 0)
+            return B3CosSin.NULL;
+        if (B3CosSin_TEMP_STATIC_GEN_0 == null)
+            B3CosSin_TEMP_STATIC_GEN_0 = B3CosSin.native_new();
+        B3CosSin_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3CosSin_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_computecossin_addr")
+    public static native long internal_native_ComputeCosSin_addr(float radians);
+
+    public static B3Quat MakeQuatFromMatrix(B3Matrix3 matrix) {
+        long addr = internal_native_MakeQuatFromMatrix_addr(matrix.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_STATIC_GEN_0 == null)
+            B3Quat_TEMP_STATIC_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_makequatfrommatrix_addr")
+    public static native long internal_native_MakeQuatFromMatrix_addr(long matrix_addr);
+
+    public static B3Matrix3 Steiner(float mass, B3Vec3 origin) {
+        long addr = internal_native_Steiner_addr(mass, origin.native_address);
+        if (addr == 0)
+            return B3Matrix3.NULL;
+        if (B3Matrix3_TEMP_STATIC_GEN_0 == null)
+            B3Matrix3_TEMP_STATIC_GEN_0 = B3Matrix3.native_new();
+        B3Matrix3_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Matrix3_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_steiner_addr")
+    public static native long internal_native_Steiner_addr(float mass, long origin_addr);
+
+    public static B3Vec3 PointToSegmentDistance(B3Vec3 a, B3Vec3 b, B3Vec3 q) {
+        long addr = internal_native_PointToSegmentDistance_addr(a.native_address, b.native_address, q.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_STATIC_GEN_0 == null)
+            B3Vec3_TEMP_STATIC_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_pointtosegmentdistance_addr")
+    public static native long internal_native_PointToSegmentDistance_addr(long a_addr, long b_addr, long q_addr);
+
+    public static B3SegmentDistanceResult LineDistance(B3Vec3 p1, B3Vec3 d1, B3Vec3 p2, B3Vec3 d2) {
+        long addr = internal_native_LineDistance_addr(p1.native_address, d1.native_address, p2.native_address, d2.native_address);
+        if (addr == 0)
+            return B3SegmentDistanceResult.NULL;
+        if (B3SegmentDistanceResult_TEMP_STATIC_GEN_0 == null)
+            B3SegmentDistanceResult_TEMP_STATIC_GEN_0 = B3SegmentDistanceResult.native_new();
+        B3SegmentDistanceResult_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3SegmentDistanceResult_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_linedistance_addr")
+    public static native long internal_native_LineDistance_addr(long p1_addr, long d1_addr, long p2_addr, long d2_addr);
+
+    public static B3SegmentDistanceResult SegmentDistance(B3Vec3 p1, B3Vec3 q1, B3Vec3 p2, B3Vec3 q2) {
+        long addr = internal_native_SegmentDistance_addr(p1.native_address, q1.native_address, p2.native_address, q2.native_address);
+        if (addr == 0)
+            return B3SegmentDistanceResult.NULL;
+        if (B3SegmentDistanceResult_TEMP_STATIC_GEN_1 == null)
+            B3SegmentDistanceResult_TEMP_STATIC_GEN_1 = B3SegmentDistanceResult.native_new();
+        B3SegmentDistanceResult_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3SegmentDistanceResult_TEMP_STATIC_GEN_1;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_segmentdistance_addr")
+    public static native long internal_native_SegmentDistance_addr(long p1_addr, long q1_addr, long p2_addr, long q2_addr);
+
     public static boolean IsValidFloat(float value) {
         return internal_native_IsValidFloat(value);
     }
@@ -74,6 +164,41 @@ public final class B3 extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidtransform")
     public static native boolean internal_native_IsValidTransform(long value_addr);
+
+    public static boolean IsValidMatrix3(B3Matrix3 value) {
+        return internal_native_IsValidMatrix3(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidmatrix3")
+    public static native boolean internal_native_IsValidMatrix3(long value_addr);
+
+    public static boolean IsValidPlane(B3Plane value) {
+        return internal_native_IsValidPlane(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidplane")
+    public static native boolean internal_native_IsValidPlane(long value_addr);
+
+    public static boolean IsValidPosition(B3Vec3 value) {
+        return internal_native_IsValidPosition(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidposition")
+    public static native boolean internal_native_IsValidPosition(long value_addr);
+
+    public static boolean IsValidWorldTransform(B3Transform value) {
+        return internal_native_IsValidWorldTransform(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidworldtransform")
+    public static native boolean internal_native_IsValidWorldTransform(long value_addr);
+
+    public static boolean IsValidRay(B3RayCastInput value) {
+        return internal_native_IsValidRay(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidray")
+    public static native boolean internal_native_IsValidRay(long value_addr);
 
     public static boolean IsValidAABB(B3AABB value) {
         return internal_native_IsValidAABB(value.native_address);
@@ -228,6 +353,90 @@ public final class B3 extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_setstallthreshold")
     public static native void internal_native_SetStallThreshold(float seconds);
+
+    public static int GetByteCount() {
+        return internal_native_GetByteCount();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getbytecount")
+    public static native int internal_native_GetByteCount();
+
+    public static long GetTicks() {
+        return internal_native_GetTicks();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getticks")
+    public static native long internal_native_GetTicks();
+
+    public static float GetMilliseconds(long ticks) {
+        return internal_native_GetMilliseconds(ticks);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getmilliseconds")
+    public static native float internal_native_GetMilliseconds(long ticks);
+
+    public static long Hash(long hash, B3ByteArray data) {
+        return internal_native_Hash(hash, data.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_hash")
+    public static native long internal_native_Hash(long hash, long data_addr);
+
+    public static int InternalAssert(String condition, String fileName, int lineNumber) {
+        return internal_native_InternalAssert(condition, fileName, lineNumber);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_internalassert")
+    public static native int internal_native_InternalAssert(String condition, String fileName, int lineNumber);
+
+    public static void SetAllocatorCallback(B3AllocatorEm callback) {
+        internal_native_SetAllocatorCallback(callback.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_setallocatorcallback")
+    public static native void internal_native_SetAllocatorCallback(long callback_addr);
+
+    public static void SetAssertCallback(B3AssertCallbackEm callback) {
+        internal_native_SetAssertCallback(callback.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_setassertcallback")
+    public static native void internal_native_SetAssertCallback(long callback_addr);
+
+    public static void SetLogCallback(B3LogCallbackEm callback) {
+        internal_native_SetLogCallback(callback.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_setlogcallback")
+    public static native void internal_native_SetLogCallback(long callback_addr);
+
+    public static long AllocateMemory(int size, int alignment) {
+        return internal_native_AllocateMemory(size, alignment);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_allocatememory")
+    public static native long internal_native_AllocateMemory(int size, int alignment);
+
+    public static void FreeMemory(long address) {
+        internal_native_FreeMemory(address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_freememory")
+    public static native void internal_native_FreeMemory(long address);
+
+    public static void Yield() {
+        internal_native_Yield();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_yield")
+    public static native void internal_native_Yield();
+
+    public static void Sleep(int milliseconds) {
+        internal_native_Sleep(milliseconds);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_sleep")
+    public static native void internal_native_Sleep(int milliseconds);
 
     public static long DefaultMaskBits() {
         return internal_native_DefaultMaskBits();

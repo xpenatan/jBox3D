@@ -56,6 +56,13 @@ public final class B3Shape extends NativeObject {
         return 0;
     }
 
+    public long GetUserData() {
+        return 0;
+    }
+
+    public void SetUserData(long userData) {
+    }
+
     public boolean IsSensor() {
         return false;
     }
@@ -165,11 +172,23 @@ public final class B3Shape extends NativeObject {
     public void SetHull(B3Hull hull) {
     }
 
+    public B3Mesh GetMesh() {
+        return null;
+    }
+
+    public B3HeightField GetHeightField() {
+        return null;
+    }
+
     public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
     }
 
     public int GetContactCapacity() {
         return 0;
+    }
+
+    public B3ContactDataArray GetContactData() {
+        return null;
     }
 
     public int GetSensorCapacity() {

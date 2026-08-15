@@ -1070,6 +1070,30 @@ public final class B3Body extends NativeObject {
         }
     }
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    public static long internal_native_GetUserData(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetUserData__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    public static void internal_native_SetUserData(long this_addr, long userData) {
+        try {
+            FFMHandles.internal_native_SetUserData__JJ.invokeExact(this_addr, userData);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public int GetShapeCount() {
         return internal_native_GetShapeCount(native_address);
     }
@@ -1113,6 +1137,35 @@ public final class B3Body extends NativeObject {
     public static long internal_native_GetJointId(long this_addr, int index) {
         try {
             return (long) FFMHandles.internal_native_GetJointId__JI.invokeExact(this_addr, index);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public int GetContactCapacity() {
+        return internal_native_GetContactCapacity(native_address);
+    }
+
+    public static int internal_native_GetContactCapacity(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetContactCapacity__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3ContactDataArray GetContactData() {
+        long addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    public static long internal_native_GetContactData_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetContactData_addr__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -1493,6 +1546,10 @@ public final class B3Body extends NativeObject {
 
         static final java.lang.invoke.MethodHandle internal_native_GetWorldId__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getworldid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetUserData__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getuserdata", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetUserData__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_setuserdata", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_GetShapeCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getshapecount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetShapeId__JI = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getshapeid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
@@ -1500,6 +1557,10 @@ public final class B3Body extends NativeObject {
         static final java.lang.invoke.MethodHandle internal_native_GetJointCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getjointcount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetJointId__JI = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getjointid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetContactCapacity__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3body_getcontactcapacity", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetContactData_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3body_getcontactdata_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_ComputeAABB_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3body_computeaabb_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 

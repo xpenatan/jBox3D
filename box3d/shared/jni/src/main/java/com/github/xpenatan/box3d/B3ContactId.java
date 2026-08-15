@@ -83,4 +83,25 @@ public final class B3ContactId extends NativeObject {
     public static boolean internal_native_IsNull(long this_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3ContactId.internal_native_IsNull(this_addr);
     }
+
+    public boolean IsValid() {
+        return internal_native_IsValid(native_address);
+    }
+
+    public static boolean internal_native_IsValid(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3ContactId.internal_native_IsValid(this_addr);
+    }
+
+    public B3ContactData GetData() {
+        long addr = internal_native_GetData_addr(native_address);
+        if (addr == 0)
+            return B3ContactData.NULL;
+        B3ContactData B3ContactData_NEW = B3ContactData.native_new();
+        B3ContactData_NEW.internal_reset(addr, true);
+        return B3ContactData_NEW;
+    }
+
+    public static long internal_native_GetData_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3ContactId.internal_native_GetData_addr(this_addr);
+    }
 }

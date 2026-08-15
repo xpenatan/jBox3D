@@ -59,6 +59,9 @@ public class Box3DAndroidActivity extends AndroidApplicationActivity {
         }
         setSystemPropertyFromExtra(intent, "jbox3d.sample.sample");
         setSystemPropertyFromExtra(intent, "jbox3d.sample.sampleIndex");
+        setSystemPropertyFromExtra(intent, "jbox3d.sample.validateAll");
+        setSystemPropertyFromExtra(intent, "jbox3d.sample.autoThrowAfterFrames");
+        setSystemPropertyFromExtra(intent, "jbox3d.sample.debugView");
     }
 
     private void setSystemPropertyFromExtra(Intent intent, String key) {

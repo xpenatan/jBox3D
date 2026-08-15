@@ -708,6 +708,20 @@ public final class B3Body extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Body);var returnedJSObj = jsObj.GetWorldId();return returnedJSObj;")
     public static native long internal_native_GetWorldId(int this_addr);
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Body);var returnedJSObj = jsObj.GetUserData();return returnedJSObj;")
+    public static native long internal_native_GetUserData(int this_addr);
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "userData"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Body);jsObj.SetUserData(userData);")
+    public static native void internal_native_SetUserData(int this_addr, long userData);
+
     public int GetShapeCount() {
         return internal_native_GetShapeCount(native_address);
     }
@@ -735,6 +749,25 @@ public final class B3Body extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr", "index"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Body);var returnedJSObj = jsObj.GetJointId(index);return returnedJSObj;")
     public static native long internal_native_GetJointId(int this_addr, int index);
+
+    public int GetContactCapacity() {
+        return internal_native_GetContactCapacity(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Body);var returnedJSObj = jsObj.GetContactCapacity();return returnedJSObj;")
+    public static native int internal_native_GetContactCapacity(int this_addr);
+
+    public B3ContactDataArray GetContactData() {
+        int addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Body);var returnedJSObj = jsObj.GetContactData();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetContactData_addr(int this_addr);
 
     public B3AABB ComputeAABB() {
         int addr = internal_native_ComputeAABB_addr(native_address);

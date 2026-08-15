@@ -2,7 +2,11 @@
 
 #include <box3d/box3d.h>
 #include <box3d/collision.h>
+#include <box3d/constants.h>
 
+#include <array>
+#include <cmath>
+#include <cstdlib>
 #include <cstdint>
 #include <limits>
 #include <memory>
@@ -20,6 +24,27 @@ namespace JBox3D {
 class B3Mesh;
 class B3HeightField;
 class B3Compound;
+class B3ContactData;
+class B3DebugDrawEm;
+class B3World;
+
+class B3ByteArray {
+public:
+    B3ByteArray();
+    explicit B3ByteArray(int size);
+    B3ByteArray(const uint8_t* data, int size);
+
+    int GetSize() const;
+    int GetValue(int index) const;
+    void SetValue(int index, int value);
+    void Resize(int size);
+
+    const uint8_t* GetData() const;
+    uint8_t* GetMutableData();
+
+private:
+    std::vector<uint8_t> m_values;
+};
 
 class B3Vec3 {
 public:
@@ -36,6 +61,17 @@ public:
     void SetY(float y);
     void SetZ(float z);
     void Set(float x, float y, float z);
+};
+
+class B3CosSin {
+public:
+    b3CosSin value;
+
+    B3CosSin();
+    explicit B3CosSin(b3CosSin value);
+
+    float GetCosine() const;
+    float GetSine() const;
 };
 
 class B3Quat {
@@ -72,6 +108,63 @@ public:
     void SetQ(const B3Quat& rotation);
     B3Vec3 TransformPoint(const B3Vec3& point) const;
     static B3Transform* InvMul(const B3Transform& a, const B3Transform& b);
+};
+
+class B3Matrix3 {
+public:
+    b3Matrix3 value;
+
+    B3Matrix3();
+    B3Matrix3(const B3Vec3& columnX, const B3Vec3& columnY, const B3Vec3& columnZ);
+    explicit B3Matrix3(b3Matrix3 value);
+
+    B3Vec3 GetColumnX() const;
+    void SetColumnX(const B3Vec3& column);
+    B3Vec3 GetColumnY() const;
+    void SetColumnY(const B3Vec3& column);
+    B3Vec3 GetColumnZ() const;
+    void SetColumnZ(const B3Vec3& column);
+};
+
+class B3Plane {
+public:
+    b3Plane value;
+
+    B3Plane();
+    B3Plane(const B3Vec3& normal, float offset);
+    explicit B3Plane(b3Plane value);
+
+    B3Vec3 GetNormal() const;
+    void SetNormal(const B3Vec3& normal);
+    float GetOffset() const;
+    void SetOffset(float offset);
+};
+
+class B3SegmentDistanceResult {
+public:
+    B3SegmentDistanceResult();
+    explicit B3SegmentDistanceResult(b3SegmentDistanceResult value);
+
+    B3Vec3 GetPoint1() const;
+    float GetFraction1() const;
+    B3Vec3 GetPoint2() const;
+    float GetFraction2() const;
+
+private:
+    b3SegmentDistanceResult m_value;
+};
+
+class B3Timer {
+public:
+    B3Timer();
+
+    float GetMilliseconds() const;
+    float GetMillisecondsAndReset();
+    void Reset();
+    long long GetTicks() const;
+
+private:
+    uint64_t m_ticks;
 };
 
 class B3AABB {
@@ -666,6 +759,69 @@ public:
     void SetContactCount(int count);
 };
 
+class B3Profile {
+public:
+    B3Profile();
+    explicit B3Profile(b3Profile value);
+
+    float GetStep() const;
+    float GetPairs() const;
+    float GetCollide() const;
+    float GetSolve() const;
+    float GetSolverSetup() const;
+    float GetConstraints() const;
+    float GetPrepareConstraints() const;
+    float GetIntegrateVelocities() const;
+    float GetWarmStart() const;
+    float GetSolveImpulses() const;
+    float GetIntegratePositions() const;
+    float GetRelaxImpulses() const;
+    float GetApplyRestitution() const;
+    float GetStoreImpulses() const;
+    float GetSplitIslands() const;
+    float GetTransforms() const;
+    float GetSensorHits() const;
+    float GetJointEvents() const;
+    float GetHitEvents() const;
+    float GetRefit() const;
+    float GetBullets() const;
+    float GetSleepIslands() const;
+    float GetSensors() const;
+
+private:
+    b3Profile m_value;
+};
+
+class B3Counters {
+public:
+    B3Counters();
+    explicit B3Counters(b3Counters value);
+
+    int GetBodyCount() const;
+    int GetShapeCount() const;
+    int GetContactCount() const;
+    int GetJointCount() const;
+    int GetIslandCount() const;
+    int GetStackUsed() const;
+    int GetArenaCapacity() const;
+    int GetStaticTreeHeight() const;
+    int GetTreeHeight() const;
+    int GetSatCallCount() const;
+    int GetSatCacheHitCount() const;
+    int GetByteCount() const;
+    int GetTaskCount() const;
+    int GetColorCount(int index) const;
+    int GetManifoldCount(int index) const;
+    int GetAwakeContactCount() const;
+    int GetRecycledContactCount() const;
+    int GetDistanceIterations() const;
+    int GetPushBackIterations() const;
+    int GetRootIterations() const;
+
+private:
+    b3Counters m_value;
+};
+
 class B3ExplosionDef {
 public:
     b3ExplosionDef value;
@@ -800,7 +956,75 @@ public:
     long GetValue1() const;
     long GetValue2() const;
     bool IsNull() const;
+    bool IsValid() const;
+    B3ContactData* GetData() const;
     b3ContactId Load() const;
+};
+
+class B3ManifoldPoint {
+public:
+    B3ManifoldPoint();
+    explicit B3ManifoldPoint(b3ManifoldPoint value);
+
+    B3Vec3 GetAnchorA() const;
+    B3Vec3 GetAnchorB() const;
+    float GetSeparation() const;
+    float GetBaseSeparation() const;
+    float GetNormalImpulse() const;
+    float GetTotalNormalImpulse() const;
+    float GetNormalVelocity() const;
+    long GetFeatureId() const;
+    int GetTriangleIndex() const;
+    bool GetPersisted() const;
+
+private:
+    b3ManifoldPoint m_value;
+};
+
+class B3Manifold {
+public:
+    B3Manifold();
+    explicit B3Manifold(b3Manifold value);
+
+    int GetPointCount() const;
+    B3ManifoldPoint GetPoint(int index) const;
+    B3Vec3 GetNormal() const;
+    float GetTwistImpulse() const;
+    B3Vec3 GetFrictionImpulse() const;
+    B3Vec3 GetRollingImpulse() const;
+
+private:
+    b3Manifold m_value;
+};
+
+class B3ContactData {
+public:
+    B3ContactData();
+    explicit B3ContactData(const b3ContactData& value);
+
+    B3ContactId GetContactId() const;
+    long long GetShapeIdA() const;
+    long long GetShapeIdB() const;
+    int GetManifoldCount() const;
+    B3Manifold GetManifold(int index) const;
+
+private:
+    b3ContactId m_contactId;
+    b3ShapeId m_shapeIdA;
+    b3ShapeId m_shapeIdB;
+    std::vector<b3Manifold> m_manifolds;
+};
+
+class B3ContactDataArray {
+public:
+    B3ContactDataArray();
+    explicit B3ContactDataArray(const std::vector<b3ContactData>& values);
+
+    int GetSize() const;
+    B3ContactData GetValue(int index) const;
+
+private:
+    std::vector<B3ContactData> m_values;
 };
 
 class B3RayResult {
@@ -975,6 +1199,122 @@ public:
     B3ContactHitEvent GetHitEvent(int index) const;
 };
 
+class B3Recording {
+public:
+    B3Recording();
+    explicit B3Recording(int byteCapacity);
+    explicit B3Recording(b3Recording* recording);
+    ~B3Recording();
+
+    static B3Recording* Load(const char* path);
+    bool IsValid() const;
+    void Destroy();
+    int GetSize() const;
+    B3ByteArray* GetData() const;
+    bool Save(const char* path) const;
+    bool ValidateReplay(int workerCount) const;
+    b3Recording* GetHandle() const;
+
+private:
+    b3Recording* m_recording;
+};
+
+class B3RecPlayerInfo {
+public:
+    B3RecPlayerInfo();
+    explicit B3RecPlayerInfo(b3RecPlayerInfo value);
+
+    int GetFrameCount() const;
+    int GetWorkerCount() const;
+    float GetTimeStep() const;
+    int GetSubStepCount() const;
+    float GetLengthScale() const;
+    B3AABB GetBounds() const;
+
+private:
+    b3RecPlayerInfo m_value;
+};
+
+class B3RecQueryInfo {
+public:
+    B3RecQueryInfo();
+    explicit B3RecQueryInfo(const b3RecQueryInfo& value);
+
+    int GetType() const;
+    B3QueryFilter GetFilter() const;
+    B3AABB GetAABB() const;
+    B3Vec3 GetOrigin() const;
+    B3Vec3 GetTranslation() const;
+    int GetHitCount() const;
+    long long GetKey() const;
+    long long GetId() const;
+    void GetName(NativeString& name) const;
+
+private:
+    b3RecQueryType m_type;
+    b3QueryFilter m_filter;
+    b3AABB m_aabb;
+    b3Pos m_origin;
+    b3Vec3 m_translation;
+    int m_hitCount;
+    uint64_t m_key;
+    uint64_t m_id;
+    std::string m_name;
+};
+
+class B3RecQueryHit {
+public:
+    B3RecQueryHit();
+    explicit B3RecQueryHit(b3RecQueryHit value);
+
+    long long GetShapeId() const;
+    B3Vec3 GetPoint() const;
+    B3Vec3 GetNormal() const;
+    float GetFraction() const;
+
+private:
+    b3RecQueryHit m_value;
+};
+
+class B3RecPlayer {
+public:
+    B3RecPlayer();
+    B3RecPlayer(const B3ByteArray& data, int workerCount);
+    ~B3RecPlayer();
+
+    bool IsValid() const;
+    void Destroy();
+    bool StepFrame();
+    void SubStepFrame();
+    void Restart();
+    void SeekFrame(int targetFrame);
+    B3World* GetWorld() const;
+    long long GetWorldId() const;
+    int GetFrame() const;
+    int GetFrameCount() const;
+    bool IsAtEnd() const;
+    bool IsAtPreStep() const;
+    bool HasDiverged() const;
+    B3RecPlayerInfo GetInfo() const;
+    int GetDivergeFrame() const;
+    void SetWorkerCount(int count);
+    void SetKeyframePolicy(long long budgetBytes, int minIntervalFrames);
+    long long GetKeyframeBudget() const;
+    int GetKeyframeMinInterval() const;
+    int GetKeyframeInterval() const;
+    long long GetKeyframeBytes() const;
+    int GetBodyCount() const;
+    long long GetBodyId(int index) const;
+    void SetDebugShapeCallbacks();
+    void DrawFrameQueries(B3DebugDrawEm* draw, int queryIndex, int selectedIndex);
+    int GetFrameQueryCount() const;
+    B3RecQueryInfo GetFrameQuery(int index) const;
+    B3RecQueryHit GetFrameQueryHit(int queryIndex, int hitIndex) const;
+
+private:
+    b3RecPlayer* m_player;
+};
+
 class B3Vec3Array {
 public:
     explicit B3Vec3Array(int size);
@@ -992,6 +1332,7 @@ class B3Hull {
 public:
     B3Hull();
     explicit B3Hull(b3HullData* hull);
+    B3Hull(const b3HullData* hull, bool ownsHull);
     explicit B3Hull(b3BoxHull boxHull);
     ~B3Hull();
 
@@ -1101,6 +1442,132 @@ public:
 
 private:
     b3CastOutput m_output;
+};
+
+class B3RayCastInput {
+public:
+    b3RayCastInput value;
+
+    B3RayCastInput();
+    B3RayCastInput(const B3Vec3& origin, const B3Vec3& translation, float maxFraction);
+    explicit B3RayCastInput(b3RayCastInput value);
+
+    B3Vec3 GetOrigin() const;
+    void SetOrigin(const B3Vec3& origin);
+    B3Vec3 GetTranslation() const;
+    void SetTranslation(const B3Vec3& translation);
+    float GetMaxFraction() const;
+    void SetMaxFraction(float fraction);
+};
+
+class B3BoxCastInput {
+public:
+    b3BoxCastInput value;
+
+    B3BoxCastInput();
+    B3BoxCastInput(const B3AABB& box, const B3Vec3& translation, float maxFraction);
+    explicit B3BoxCastInput(b3BoxCastInput value);
+
+    B3AABB GetBox() const;
+    void SetBox(const B3AABB& box);
+    B3Vec3 GetTranslation() const;
+    void SetTranslation(const B3Vec3& translation);
+    float GetMaxFraction() const;
+    void SetMaxFraction(float fraction);
+};
+
+class B3TreeStats {
+public:
+    B3TreeStats();
+    explicit B3TreeStats(b3TreeStats value);
+
+    int GetNodeVisits() const;
+    int GetLeafVisits() const;
+
+private:
+    b3TreeStats m_value;
+};
+
+class B3TreeClosestResult {
+public:
+    B3TreeClosestResult();
+    B3TreeClosestResult(b3TreeStats stats, float minDistanceSquared);
+
+    B3TreeStats GetStats() const;
+    float GetMinDistanceSquared() const;
+
+private:
+    b3TreeStats m_stats;
+    float m_minDistanceSquared;
+};
+
+class B3TreeQueryCallbackEm {
+public:
+    B3TreeQueryCallbackEm();
+    virtual ~B3TreeQueryCallbackEm();
+    virtual bool Query(int proxyId, long long userData);
+};
+
+class B3TreeClosestCallbackEm {
+public:
+    B3TreeClosestCallbackEm();
+    virtual ~B3TreeClosestCallbackEm();
+    virtual float QueryClosest(float distanceSquaredMin, int proxyId, long long userData);
+};
+
+class B3TreeRayCastCallbackEm {
+public:
+    B3TreeRayCastCallbackEm();
+    virtual ~B3TreeRayCastCallbackEm();
+    virtual float RayCast(const B3RayCastInput& input, int proxyId, long long userData);
+};
+
+class B3TreeBoxCastCallbackEm {
+public:
+    B3TreeBoxCastCallbackEm();
+    virtual ~B3TreeBoxCastCallbackEm();
+    virtual float BoxCast(const B3BoxCastInput& input, int proxyId, long long userData);
+};
+
+class B3DynamicTree {
+public:
+    B3DynamicTree();
+    explicit B3DynamicTree(int proxyCapacity);
+    explicit B3DynamicTree(b3DynamicTree tree);
+    ~B3DynamicTree();
+
+    static B3DynamicTree* Load(const char* fileName, float scale);
+    bool IsValid() const;
+    void Destroy();
+    int CreateProxy(const B3AABB& aabb, long long categoryBits, long long userData);
+    void DestroyProxy(int proxyId);
+    void MoveProxy(int proxyId, const B3AABB& aabb);
+    void EnlargeProxy(int proxyId, const B3AABB& aabb);
+    void SetCategoryBits(int proxyId, long long categoryBits);
+    long long GetCategoryBits(int proxyId);
+    long long GetUserData(int proxyId) const;
+    B3AABB GetAABB(int proxyId) const;
+    B3TreeStats Query(const B3AABB& aabb, long long maskBits, bool requireAllBits,
+                      B3TreeQueryCallbackEm* callback) const;
+    B3TreeClosestResult QueryClosest(const B3Vec3& point, long long maskBits, bool requireAllBits,
+                                     B3TreeClosestCallbackEm* callback, float minDistanceSquared) const;
+    B3TreeStats RayCast(const B3RayCastInput& input, long long maskBits, bool requireAllBits,
+                        B3TreeRayCastCallbackEm* callback) const;
+    B3TreeStats BoxCast(const B3BoxCastInput& input, long long maskBits, bool requireAllBits,
+                        B3TreeBoxCastCallbackEm* callback) const;
+    int GetHeight() const;
+    float GetAreaRatio() const;
+    B3AABB GetRootBounds() const;
+    int GetProxyCount() const;
+    int Rebuild(bool fullBuild);
+    int GetByteCount() const;
+    void Validate() const;
+    void ValidateNoEnlarged() const;
+    void Save(const char* fileName) const;
+
+private:
+    b3DynamicTree m_tree;
+    bool m_destroyed;
 };
 
 class B3Sweep {
@@ -1288,10 +1755,40 @@ private:
     bool m_identifyEdges;
 };
 
+class B3MeshTriangle {
+public:
+    B3MeshTriangle();
+    B3MeshTriangle(b3Vec3 a, b3Vec3 b, b3Vec3 c, int triangleIndex);
+
+    B3Vec3 GetA() const;
+    B3Vec3 GetB() const;
+    B3Vec3 GetC() const;
+    int GetTriangleIndex() const;
+
+private:
+    b3Vec3 m_a;
+    b3Vec3 m_b;
+    b3Vec3 m_c;
+    int m_triangleIndex;
+};
+
+class B3MeshQueryResult {
+public:
+    B3MeshQueryResult();
+
+    int GetSize() const;
+    B3MeshTriangle GetValue(int index) const;
+    void Add(b3Vec3 a, b3Vec3 b, b3Vec3 c, int triangleIndex);
+
+private:
+    std::vector<B3MeshTriangle> m_values;
+};
+
 class B3Mesh {
 public:
     B3Mesh();
     explicit B3Mesh(b3MeshData* mesh);
+    explicit B3Mesh(const b3Mesh& mesh);
     ~B3Mesh();
 
     static B3Mesh* CreateFromDef(const B3MeshDef& def);
@@ -1311,27 +1808,71 @@ public:
     int GetMaterialCount() const;
     int GetTriangleMaterialIndex(int triangleIndex) const;
     void SetTriangleMaterialIndex(int triangleIndex, int materialIndex);
+    B3Vec3 GetScale() const;
+    int GetTreeHeight() const;
+    B3MeshQueryResult* Query(const B3AABB& bounds) const;
     const b3MeshData* GetHandle() const;
 
 private:
     b3MeshData* m_mesh;
+    b3Vec3 m_scale;
+    bool m_ownsMesh;
+};
+
+class B3HeightFieldDef {
+public:
+    B3HeightFieldDef(int countX, int countZ);
+
+    int GetCountX() const;
+    int GetCountZ() const;
+    float GetHeight(int x, int z) const;
+    void SetHeight(int x, int z, float height);
+    int GetMaterialIndex(int x, int z) const;
+    void SetMaterialIndex(int x, int z, int materialIndex);
+    B3Vec3 GetScale() const;
+    void SetScale(const B3Vec3& scale);
+    float GetGlobalMinimumHeight() const;
+    void SetGlobalMinimumHeight(float height);
+    float GetGlobalMaximumHeight() const;
+    void SetGlobalMaximumHeight(float height);
+    bool GetClockwiseWinding() const;
+    void SetClockwiseWinding(bool clockwise);
+    void Dump(const char* fileName) const;
+    b3HeightFieldDef GetValue() const;
+
+private:
+    int m_countX;
+    int m_countZ;
+    std::vector<float> m_heights;
+    std::vector<uint8_t> m_materialIndices;
+    b3Vec3 m_scale;
+    float m_globalMinimumHeight;
+    float m_globalMaximumHeight;
+    bool m_clockwiseWinding;
 };
 
 class B3HeightField {
 public:
     B3HeightField();
     explicit B3HeightField(b3HeightFieldData* heightField);
+    B3HeightField(const b3HeightFieldData* heightField, bool ownsHeightField);
     ~B3HeightField();
 
+    static B3HeightField* CreateFromDef(const B3HeightFieldDef& def);
     static B3HeightField* CreateGrid(int rowCount, int columnCount, const B3Vec3& scale, bool makeHoles);
     static B3HeightField* CreateWave(int rowCount, int columnCount, const B3Vec3& scale, float rowFrequency,
                                      float columnFrequency, bool makeHoles);
+    static B3HeightField* Load(const char* fileName);
     bool IsValid() const;
     void Destroy();
+    int GetRowCount() const;
+    int GetColumnCount() const;
+    B3Vec3 GetScale() const;
     const b3HeightFieldData* GetHandle() const;
 
 private:
     b3HeightFieldData* m_heightField;
+    bool m_ownsHeightField;
 };
 
 class B3SurfaceMaterialArray {
@@ -1383,16 +1924,32 @@ public:
     ~B3Compound();
 
     static B3Compound* CreateFromDef(const B3CompoundDef& def);
+    static B3Compound* CreateFromBytes(const B3ByteArray& bytes);
     bool IsValid() const;
     void Destroy();
     int GetCapsuleCount() const;
     int GetHullCount() const;
     int GetMeshCount() const;
     int GetSphereCount() const;
+    B3SurfaceMaterial GetMaterial(int index) const;
+    B3Capsule GetCapsule(int index) const;
+    int GetCapsuleMaterialIndex(int index) const;
+    B3Hull* GetHull(int index) const;
+    B3Transform GetHullTransform(int index) const;
+    int GetHullMaterialIndex(int index) const;
+    B3Mesh* GetMesh(int index) const;
+    B3Transform GetMeshTransform(int index) const;
+    B3Vec3 GetMeshScale(int index) const;
+    int GetMeshMaterialIndex(int meshIndex, int sourceMaterialIndex) const;
+    B3Sphere GetSphere(int index) const;
+    int GetSphereMaterialIndex(int index) const;
+    B3ByteArray* ToBytes();
     const b3CompoundData* GetHandle() const;
 
 private:
     b3CompoundData* m_compound;
+    bool m_ownsCompound;
+    std::vector<uint8_t> m_serializedStorage;
 };
 
 class B3Shape;
@@ -1475,10 +2032,14 @@ public:
     void EnableContactRecycling(bool enabled);
     void EnableHitEvents(bool enabled);
     long long GetWorldId() const;
+    long long GetUserData() const;
+    void SetUserData(long long userData);
     int GetShapeCount() const;
     long long GetShapeId(int index) const;
     int GetJointCount() const;
     long long GetJointId(int index) const;
+    int GetContactCapacity() const;
+    B3ContactDataArray* GetContactData() const;
     B3AABB ComputeAABB() const;
     B3Vec3 GetClosestPoint(const B3Vec3& target) const;
     float GetClosestPointDistance(const B3Vec3& target) const;
@@ -1517,6 +2078,8 @@ public:
     long long GetBodyIdA() const;
     long long GetBodyIdB() const;
     long long GetWorldId() const;
+    long long GetUserData() const;
+    void SetUserData(long long userData);
     B3Transform GetLocalFrameA() const;
     void SetLocalFrameA(const B3Transform& localFrame);
     B3Transform GetLocalFrameB() const;
@@ -1723,6 +2286,8 @@ public:
     int GetType() const;
     long long GetBodyId() const;
     long long GetWorldId() const;
+    long long GetUserData() const;
+    void SetUserData(long long userData);
     bool IsSensor() const;
     void GetName(NativeString& name) const;
     void SetName(const char* name);
@@ -1754,8 +2319,11 @@ public:
     void SetCapsule(const B3Capsule& capsule);
     B3Hull* GetHull() const;
     void SetHull(const B3Hull& hull);
+    B3Mesh* GetMesh() const;
+    B3HeightField* GetHeightField() const;
     void SetMesh(const B3Mesh& mesh, const B3Vec3& scale);
     int GetContactCapacity() const;
+    B3ContactDataArray* GetContactData() const;
     int GetSensorCapacity() const;
     long long GetSensorShapeId(int index) const;
     B3AABB GetAABB() const;
@@ -1819,6 +2387,7 @@ public:
 
 private:
     friend void drawShapeCallback(void* userShape, b3WorldTransform transform, b3HexColor color, void* context);
+    friend class B3RecPlayer;
 
     void DrawDebugShape(B3DebugShape* shape, b3WorldTransform transform, int color);
     static bool DrawCompoundChild(const b3CompoundData* compound, int childIndex, void* context);
@@ -1836,10 +2405,86 @@ public:
     virtual bool Filter(long long shapeIdA, long long shapeIdB);
 };
 
+class B3PreSolveCallbackEm {
+public:
+    B3PreSolveCallbackEm();
+    virtual ~B3PreSolveCallbackEm();
+    virtual bool PreSolve(long long shapeIdA, long long shapeIdB, const B3Vec3& point, const B3Vec3& normal);
+};
+
+class B3FrictionCallbackEm {
+public:
+    B3FrictionCallbackEm();
+    virtual ~B3FrictionCallbackEm();
+    virtual float MixFriction(float frictionA, long long userMaterialIdA,
+                              float frictionB, long long userMaterialIdB);
+};
+
+class B3RestitutionCallbackEm {
+public:
+    B3RestitutionCallbackEm();
+    virtual ~B3RestitutionCallbackEm();
+    virtual float MixRestitution(float restitutionA, long long userMaterialIdA,
+                                 float restitutionB, long long userMaterialIdB);
+};
+
+class B3CastResult {
+public:
+    B3CastResult();
+    B3CastResult(long long shapeId, const B3Vec3& point, const B3Vec3& normal, float fraction,
+                 long long userMaterialId, int triangleIndex, int childIndex);
+    long long GetShapeId() const;
+    B3Vec3 GetPoint() const;
+    B3Vec3 GetNormal() const;
+    float GetFraction() const;
+    long long GetUserMaterialId() const;
+    int GetTriangleIndex() const;
+    int GetChildIndex() const;
+
+private:
+    long long m_shapeId;
+    B3Vec3 m_point;
+    B3Vec3 m_normal;
+    float m_fraction;
+    long long m_userMaterialId;
+    int m_triangleIndex;
+    int m_childIndex;
+};
+
+class B3CastResultCallbackEm {
+public:
+    B3CastResultCallbackEm();
+    virtual ~B3CastResultCallbackEm();
+    virtual float ReportHit(const B3CastResult& result);
+};
+
+class B3AllocatorEm {
+public:
+    B3AllocatorEm();
+    virtual ~B3AllocatorEm();
+    virtual long long Allocate(int size, int alignment);
+    virtual void Free(long long address);
+};
+
+class B3AssertCallbackEm {
+public:
+    B3AssertCallbackEm();
+    virtual ~B3AssertCallbackEm();
+    virtual bool Assert(const char* condition, const char* fileName, int lineNumber);
+};
+
+class B3LogCallbackEm {
+public:
+    B3LogCallbackEm();
+    virtual ~B3LogCallbackEm();
+    virtual void Log(const char* message);
+};
+
 class B3World {
 public:
     B3World();
     explicit B3World(const B3WorldDef& def);
+    B3World(b3WorldId worldId, bool ownsWorld);
     ~B3World();
 
     long long GetId() const;
@@ -1867,12 +2512,22 @@ public:
     int GetWorkerCount() const;
     void SetWorkerCount(long workerCount);
     int GetAwakeBodyCount() const;
+    B3Profile GetProfile() const;
+    B3Counters GetCounters() const;
     B3Capacity GetMaxCapacity() const;
+    long long GetUserData() const;
+    void SetUserData(long long userData);
     void Explode(const B3ExplosionDef& def);
     void DumpMemoryStats();
+    void DumpShapeBounds(int bodyType);
     void RebuildStaticTree();
     void EnableSpeculative(bool enabled);
+    void StartRecording(B3Recording* recording);
+    void StopRecording();
     void SetCustomFilterCallback(B3CustomFilterEm* callback);
+    void SetPreSolveCallback(B3PreSolveCallbackEm* callback);
+    void SetFrictionCallback(B3FrictionCallbackEm* callback);
+    void SetRestitutionCallback(B3RestitutionCallbackEm* callback);
     void ClearDebugOverlay();
     void AddDebugSegment(const B3Vec3& p1, const B3Vec3& p2, long color);
     void AddDebugPoint(const B3Vec3& point, float size, long color);
@@ -1898,6 +2553,8 @@ public:
     B3SensorEvents* GetSensorEvents() const;
     B3ContactEvents* GetContactEvents() const;
     B3RayResult CastRayClosest(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter) const;
+    B3TreeStats CastRay(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter,
+                        B3CastResultCallbackEm* callback) const;
     int CountOverlapsAABB(const B3AABB& bounds, const B3QueryFilter& filter) const;
     B3RayResult CastSphereClosest(const B3Vec3& origin, float radius, const B3Vec3& translation,
                                   const B3QueryFilter& filter) const;
@@ -1953,6 +2610,7 @@ private:
 
     b3WorldId m_worldId;
     bool m_destroyed;
+    bool m_ownsWorld;
     std::vector<DebugSegment> m_debugSegments;
     std::vector<DebugPoint> m_debugPoints;
     std::vector<DebugSphere> m_debugSpheres;
@@ -1966,10 +2624,23 @@ class B3 {
 public:
     static bool IsDoublePrecision();
     static float Atan2(float y, float x);
+    static B3CosSin ComputeCosSin(float radians);
+    static B3Quat MakeQuatFromMatrix(const B3Matrix3& matrix);
+    static B3Matrix3 Steiner(float mass, const B3Vec3& origin);
+    static B3Vec3 PointToSegmentDistance(const B3Vec3& a, const B3Vec3& b, const B3Vec3& q);
+    static B3SegmentDistanceResult LineDistance(const B3Vec3& p1, const B3Vec3& d1,
+                                                const B3Vec3& p2, const B3Vec3& d2);
+    static B3SegmentDistanceResult SegmentDistance(const B3Vec3& p1, const B3Vec3& q1,
+                                                   const B3Vec3& p2, const B3Vec3& q2);
     static bool IsValidFloat(float value);
     static bool IsValidVec3(const B3Vec3& value);
     static bool IsValidQuat(const B3Quat& value);
     static bool IsValidTransform(const B3Transform& value);
+    static bool IsValidMatrix3(const B3Matrix3& value);
+    static bool IsValidPlane(const B3Plane& value);
+    static bool IsValidPosition(const B3Vec3& value);
+    static bool IsValidWorldTransform(const B3Transform& value);
+    static bool IsValidRay(const B3RayCastInput& value);
     static bool IsValidAABB(const B3AABB& value);
     static bool IsBoundedAABB(const B3AABB& value);
     static bool IsSaneAABB(const B3AABB& value);
@@ -1992,6 +2663,18 @@ public:
     static int GetMaxWorldCount();
     static float GetStallThreshold();
     static void SetStallThreshold(float seconds);
+    static int GetByteCount();
+    static long long GetTicks();
+    static float GetMilliseconds(long long ticks);
+    static long long Hash(long long hash, const B3ByteArray& data);
+    static int InternalAssert(const char* condition, const char* fileName, int lineNumber);
+    static void SetAllocatorCallback(B3AllocatorEm* callback);
+    static void SetAssertCallback(B3AssertCallbackEm* callback);
+    static void SetLogCallback(B3LogCallbackEm* callback);
+    static long long AllocateMemory(int size, int alignment);
+    static void FreeMemory(long long address);
+    static void Yield();
+    static void Sleep(int milliseconds);
     static long long DefaultMaskBits();
 };
 

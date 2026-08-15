@@ -33,6 +33,10 @@ public final class B3Compound extends NativeObject {
         return null;
     }
 
+    public static B3Compound CreateFromBytes(B3ByteArray bytes) {
+        return null;
+    }
+
     public boolean IsValid() {
         return false;
     }
@@ -54,5 +58,57 @@ public final class B3Compound extends NativeObject {
 
     public int GetSphereCount() {
         return 0;
+    }
+
+    public B3SurfaceMaterial GetMaterial(int index) {
+        return null;
+    }
+
+    public B3Capsule GetCapsule(int index) {
+        return null;
+    }
+
+    public int GetCapsuleMaterialIndex(int index) {
+        return 0;
+    }
+
+    public B3Hull GetHull(int index) {
+        return null;
+    }
+
+    public B3Transform GetHullTransform(int index) {
+        return null;
+    }
+
+    public int GetHullMaterialIndex(int index) {
+        return 0;
+    }
+
+    public B3Mesh GetMesh(int index) {
+        return null;
+    }
+
+    public B3Transform GetMeshTransform(int index) {
+        return null;
+    }
+
+    public B3Vec3 GetMeshScale(int index) {
+        return null;
+    }
+
+    public int GetMeshMaterialIndex(int meshIndex, int sourceMaterialIndex) {
+        return 0;
+    }
+
+    public B3Sphere GetSphere(int index) {
+        return null;
+    }
+
+    public int GetSphereMaterialIndex(int index) {
+        return 0;
+    }
+
+    public B3ByteArray ToBytes() {
+        return null;
     }
 }

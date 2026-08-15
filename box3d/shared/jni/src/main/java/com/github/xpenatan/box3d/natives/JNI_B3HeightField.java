@@ -14,11 +14,21 @@ final public class JNI_B3HeightField {
 
     public static native void internal_native_deleteNative(long this_addr);
 
+    public static native long internal_native_CreateFromDef_addr(long def_addr);
+
     public static native long internal_native_CreateGrid_addr(int rowCount, int columnCount, long scale_addr, boolean makeHoles);
 
     public static native long internal_native_CreateWave_addr(int rowCount, int columnCount, long scale_addr, float rowFrequency, float columnFrequency, boolean makeHoles);
 
+    public static native long internal_native_Load_addr(String fileName);
+
     public static native boolean internal_native_IsValid(long this_addr);
 
     public static native void internal_native_Destroy(long this_addr);
+
+    public static native int internal_native_GetRowCount(long this_addr);
+
+    public static native int internal_native_GetColumnCount(long this_addr);
+
+    public static native long internal_native_GetScale_addr(long this_addr);
 }

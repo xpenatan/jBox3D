@@ -59,6 +59,13 @@ public final class B3Joint extends NativeObject {
         return 0;
     }
 
+    public long GetUserData() {
+        return 0;
+    }
+
+    public void SetUserData(long userData) {
+    }
+
     public B3Transform GetLocalFrameA() {
         return null;
     }

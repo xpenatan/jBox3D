@@ -10,6 +10,18 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3 extends NativeObject {
 
+    static private B3CosSin B3CosSin_TEMP_STATIC_GEN_0;
+
+    static private B3Quat B3Quat_TEMP_STATIC_GEN_0;
+
+    static private B3Matrix3 B3Matrix3_TEMP_STATIC_GEN_0;
+
+    static private B3Vec3 B3Vec3_TEMP_STATIC_GEN_0;
+
+    static private B3SegmentDistanceResult B3SegmentDistanceResult_TEMP_STATIC_GEN_0;
+
+    static private B3SegmentDistanceResult B3SegmentDistanceResult_TEMP_STATIC_GEN_1;
+
     static public final B3 NULL = B3.native_new();
 
     /**
@@ -50,6 +62,90 @@ public final class B3 extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_Atan2(y, x);
     }
 
+    public static B3CosSin ComputeCosSin(float radians) {
+        long addr = internal_native_ComputeCosSin_addr(radians);
+        if (addr == 0)
+            return B3CosSin.NULL;
+        if (B3CosSin_TEMP_STATIC_GEN_0 == null)
+            B3CosSin_TEMP_STATIC_GEN_0 = B3CosSin.native_new();
+        B3CosSin_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3CosSin_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_ComputeCosSin_addr(float radians) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_ComputeCosSin_addr(radians);
+    }
+
+    public static B3Quat MakeQuatFromMatrix(B3Matrix3 matrix) {
+        long addr = internal_native_MakeQuatFromMatrix_addr(matrix.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_STATIC_GEN_0 == null)
+            B3Quat_TEMP_STATIC_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_MakeQuatFromMatrix_addr(long matrix_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_MakeQuatFromMatrix_addr(matrix_addr);
+    }
+
+    public static B3Matrix3 Steiner(float mass, B3Vec3 origin) {
+        long addr = internal_native_Steiner_addr(mass, origin.native_address);
+        if (addr == 0)
+            return B3Matrix3.NULL;
+        if (B3Matrix3_TEMP_STATIC_GEN_0 == null)
+            B3Matrix3_TEMP_STATIC_GEN_0 = B3Matrix3.native_new();
+        B3Matrix3_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Matrix3_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_Steiner_addr(float mass, long origin_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_Steiner_addr(mass, origin_addr);
+    }
+
+    public static B3Vec3 PointToSegmentDistance(B3Vec3 a, B3Vec3 b, B3Vec3 q) {
+        long addr = internal_native_PointToSegmentDistance_addr(a.native_address, b.native_address, q.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_STATIC_GEN_0 == null)
+            B3Vec3_TEMP_STATIC_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_PointToSegmentDistance_addr(long a_addr, long b_addr, long q_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_PointToSegmentDistance_addr(a_addr, b_addr, q_addr);
+    }
+
+    public static B3SegmentDistanceResult LineDistance(B3Vec3 p1, B3Vec3 d1, B3Vec3 p2, B3Vec3 d2) {
+        long addr = internal_native_LineDistance_addr(p1.native_address, d1.native_address, p2.native_address, d2.native_address);
+        if (addr == 0)
+            return B3SegmentDistanceResult.NULL;
+        if (B3SegmentDistanceResult_TEMP_STATIC_GEN_0 == null)
+            B3SegmentDistanceResult_TEMP_STATIC_GEN_0 = B3SegmentDistanceResult.native_new();
+        B3SegmentDistanceResult_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3SegmentDistanceResult_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_LineDistance_addr(long p1_addr, long d1_addr, long p2_addr, long d2_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_LineDistance_addr(p1_addr, d1_addr, p2_addr, d2_addr);
+    }
+
+    public static B3SegmentDistanceResult SegmentDistance(B3Vec3 p1, B3Vec3 q1, B3Vec3 p2, B3Vec3 q2) {
+        long addr = internal_native_SegmentDistance_addr(p1.native_address, q1.native_address, p2.native_address, q2.native_address);
+        if (addr == 0)
+            return B3SegmentDistanceResult.NULL;
+        if (B3SegmentDistanceResult_TEMP_STATIC_GEN_1 == null)
+            B3SegmentDistanceResult_TEMP_STATIC_GEN_1 = B3SegmentDistanceResult.native_new();
+        B3SegmentDistanceResult_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3SegmentDistanceResult_TEMP_STATIC_GEN_1;
+    }
+
+    public static long internal_native_SegmentDistance_addr(long p1_addr, long q1_addr, long p2_addr, long q2_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_SegmentDistance_addr(p1_addr, q1_addr, p2_addr, q2_addr);
+    }
+
     public static boolean IsValidFloat(float value) {
         return internal_native_IsValidFloat(value);
     }
@@ -80,6 +176,46 @@ public final class B3 extends NativeObject {
 
     public static boolean internal_native_IsValidTransform(long value_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsValidTransform(value_addr);
+    }
+
+    public static boolean IsValidMatrix3(B3Matrix3 value) {
+        return internal_native_IsValidMatrix3(value.native_address);
+    }
+
+    public static boolean internal_native_IsValidMatrix3(long value_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsValidMatrix3(value_addr);
+    }
+
+    public static boolean IsValidPlane(B3Plane value) {
+        return internal_native_IsValidPlane(value.native_address);
+    }
+
+    public static boolean internal_native_IsValidPlane(long value_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsValidPlane(value_addr);
+    }
+
+    public static boolean IsValidPosition(B3Vec3 value) {
+        return internal_native_IsValidPosition(value.native_address);
+    }
+
+    public static boolean internal_native_IsValidPosition(long value_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsValidPosition(value_addr);
+    }
+
+    public static boolean IsValidWorldTransform(B3Transform value) {
+        return internal_native_IsValidWorldTransform(value.native_address);
+    }
+
+    public static boolean internal_native_IsValidWorldTransform(long value_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsValidWorldTransform(value_addr);
+    }
+
+    public static boolean IsValidRay(B3RayCastInput value) {
+        return internal_native_IsValidRay(value.native_address);
+    }
+
+    public static boolean internal_native_IsValidRay(long value_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_IsValidRay(value_addr);
     }
 
     public static boolean IsValidAABB(B3AABB value) {
@@ -256,6 +392,102 @@ public final class B3 extends NativeObject {
 
     public static void internal_native_SetStallThreshold(float seconds) {
         com.github.xpenatan.box3d.natives.JNI_B3.internal_native_SetStallThreshold(seconds);
+    }
+
+    public static int GetByteCount() {
+        return internal_native_GetByteCount();
+    }
+
+    public static int internal_native_GetByteCount() {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_GetByteCount();
+    }
+
+    public static long GetTicks() {
+        return internal_native_GetTicks();
+    }
+
+    public static long internal_native_GetTicks() {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_GetTicks();
+    }
+
+    public static float GetMilliseconds(long ticks) {
+        return internal_native_GetMilliseconds(ticks);
+    }
+
+    public static float internal_native_GetMilliseconds(long ticks) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_GetMilliseconds(ticks);
+    }
+
+    public static long Hash(long hash, B3ByteArray data) {
+        return internal_native_Hash(hash, data.native_address);
+    }
+
+    public static long internal_native_Hash(long hash, long data_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_Hash(hash, data_addr);
+    }
+
+    public static int InternalAssert(String condition, String fileName, int lineNumber) {
+        return internal_native_InternalAssert(condition, fileName, lineNumber);
+    }
+
+    public static int internal_native_InternalAssert(String condition, String fileName, int lineNumber) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_InternalAssert(condition, fileName, lineNumber);
+    }
+
+    public static void SetAllocatorCallback(B3AllocatorEm callback) {
+        internal_native_SetAllocatorCallback(callback.native_address);
+    }
+
+    public static void internal_native_SetAllocatorCallback(long callback_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_SetAllocatorCallback(callback_addr);
+    }
+
+    public static void SetAssertCallback(B3AssertCallbackEm callback) {
+        internal_native_SetAssertCallback(callback.native_address);
+    }
+
+    public static void internal_native_SetAssertCallback(long callback_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_SetAssertCallback(callback_addr);
+    }
+
+    public static void SetLogCallback(B3LogCallbackEm callback) {
+        internal_native_SetLogCallback(callback.native_address);
+    }
+
+    public static void internal_native_SetLogCallback(long callback_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_SetLogCallback(callback_addr);
+    }
+
+    public static long AllocateMemory(int size, int alignment) {
+        return internal_native_AllocateMemory(size, alignment);
+    }
+
+    public static long internal_native_AllocateMemory(int size, int alignment) {
+        return com.github.xpenatan.box3d.natives.JNI_B3.internal_native_AllocateMemory(size, alignment);
+    }
+
+    public static void FreeMemory(long address) {
+        internal_native_FreeMemory(address);
+    }
+
+    public static void internal_native_FreeMemory(long address) {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_FreeMemory(address);
+    }
+
+    public static void Yield() {
+        internal_native_Yield();
+    }
+
+    public static void internal_native_Yield() {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_Yield();
+    }
+
+    public static void Sleep(int milliseconds) {
+        internal_native_Sleep(milliseconds);
+    }
+
+    public static void internal_native_Sleep(int milliseconds) {
+        com.github.xpenatan.box3d.natives.JNI_B3.internal_native_Sleep(milliseconds);
     }
 
     public static long DefaultMaskBits() {

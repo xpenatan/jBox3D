@@ -708,6 +708,20 @@ public final class B3Body extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3body_getworldid")
     public static native long internal_native_GetWorldId(long this_addr);
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3body_getuserdata")
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3body_setuserdata")
+    public static native void internal_native_SetUserData(long this_addr, long userData);
+
     public int GetShapeCount() {
         return internal_native_GetShapeCount(native_address);
     }
@@ -735,6 +749,25 @@ public final class B3Body extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3body_getjointid")
     public static native long internal_native_GetJointId(long this_addr, int index);
+
+    public int GetContactCapacity() {
+        return internal_native_GetContactCapacity(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3body_getcontactcapacity")
+    public static native int internal_native_GetContactCapacity(long this_addr);
+
+    public B3ContactDataArray GetContactData() {
+        long addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3body_getcontactdata_addr")
+    public static native long internal_native_GetContactData_addr(long this_addr);
 
     public B3AABB ComputeAABB() {
         long addr = internal_native_ComputeAABB_addr(native_address);

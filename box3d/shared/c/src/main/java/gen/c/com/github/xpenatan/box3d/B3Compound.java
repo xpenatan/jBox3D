@@ -10,6 +10,18 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Compound extends NativeObject {
 
+    private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_0;
+
+    private B3Capsule B3Capsule_TEMP_GEN_0;
+
+    private B3Transform B3Transform_TEMP_GEN_0;
+
+    private B3Transform B3Transform_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
+    private B3Sphere B3Sphere_TEMP_GEN_0;
+
     static public final B3Compound NULL = B3Compound.native_new();
 
     public B3Compound() {
@@ -53,6 +65,18 @@ public final class B3Compound extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_createfromdef_addr")
     public static native long internal_native_CreateFromDef_addr(long def_addr);
 
+    public static B3Compound CreateFromBytes(B3ByteArray bytes) {
+        long addr = internal_native_CreateFromBytes_addr(bytes.native_address);
+        if (addr == 0)
+            return B3Compound.NULL;
+        B3Compound B3Compound_NEW = B3Compound.native_new();
+        B3Compound_NEW.internal_reset(addr, true);
+        return B3Compound_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_createfrombytes_addr")
+    public static native long internal_native_CreateFromBytes_addr(long bytes_addr);
+
     public boolean IsValid() {
         return internal_native_IsValid(native_address);
     }
@@ -94,4 +118,146 @@ public final class B3Compound extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getspherecount")
     public static native int internal_native_GetSphereCount(long this_addr);
+
+    public B3SurfaceMaterial GetMaterial(int index) {
+        long addr = internal_native_GetMaterial_addr(native_address, index);
+        if (addr == 0)
+            return B3SurfaceMaterial.NULL;
+        if (B3SurfaceMaterial_TEMP_GEN_0 == null)
+            B3SurfaceMaterial_TEMP_GEN_0 = B3SurfaceMaterial.native_new();
+        B3SurfaceMaterial_TEMP_GEN_0.internal_reset(addr, false);
+        return B3SurfaceMaterial_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getmaterial_addr")
+    public static native long internal_native_GetMaterial_addr(long this_addr, int index);
+
+    public B3Capsule GetCapsule(int index) {
+        long addr = internal_native_GetCapsule_addr(native_address, index);
+        if (addr == 0)
+            return B3Capsule.NULL;
+        if (B3Capsule_TEMP_GEN_0 == null)
+            B3Capsule_TEMP_GEN_0 = B3Capsule.native_new();
+        B3Capsule_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capsule_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getcapsule_addr")
+    public static native long internal_native_GetCapsule_addr(long this_addr, int index);
+
+    public int GetCapsuleMaterialIndex(int index) {
+        return internal_native_GetCapsuleMaterialIndex(native_address, index);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getcapsulematerialindex")
+    public static native int internal_native_GetCapsuleMaterialIndex(long this_addr, int index);
+
+    public B3Hull GetHull(int index) {
+        long addr = internal_native_GetHull_addr(native_address, index);
+        if (addr == 0)
+            return B3Hull.NULL;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_gethull_addr")
+    public static native long internal_native_GetHull_addr(long this_addr, int index);
+
+    public B3Transform GetHullTransform(int index) {
+        long addr = internal_native_GetHullTransform_addr(native_address, index);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_0 == null)
+            B3Transform_TEMP_GEN_0 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_gethulltransform_addr")
+    public static native long internal_native_GetHullTransform_addr(long this_addr, int index);
+
+    public int GetHullMaterialIndex(int index) {
+        return internal_native_GetHullMaterialIndex(native_address, index);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_gethullmaterialindex")
+    public static native int internal_native_GetHullMaterialIndex(long this_addr, int index);
+
+    public B3Mesh GetMesh(int index) {
+        long addr = internal_native_GetMesh_addr(native_address, index);
+        if (addr == 0)
+            return B3Mesh.NULL;
+        B3Mesh B3Mesh_NEW = B3Mesh.native_new();
+        B3Mesh_NEW.internal_reset(addr, true);
+        return B3Mesh_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getmesh_addr")
+    public static native long internal_native_GetMesh_addr(long this_addr, int index);
+
+    public B3Transform GetMeshTransform(int index) {
+        long addr = internal_native_GetMeshTransform_addr(native_address, index);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_1 == null)
+            B3Transform_TEMP_GEN_1 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_1;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getmeshtransform_addr")
+    public static native long internal_native_GetMeshTransform_addr(long this_addr, int index);
+
+    public B3Vec3 GetMeshScale(int index) {
+        long addr = internal_native_GetMeshScale_addr(native_address, index);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getmeshscale_addr")
+    public static native long internal_native_GetMeshScale_addr(long this_addr, int index);
+
+    public int GetMeshMaterialIndex(int meshIndex, int sourceMaterialIndex) {
+        return internal_native_GetMeshMaterialIndex(native_address, meshIndex, sourceMaterialIndex);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getmeshmaterialindex")
+    public static native int internal_native_GetMeshMaterialIndex(long this_addr, int meshIndex, int sourceMaterialIndex);
+
+    public B3Sphere GetSphere(int index) {
+        long addr = internal_native_GetSphere_addr(native_address, index);
+        if (addr == 0)
+            return B3Sphere.NULL;
+        if (B3Sphere_TEMP_GEN_0 == null)
+            B3Sphere_TEMP_GEN_0 = B3Sphere.native_new();
+        B3Sphere_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Sphere_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getsphere_addr")
+    public static native long internal_native_GetSphere_addr(long this_addr, int index);
+
+    public int GetSphereMaterialIndex(int index) {
+        return internal_native_GetSphereMaterialIndex(native_address, index);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_getspherematerialindex")
+    public static native int internal_native_GetSphereMaterialIndex(long this_addr, int index);
+
+    public B3ByteArray ToBytes() {
+        long addr = internal_native_ToBytes_addr(native_address);
+        if (addr == 0)
+            return B3ByteArray.NULL;
+        B3ByteArray B3ByteArray_NEW = B3ByteArray.native_new();
+        B3ByteArray_NEW.internal_reset(addr, true);
+        return B3ByteArray_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3compound_tobytes_addr")
+    public static native long internal_native_ToBytes_addr(long this_addr);
 }

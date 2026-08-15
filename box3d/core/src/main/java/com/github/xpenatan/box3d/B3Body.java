@@ -275,6 +275,13 @@ public final class B3Body extends NativeObject {
         return 0;
     }
 
+    public long GetUserData() {
+        return 0;
+    }
+
+    public void SetUserData(long userData) {
+    }
+
     public int GetShapeCount() {
         return 0;
     }
@@ -289,6 +296,14 @@ public final class B3Body extends NativeObject {
 
     public long GetJointId(int index) {
         return 0;
+    }
+
+    public int GetContactCapacity() {
+        return 0;
+    }
+
+    public B3ContactDataArray GetContactData() {
+        return null;
     }
 
     public B3AABB ComputeAABB() {

@@ -10,6 +10,18 @@ import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3 extends NativeObject {
 
+    static private B3CosSin B3CosSin_TEMP_STATIC_GEN_0;
+
+    static private B3Quat B3Quat_TEMP_STATIC_GEN_0;
+
+    static private B3Matrix3 B3Matrix3_TEMP_STATIC_GEN_0;
+
+    static private B3Vec3 B3Vec3_TEMP_STATIC_GEN_0;
+
+    static private B3SegmentDistanceResult B3SegmentDistanceResult_TEMP_STATIC_GEN_0;
+
+    static private B3SegmentDistanceResult B3SegmentDistanceResult_TEMP_STATIC_GEN_1;
+
     static public final B3 NULL = B3.native_new();
 
     /**
@@ -47,6 +59,84 @@ public final class B3 extends NativeObject {
     @org.teavm.jso.JSBody(params = {"y", "x"}, script = "var returnedJSObj = box3d.B3.prototype.Atan2(y, x);return returnedJSObj;")
     public static native float internal_native_Atan2(float y, float x);
 
+    public static B3CosSin ComputeCosSin(float radians) {
+        int addr = internal_native_ComputeCosSin_addr(radians);
+        if (addr == 0)
+            return B3CosSin.NULL;
+        if (B3CosSin_TEMP_STATIC_GEN_0 == null)
+            B3CosSin_TEMP_STATIC_GEN_0 = B3CosSin.native_new();
+        B3CosSin_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3CosSin_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"radians"}, script = "var returnedJSObj = box3d.B3.prototype.ComputeCosSin(radians);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeCosSin_addr(float radians);
+
+    public static B3Quat MakeQuatFromMatrix(B3Matrix3 matrix) {
+        int addr = internal_native_MakeQuatFromMatrix_addr(matrix.native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_STATIC_GEN_0 == null)
+            B3Quat_TEMP_STATIC_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"matrix_addr"}, script = "var returnedJSObj = box3d.B3.prototype.MakeQuatFromMatrix(matrix_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_MakeQuatFromMatrix_addr(int matrix_addr);
+
+    public static B3Matrix3 Steiner(float mass, B3Vec3 origin) {
+        int addr = internal_native_Steiner_addr(mass, origin.native_address);
+        if (addr == 0)
+            return B3Matrix3.NULL;
+        if (B3Matrix3_TEMP_STATIC_GEN_0 == null)
+            B3Matrix3_TEMP_STATIC_GEN_0 = B3Matrix3.native_new();
+        B3Matrix3_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Matrix3_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"mass", "origin_addr"}, script = "var returnedJSObj = box3d.B3.prototype.Steiner(mass, origin_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_Steiner_addr(float mass, int origin_addr);
+
+    public static B3Vec3 PointToSegmentDistance(B3Vec3 a, B3Vec3 b, B3Vec3 q) {
+        int addr = internal_native_PointToSegmentDistance_addr(a.native_address, b.native_address, q.native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_STATIC_GEN_0 == null)
+            B3Vec3_TEMP_STATIC_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"a_addr", "b_addr", "q_addr"}, script = "var returnedJSObj = box3d.B3.prototype.PointToSegmentDistance(a_addr, b_addr, q_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_PointToSegmentDistance_addr(int a_addr, int b_addr, int q_addr);
+
+    public static B3SegmentDistanceResult LineDistance(B3Vec3 p1, B3Vec3 d1, B3Vec3 p2, B3Vec3 d2) {
+        int addr = internal_native_LineDistance_addr(p1.native_address, d1.native_address, p2.native_address, d2.native_address);
+        if (addr == 0)
+            return B3SegmentDistanceResult.NULL;
+        if (B3SegmentDistanceResult_TEMP_STATIC_GEN_0 == null)
+            B3SegmentDistanceResult_TEMP_STATIC_GEN_0 = B3SegmentDistanceResult.native_new();
+        B3SegmentDistanceResult_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3SegmentDistanceResult_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"p1_addr", "d1_addr", "p2_addr", "d2_addr"}, script = "var returnedJSObj = box3d.B3.prototype.LineDistance(p1_addr, d1_addr, p2_addr, d2_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_LineDistance_addr(int p1_addr, int d1_addr, int p2_addr, int d2_addr);
+
+    public static B3SegmentDistanceResult SegmentDistance(B3Vec3 p1, B3Vec3 q1, B3Vec3 p2, B3Vec3 q2) {
+        int addr = internal_native_SegmentDistance_addr(p1.native_address, q1.native_address, p2.native_address, q2.native_address);
+        if (addr == 0)
+            return B3SegmentDistanceResult.NULL;
+        if (B3SegmentDistanceResult_TEMP_STATIC_GEN_1 == null)
+            B3SegmentDistanceResult_TEMP_STATIC_GEN_1 = B3SegmentDistanceResult.native_new();
+        B3SegmentDistanceResult_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3SegmentDistanceResult_TEMP_STATIC_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"p1_addr", "q1_addr", "p2_addr", "q2_addr"}, script = "var returnedJSObj = box3d.B3.prototype.SegmentDistance(p1_addr, q1_addr, p2_addr, q2_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_SegmentDistance_addr(int p1_addr, int q1_addr, int p2_addr, int q2_addr);
+
     public static boolean IsValidFloat(float value) {
         return internal_native_IsValidFloat(value);
     }
@@ -74,6 +164,41 @@ public final class B3 extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"value_addr"}, script = "var returnedJSObj = box3d.B3.prototype.IsValidTransform(value_addr);return returnedJSObj;")
     public static native boolean internal_native_IsValidTransform(int value_addr);
+
+    public static boolean IsValidMatrix3(B3Matrix3 value) {
+        return internal_native_IsValidMatrix3(value.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"value_addr"}, script = "var returnedJSObj = box3d.B3.prototype.IsValidMatrix3(value_addr);return returnedJSObj;")
+    public static native boolean internal_native_IsValidMatrix3(int value_addr);
+
+    public static boolean IsValidPlane(B3Plane value) {
+        return internal_native_IsValidPlane(value.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"value_addr"}, script = "var returnedJSObj = box3d.B3.prototype.IsValidPlane(value_addr);return returnedJSObj;")
+    public static native boolean internal_native_IsValidPlane(int value_addr);
+
+    public static boolean IsValidPosition(B3Vec3 value) {
+        return internal_native_IsValidPosition(value.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"value_addr"}, script = "var returnedJSObj = box3d.B3.prototype.IsValidPosition(value_addr);return returnedJSObj;")
+    public static native boolean internal_native_IsValidPosition(int value_addr);
+
+    public static boolean IsValidWorldTransform(B3Transform value) {
+        return internal_native_IsValidWorldTransform(value.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"value_addr"}, script = "var returnedJSObj = box3d.B3.prototype.IsValidWorldTransform(value_addr);return returnedJSObj;")
+    public static native boolean internal_native_IsValidWorldTransform(int value_addr);
+
+    public static boolean IsValidRay(B3RayCastInput value) {
+        return internal_native_IsValidRay(value.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"value_addr"}, script = "var returnedJSObj = box3d.B3.prototype.IsValidRay(value_addr);return returnedJSObj;")
+    public static native boolean internal_native_IsValidRay(int value_addr);
 
     public static boolean IsValidAABB(B3AABB value) {
         return internal_native_IsValidAABB(value.native_address);
@@ -228,6 +353,90 @@ public final class B3 extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"seconds"}, script = "box3d.B3.prototype.SetStallThreshold(seconds);")
     public static native void internal_native_SetStallThreshold(float seconds);
+
+    public static int GetByteCount() {
+        return internal_native_GetByteCount();
+    }
+
+    @org.teavm.jso.JSBody(script = "var returnedJSObj = box3d.B3.prototype.GetByteCount();return returnedJSObj;")
+    public static native int internal_native_GetByteCount();
+
+    public static long GetTicks() {
+        return internal_native_GetTicks();
+    }
+
+    @org.teavm.jso.JSBody(script = "var returnedJSObj = box3d.B3.prototype.GetTicks();return returnedJSObj;")
+    public static native long internal_native_GetTicks();
+
+    public static float GetMilliseconds(long ticks) {
+        return internal_native_GetMilliseconds(ticks);
+    }
+
+    @org.teavm.jso.JSBody(params = {"ticks"}, script = "var returnedJSObj = box3d.B3.prototype.GetMilliseconds(ticks);return returnedJSObj;")
+    public static native float internal_native_GetMilliseconds(long ticks);
+
+    public static long Hash(long hash, B3ByteArray data) {
+        return internal_native_Hash(hash, data.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"hash", "data_addr"}, script = "var returnedJSObj = box3d.B3.prototype.Hash(hash, data_addr);return returnedJSObj;")
+    public static native long internal_native_Hash(long hash, int data_addr);
+
+    public static int InternalAssert(String condition, String fileName, int lineNumber) {
+        return internal_native_InternalAssert(condition, fileName, lineNumber);
+    }
+
+    @org.teavm.jso.JSBody(params = {"condition", "fileName", "lineNumber"}, script = "var returnedJSObj = box3d.B3.prototype.InternalAssert(condition, fileName, lineNumber);return returnedJSObj;")
+    public static native int internal_native_InternalAssert(String condition, String fileName, int lineNumber);
+
+    public static void SetAllocatorCallback(B3AllocatorEm callback) {
+        internal_native_SetAllocatorCallback(callback.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"callback_addr"}, script = "box3d.B3.prototype.SetAllocatorCallback(callback_addr);")
+    public static native void internal_native_SetAllocatorCallback(int callback_addr);
+
+    public static void SetAssertCallback(B3AssertCallbackEm callback) {
+        internal_native_SetAssertCallback(callback.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"callback_addr"}, script = "box3d.B3.prototype.SetAssertCallback(callback_addr);")
+    public static native void internal_native_SetAssertCallback(int callback_addr);
+
+    public static void SetLogCallback(B3LogCallbackEm callback) {
+        internal_native_SetLogCallback(callback.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"callback_addr"}, script = "box3d.B3.prototype.SetLogCallback(callback_addr);")
+    public static native void internal_native_SetLogCallback(int callback_addr);
+
+    public static long AllocateMemory(int size, int alignment) {
+        return internal_native_AllocateMemory(size, alignment);
+    }
+
+    @org.teavm.jso.JSBody(params = {"size", "alignment"}, script = "var returnedJSObj = box3d.B3.prototype.AllocateMemory(size, alignment);return returnedJSObj;")
+    public static native long internal_native_AllocateMemory(int size, int alignment);
+
+    public static void FreeMemory(long address) {
+        internal_native_FreeMemory(address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"address"}, script = "box3d.B3.prototype.FreeMemory(address);")
+    public static native void internal_native_FreeMemory(long address);
+
+    public static void Yield() {
+        internal_native_Yield();
+    }
+
+    @org.teavm.jso.JSBody(script = "box3d.B3.prototype.Yield();")
+    public static native void internal_native_Yield();
+
+    public static void Sleep(int milliseconds) {
+        internal_native_Sleep(milliseconds);
+    }
+
+    @org.teavm.jso.JSBody(params = {"milliseconds"}, script = "box3d.B3.prototype.Sleep(milliseconds);")
+    public static native void internal_native_Sleep(int milliseconds);
 
     public static long DefaultMaskBits() {
         return internal_native_DefaultMaskBits();

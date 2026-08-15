@@ -152,6 +152,10 @@ final public class JNI_B3Body {
 
     public static native long internal_native_GetWorldId(long this_addr);
 
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public static native void internal_native_SetUserData(long this_addr, long userData);
+
     public static native int internal_native_GetShapeCount(long this_addr);
 
     public static native long internal_native_GetShapeId(long this_addr, int index);
@@ -159,6 +163,10 @@ final public class JNI_B3Body {
     public static native int internal_native_GetJointCount(long this_addr);
 
     public static native long internal_native_GetJointId(long this_addr, int index);
+
+    public static native int internal_native_GetContactCapacity(long this_addr);
+
+    public static native long internal_native_GetContactData_addr(long this_addr);
 
     public static native long internal_native_ComputeAABB_addr(long this_addr);
 

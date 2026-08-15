@@ -110,6 +110,20 @@ public final class B3Shape extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getworldid")
     public static native long internal_native_GetWorldId(long this_addr);
 
+    public long GetUserData() {
+        return internal_native_GetUserData(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getuserdata")
+    public static native long internal_native_GetUserData(long this_addr);
+
+    public void SetUserData(long userData) {
+        internal_native_SetUserData(native_address, userData);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_setuserdata")
+    public static native void internal_native_SetUserData(long this_addr, long userData);
+
     public boolean IsSensor() {
         return internal_native_IsSensor(native_address);
     }
@@ -368,6 +382,30 @@ public final class B3Shape extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_sethull")
     public static native void internal_native_SetHull(long this_addr, long hull_addr);
 
+    public B3Mesh GetMesh() {
+        long addr = internal_native_GetMesh_addr(native_address);
+        if (addr == 0)
+            return B3Mesh.NULL;
+        B3Mesh B3Mesh_NEW = B3Mesh.native_new();
+        B3Mesh_NEW.internal_reset(addr, true);
+        return B3Mesh_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getmesh_addr")
+    public static native long internal_native_GetMesh_addr(long this_addr);
+
+    public B3HeightField GetHeightField() {
+        long addr = internal_native_GetHeightField_addr(native_address);
+        if (addr == 0)
+            return B3HeightField.NULL;
+        B3HeightField B3HeightField_NEW = B3HeightField.native_new();
+        B3HeightField_NEW.internal_reset(addr, true);
+        return B3HeightField_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getheightfield_addr")
+    public static native long internal_native_GetHeightField_addr(long this_addr);
+
     public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
         internal_native_SetMesh(native_address, mesh.native_address, scale.native_address);
     }
@@ -381,6 +419,18 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getcontactcapacity")
     public static native int internal_native_GetContactCapacity(long this_addr);
+
+    public B3ContactDataArray GetContactData() {
+        long addr = internal_native_GetContactData_addr(native_address);
+        if (addr == 0)
+            return B3ContactDataArray.NULL;
+        B3ContactDataArray B3ContactDataArray_NEW = B3ContactDataArray.native_new();
+        B3ContactDataArray_NEW.internal_reset(addr, true);
+        return B3ContactDataArray_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getcontactdata_addr")
+    public static native long internal_native_GetContactData_addr(long this_addr);
 
     public int GetSensorCapacity() {
         return internal_native_GetSensorCapacity(native_address);

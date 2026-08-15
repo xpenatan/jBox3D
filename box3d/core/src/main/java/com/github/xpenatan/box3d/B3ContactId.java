@@ -47,4 +47,12 @@ public final class B3ContactId extends NativeObject {
     public boolean IsNull() {
         return false;
     }
+
+    public boolean IsValid() {
+        return false;
+    }
+
+    public B3ContactData GetData() {
+        return null;
+    }
 }

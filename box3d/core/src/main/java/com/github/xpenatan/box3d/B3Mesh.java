@@ -86,4 +86,16 @@ public final class B3Mesh extends NativeObject {
 
     public void SetTriangleMaterialIndex(int triangleIndex, int materialIndex) {
     }
+
+    public B3Vec3 GetScale() {
+        return null;
+    }
+
+    public int GetTreeHeight() {
+        return 0;
+    }
+
+    public B3MeshQueryResult Query(B3AABB bounds) {
+        return null;
+    }
 }

@@ -76,4 +76,23 @@ public final class B3ContactId extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3contactid_isnull")
     public static native boolean internal_native_IsNull(long this_addr);
+
+    public boolean IsValid() {
+        return internal_native_IsValid(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3contactid_isvalid")
+    public static native boolean internal_native_IsValid(long this_addr);
+
+    public B3ContactData GetData() {
+        long addr = internal_native_GetData_addr(native_address);
+        if (addr == 0)
+            return B3ContactData.NULL;
+        B3ContactData B3ContactData_NEW = B3ContactData.native_new();
+        B3ContactData_NEW.internal_reset(addr, true);
+        return B3ContactData_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3contactid_getdata_addr")
+    public static native long internal_native_GetData_addr(long this_addr);
 }
