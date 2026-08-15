@@ -40,6 +40,104 @@ public final class B3 extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isdoubleprecision")
     public static native boolean internal_native_IsDoublePrecision();
 
+    public static float Atan2(float y, float x) {
+        return internal_native_Atan2(y, x);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_atan2")
+    public static native float internal_native_Atan2(float y, float x);
+
+    public static boolean IsValidFloat(float value) {
+        return internal_native_IsValidFloat(value);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidfloat")
+    public static native boolean internal_native_IsValidFloat(float value);
+
+    public static boolean IsValidVec3(B3Vec3 value) {
+        return internal_native_IsValidVec3(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidvec3")
+    public static native boolean internal_native_IsValidVec3(long value_addr);
+
+    public static boolean IsValidQuat(B3Quat value) {
+        return internal_native_IsValidQuat(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidquat")
+    public static native boolean internal_native_IsValidQuat(long value_addr);
+
+    public static boolean IsValidTransform(B3Transform value) {
+        return internal_native_IsValidTransform(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidtransform")
+    public static native boolean internal_native_IsValidTransform(long value_addr);
+
+    public static boolean IsValidAABB(B3AABB value) {
+        return internal_native_IsValidAABB(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isvalidaabb")
+    public static native boolean internal_native_IsValidAABB(long value_addr);
+
+    public static boolean IsBoundedAABB(B3AABB value) {
+        return internal_native_IsBoundedAABB(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_isboundedaabb")
+    public static native boolean internal_native_IsBoundedAABB(long value_addr);
+
+    public static boolean IsSaneAABB(B3AABB value) {
+        return internal_native_IsSaneAABB(value.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_issaneaabb")
+    public static native boolean internal_native_IsSaneAABB(long value_addr);
+
+    public static int GetGraphColor(int index) {
+        return internal_native_GetGraphColor(index);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getgraphcolor")
+    public static native int internal_native_GetGraphColor(int index);
+
+    public static int GetVersionMajor() {
+        return internal_native_GetVersionMajor();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getversionmajor")
+    public static native int internal_native_GetVersionMajor();
+
+    public static int GetVersionMinor() {
+        return internal_native_GetVersionMinor();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getversionminor")
+    public static native int internal_native_GetVersionMinor();
+
+    public static int GetVersionRevision() {
+        return internal_native_GetVersionRevision();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getversionrevision")
+    public static native int internal_native_GetVersionRevision();
+
+    public static float GetLengthUnitsPerMeter() {
+        return internal_native_GetLengthUnitsPerMeter();
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_getlengthunitspermeter")
+    public static native float internal_native_GetLengthUnitsPerMeter();
+
+    public static void SetLengthUnitsPerMeter(float lengthUnits) {
+        internal_native_SetLengthUnitsPerMeter(lengthUnits);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3_setlengthunitspermeter")
+    public static native void internal_native_SetLengthUnitsPerMeter(float lengthUnits);
+
     public static int StaticBody() {
         return internal_native_StaticBody();
     }

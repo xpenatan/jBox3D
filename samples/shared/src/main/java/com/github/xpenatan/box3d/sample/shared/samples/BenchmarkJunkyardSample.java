@@ -61,8 +61,9 @@ final class BenchmarkJunkyardSample extends AbstractBox3DSample {
     public void step(float deltaSeconds) {
         degrees += -6.0f * TIME_STEP;
         float radians = degrees * (float)Math.PI / 180.0f;
-        B3Vec3 targetPosition = new B3Vec3(RADIUS * (float)Math.cos(radians), 0.0f,
-                RADIUS * (float)Math.sin(radians));
+        long cosSin = SampleMath.computeCosSin(radians);
+        B3Vec3 targetPosition = new B3Vec3(RADIUS * SampleMath.cosine(cosSin), 0.0f,
+                RADIUS * SampleMath.sine(cosSin));
         B3Quat targetRotation = new B3Quat();
         B3Body pusher = new B3Body(pusherId);
         pusher.SetTargetTransform(targetPosition, targetRotation, TIME_STEP, false);

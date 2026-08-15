@@ -33,8 +33,9 @@ final class ClassRingSample extends AbstractBox3DSample {
 
         B3Vec3[] vertices = new B3Vec3[count];
         float deltaAngle = 2.0f * (float)Math.PI / count;
-        float cosine = (float)Math.cos(deltaAngle);
-        float sine = (float)Math.sin(deltaAngle);
+        long cosSin = SampleMath.computeCosSin(deltaAngle);
+        float cosine = SampleMath.cosine(cosSin);
+        float sine = SampleMath.sine(cosSin);
         float x = axisRadius;
         float y = 0.0f;
         for(int i = 0; i < count; i++) {
@@ -53,14 +54,14 @@ final class ClassRingSample extends AbstractBox3DSample {
         B3Vec3 gemCenter = new B3Vec3(0.0f, -0.65f * radius, 0.0f);
         B3Sphere gem = new B3Sphere(gemCenter, 0.3f);
         dispose(ring.CreateSphereShape(shapeDef, gem));
-        B3Vec3 angularVelocity = new B3Vec3(0.0f, 100.0f * (float)Math.cos(tilt),
-                100.0f * (float)Math.sin(tilt));
+        B3Vec3 localAngularVelocity = new B3Vec3(0.0f, 100.0f, 0.0f);
+        B3Vec3 angularVelocity = rotatedVector(rotation, localAngularVelocity);
         ring.SetAngularVelocity(angularVelocity);
 
         for(B3Vec3 vertex : vertices) {
             dispose(vertex);
         }
-        dispose(angularVelocity, gem, gemCenter, shapeDef, bodyDef, rotation);
+        dispose(angularVelocity, localAngularVelocity, gem, gemCenter, shapeDef, bodyDef, rotation);
     }
 
     @Override

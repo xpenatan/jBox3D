@@ -10,9 +10,53 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Collision extends NativeObject {
 
-    static private B3DistanceOutput B3DistanceOutput_TEMP_STATIC_GEN_0;
+    static private B3MassData B3MassData_TEMP_STATIC_GEN_0;
+
+    static private B3MassData B3MassData_TEMP_STATIC_GEN_1;
+
+    static private B3MassData B3MassData_TEMP_STATIC_GEN_2;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_0;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_1;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_2;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_3;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_4;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_5;
 
     static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_0;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_1;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_2;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_3;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_4;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_5;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_6;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_7;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_8;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_9;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_10;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_11;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_12;
+
+    static private B3DistanceOutput B3DistanceOutput_TEMP_STATIC_GEN_0;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_13;
 
     static private B3TOIOutput B3TOIOutput_TEMP_STATIC_GEN_0;
 
@@ -42,6 +86,370 @@ public final class B3Collision extends NativeObject {
 
     public static void internal_native_deleteNative(long this_addr) {
         com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_deleteNative(this_addr);
+    }
+
+    public static void ScaleBox(B3Vec3 halfWidths, B3Transform transform, B3Vec3 postScale, float minHalfWidth) {
+        internal_native_ScaleBox(halfWidths.native_address, transform.native_address, postScale.native_address, minHalfWidth);
+    }
+
+    public static void internal_native_ScaleBox(long halfWidths_addr, long transform_addr, long postScale_addr, float minHalfWidth) {
+        com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ScaleBox(halfWidths_addr, transform_addr, postScale_addr, minHalfWidth);
+    }
+
+    public static B3MassData ComputeSphereMass(B3Sphere sphere, float density) {
+        long addr = internal_native_ComputeSphereMass_addr(sphere.native_address, density);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_STATIC_GEN_0 == null)
+            B3MassData_TEMP_STATIC_GEN_0 = B3MassData.native_new();
+        B3MassData_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3MassData_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_ComputeSphereMass_addr(long sphere_addr, float density) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeSphereMass_addr(sphere_addr, density);
+    }
+
+    public static B3MassData ComputeCapsuleMass(B3Capsule capsule, float density) {
+        long addr = internal_native_ComputeCapsuleMass_addr(capsule.native_address, density);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_STATIC_GEN_1 == null)
+            B3MassData_TEMP_STATIC_GEN_1 = B3MassData.native_new();
+        B3MassData_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3MassData_TEMP_STATIC_GEN_1;
+    }
+
+    public static long internal_native_ComputeCapsuleMass_addr(long capsule_addr, float density) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeCapsuleMass_addr(capsule_addr, density);
+    }
+
+    public static B3MassData ComputeHullMass(B3Hull hull, float density) {
+        long addr = internal_native_ComputeHullMass_addr(hull.native_address, density);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_STATIC_GEN_2 == null)
+            B3MassData_TEMP_STATIC_GEN_2 = B3MassData.native_new();
+        B3MassData_TEMP_STATIC_GEN_2.internal_reset(addr, false);
+        return B3MassData_TEMP_STATIC_GEN_2;
+    }
+
+    public static long internal_native_ComputeHullMass_addr(long hull_addr, float density) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeHullMass_addr(hull_addr, density);
+    }
+
+    public static B3AABB ComputeSphereAABB(B3Sphere sphere, B3Transform transform) {
+        long addr = internal_native_ComputeSphereAABB_addr(sphere.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_0 == null)
+            B3AABB_TEMP_STATIC_GEN_0 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_ComputeSphereAABB_addr(long sphere_addr, long transform_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeSphereAABB_addr(sphere_addr, transform_addr);
+    }
+
+    public static B3AABB ComputeCapsuleAABB(B3Capsule capsule, B3Transform transform) {
+        long addr = internal_native_ComputeCapsuleAABB_addr(capsule.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_1 == null)
+            B3AABB_TEMP_STATIC_GEN_1 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_1;
+    }
+
+    public static long internal_native_ComputeCapsuleAABB_addr(long capsule_addr, long transform_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeCapsuleAABB_addr(capsule_addr, transform_addr);
+    }
+
+    public static B3AABB ComputeHullAABB(B3Hull hull, B3Transform transform) {
+        long addr = internal_native_ComputeHullAABB_addr(hull.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_2 == null)
+            B3AABB_TEMP_STATIC_GEN_2 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_2.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_2;
+    }
+
+    public static long internal_native_ComputeHullAABB_addr(long hull_addr, long transform_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeHullAABB_addr(hull_addr, transform_addr);
+    }
+
+    public static B3AABB ComputeMeshAABB(B3Mesh mesh, B3Transform transform, B3Vec3 scale) {
+        long addr = internal_native_ComputeMeshAABB_addr(mesh.native_address, transform.native_address, scale.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_3 == null)
+            B3AABB_TEMP_STATIC_GEN_3 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_3.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_3;
+    }
+
+    public static long internal_native_ComputeMeshAABB_addr(long mesh_addr, long transform_addr, long scale_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeMeshAABB_addr(mesh_addr, transform_addr, scale_addr);
+    }
+
+    public static B3AABB ComputeHeightFieldAABB(B3HeightField heightField, B3Transform transform) {
+        long addr = internal_native_ComputeHeightFieldAABB_addr(heightField.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_4 == null)
+            B3AABB_TEMP_STATIC_GEN_4 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_4.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_4;
+    }
+
+    public static long internal_native_ComputeHeightFieldAABB_addr(long heightField_addr, long transform_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeHeightFieldAABB_addr(heightField_addr, transform_addr);
+    }
+
+    public static B3AABB ComputeCompoundAABB(B3Compound compound, B3Transform transform) {
+        long addr = internal_native_ComputeCompoundAABB_addr(compound.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_5 == null)
+            B3AABB_TEMP_STATIC_GEN_5 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_5.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_5;
+    }
+
+    public static long internal_native_ComputeCompoundAABB_addr(long compound_addr, long transform_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ComputeCompoundAABB_addr(compound_addr, transform_addr);
+    }
+
+    public static boolean OverlapSphere(B3Sphere sphere, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapSphere(sphere.native_address, transform.native_address, proxy.native_address);
+    }
+
+    public static boolean internal_native_OverlapSphere(long sphere_addr, long transform_addr, long proxy_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_OverlapSphere(sphere_addr, transform_addr, proxy_addr);
+    }
+
+    public static boolean OverlapCapsule(B3Capsule capsule, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapCapsule(capsule.native_address, transform.native_address, proxy.native_address);
+    }
+
+    public static boolean internal_native_OverlapCapsule(long capsule_addr, long transform_addr, long proxy_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_OverlapCapsule(capsule_addr, transform_addr, proxy_addr);
+    }
+
+    public static boolean OverlapHull(B3Hull hull, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapHull(hull.native_address, transform.native_address, proxy.native_address);
+    }
+
+    public static boolean internal_native_OverlapHull(long hull_addr, long transform_addr, long proxy_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_OverlapHull(hull_addr, transform_addr, proxy_addr);
+    }
+
+    public static boolean OverlapMesh(B3Mesh mesh, B3Vec3 scale, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapMesh(mesh.native_address, scale.native_address, transform.native_address, proxy.native_address);
+    }
+
+    public static boolean internal_native_OverlapMesh(long mesh_addr, long scale_addr, long transform_addr, long proxy_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_OverlapMesh(mesh_addr, scale_addr, transform_addr, proxy_addr);
+    }
+
+    public static boolean OverlapHeightField(B3HeightField heightField, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapHeightField(heightField.native_address, transform.native_address, proxy.native_address);
+    }
+
+    public static boolean internal_native_OverlapHeightField(long heightField_addr, long transform_addr, long proxy_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_OverlapHeightField(heightField_addr, transform_addr, proxy_addr);
+    }
+
+    public static boolean OverlapCompound(B3Compound compound, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapCompound(compound.native_address, transform.native_address, proxy.native_address);
+    }
+
+    public static boolean internal_native_OverlapCompound(long compound_addr, long transform_addr, long proxy_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_OverlapCompound(compound_addr, transform_addr, proxy_addr);
+    }
+
+    public static B3CastOutput RayCastSphere(B3Sphere sphere, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastSphere_addr(sphere.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_0 == null)
+            B3CastOutput_TEMP_STATIC_GEN_0 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_0;
+    }
+
+    public static long internal_native_RayCastSphere_addr(long sphere_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastSphere_addr(sphere_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput RayCastHollowSphere(B3Sphere sphere, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastHollowSphere_addr(sphere.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_1 == null)
+            B3CastOutput_TEMP_STATIC_GEN_1 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_1;
+    }
+
+    public static long internal_native_RayCastHollowSphere_addr(long sphere_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastHollowSphere_addr(sphere_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput RayCastCapsule(B3Capsule capsule, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastCapsule_addr(capsule.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_2 == null)
+            B3CastOutput_TEMP_STATIC_GEN_2 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_2.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_2;
+    }
+
+    public static long internal_native_RayCastCapsule_addr(long capsule_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastCapsule_addr(capsule_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput RayCastHull(B3Hull hull, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastHull_addr(hull.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_3 == null)
+            B3CastOutput_TEMP_STATIC_GEN_3 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_3.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_3;
+    }
+
+    public static long internal_native_RayCastHull_addr(long hull_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastHull_addr(hull_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput RayCastMesh(B3Mesh mesh, B3Vec3 scale, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastMesh_addr(mesh.native_address, scale.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_4 == null)
+            B3CastOutput_TEMP_STATIC_GEN_4 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_4.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_4;
+    }
+
+    public static long internal_native_RayCastMesh_addr(long mesh_addr, long scale_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastMesh_addr(mesh_addr, scale_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput RayCastHeightField(B3HeightField heightField, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastHeightField_addr(heightField.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_5 == null)
+            B3CastOutput_TEMP_STATIC_GEN_5 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_5.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_5;
+    }
+
+    public static long internal_native_RayCastHeightField_addr(long heightField_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastHeightField_addr(heightField_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput RayCastCompound(B3Compound compound, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        long addr = internal_native_RayCastCompound_addr(compound.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_6 == null)
+            B3CastOutput_TEMP_STATIC_GEN_6 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_6.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_6;
+    }
+
+    public static long internal_native_RayCastCompound_addr(long compound_addr, long origin_addr, long translation_addr, float maxFraction) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_RayCastCompound_addr(compound_addr, origin_addr, translation_addr, maxFraction);
+    }
+
+    public static B3CastOutput ShapeCastSphere(B3Sphere sphere, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        long addr = internal_native_ShapeCastSphere_addr(sphere.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_7 == null)
+            B3CastOutput_TEMP_STATIC_GEN_7 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_7.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_7;
+    }
+
+    public static long internal_native_ShapeCastSphere_addr(long sphere_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ShapeCastSphere_addr(sphere_addr, proxy_addr, translation_addr, maxFraction, canEncroach);
+    }
+
+    public static B3CastOutput ShapeCastCapsule(B3Capsule capsule, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        long addr = internal_native_ShapeCastCapsule_addr(capsule.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_8 == null)
+            B3CastOutput_TEMP_STATIC_GEN_8 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_8.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_8;
+    }
+
+    public static long internal_native_ShapeCastCapsule_addr(long capsule_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ShapeCastCapsule_addr(capsule_addr, proxy_addr, translation_addr, maxFraction, canEncroach);
+    }
+
+    public static B3CastOutput ShapeCastHull(B3Hull hull, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        long addr = internal_native_ShapeCastHull_addr(hull.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_9 == null)
+            B3CastOutput_TEMP_STATIC_GEN_9 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_9.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_9;
+    }
+
+    public static long internal_native_ShapeCastHull_addr(long hull_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ShapeCastHull_addr(hull_addr, proxy_addr, translation_addr, maxFraction, canEncroach);
+    }
+
+    public static B3CastOutput ShapeCastMesh(B3Mesh mesh, B3Vec3 scale, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        long addr = internal_native_ShapeCastMesh_addr(mesh.native_address, scale.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_10 == null)
+            B3CastOutput_TEMP_STATIC_GEN_10 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_10.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_10;
+    }
+
+    public static long internal_native_ShapeCastMesh_addr(long mesh_addr, long scale_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ShapeCastMesh_addr(mesh_addr, scale_addr, proxy_addr, translation_addr, maxFraction, canEncroach);
+    }
+
+    public static B3CastOutput ShapeCastHeightField(B3HeightField heightField, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        long addr = internal_native_ShapeCastHeightField_addr(heightField.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_11 == null)
+            B3CastOutput_TEMP_STATIC_GEN_11 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_11.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_11;
+    }
+
+    public static long internal_native_ShapeCastHeightField_addr(long heightField_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ShapeCastHeightField_addr(heightField_addr, proxy_addr, translation_addr, maxFraction, canEncroach);
+    }
+
+    public static B3CastOutput ShapeCastCompound(B3Compound compound, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        long addr = internal_native_ShapeCastCompound_addr(compound.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_12 == null)
+            B3CastOutput_TEMP_STATIC_GEN_12 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_12.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_12;
+    }
+
+    public static long internal_native_ShapeCastCompound_addr(long compound_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Collision.internal_native_ShapeCastCompound_addr(compound_addr, proxy_addr, translation_addr, maxFraction, canEncroach);
     }
 
     public static B3LocalManifold CollideSpheres(int capacity, B3Sphere sphereA, B3Sphere sphereB, B3Transform transformBtoA) {
@@ -179,10 +587,10 @@ public final class B3Collision extends NativeObject {
         long addr = internal_native_ShapeCast_addr(proxyA.native_address, proxyB.native_address, transformBtoA.native_address, translationB.native_address, maxFraction, canEncroach);
         if (addr == 0)
             return B3CastOutput.NULL;
-        if (B3CastOutput_TEMP_STATIC_GEN_0 == null)
-            B3CastOutput_TEMP_STATIC_GEN_0 = B3CastOutput.native_new();
-        B3CastOutput_TEMP_STATIC_GEN_0.internal_reset(addr, false);
-        return B3CastOutput_TEMP_STATIC_GEN_0;
+        if (B3CastOutput_TEMP_STATIC_GEN_13 == null)
+            B3CastOutput_TEMP_STATIC_GEN_13 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_13.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_13;
     }
 
     public static long internal_native_ShapeCast_addr(long proxyA_addr, long proxyB_addr, long transformBtoA_addr, long translationB_addr, float maxFraction, boolean canEncroach) {

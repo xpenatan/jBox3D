@@ -30,6 +30,61 @@ public final class B3 extends NativeObject {
         return false;
     }
 
+    public static float Atan2(float y, float x) {
+        return 0;
+    }
+
+    public static boolean IsValidFloat(float value) {
+        return false;
+    }
+
+    public static boolean IsValidVec3(B3Vec3 value) {
+        return false;
+    }
+
+    public static boolean IsValidQuat(B3Quat value) {
+        return false;
+    }
+
+    public static boolean IsValidTransform(B3Transform value) {
+        return false;
+    }
+
+    public static boolean IsValidAABB(B3AABB value) {
+        return false;
+    }
+
+    public static boolean IsBoundedAABB(B3AABB value) {
+        return false;
+    }
+
+    public static boolean IsSaneAABB(B3AABB value) {
+        return false;
+    }
+
+    public static int GetGraphColor(int index) {
+        return 0;
+    }
+
+    public static int GetVersionMajor() {
+        return 0;
+    }
+
+    public static int GetVersionMinor() {
+        return 0;
+    }
+
+    public static int GetVersionRevision() {
+        return 0;
+    }
+
+    public static float GetLengthUnitsPerMeter() {
+        return 0;
+    }
+
+    public static void SetLengthUnitsPerMeter(float lengthUnits) {
+    }
+
     public static int StaticBody() {
         return 0;
     }

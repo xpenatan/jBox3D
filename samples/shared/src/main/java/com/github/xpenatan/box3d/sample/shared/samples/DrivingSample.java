@@ -5,6 +5,7 @@ import com.github.xpenatan.box3d.B3Body;
 import com.github.xpenatan.box3d.B3BodyDef;
 import com.github.xpenatan.box3d.B3HeightField;
 import com.github.xpenatan.box3d.B3Hull;
+import com.github.xpenatan.box3d.B3Joint;
 import com.github.xpenatan.box3d.B3ParallelJointDef;
 import com.github.xpenatan.box3d.B3Quat;
 import com.github.xpenatan.box3d.B3ShapeDef;
@@ -12,12 +13,21 @@ import com.github.xpenatan.box3d.B3Sphere;
 import com.github.xpenatan.box3d.B3SurfaceMaterial;
 import com.github.xpenatan.box3d.B3Vec3;
 import com.github.xpenatan.box3d.B3WheelJointDef;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerInput;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerTarget;
 
 /** Exact default scene from Box3D's Joints/Driving sample. */
 final class DrivingSample extends AbstractBox3DSample {
     private static final float PI = (float)Math.PI;
 
     private B3HeightField heightField;
+    private long chassisId;
+    private long frontLeftId;
+    private long frontRightId;
+    private long rearLeftId;
+    private long rearRightId;
+    private Box3DPlayerInput playerInput;
+    private boolean thirdPerson;
 
     DrivingSample() {
         B3BodyDef groundDef = bodyDef(B3.StaticBody(), -20.0f, 0.0f, -20.0f, null);
@@ -30,6 +40,7 @@ final class DrivingSample extends AbstractBox3DSample {
 
         B3BodyDef chassisDef = bodyDef(B3.DynamicBody(), 0.0f, 2.5f, 0.0f, null);
         B3Body chassis = world().CreateBody(chassisDef);
+        chassisId = chassis.GetId();
         B3ShapeDef chassisShapeDef = new B3ShapeDef();
         chassisShapeDef.SetDensity(0.5f);
         B3Hull chassisHull = B3Hull.CreateBox(2.0f, 0.5f, 1.0f);
@@ -84,20 +95,20 @@ final class DrivingSample extends AbstractBox3DSample {
 
         B3Vec3 sphereCenter = new B3Vec3(0.0f, 0.0f, 0.0f);
         B3Sphere wheelSphere = new B3Sphere(sphereCenter, 0.4f);
-        createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
+        frontLeftId = createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
                 1.5f, 2.0f, 0.8f, true, false);
-        createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
+        frontRightId = createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
                 1.5f, 2.0f, -0.8f, true, false);
-        createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
+        rearLeftId = createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
                 -1.5f, 2.0f, 0.8f, false, true);
-        createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
+        rearRightId = createWheel(chassis, wheelBodyDef, wheelShapeDef, wheelSphere, wheelDef, frameA,
                 -1.5f, 2.0f, -0.8f, false, true);
 
         dispose(wheelSphere, sphereCenter, wheelDef, frameB, frameA, wheelBodyDef, wheelRotation,
                 wheelMaterial, wheelShapeDef, chassis, ground);
     }
 
-    private void createWheel(B3Body chassis, B3BodyDef bodyDef, B3ShapeDef shapeDef, B3Sphere sphere,
+    private long createWheel(B3Body chassis, B3BodyDef bodyDef, B3ShapeDef shapeDef, B3Sphere sphere,
             B3WheelJointDef jointDef, B3Quat frameA, float x, float y, float z, boolean steering,
             boolean spinMotor) {
         B3Vec3 position = new B3Vec3(x, y, z);
@@ -110,12 +121,61 @@ final class DrivingSample extends AbstractBox3DSample {
         JointSampleUtil.setLocalFrameA(jointDef, x, -0.5f, z, frameA);
         jointDef.SetEnableSteering(steering);
         jointDef.SetEnableSpinMotor(spinMotor);
-        dispose(world().CreateWheelJoint(jointDef), wheel, position);
+        B3Joint joint = world().CreateWheelJoint(jointDef);
+        long jointId = joint.GetId();
+        dispose(joint, wheel, position);
+        return jointId;
+    }
+
+    @Override
+    public void step(float deltaSeconds) {
+        float forward = thirdPerson && playerInput != null ? playerInput.moveForward() : 0.0f;
+        float right = thirdPerson && playerInput != null ? playerInput.moveRight() : 0.0f;
+        B3Joint frontLeft = new B3Joint(frontLeftId);
+        B3Joint frontRight = new B3Joint(frontRightId);
+        B3Joint rearLeft = new B3Joint(rearLeftId);
+        B3Joint rearRight = new B3Joint(rearRightId);
+        float steering = -0.25f * PI * right;
+        frontLeft.SetWheelTargetSteeringAngle(steering);
+        frontRight.SetWheelTargetSteeringAngle(steering);
+        rearLeft.SetWheelSpinMotorSpeed(-30.0f * forward);
+        rearRight.SetWheelSpinMotorSpeed(-30.0f * forward);
+        if(forward != 0.0f || right != 0.0f) {
+            B3Body chassis = new B3Body(chassisId);
+            chassis.SetAwake(true);
+            dispose(chassis);
+        }
+        dispose(rearRight, rearLeft, frontRight, frontLeft);
+        super.step(deltaSeconds);
     }
 
     @Override
     public void dispose() {
         super.dispose();
         dispose(heightField);
+    }
+
+    @Override
+    public boolean supportsPlayerControl() {
+        return true;
+    }
+
+    @Override
+    public void setPlayerInput(Box3DPlayerInput input, boolean thirdPerson) {
+        playerInput = input;
+        this.thirdPerson = thirdPerson;
+    }
+
+    @Override
+    public boolean getCameraTarget(Box3DPlayerTarget target) {
+        B3Body chassis = new B3Body(chassisId);
+        if(!chassis.IsValid()) {
+            dispose(chassis);
+            return false;
+        }
+        B3Vec3 position = chassis.GetPosition();
+        target.set(position.GetX(), position.GetY(), position.GetZ());
+        dispose(chassis);
+        return true;
     }
 }

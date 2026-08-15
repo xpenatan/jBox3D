@@ -7,6 +7,7 @@
 package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
+import com.github.xpenatan.jparser.runtime.helper.NativeString;
 
 public final class B3Shape extends NativeObject {
 
@@ -51,8 +52,18 @@ public final class B3Shape extends NativeObject {
         return 0;
     }
 
+    public long GetWorldId() {
+        return 0;
+    }
+
     public boolean IsSensor() {
         return false;
+    }
+
+    public void GetName(NativeString name) {
+    }
+
+    public void SetName(String name) {
     }
 
     public float GetDensity() {
@@ -83,6 +94,17 @@ public final class B3Shape extends NativeObject {
     public void SetSurfaceMaterial(B3SurfaceMaterial material) {
     }
 
+    public int GetMeshMaterialCount() {
+        return 0;
+    }
+
+    public B3SurfaceMaterial GetMeshSurfaceMaterial(int index) {
+        return null;
+    }
+
+    public void SetMeshMaterial(B3SurfaceMaterial material, int index) {
+    }
+
     public B3Filter GetFilter() {
         return null;
     }
@@ -101,6 +123,13 @@ public final class B3Shape extends NativeObject {
     }
 
     public boolean AreContactEventsEnabled() {
+        return false;
+    }
+
+    public void EnablePreSolveEvents(boolean enabled) {
+    }
+
+    public boolean ArePreSolveEventsEnabled() {
         return false;
     }
 
@@ -129,7 +158,33 @@ public final class B3Shape extends NativeObject {
     public void SetCapsule(B3Capsule capsule) {
     }
 
+    public B3Hull GetHull() {
+        return null;
+    }
+
+    public void SetHull(B3Hull hull) {
+    }
+
+    public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
+    }
+
+    public int GetContactCapacity() {
+        return 0;
+    }
+
+    public int GetSensorCapacity() {
+        return 0;
+    }
+
+    public long GetSensorShapeId(int index) {
+        return 0;
+    }
+
     public B3AABB GetAABB() {
+        return null;
+    }
+
+    public B3MassData ComputeMassData() {
         return null;
     }
 

@@ -8,9 +8,14 @@ import com.github.xpenatan.box3d.B3PlaneSolverResult;
 import com.github.xpenatan.box3d.B3QueryFilter;
 import com.github.xpenatan.box3d.B3RayResult;
 import com.github.xpenatan.box3d.B3Vec3;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerInput;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerTarget;
 
-/** Direct no-input port of {@code CharacterMover} from the pinned Box3D samples. */
+/** Direct port of {@code CharacterMover} from the pinned Box3D samples. */
 final class ExactCharacterMover {
+    private static final float JUMP_SPEED = 5.0f;
+    private static final float MAX_SPEED = 6.0f;
+    private static final float ACCELERATION = 30.0f;
     private final AbstractBox3DSample sample;
     private final B3Vec3 position;
     private final B3Capsule capsule;
@@ -29,7 +34,14 @@ final class ExactCharacterMover {
         AbstractBox3DSample.dispose(center2, center1);
     }
 
-    void step(float timeStep, long ignoredShapeId, boolean clipVelocity) {
+    void step(float timeStep, long ignoredShapeId, boolean clipVelocity, Box3DPlayerInput input,
+            boolean thirdPerson) {
+        if(thirdPerson && input != null && input.jump() && onGround) {
+            velocityY = JUMP_SPEED;
+            onGround = false;
+        }
+        boolean sprint = thirdPerson && input != null && onGround && input.sprint();
+
         float speed = length(velocityX, velocityY, velocityZ);
         if(speed < 0.01f) {
             velocityX = 0.0f;
@@ -43,8 +55,37 @@ final class ExactCharacterMover {
             velocityZ *= ratio;
         }
 
+        float maxSpeed = sprint ? 1.5f * MAX_SPEED : MAX_SPEED;
+        float desiredX = 0.0f;
+        float desiredZ = 0.0f;
+        if(thirdPerson && input != null) {
+            desiredX = maxSpeed * (input.moveForward() * input.cameraForwardX()
+                    + input.moveRight() * input.cameraRightX());
+            desiredZ = maxSpeed * (input.moveForward() * input.cameraForwardZ()
+                    + input.moveRight() * input.cameraRightZ());
+        }
+        float desiredSpeed = length(desiredX, 0.0f, desiredZ);
+        if(desiredSpeed > maxSpeed) {
+            float scale = maxSpeed / desiredSpeed;
+            desiredX *= scale;
+            desiredZ *= scale;
+            desiredSpeed = maxSpeed;
+        }
+
         if(onGround) {
             velocityY = 0.0f;
+        }
+
+        if(desiredSpeed > 0.000001f) {
+            float directionX = desiredX / desiredSpeed;
+            float directionZ = desiredZ / desiredSpeed;
+            float currentSpeed = velocityX * directionX + velocityZ * directionZ;
+            float addSpeed = desiredSpeed - currentSpeed;
+            if(addSpeed > 0.0f) {
+                float accelerationSpeed = Math.min(addSpeed, ACCELERATION * maxSpeed * timeStep);
+                velocityX += accelerationSpeed * directionX;
+                velocityZ += accelerationSpeed * directionZ;
+            }
         }
         velocityY -= 15.0f * timeStep;
 
@@ -139,6 +180,10 @@ final class ExactCharacterMover {
 
     void dispose() {
         AbstractBox3DSample.dispose(capsule, position);
+    }
+
+    void getPosition(Box3DPlayerTarget target) {
+        target.set(position.GetX(), position.GetY(), position.GetZ());
     }
 
     private static B3QueryFilter queryFilter(long categoryBits, long maskBits, long id) {

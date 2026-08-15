@@ -14,6 +14,34 @@ final public class JNI_B3 {
 
     public static native boolean internal_native_IsDoublePrecision();
 
+    public static native float internal_native_Atan2(float y, float x);
+
+    public static native boolean internal_native_IsValidFloat(float value);
+
+    public static native boolean internal_native_IsValidVec3(long value_addr);
+
+    public static native boolean internal_native_IsValidQuat(long value_addr);
+
+    public static native boolean internal_native_IsValidTransform(long value_addr);
+
+    public static native boolean internal_native_IsValidAABB(long value_addr);
+
+    public static native boolean internal_native_IsBoundedAABB(long value_addr);
+
+    public static native boolean internal_native_IsSaneAABB(long value_addr);
+
+    public static native int internal_native_GetGraphColor(int index);
+
+    public static native int internal_native_GetVersionMajor();
+
+    public static native int internal_native_GetVersionMinor();
+
+    public static native int internal_native_GetVersionRevision();
+
+    public static native float internal_native_GetLengthUnitsPerMeter();
+
+    public static native void internal_native_SetLengthUnitsPerMeter(float lengthUnits);
+
     public static native int internal_native_StaticBody();
 
     public static native int internal_native_KinematicBody();

@@ -10,6 +10,24 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Joint extends NativeObject {
 
+    private B3Transform B3Transform_TEMP_GEN_0;
+
+    private B3Transform B3Transform_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_2;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_3;
+
+    private B3Quat B3Quat_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_4;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_5;
+
     static public final B3Joint NULL = B3Joint.native_new();
 
     public B3Joint() {
@@ -76,6 +94,14 @@ public final class B3Joint extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_Destroy(this_addr, wakeAttached);
     }
 
+    public int GetType() {
+        return internal_native_GetType(native_address);
+    }
+
+    public static int internal_native_GetType(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetType(this_addr);
+    }
+
     public long GetBodyIdA() {
         return internal_native_GetBodyIdA(native_address);
     }
@@ -92,6 +118,74 @@ public final class B3Joint extends NativeObject {
         return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetBodyIdB(this_addr);
     }
 
+    public long GetWorldId() {
+        return internal_native_GetWorldId(native_address);
+    }
+
+    public static long internal_native_GetWorldId(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWorldId(this_addr);
+    }
+
+    public B3Transform GetLocalFrameA() {
+        long addr = internal_native_GetLocalFrameA_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_0 == null)
+            B3Transform_TEMP_GEN_0 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetLocalFrameA_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetLocalFrameA_addr(this_addr);
+    }
+
+    public void SetLocalFrameA(B3Transform localFrame) {
+        internal_native_SetLocalFrameA(native_address, localFrame.native_address);
+    }
+
+    public static void internal_native_SetLocalFrameA(long this_addr, long localFrame_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetLocalFrameA(this_addr, localFrame_addr);
+    }
+
+    public B3Transform GetLocalFrameB() {
+        long addr = internal_native_GetLocalFrameB_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_1 == null)
+            B3Transform_TEMP_GEN_1 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_1;
+    }
+
+    public static long internal_native_GetLocalFrameB_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetLocalFrameB_addr(this_addr);
+    }
+
+    public void SetLocalFrameB(B3Transform localFrame) {
+        internal_native_SetLocalFrameB(native_address, localFrame.native_address);
+    }
+
+    public static void internal_native_SetLocalFrameB(long this_addr, long localFrame_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetLocalFrameB(this_addr, localFrame_addr);
+    }
+
+    public boolean GetCollideConnected() {
+        return internal_native_GetCollideConnected(native_address);
+    }
+
+    public static boolean internal_native_GetCollideConnected(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetCollideConnected(this_addr);
+    }
+
+    public void SetCollideConnected(boolean collideConnected) {
+        internal_native_SetCollideConnected(native_address, collideConnected);
+    }
+
+    public static void internal_native_SetCollideConnected(long this_addr, boolean collideConnected) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetCollideConnected(this_addr, collideConnected);
+    }
+
     public void WakeBodies() {
         internal_native_WakeBodies(native_address);
     }
@@ -100,12 +194,636 @@ public final class B3Joint extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_WakeBodies(this_addr);
     }
 
+    public B3Vec3 GetConstraintForce() {
+        long addr = internal_native_GetConstraintForce_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetConstraintForce_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetConstraintForce_addr(this_addr);
+    }
+
+    public B3Vec3 GetConstraintTorque() {
+        long addr = internal_native_GetConstraintTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    public static long internal_native_GetConstraintTorque_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetConstraintTorque_addr(this_addr);
+    }
+
     public float GetLinearSeparation() {
         return internal_native_GetLinearSeparation(native_address);
     }
 
     public static float internal_native_GetLinearSeparation(long this_addr) {
         return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetLinearSeparation(this_addr);
+    }
+
+    public float GetAngularSeparation() {
+        return internal_native_GetAngularSeparation(native_address);
+    }
+
+    public static float internal_native_GetAngularSeparation(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetAngularSeparation(this_addr);
+    }
+
+    public void SetConstraintTuning(float hertz, float dampingRatio) {
+        internal_native_SetConstraintTuning(native_address, hertz, dampingRatio);
+    }
+
+    public static void internal_native_SetConstraintTuning(long this_addr, float hertz, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetConstraintTuning(this_addr, hertz, dampingRatio);
+    }
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    public static float internal_native_GetConstraintHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetConstraintHertz(this_addr);
+    }
+
+    public float GetConstraintDampingRatio() {
+        return internal_native_GetConstraintDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetConstraintDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetConstraintDampingRatio(this_addr);
+    }
+
+    public void SetForceThreshold(float threshold) {
+        internal_native_SetForceThreshold(native_address, threshold);
+    }
+
+    public static void internal_native_SetForceThreshold(long this_addr, float threshold) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetForceThreshold(this_addr, threshold);
+    }
+
+    public float GetForceThreshold() {
+        return internal_native_GetForceThreshold(native_address);
+    }
+
+    public static float internal_native_GetForceThreshold(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetForceThreshold(this_addr);
+    }
+
+    public void SetTorqueThreshold(float threshold) {
+        internal_native_SetTorqueThreshold(native_address, threshold);
+    }
+
+    public static void internal_native_SetTorqueThreshold(long this_addr, float threshold) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetTorqueThreshold(this_addr, threshold);
+    }
+
+    public float GetTorqueThreshold() {
+        return internal_native_GetTorqueThreshold(native_address);
+    }
+
+    public static float internal_native_GetTorqueThreshold(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetTorqueThreshold(this_addr);
+    }
+
+    public void SetParallelSpringHertz(float hertz) {
+        internal_native_SetParallelSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetParallelSpringHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetParallelSpringHertz(this_addr, hertz);
+    }
+
+    public float GetParallelSpringHertz() {
+        return internal_native_GetParallelSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetParallelSpringHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetParallelSpringHertz(this_addr);
+    }
+
+    public void SetParallelSpringDampingRatio(float dampingRatio) {
+        internal_native_SetParallelSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetParallelSpringDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetParallelSpringDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetParallelSpringDampingRatio() {
+        return internal_native_GetParallelSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetParallelSpringDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetParallelSpringDampingRatio(this_addr);
+    }
+
+    public void SetParallelMaxTorque(float torque) {
+        internal_native_SetParallelMaxTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetParallelMaxTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetParallelMaxTorque(this_addr, torque);
+    }
+
+    public float GetParallelMaxTorque() {
+        return internal_native_GetParallelMaxTorque(native_address);
+    }
+
+    public static float internal_native_GetParallelMaxTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetParallelMaxTorque(this_addr);
+    }
+
+    public void SetDistanceLength(float length) {
+        internal_native_SetDistanceLength(native_address, length);
+    }
+
+    public static void internal_native_SetDistanceLength(long this_addr, float length) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceLength(this_addr, length);
+    }
+
+    public float GetDistanceLength() {
+        return internal_native_GetDistanceLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceLength(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceLength(this_addr);
+    }
+
+    public void EnableDistanceSpring(boolean enabled) {
+        internal_native_EnableDistanceSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnableDistanceSpring(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableDistanceSpring(this_addr, enabled);
+    }
+
+    public boolean IsDistanceSpringEnabled() {
+        return internal_native_IsDistanceSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsDistanceSpringEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsDistanceSpringEnabled(this_addr);
+    }
+
+    public void SetDistanceSpringForceRange(float lowerForce, float upperForce) {
+        internal_native_SetDistanceSpringForceRange(native_address, lowerForce, upperForce);
+    }
+
+    public static void internal_native_SetDistanceSpringForceRange(long this_addr, float lowerForce, float upperForce) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceSpringForceRange(this_addr, lowerForce, upperForce);
+    }
+
+    public float GetDistanceLowerSpringForce() {
+        return internal_native_GetDistanceLowerSpringForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceLowerSpringForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceLowerSpringForce(this_addr);
+    }
+
+    public float GetDistanceUpperSpringForce() {
+        return internal_native_GetDistanceUpperSpringForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceUpperSpringForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceUpperSpringForce(this_addr);
+    }
+
+    public void SetDistanceSpringHertz(float hertz) {
+        internal_native_SetDistanceSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetDistanceSpringHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceSpringHertz(this_addr, hertz);
+    }
+
+    public float GetDistanceSpringHertz() {
+        return internal_native_GetDistanceSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetDistanceSpringHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceSpringHertz(this_addr);
+    }
+
+    public void SetDistanceSpringDampingRatio(float dampingRatio) {
+        internal_native_SetDistanceSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetDistanceSpringDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceSpringDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetDistanceSpringDampingRatio() {
+        return internal_native_GetDistanceSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetDistanceSpringDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceSpringDampingRatio(this_addr);
+    }
+
+    public void EnableDistanceLimit(boolean enabled) {
+        internal_native_EnableDistanceLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableDistanceLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableDistanceLimit(this_addr, enabled);
+    }
+
+    public boolean IsDistanceLimitEnabled() {
+        return internal_native_IsDistanceLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsDistanceLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsDistanceLimitEnabled(this_addr);
+    }
+
+    public void SetDistanceLengthRange(float minLength, float maxLength) {
+        internal_native_SetDistanceLengthRange(native_address, minLength, maxLength);
+    }
+
+    public static void internal_native_SetDistanceLengthRange(long this_addr, float minLength, float maxLength) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceLengthRange(this_addr, minLength, maxLength);
+    }
+
+    public float GetDistanceMinLength() {
+        return internal_native_GetDistanceMinLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceMinLength(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceMinLength(this_addr);
+    }
+
+    public float GetDistanceMaxLength() {
+        return internal_native_GetDistanceMaxLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceMaxLength(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceMaxLength(this_addr);
+    }
+
+    public float GetDistanceCurrentLength() {
+        return internal_native_GetDistanceCurrentLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceCurrentLength(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceCurrentLength(this_addr);
+    }
+
+    public void EnableDistanceMotor(boolean enabled) {
+        internal_native_EnableDistanceMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableDistanceMotor(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableDistanceMotor(this_addr, enabled);
+    }
+
+    public boolean IsDistanceMotorEnabled() {
+        return internal_native_IsDistanceMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsDistanceMotorEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsDistanceMotorEnabled(this_addr);
+    }
+
+    public void SetDistanceMotorSpeed(float speed) {
+        internal_native_SetDistanceMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetDistanceMotorSpeed(long this_addr, float speed) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceMotorSpeed(this_addr, speed);
+    }
+
+    public float GetDistanceMotorSpeed() {
+        return internal_native_GetDistanceMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetDistanceMotorSpeed(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceMotorSpeed(this_addr);
+    }
+
+    public void SetDistanceMaxMotorForce(float force) {
+        internal_native_SetDistanceMaxMotorForce(native_address, force);
+    }
+
+    public static void internal_native_SetDistanceMaxMotorForce(long this_addr, float force) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetDistanceMaxMotorForce(this_addr, force);
+    }
+
+    public float GetDistanceMaxMotorForce() {
+        return internal_native_GetDistanceMaxMotorForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceMaxMotorForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceMaxMotorForce(this_addr);
+    }
+
+    public float GetDistanceMotorForce() {
+        return internal_native_GetDistanceMotorForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceMotorForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetDistanceMotorForce(this_addr);
+    }
+
+    public void SetMotorLinearVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorLinearVelocity(native_address, velocity.native_address);
+    }
+
+    public static void internal_native_SetMotorLinearVelocity(long this_addr, long velocity_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorLinearVelocity(this_addr, velocity_addr);
+    }
+
+    public B3Vec3 GetMotorLinearVelocity() {
+        long addr = internal_native_GetMotorLinearVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_2 == null)
+            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_2;
+    }
+
+    public static long internal_native_GetMotorLinearVelocity_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorLinearVelocity_addr(this_addr);
+    }
+
+    public void SetMotorAngularVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorAngularVelocity(native_address, velocity.native_address);
+    }
+
+    public static void internal_native_SetMotorAngularVelocity(long this_addr, long velocity_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorAngularVelocity(this_addr, velocity_addr);
+    }
+
+    public B3Vec3 GetMotorAngularVelocity() {
+        long addr = internal_native_GetMotorAngularVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_3 == null)
+            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_3;
+    }
+
+    public static long internal_native_GetMotorAngularVelocity_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorAngularVelocity_addr(this_addr);
+    }
+
+    public void SetMotorMaxVelocityForce(float force) {
+        internal_native_SetMotorMaxVelocityForce(native_address, force);
+    }
+
+    public static void internal_native_SetMotorMaxVelocityForce(long this_addr, float force) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorMaxVelocityForce(this_addr, force);
+    }
+
+    public float GetMotorMaxVelocityForce() {
+        return internal_native_GetMotorMaxVelocityForce(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxVelocityForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorMaxVelocityForce(this_addr);
+    }
+
+    public void SetMotorMaxVelocityTorque(float torque) {
+        internal_native_SetMotorMaxVelocityTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetMotorMaxVelocityTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorMaxVelocityTorque(this_addr, torque);
+    }
+
+    public float GetMotorMaxVelocityTorque() {
+        return internal_native_GetMotorMaxVelocityTorque(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxVelocityTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorMaxVelocityTorque(this_addr);
+    }
+
+    public void SetMotorLinearHertz(float hertz) {
+        internal_native_SetMotorLinearHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetMotorLinearHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorLinearHertz(this_addr, hertz);
+    }
+
+    public float GetMotorLinearHertz() {
+        return internal_native_GetMotorLinearHertz(native_address);
+    }
+
+    public static float internal_native_GetMotorLinearHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorLinearHertz(this_addr);
+    }
+
+    public void SetMotorLinearDampingRatio(float dampingRatio) {
+        internal_native_SetMotorLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetMotorLinearDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorLinearDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetMotorLinearDampingRatio() {
+        return internal_native_GetMotorLinearDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetMotorLinearDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorLinearDampingRatio(this_addr);
+    }
+
+    public void SetMotorAngularHertz(float hertz) {
+        internal_native_SetMotorAngularHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetMotorAngularHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorAngularHertz(this_addr, hertz);
+    }
+
+    public float GetMotorAngularHertz() {
+        return internal_native_GetMotorAngularHertz(native_address);
+    }
+
+    public static float internal_native_GetMotorAngularHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorAngularHertz(this_addr);
+    }
+
+    public void SetMotorAngularDampingRatio(float dampingRatio) {
+        internal_native_SetMotorAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetMotorAngularDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorAngularDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetMotorAngularDampingRatio() {
+        return internal_native_GetMotorAngularDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetMotorAngularDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorAngularDampingRatio(this_addr);
+    }
+
+    public void SetMotorMaxSpringForce(float force) {
+        internal_native_SetMotorMaxSpringForce(native_address, force);
+    }
+
+    public static void internal_native_SetMotorMaxSpringForce(long this_addr, float force) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorMaxSpringForce(this_addr, force);
+    }
+
+    public float GetMotorMaxSpringForce() {
+        return internal_native_GetMotorMaxSpringForce(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxSpringForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorMaxSpringForce(this_addr);
+    }
+
+    public void SetMotorMaxSpringTorque(float torque) {
+        internal_native_SetMotorMaxSpringTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetMotorMaxSpringTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetMotorMaxSpringTorque(this_addr, torque);
+    }
+
+    public float GetMotorMaxSpringTorque() {
+        return internal_native_GetMotorMaxSpringTorque(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxSpringTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetMotorMaxSpringTorque(this_addr);
+    }
+
+    public void EnablePrismaticSpring(boolean enabled) {
+        internal_native_EnablePrismaticSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnablePrismaticSpring(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnablePrismaticSpring(this_addr, enabled);
+    }
+
+    public boolean IsPrismaticSpringEnabled() {
+        return internal_native_IsPrismaticSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsPrismaticSpringEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsPrismaticSpringEnabled(this_addr);
+    }
+
+    public void SetPrismaticSpringHertz(float hertz) {
+        internal_native_SetPrismaticSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetPrismaticSpringHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticSpringHertz(this_addr, hertz);
+    }
+
+    public float GetPrismaticSpringHertz() {
+        return internal_native_GetPrismaticSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetPrismaticSpringHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticSpringHertz(this_addr);
+    }
+
+    public void SetPrismaticSpringDampingRatio(float dampingRatio) {
+        internal_native_SetPrismaticSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetPrismaticSpringDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticSpringDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetPrismaticSpringDampingRatio() {
+        return internal_native_GetPrismaticSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetPrismaticSpringDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticSpringDampingRatio(this_addr);
+    }
+
+    public void SetPrismaticTargetTranslation(float translation) {
+        internal_native_SetPrismaticTargetTranslation(native_address, translation);
+    }
+
+    public static void internal_native_SetPrismaticTargetTranslation(long this_addr, float translation) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticTargetTranslation(this_addr, translation);
+    }
+
+    public float GetPrismaticTargetTranslation() {
+        return internal_native_GetPrismaticTargetTranslation(native_address);
+    }
+
+    public static float internal_native_GetPrismaticTargetTranslation(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticTargetTranslation(this_addr);
+    }
+
+    public void EnablePrismaticLimit(boolean enabled) {
+        internal_native_EnablePrismaticLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnablePrismaticLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnablePrismaticLimit(this_addr, enabled);
+    }
+
+    public boolean IsPrismaticLimitEnabled() {
+        return internal_native_IsPrismaticLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsPrismaticLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsPrismaticLimitEnabled(this_addr);
+    }
+
+    public float GetPrismaticLowerLimit() {
+        return internal_native_GetPrismaticLowerLimit(native_address);
+    }
+
+    public static float internal_native_GetPrismaticLowerLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticLowerLimit(this_addr);
+    }
+
+    public float GetPrismaticUpperLimit() {
+        return internal_native_GetPrismaticUpperLimit(native_address);
+    }
+
+    public static float internal_native_GetPrismaticUpperLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticUpperLimit(this_addr);
+    }
+
+    public void SetPrismaticLimits(float lower, float upper) {
+        internal_native_SetPrismaticLimits(native_address, lower, upper);
+    }
+
+    public static void internal_native_SetPrismaticLimits(long this_addr, float lower, float upper) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticLimits(this_addr, lower, upper);
+    }
+
+    public void EnablePrismaticMotor(boolean enabled) {
+        internal_native_EnablePrismaticMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnablePrismaticMotor(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnablePrismaticMotor(this_addr, enabled);
+    }
+
+    public boolean IsPrismaticMotorEnabled() {
+        return internal_native_IsPrismaticMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsPrismaticMotorEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsPrismaticMotorEnabled(this_addr);
     }
 
     public float GetPrismaticTranslation() {
@@ -124,12 +842,164 @@ public final class B3Joint extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticMotorSpeed(this_addr, speed);
     }
 
+    public float GetPrismaticMotorSpeed() {
+        return internal_native_GetPrismaticMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetPrismaticMotorSpeed(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticMotorSpeed(this_addr);
+    }
+
+    public void SetPrismaticMaxMotorForce(float force) {
+        internal_native_SetPrismaticMaxMotorForce(native_address, force);
+    }
+
+    public static void internal_native_SetPrismaticMaxMotorForce(long this_addr, float force) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetPrismaticMaxMotorForce(this_addr, force);
+    }
+
+    public float GetPrismaticMaxMotorForce() {
+        return internal_native_GetPrismaticMaxMotorForce(native_address);
+    }
+
+    public static float internal_native_GetPrismaticMaxMotorForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticMaxMotorForce(this_addr);
+    }
+
+    public float GetPrismaticMotorForce() {
+        return internal_native_GetPrismaticMotorForce(native_address);
+    }
+
+    public static float internal_native_GetPrismaticMotorForce(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticMotorForce(this_addr);
+    }
+
+    public float GetPrismaticSpeed() {
+        return internal_native_GetPrismaticSpeed(native_address);
+    }
+
+    public static float internal_native_GetPrismaticSpeed(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetPrismaticSpeed(this_addr);
+    }
+
+    public void EnableRevoluteSpring(boolean enabled) {
+        internal_native_EnableRevoluteSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnableRevoluteSpring(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableRevoluteSpring(this_addr, enabled);
+    }
+
+    public boolean IsRevoluteSpringEnabled() {
+        return internal_native_IsRevoluteSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsRevoluteSpringEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsRevoluteSpringEnabled(this_addr);
+    }
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
 
     public static void internal_native_SetRevoluteTargetAngle(long this_addr, float radians) {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteTargetAngle(this_addr, radians);
+    }
+
+    public float GetRevoluteTargetAngle() {
+        return internal_native_GetRevoluteTargetAngle(native_address);
+    }
+
+    public static float internal_native_GetRevoluteTargetAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteTargetAngle(this_addr);
+    }
+
+    public float GetRevoluteAngle() {
+        return internal_native_GetRevoluteAngle(native_address);
+    }
+
+    public static float internal_native_GetRevoluteAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteAngle(this_addr);
+    }
+
+    public void EnableRevoluteLimit(boolean enabled) {
+        internal_native_EnableRevoluteLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableRevoluteLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableRevoluteLimit(this_addr, enabled);
+    }
+
+    public boolean IsRevoluteLimitEnabled() {
+        return internal_native_IsRevoluteLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsRevoluteLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsRevoluteLimitEnabled(this_addr);
+    }
+
+    public float GetRevoluteLowerLimit() {
+        return internal_native_GetRevoluteLowerLimit(native_address);
+    }
+
+    public static float internal_native_GetRevoluteLowerLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteLowerLimit(this_addr);
+    }
+
+    public float GetRevoluteUpperLimit() {
+        return internal_native_GetRevoluteUpperLimit(native_address);
+    }
+
+    public static float internal_native_GetRevoluteUpperLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteUpperLimit(this_addr);
+    }
+
+    public void SetRevoluteLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetRevoluteLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    public static void internal_native_SetRevoluteLimits(long this_addr, float lowerRadians, float upperRadians) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteLimits(this_addr, lowerRadians, upperRadians);
+    }
+
+    public void EnableRevoluteMotor(boolean enabled) {
+        internal_native_EnableRevoluteMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableRevoluteMotor(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableRevoluteMotor(this_addr, enabled);
+    }
+
+    public boolean IsRevoluteMotorEnabled() {
+        return internal_native_IsRevoluteMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsRevoluteMotorEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsRevoluteMotorEnabled(this_addr);
+    }
+
+    public void SetRevoluteMotorSpeed(float speed) {
+        internal_native_SetRevoluteMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetRevoluteMotorSpeed(long this_addr, float speed) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteMotorSpeed(this_addr, speed);
+    }
+
+    public float GetRevoluteMotorSpeed() {
+        return internal_native_GetRevoluteMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetRevoluteMotorSpeed(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteMotorSpeed(this_addr);
+    }
+
+    public float GetRevoluteMotorTorque() {
+        return internal_native_GetRevoluteMotorTorque(native_address);
+    }
+
+    public static float internal_native_GetRevoluteMotorTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteMotorTorque(this_addr);
     }
 
     public void SetRevoluteMaxMotorTorque(float torque) {
@@ -140,12 +1010,28 @@ public final class B3Joint extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteMaxMotorTorque(this_addr, torque);
     }
 
+    public float GetRevoluteMaxMotorTorque() {
+        return internal_native_GetRevoluteMaxMotorTorque(native_address);
+    }
+
+    public static float internal_native_GetRevoluteMaxMotorTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteMaxMotorTorque(this_addr);
+    }
+
     public void SetRevoluteSpringHertz(float hertz) {
         internal_native_SetRevoluteSpringHertz(native_address, hertz);
     }
 
     public static void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz) {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteSpringHertz(this_addr, hertz);
+    }
+
+    public float GetRevoluteSpringHertz() {
+        return internal_native_GetRevoluteSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetRevoluteSpringHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteSpringHertz(this_addr);
     }
 
     public void SetRevoluteSpringDampingRatio(float dampingRatio) {
@@ -156,12 +1042,132 @@ public final class B3Joint extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetRevoluteSpringDampingRatio(this_addr, dampingRatio);
     }
 
+    public float GetRevoluteSpringDampingRatio() {
+        return internal_native_GetRevoluteSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetRevoluteSpringDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetRevoluteSpringDampingRatio(this_addr);
+    }
+
+    public void EnableSphericalConeLimit(boolean enabled) {
+        internal_native_EnableSphericalConeLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalConeLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableSphericalConeLimit(this_addr, enabled);
+    }
+
+    public boolean IsSphericalConeLimitEnabled() {
+        return internal_native_IsSphericalConeLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalConeLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsSphericalConeLimitEnabled(this_addr);
+    }
+
+    public float GetSphericalConeLimit() {
+        return internal_native_GetSphericalConeLimit(native_address);
+    }
+
+    public static float internal_native_GetSphericalConeLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalConeLimit(this_addr);
+    }
+
+    public void SetSphericalConeLimit(float radians) {
+        internal_native_SetSphericalConeLimit(native_address, radians);
+    }
+
+    public static void internal_native_SetSphericalConeLimit(long this_addr, float radians) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalConeLimit(this_addr, radians);
+    }
+
+    public float GetSphericalConeAngle() {
+        return internal_native_GetSphericalConeAngle(native_address);
+    }
+
+    public static float internal_native_GetSphericalConeAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalConeAngle(this_addr);
+    }
+
+    public void EnableSphericalTwistLimit(boolean enabled) {
+        internal_native_EnableSphericalTwistLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalTwistLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableSphericalTwistLimit(this_addr, enabled);
+    }
+
+    public boolean IsSphericalTwistLimitEnabled() {
+        return internal_native_IsSphericalTwistLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalTwistLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsSphericalTwistLimitEnabled(this_addr);
+    }
+
+    public float GetSphericalLowerTwistLimit() {
+        return internal_native_GetSphericalLowerTwistLimit(native_address);
+    }
+
+    public static float internal_native_GetSphericalLowerTwistLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalLowerTwistLimit(this_addr);
+    }
+
+    public float GetSphericalUpperTwistLimit() {
+        return internal_native_GetSphericalUpperTwistLimit(native_address);
+    }
+
+    public static float internal_native_GetSphericalUpperTwistLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalUpperTwistLimit(this_addr);
+    }
+
+    public void SetSphericalTwistLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetSphericalTwistLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    public static void internal_native_SetSphericalTwistLimits(long this_addr, float lowerRadians, float upperRadians) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalTwistLimits(this_addr, lowerRadians, upperRadians);
+    }
+
+    public float GetSphericalTwistAngle() {
+        return internal_native_GetSphericalTwistAngle(native_address);
+    }
+
+    public static float internal_native_GetSphericalTwistAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalTwistAngle(this_addr);
+    }
+
+    public void EnableSphericalSpring(boolean enabled) {
+        internal_native_EnableSphericalSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalSpring(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableSphericalSpring(this_addr, enabled);
+    }
+
+    public boolean IsSphericalSpringEnabled() {
+        return internal_native_IsSphericalSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalSpringEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsSphericalSpringEnabled(this_addr);
+    }
+
     public void SetSphericalMaxMotorTorque(float torque) {
         internal_native_SetSphericalMaxMotorTorque(native_address, torque);
     }
 
     public static void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque) {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalMaxMotorTorque(this_addr, torque);
+    }
+
+    public float GetSphericalMaxMotorTorque() {
+        return internal_native_GetSphericalMaxMotorTorque(native_address);
+    }
+
+    public static float internal_native_GetSphericalMaxMotorTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalMaxMotorTorque(this_addr);
     }
 
     public void SetSphericalSpringHertz(float hertz) {
@@ -172,11 +1178,453 @@ public final class B3Joint extends NativeObject {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalSpringHertz(this_addr, hertz);
     }
 
+    public float GetSphericalSpringHertz() {
+        return internal_native_GetSphericalSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetSphericalSpringHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalSpringHertz(this_addr);
+    }
+
     public void SetSphericalSpringDampingRatio(float dampingRatio) {
         internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
     }
 
     public static void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio) {
         com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalSpringDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetSphericalSpringDampingRatio() {
+        return internal_native_GetSphericalSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetSphericalSpringDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalSpringDampingRatio(this_addr);
+    }
+
+    public void SetSphericalTargetRotation(B3Quat rotation) {
+        internal_native_SetSphericalTargetRotation(native_address, rotation.native_address);
+    }
+
+    public static void internal_native_SetSphericalTargetRotation(long this_addr, long rotation_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalTargetRotation(this_addr, rotation_addr);
+    }
+
+    public B3Quat GetSphericalTargetRotation() {
+        long addr = internal_native_GetSphericalTargetRotation_addr(native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_GEN_0 == null)
+            B3Quat_TEMP_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetSphericalTargetRotation_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalTargetRotation_addr(this_addr);
+    }
+
+    public void EnableSphericalMotor(boolean enabled) {
+        internal_native_EnableSphericalMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalMotor(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableSphericalMotor(this_addr, enabled);
+    }
+
+    public boolean IsSphericalMotorEnabled() {
+        return internal_native_IsSphericalMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalMotorEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsSphericalMotorEnabled(this_addr);
+    }
+
+    public void SetSphericalMotorVelocity(B3Vec3 velocity) {
+        internal_native_SetSphericalMotorVelocity(native_address, velocity.native_address);
+    }
+
+    public static void internal_native_SetSphericalMotorVelocity(long this_addr, long velocity_addr) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetSphericalMotorVelocity(this_addr, velocity_addr);
+    }
+
+    public B3Vec3 GetSphericalMotorVelocity() {
+        long addr = internal_native_GetSphericalMotorVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_4 == null)
+            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_4;
+    }
+
+    public static long internal_native_GetSphericalMotorVelocity_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalMotorVelocity_addr(this_addr);
+    }
+
+    public B3Vec3 GetSphericalMotorTorque() {
+        long addr = internal_native_GetSphericalMotorTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_5 == null)
+            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_5;
+    }
+
+    public static long internal_native_GetSphericalMotorTorque_addr(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetSphericalMotorTorque_addr(this_addr);
+    }
+
+    public void SetWeldLinearHertz(float hertz) {
+        internal_native_SetWeldLinearHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWeldLinearHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWeldLinearHertz(this_addr, hertz);
+    }
+
+    public float GetWeldLinearHertz() {
+        return internal_native_GetWeldLinearHertz(native_address);
+    }
+
+    public static float internal_native_GetWeldLinearHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWeldLinearHertz(this_addr);
+    }
+
+    public void SetWeldLinearDampingRatio(float dampingRatio) {
+        internal_native_SetWeldLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWeldLinearDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWeldLinearDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetWeldLinearDampingRatio() {
+        return internal_native_GetWeldLinearDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWeldLinearDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWeldLinearDampingRatio(this_addr);
+    }
+
+    public void SetWeldAngularHertz(float hertz) {
+        internal_native_SetWeldAngularHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWeldAngularHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWeldAngularHertz(this_addr, hertz);
+    }
+
+    public float GetWeldAngularHertz() {
+        return internal_native_GetWeldAngularHertz(native_address);
+    }
+
+    public static float internal_native_GetWeldAngularHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWeldAngularHertz(this_addr);
+    }
+
+    public void SetWeldAngularDampingRatio(float dampingRatio) {
+        internal_native_SetWeldAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWeldAngularDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWeldAngularDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetWeldAngularDampingRatio() {
+        return internal_native_GetWeldAngularDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWeldAngularDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWeldAngularDampingRatio(this_addr);
+    }
+
+    public void EnableWheelSuspension(boolean enabled) {
+        internal_native_EnableWheelSuspension(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSuspension(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableWheelSuspension(this_addr, enabled);
+    }
+
+    public boolean IsWheelSuspensionEnabled() {
+        return internal_native_IsWheelSuspensionEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSuspensionEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsWheelSuspensionEnabled(this_addr);
+    }
+
+    public void SetWheelSuspensionHertz(float hertz) {
+        internal_native_SetWheelSuspensionHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWheelSuspensionHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSuspensionHertz(this_addr, hertz);
+    }
+
+    public float GetWheelSuspensionHertz() {
+        return internal_native_GetWheelSuspensionHertz(native_address);
+    }
+
+    public static float internal_native_GetWheelSuspensionHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSuspensionHertz(this_addr);
+    }
+
+    public void SetWheelSuspensionDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSuspensionDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWheelSuspensionDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSuspensionDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetWheelSuspensionDampingRatio() {
+        return internal_native_GetWheelSuspensionDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWheelSuspensionDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSuspensionDampingRatio(this_addr);
+    }
+
+    public void EnableWheelSuspensionLimit(boolean enabled) {
+        internal_native_EnableWheelSuspensionLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSuspensionLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableWheelSuspensionLimit(this_addr, enabled);
+    }
+
+    public boolean IsWheelSuspensionLimitEnabled() {
+        return internal_native_IsWheelSuspensionLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSuspensionLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsWheelSuspensionLimitEnabled(this_addr);
+    }
+
+    public float GetWheelLowerSuspensionLimit() {
+        return internal_native_GetWheelLowerSuspensionLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelLowerSuspensionLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelLowerSuspensionLimit(this_addr);
+    }
+
+    public float GetWheelUpperSuspensionLimit() {
+        return internal_native_GetWheelUpperSuspensionLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelUpperSuspensionLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelUpperSuspensionLimit(this_addr);
+    }
+
+    public void SetWheelSuspensionLimits(float lower, float upper) {
+        internal_native_SetWheelSuspensionLimits(native_address, lower, upper);
+    }
+
+    public static void internal_native_SetWheelSuspensionLimits(long this_addr, float lower, float upper) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSuspensionLimits(this_addr, lower, upper);
+    }
+
+    public void EnableWheelSpinMotor(boolean enabled) {
+        internal_native_EnableWheelSpinMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSpinMotor(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableWheelSpinMotor(this_addr, enabled);
+    }
+
+    public boolean IsWheelSpinMotorEnabled() {
+        return internal_native_IsWheelSpinMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSpinMotorEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsWheelSpinMotorEnabled(this_addr);
+    }
+
+    public void SetWheelTargetSteeringAngle(float radians) {
+        internal_native_SetWheelTargetSteeringAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetWheelTargetSteeringAngle(long this_addr, float radians) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelTargetSteeringAngle(this_addr, radians);
+    }
+
+    public float GetWheelTargetSteeringAngle() {
+        return internal_native_GetWheelTargetSteeringAngle(native_address);
+    }
+
+    public static float internal_native_GetWheelTargetSteeringAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelTargetSteeringAngle(this_addr);
+    }
+
+    public void SetWheelSpinMotorSpeed(float speed) {
+        internal_native_SetWheelSpinMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetWheelSpinMotorSpeed(long this_addr, float speed) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSpinMotorSpeed(this_addr, speed);
+    }
+
+    public float GetWheelSpinMotorSpeed() {
+        return internal_native_GetWheelSpinMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetWheelSpinMotorSpeed(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSpinMotorSpeed(this_addr);
+    }
+
+    public void SetWheelMaxSpinTorque(float torque) {
+        internal_native_SetWheelMaxSpinTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetWheelMaxSpinTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelMaxSpinTorque(this_addr, torque);
+    }
+
+    public float GetWheelMaxSpinTorque() {
+        return internal_native_GetWheelMaxSpinTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelMaxSpinTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelMaxSpinTorque(this_addr);
+    }
+
+    public float GetWheelSpinSpeed() {
+        return internal_native_GetWheelSpinSpeed(native_address);
+    }
+
+    public static float internal_native_GetWheelSpinSpeed(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSpinSpeed(this_addr);
+    }
+
+    public float GetWheelSpinTorque() {
+        return internal_native_GetWheelSpinTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelSpinTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSpinTorque(this_addr);
+    }
+
+    public void EnableWheelSteering(boolean enabled) {
+        internal_native_EnableWheelSteering(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSteering(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableWheelSteering(this_addr, enabled);
+    }
+
+    public boolean IsWheelSteeringEnabled() {
+        return internal_native_IsWheelSteeringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSteeringEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsWheelSteeringEnabled(this_addr);
+    }
+
+    public void SetWheelSteeringHertz(float hertz) {
+        internal_native_SetWheelSteeringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWheelSteeringHertz(long this_addr, float hertz) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSteeringHertz(this_addr, hertz);
+    }
+
+    public float GetWheelSteeringHertz() {
+        return internal_native_GetWheelSteeringHertz(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringHertz(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSteeringHertz(this_addr);
+    }
+
+    public void SetWheelSteeringDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSteeringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWheelSteeringDampingRatio(long this_addr, float dampingRatio) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSteeringDampingRatio(this_addr, dampingRatio);
+    }
+
+    public float GetWheelSteeringDampingRatio() {
+        return internal_native_GetWheelSteeringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringDampingRatio(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSteeringDampingRatio(this_addr);
+    }
+
+    public void SetWheelMaxSteeringTorque(float torque) {
+        internal_native_SetWheelMaxSteeringTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetWheelMaxSteeringTorque(long this_addr, float torque) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelMaxSteeringTorque(this_addr, torque);
+    }
+
+    public float GetWheelMaxSteeringTorque() {
+        return internal_native_GetWheelMaxSteeringTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelMaxSteeringTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelMaxSteeringTorque(this_addr);
+    }
+
+    public void EnableWheelSteeringLimit(boolean enabled) {
+        internal_native_EnableWheelSteeringLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSteeringLimit(long this_addr, boolean enabled) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_EnableWheelSteeringLimit(this_addr, enabled);
+    }
+
+    public boolean IsWheelSteeringLimitEnabled() {
+        return internal_native_IsWheelSteeringLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSteeringLimitEnabled(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_IsWheelSteeringLimitEnabled(this_addr);
+    }
+
+    public float GetWheelLowerSteeringLimit() {
+        return internal_native_GetWheelLowerSteeringLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelLowerSteeringLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelLowerSteeringLimit(this_addr);
+    }
+
+    public float GetWheelUpperSteeringLimit() {
+        return internal_native_GetWheelUpperSteeringLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelUpperSteeringLimit(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelUpperSteeringLimit(this_addr);
+    }
+
+    public void SetWheelSteeringLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetWheelSteeringLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    public static void internal_native_SetWheelSteeringLimits(long this_addr, float lowerRadians, float upperRadians) {
+        com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_SetWheelSteeringLimits(this_addr, lowerRadians, upperRadians);
+    }
+
+    public float GetWheelSteeringAngle() {
+        return internal_native_GetWheelSteeringAngle(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringAngle(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSteeringAngle(this_addr);
+    }
+
+    public float GetWheelSteeringTorque() {
+        return internal_native_GetWheelSteeringTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringTorque(long this_addr) {
+        return com.github.xpenatan.box3d.natives.JNI_B3Joint.internal_native_GetWheelSteeringTorque(this_addr);
     }
 }

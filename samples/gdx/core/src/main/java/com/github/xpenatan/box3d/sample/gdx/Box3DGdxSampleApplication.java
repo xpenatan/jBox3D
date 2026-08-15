@@ -27,16 +27,20 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.github.xpenatan.box3d.B3AABB;
+import com.github.xpenatan.box3d.B3Vec3;
 import com.github.xpenatan.box3d.B3World;
 import com.github.xpenatan.box3d.sample.shared.Box3DBodyDragController;
 import com.github.xpenatan.box3d.sample.shared.Box3DDebugVisualization;
 import com.github.xpenatan.box3d.sample.shared.Box3DLaunchShape;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerTarget;
 import com.github.xpenatan.box3d.sample.shared.Box3DSample;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleCamera;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleController;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleEntry;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleHost;
 import com.github.xpenatan.box3d.sample.shared.Box3DSampleSettings;
+import com.github.xpenatan.box3d.sample.shared.Box3DVisualProbe;
 import com.github.xpenatan.box3d.sample.shared.samples.SampleAssets;
 
 public final class Box3DGdxSampleApplication extends ApplicationAdapter implements Box3DSampleHost {
@@ -49,6 +53,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private static final float FLY_SPEED = 10.0f;
     private static final float FLY_MAX_PITCH = (float)Math.toRadians(89.0f);
     private static final float SAMPLE_DRAW_DISTANCE_MARGIN = 100.0f;
+    private static final long PLAYER_VALIDATION_STEPS = 60L;
+    private static final float PLAYER_VALIDATION_MIN_HORIZONTAL_DISTANCE = 0.05f;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS = 12;
     private static final int THROW_CLICK_MAX_DRAG_PIXELS_SQUARED =
             THROW_CLICK_MAX_DRAG_PIXELS * THROW_CLICK_MAX_DRAG_PIXELS;
@@ -59,6 +65,9 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private final Vector3 flyDirection = new Vector3();
     private final Vector3 flyRight = new Vector3();
     private final Vector3 flyMove = new Vector3();
+    private final Box3DPlayerTarget playerTarget = new Box3DPlayerTarget();
+    private final Box3DPlayerTarget validationPlayerStart = new Box3DPlayerTarget();
+    private final Box3DPlayerTarget validationPlayerEnd = new Box3DPlayerTarget();
     private PerspectiveCamera camera;
     private Box3DGdxSampleRenderer debugRenderer;
     private Stage stage;
@@ -98,7 +107,10 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private int autoThrowAfterFrames;
     private boolean autoThrowDone;
     private int validateFramesPerSample;
+    private Box3DVisualProbe visualProbe;
     private int validationFrameCount;
+    private int validationSampleCount;
+    private boolean validationPlayerStartValid;
     private boolean validationComplete;
     private boolean dragButtonDown;
     private boolean throwClickPending;
@@ -106,6 +118,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
     private int throwClickY;
     private boolean preserveCameraOnSampleChange;
     private boolean initialScrollAligned;
+    private boolean playerCameraFollowing;
+    private float playerCameraRadius;
 
     public Box3DGdxSampleApplication(Box3DGdxSampleBackend backend, long exitAfterFrames, int workerCount) {
         if(backend == null) {
@@ -124,7 +138,8 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         screenshotPath = System.getProperty("jbox3d.sample.screenshot", "");
         screenshotAfterFrames = Long.parseLong(System.getProperty("jbox3d.sample.screenshotAfterFrames", "3"));
         autoThrowAfterFrames = parsePositiveInt(System.getProperty("jbox3d.sample.autoThrowAfterFrames"), 0);
-        validateFramesPerSample = parsePositiveInt(System.getProperty("jbox3d.sample.validateAll"), 0);
+        int requestedValidationFrames = parsePositiveInt(System.getProperty("jbox3d.sample.validateAll"), 0);
+        validateFramesPerSample = requestedValidationFrames > 0 ? Math.max(3, requestedValidationFrames) : 0;
         createSelector();
         controller.create();
     }
@@ -167,6 +182,9 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
 
     @Override
     public void onSampleChanged(Box3DSampleEntry entry, Box3DSample sample) {
+        if(validateFramesPerSample > 0 && visualProbe == null) {
+            visualProbe = new Box3DVisualProbe();
+        }
         if(debugRenderer == null) {
             debugRenderer = backend.createRenderer();
             debugRenderer.setShadowBias(controller.settings().shadowBias());
@@ -181,15 +199,31 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
             configureCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), entry.camera());
         }
         validationFrameCount = 0;
+        validationPlayerStartValid = false;
+        if(validateFramesPerSample > 0 && controller.isPlayerControlled()) {
+            if(!controller.isThirdPerson()) {
+                controller.toggleThirdPerson();
+            }
+            validationPlayerStartValid = controller.getCameraTarget(validationPlayerStart);
+            if(!validationPlayerStartValid) {
+                throw new GdxRuntimeException("Player validation could not read the initial target for "
+                        + entry.displayName());
+            }
+        }
+        playerCameraFollowing = false;
         updateSelectorSelection(entry);
         updateDebugVisualizationSelection();
         updateShadowBiasLabel();
         Gdx.app.log("jBox3D", "Selected sample " + (controller.selectedIndex() + 1) + "/"
                 + controller.entries().size() + ": " + entry.displayName());
+        if(validateFramesPerSample > 0) {
+            Gdx.app.log("jBox3D", sceneAuditLine(entry, sample.world()));
+        }
     }
 
     @Override
     public void renderBox3D(B3World world) {
+        updatePlayerCamera();
         if(debugRenderer != null) {
             debugRenderer.render(world, camera);
         }
@@ -208,6 +242,11 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         }
         bodyDrag.end();
         controller.dispose();
+        if(visualProbe != null) {
+            visualProbe.disposeResources();
+            visualProbe.dispose();
+            visualProbe = null;
+        }
         if(stage != null) {
             stage.dispose();
             stage = null;
@@ -821,6 +860,7 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         camera.lookAt(sampleCamera.targetX, sampleCamera.targetY, sampleCamera.targetZ);
         camera.update();
         syncFlyAnglesFromCamera();
+        playerCameraFollowing = false;
     }
 
     private void updateCameraViewport(int width, int height) {
@@ -843,10 +883,58 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
             resetCamera();
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.T)) {
-            throwSelectedShape();
+            if(controller.isPlayerControlled()) {
+                controller.toggleThirdPerson();
+                playerCameraFollowing = false;
+            }
+            else {
+                throwSelectedShape();
+            }
         }
         updateFlyCamera(Math.min(deltaSeconds, 1.0f / 30.0f));
+        updatePlayerInput();
         updateBodyDrag();
+    }
+
+    private void updatePlayerInput() {
+        if(validateFramesPerSample > 0 && !validationComplete && controller.isPlayerControlled()) {
+            controller.setPlayerInput(1.0f, 0.0f, camera.direction.x, camera.direction.z,
+                    -camera.direction.z, camera.direction.x, false, true);
+            return;
+        }
+        if(!controller.isThirdPerson()) {
+            controller.setPlayerInput(0.0f, 0.0f, camera.direction.x, camera.direction.z,
+                    -camera.direction.z, camera.direction.x, false, false);
+            return;
+        }
+        float moveForward = (Gdx.input.isKeyPressed(Input.Keys.W) ? 1.0f : 0.0f)
+                - (Gdx.input.isKeyPressed(Input.Keys.S) ? 1.0f : 0.0f);
+        float moveRight = (Gdx.input.isKeyPressed(Input.Keys.D) ? 1.0f : 0.0f)
+                - (Gdx.input.isKeyPressed(Input.Keys.A) ? 1.0f : 0.0f);
+        controller.setPlayerInput(moveForward, moveRight, camera.direction.x, camera.direction.z,
+                -camera.direction.z, camera.direction.x,
+                Gdx.input.isKeyPressed(Input.Keys.SPACE),
+                Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+                        || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
+    }
+
+    private void updatePlayerCamera() {
+        if(camera == null || !controller.getCameraTarget(playerTarget)) {
+            playerCameraFollowing = false;
+            return;
+        }
+        if(!playerCameraFollowing) {
+            float dx = camera.position.x - playerTarget.x();
+            float dy = camera.position.y - playerTarget.y();
+            float dz = camera.position.z - playerTarget.z();
+            playerCameraRadius = Math.max(0.1f, (float)Math.sqrt(dx * dx + dy * dy + dz * dz));
+        }
+        camera.position.set(playerTarget.x() - playerCameraRadius * camera.direction.x,
+                playerTarget.y() - playerCameraRadius * camera.direction.y,
+                playerTarget.z() - playerCameraRadius * camera.direction.z);
+        camera.lookAt(playerTarget.x(), playerTarget.y(), playerTarget.z());
+        camera.update();
+        playerCameraFollowing = true;
     }
 
     private void resetTest() {
@@ -869,7 +957,9 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
             return;
         }
         boolean changed = updateFlyLook();
-        changed |= updateFlyPosition(deltaSeconds);
+        if(!controller.isThirdPerson()) {
+            changed |= updateFlyPosition(deltaSeconds);
+        }
         if(changed) {
             applyFlyAngles();
         }
@@ -1043,18 +1133,52 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
             return;
         }
         validationFrameCount++;
-        if(validationFrameCount < validateFramesPerSample) {
+        long requiredSteps = validationPlayerStartValid ? PLAYER_VALIDATION_STEPS : 1L;
+        if(validationFrameCount < validateFramesPerSample || controller.sampleStepCount() < requiredSteps) {
             return;
         }
 
-        int nextIndex = controller.selectedIndex() + 1;
-        if(nextIndex >= controller.entries().size()) {
+        int primitiveCount = visualProbe.inspect(controller.world());
+        if(primitiveCount <= 0) {
+            throw new GdxRuntimeException("Visual validation drew no Box3D geometry for "
+                    + controller.selectedEntry().displayName());
+        }
+        if(!visualProbe.isFinite()) {
+            throw new GdxRuntimeException("Visual validation found a non-finite position for "
+                    + controller.selectedEntry().displayName());
+        }
+        Gdx.app.log("jBox3D", "VISUAL_AUDIT\t" + controller.selectedIndex() + "\t"
+                + controller.selectedEntry().displayName() + "\t" + primitiveCount);
+        validatePlayerMovement();
+
+        validationSampleCount++;
+        if(validationSampleCount >= controller.entries().size()) {
             validationComplete = true;
             Gdx.app.log("jBox3D", "Validated " + controller.entries().size() + " samples");
             Gdx.app.exit();
             return;
         }
+        int nextIndex = (controller.selectedIndex() + 1) % controller.entries().size();
         controller.selectSample(nextIndex);
+    }
+
+    private void validatePlayerMovement() {
+        if(!validationPlayerStartValid) {
+            return;
+        }
+        if(!controller.getCameraTarget(validationPlayerEnd)) {
+            throw new GdxRuntimeException("Player validation could not read the final target for "
+                    + controller.selectedEntry().displayName());
+        }
+        float dx = validationPlayerEnd.x() - validationPlayerStart.x();
+        float dz = validationPlayerEnd.z() - validationPlayerStart.z();
+        float distance = (float)Math.sqrt(dx * dx + dz * dz);
+        if(!Float.isFinite(distance) || distance < PLAYER_VALIDATION_MIN_HORIZONTAL_DISTANCE) {
+            throw new GdxRuntimeException("Player validation did not move "
+                    + controller.selectedEntry().displayName() + " horizontally: " + distance);
+        }
+        Gdx.app.log("jBox3D", "PLAYER_AUDIT\t" + controller.selectedIndex() + "\t"
+                + controller.selectedEntry().displayName() + "\t" + distance);
     }
 
     private void updateAutoThrow() {
@@ -1076,6 +1200,16 @@ public final class Box3DGdxSampleApplication extends ApplicationAdapter implemen
         catch(NumberFormatException ignored) {
             return fallback;
         }
+    }
+
+    private String sceneAuditLine(Box3DSampleEntry entry, B3World world) {
+        B3AABB bounds = world.GetBounds();
+        B3Vec3 lower = bounds.GetLowerBound();
+        B3Vec3 upper = bounds.GetUpperBound();
+        String line = "SCENE_AUDIT\t" + controller.selectedIndex() + "\t" + entry.category() + "\t"
+                + entry.name() + "\t" + lower.GetX() + "\t" + lower.GetY() + "\t" + lower.GetZ() + "\t"
+                + upper.GetX() + "\t" + upper.GetY() + "\t" + upper.GetZ();
+        return line;
     }
 
     private static int resolveInitialDebugVisualizationIndex() {

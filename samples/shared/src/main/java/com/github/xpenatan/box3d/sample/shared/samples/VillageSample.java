@@ -19,6 +19,8 @@ import com.github.xpenatan.box3d.B3SurfaceMaterialArray;
 import com.github.xpenatan.box3d.B3Transform;
 import com.github.xpenatan.box3d.B3Vec3;
 import com.github.xpenatan.box3d.B3Vec3Array;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerInput;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerTarget;
 
 final class VillageSample extends AbstractBox3DSample {
     private static final int GRID_COUNT = 200;
@@ -32,6 +34,8 @@ final class VillageSample extends AbstractBox3DSample {
     private final B3Vec3Array proxyPoints;
     private final B3ShapeProxy shapeCastProxy;
     private final B3ShapeProxy overlapProxy;
+    private Box3DPlayerInput playerInput;
+    private boolean thirdPerson;
 
     VillageSample() {
         mover = new ExactCharacterMover(this, 0.0f, 10.0f, 0.0f);
@@ -136,7 +140,7 @@ final class VillageSample extends AbstractBox3DSample {
     @Override
     public void step(float deltaSeconds) {
         world().ClearDebugOverlay();
-        mover.step(deltaSeconds, 0L, true);
+        mover.step(deltaSeconds, 0L, true, playerInput, thirdPerson);
         addDebugAxes(0.0f, 0.01f, 0.0f, 4.0f);
 
         B3Vec3 translation = new B3Vec3(10.0f, -40.0f, -5.0f);
@@ -199,6 +203,23 @@ final class VillageSample extends AbstractBox3DSample {
         super.dispose();
         mover.dispose();
         dispose(overlapProxy, shapeCastProxy, proxyPoints, rayOrigin, compound);
+    }
+
+    @Override
+    public boolean supportsPlayerControl() {
+        return true;
+    }
+
+    @Override
+    public void setPlayerInput(Box3DPlayerInput input, boolean thirdPerson) {
+        playerInput = input;
+        this.thirdPerson = thirdPerson;
+    }
+
+    @Override
+    public boolean getCameraTarget(Box3DPlayerTarget target) {
+        mover.getPosition(target);
+        return true;
     }
 
     private B3Mesh createBuildingMesh() {

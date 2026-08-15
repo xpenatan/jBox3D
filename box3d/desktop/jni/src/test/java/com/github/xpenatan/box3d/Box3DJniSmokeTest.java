@@ -1,6 +1,7 @@
 package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.loader.JParserLibraryLoaderListener;
+import com.github.xpenatan.jparser.runtime.helper.NativeString;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -13,6 +14,87 @@ import static org.junit.Assert.assertTrue;
 public class Box3DJniSmokeTest {
 
     private static final float EPSILON = 0.0001f;
+
+    @Test
+    public void expandedBindingsRoundTripThroughJni() throws Exception {
+        loadBox3D();
+
+        B3WorldDef worldDef = new B3WorldDef();
+        B3World world = new B3World(worldDef);
+        B3BodyDef groundDef = new B3BodyDef();
+        B3Body ground = world.CreateBody(groundDef);
+        B3BodyDef bodyDef = new B3BodyDef();
+        B3Vec3 bodyPosition = new B3Vec3(0.0f, 2.0f, 0.0f);
+        bodyDef.SetType(B3.DynamicBody());
+        bodyDef.SetPosition(bodyPosition);
+        B3Body body = world.CreateBody(bodyDef);
+        B3ShapeDef shapeDef = new B3ShapeDef();
+        shapeDef.SetDensity(2.0f);
+        B3Vec3 sphereCenter = new B3Vec3(0.0f, 0.0f, 0.0f);
+        B3Sphere sphere = new B3Sphere(sphereCenter, 0.5f);
+        B3Shape shape = body.CreateSphereShape(shapeDef, sphere);
+        NativeString bodyName = new NativeString();
+        NativeString shapeName = new NativeString();
+        B3MassData bodyMassData = null;
+        B3MassData shapeMassData = null;
+        B3MassData computedMassData = null;
+        B3WheelJointDef wheelDef = new B3WheelJointDef();
+        B3Joint wheel = null;
+
+        try {
+            assertEquals(0, B3.GetVersionMajor());
+            assertEquals(1, B3.GetVersionMinor());
+            assertEquals(0, B3.GetVersionRevision());
+            assertEquals((float)(Math.PI * 0.5), B3.Atan2(1.0f, 0.0f), 0.0001f);
+            assertTrue(B3.IsValidFloat(1.0f));
+            assertTrue(!B3.IsValidFloat(Float.NaN));
+            assertTrue(B3.IsValidVec3(bodyPosition));
+            assertTrue(B3.GetGraphColor(0) != 0);
+
+            body.SetName("binding-body");
+            body.GetName(bodyName);
+            assertEquals("binding-body", bodyName.c_str());
+            shape.SetName("binding-shape");
+            shape.GetName(shapeName);
+            assertEquals("binding-shape", shapeName.c_str());
+
+            assertEquals(world.GetId(), body.GetWorldId());
+            assertEquals(world.GetId(), shape.GetWorldId());
+            assertEquals(shape.GetId(), body.GetShapeId(0));
+
+            bodyMassData = body.GetMassData();
+            shapeMassData = shape.ComputeMassData();
+            computedMassData = B3Collision.ComputeSphereMass(sphere, 2.0f);
+            assertTrue(bodyMassData.GetMass() > 0.0f);
+            assertEquals(shapeMassData.GetMass(), bodyMassData.GetMass(), EPSILON);
+            assertEquals(shapeMassData.GetMass(), computedMassData.GetMass(), EPSILON);
+
+            body.SetSleepThreshold(0.25f);
+            assertEquals(0.25f, body.GetSleepThreshold(), EPSILON);
+            shape.EnablePreSolveEvents(true);
+            assertTrue(shape.ArePreSolveEventsEnabled());
+
+            wheelDef.SetBodyIdA(ground.GetId());
+            wheelDef.SetBodyIdB(body.GetId());
+            wheel = world.CreateWheelJoint(wheelDef);
+            wheel.EnableWheelSteering(true);
+            wheel.SetWheelTargetSteeringAngle(0.35f);
+            wheel.EnableWheelSpinMotor(true);
+            wheel.SetWheelSpinMotorSpeed(4.5f);
+            assertTrue(wheel.IsWheelSteeringEnabled());
+            assertEquals(0.35f, wheel.GetWheelTargetSteeringAngle(), EPSILON);
+            assertTrue(wheel.IsWheelSpinMotorEnabled());
+            assertEquals(4.5f, wheel.GetWheelSpinMotorSpeed(), EPSILON);
+        }
+        finally {
+            if(world.IsValid()) {
+                world.Destroy();
+            }
+            dispose(wheel, wheelDef, computedMassData, shapeMassData, bodyMassData, shapeName, bodyName,
+                    shape, sphere, sphereCenter, shapeDef, body, bodyPosition, bodyDef, ground, groundDef,
+                    world, worldDef);
+        }
+    }
 
     @Test
     public void createStepAndDestroyWorld() throws Exception {

@@ -23,8 +23,9 @@ final class DominoesSample extends AbstractBox3DSample {
     private void createRing(B3Hull domino, float radius) {
         for(float degrees = 0.0f; degrees <= 360.0f; degrees += ANGLE_STEP_DEGREES) {
             float alpha = degrees * (float)Math.PI / 180.0f;
-            float cosine = (float)Math.cos(alpha);
-            float sine = (float)Math.sin(alpha);
+            long cosSin = SampleMath.computeCosSin(alpha);
+            float cosine = SampleMath.cosine(cosSin);
+            float sine = SampleMath.sine(cosSin);
             float x = radius * cosine - degrees / 630.0f * cosine;
             float z = radius * sine - degrees / 630.0f * sine;
             B3Quat rotation = rotationY(-alpha);

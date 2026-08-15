@@ -22,6 +22,8 @@ import com.github.xpenatan.box3d.B3Sphere;
 import com.github.xpenatan.box3d.B3SurfaceMaterial;
 import com.github.xpenatan.box3d.B3Transform;
 import com.github.xpenatan.box3d.B3Vec3;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerInput;
+import com.github.xpenatan.box3d.sample.shared.Box3DPlayerTarget;
 
 /** Direct port of the default, no-input BasicMover path from the pinned Box3D sample. */
 final class CharacterMoverSample extends AbstractBox3DSample {
@@ -31,6 +33,8 @@ final class CharacterMoverSample extends AbstractBox3DSample {
     private B3HeightField heightField;
     private final ExactCharacterMover mover;
     private long ignoreShapeId;
+    private Box3DPlayerInput playerInput;
+    private boolean thirdPerson;
 
     CharacterMoverSample() {
         mover = new ExactCharacterMover(this, 7.5f, 0.75f, 9.0f);
@@ -167,7 +171,7 @@ final class CharacterMoverSample extends AbstractBox3DSample {
     @Override
     public void step(float deltaSeconds) {
         world().ClearDebugOverlay();
-        mover.step(deltaSeconds, ignoreShapeId, true);
+        mover.step(deltaSeconds, ignoreShapeId, true, playerInput, thirdPerson);
         addDebugAxes(0.0f, 0.0f, 0.02f, 2.0f);
         super.step(deltaSeconds);
     }
@@ -177,5 +181,22 @@ final class CharacterMoverSample extends AbstractBox3DSample {
         super.dispose();
         mover.dispose();
         dispose(heightField, torus, stairs, levelMesh);
+    }
+
+    @Override
+    public boolean supportsPlayerControl() {
+        return true;
+    }
+
+    @Override
+    public void setPlayerInput(Box3DPlayerInput input, boolean thirdPerson) {
+        playerInput = input;
+        this.thirdPerson = thirdPerson;
+    }
+
+    @Override
+    public boolean getCameraTarget(Box3DPlayerTarget target) {
+        mover.getPosition(target);
+        return true;
     }
 }

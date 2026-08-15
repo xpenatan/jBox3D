@@ -14,16 +14,15 @@ final class IssueSlideTwistOffCenterSample extends AbstractBox3DSample {
         B3Quat orientation = rotationX(angle);
         addStaticBox(0.0f, 4.0f, 0.0f, 10.0f, 0.5f, 10.0f, orientation);
 
-        float sine = (float)Math.sin(angle);
-        float cosine = (float)Math.cos(angle);
-        float offsetX = 1.0f;
-        float offsetY = 0.5f * cosine - sine;
-        float offsetZ = 0.5f * sine + cosine;
-        B3Body body = createBody(B3.DynamicBody(), -offsetX, 5.0f - offsetY, -offsetZ, orientation);
+        B3Vec3 localCenter = new B3Vec3(1.0f, 0.5f, 1.0f);
+        B3Vec3 offset = rotatedVector(orientation, localCenter);
+        B3Body body = createBody(B3.DynamicBody(), -offset.GetX(), 5.0f - offset.GetY(), -offset.GetZ(),
+                orientation);
         dispose(createBoxShape(body, 1.0f, 0.5f, 1.0f, 1.0f, 0.5f, 1.0f, null,
                 1.0f, 0.3f, 0.0f, 0.0f));
-        B3Vec3 angularVelocity = new B3Vec3(0.0f, 25.0f * cosine, 25.0f * sine);
+        B3Vec3 localAngularVelocity = new B3Vec3(0.0f, 25.0f, 0.0f);
+        B3Vec3 angularVelocity = rotatedVector(orientation, localAngularVelocity);
         body.SetAngularVelocity(angularVelocity);
-        dispose(angularVelocity, body, orientation);
+        dispose(angularVelocity, localAngularVelocity, offset, localCenter, body, orientation);
     }
 }

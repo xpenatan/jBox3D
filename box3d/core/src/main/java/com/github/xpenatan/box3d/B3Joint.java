@@ -43,6 +43,10 @@ public final class B3Joint extends NativeObject {
     public void Destroy(boolean wakeAttached) {
     }
 
+    public int GetType() {
+        return 0;
+    }
+
     public long GetBodyIdA() {
         return 0;
     }
@@ -51,11 +55,303 @@ public final class B3Joint extends NativeObject {
         return 0;
     }
 
+    public long GetWorldId() {
+        return 0;
+    }
+
+    public B3Transform GetLocalFrameA() {
+        return null;
+    }
+
+    public void SetLocalFrameA(B3Transform localFrame) {
+    }
+
+    public B3Transform GetLocalFrameB() {
+        return null;
+    }
+
+    public void SetLocalFrameB(B3Transform localFrame) {
+    }
+
+    public boolean GetCollideConnected() {
+        return false;
+    }
+
+    public void SetCollideConnected(boolean collideConnected) {
+    }
+
     public void WakeBodies() {
+    }
+
+    public B3Vec3 GetConstraintForce() {
+        return null;
+    }
+
+    public B3Vec3 GetConstraintTorque() {
+        return null;
     }
 
     public float GetLinearSeparation() {
         return 0;
+    }
+
+    public float GetAngularSeparation() {
+        return 0;
+    }
+
+    public void SetConstraintTuning(float hertz, float dampingRatio) {
+    }
+
+    public float GetConstraintHertz() {
+        return 0;
+    }
+
+    public float GetConstraintDampingRatio() {
+        return 0;
+    }
+
+    public void SetForceThreshold(float threshold) {
+    }
+
+    public float GetForceThreshold() {
+        return 0;
+    }
+
+    public void SetTorqueThreshold(float threshold) {
+    }
+
+    public float GetTorqueThreshold() {
+        return 0;
+    }
+
+    public void SetParallelSpringHertz(float hertz) {
+    }
+
+    public float GetParallelSpringHertz() {
+        return 0;
+    }
+
+    public void SetParallelSpringDampingRatio(float dampingRatio) {
+    }
+
+    public float GetParallelSpringDampingRatio() {
+        return 0;
+    }
+
+    public void SetParallelMaxTorque(float torque) {
+    }
+
+    public float GetParallelMaxTorque() {
+        return 0;
+    }
+
+    public void SetDistanceLength(float length) {
+    }
+
+    public float GetDistanceLength() {
+        return 0;
+    }
+
+    public void EnableDistanceSpring(boolean enabled) {
+    }
+
+    public boolean IsDistanceSpringEnabled() {
+        return false;
+    }
+
+    public void SetDistanceSpringForceRange(float lowerForce, float upperForce) {
+    }
+
+    public float GetDistanceLowerSpringForce() {
+        return 0;
+    }
+
+    public float GetDistanceUpperSpringForce() {
+        return 0;
+    }
+
+    public void SetDistanceSpringHertz(float hertz) {
+    }
+
+    public float GetDistanceSpringHertz() {
+        return 0;
+    }
+
+    public void SetDistanceSpringDampingRatio(float dampingRatio) {
+    }
+
+    public float GetDistanceSpringDampingRatio() {
+        return 0;
+    }
+
+    public void EnableDistanceLimit(boolean enabled) {
+    }
+
+    public boolean IsDistanceLimitEnabled() {
+        return false;
+    }
+
+    public void SetDistanceLengthRange(float minLength, float maxLength) {
+    }
+
+    public float GetDistanceMinLength() {
+        return 0;
+    }
+
+    public float GetDistanceMaxLength() {
+        return 0;
+    }
+
+    public float GetDistanceCurrentLength() {
+        return 0;
+    }
+
+    public void EnableDistanceMotor(boolean enabled) {
+    }
+
+    public boolean IsDistanceMotorEnabled() {
+        return false;
+    }
+
+    public void SetDistanceMotorSpeed(float speed) {
+    }
+
+    public float GetDistanceMotorSpeed() {
+        return 0;
+    }
+
+    public void SetDistanceMaxMotorForce(float force) {
+    }
+
+    public float GetDistanceMaxMotorForce() {
+        return 0;
+    }
+
+    public float GetDistanceMotorForce() {
+        return 0;
+    }
+
+    public void SetMotorLinearVelocity(B3Vec3 velocity) {
+    }
+
+    public B3Vec3 GetMotorLinearVelocity() {
+        return null;
+    }
+
+    public void SetMotorAngularVelocity(B3Vec3 velocity) {
+    }
+
+    public B3Vec3 GetMotorAngularVelocity() {
+        return null;
+    }
+
+    public void SetMotorMaxVelocityForce(float force) {
+    }
+
+    public float GetMotorMaxVelocityForce() {
+        return 0;
+    }
+
+    public void SetMotorMaxVelocityTorque(float torque) {
+    }
+
+    public float GetMotorMaxVelocityTorque() {
+        return 0;
+    }
+
+    public void SetMotorLinearHertz(float hertz) {
+    }
+
+    public float GetMotorLinearHertz() {
+        return 0;
+    }
+
+    public void SetMotorLinearDampingRatio(float dampingRatio) {
+    }
+
+    public float GetMotorLinearDampingRatio() {
+        return 0;
+    }
+
+    public void SetMotorAngularHertz(float hertz) {
+    }
+
+    public float GetMotorAngularHertz() {
+        return 0;
+    }
+
+    public void SetMotorAngularDampingRatio(float dampingRatio) {
+    }
+
+    public float GetMotorAngularDampingRatio() {
+        return 0;
+    }
+
+    public void SetMotorMaxSpringForce(float force) {
+    }
+
+    public float GetMotorMaxSpringForce() {
+        return 0;
+    }
+
+    public void SetMotorMaxSpringTorque(float torque) {
+    }
+
+    public float GetMotorMaxSpringTorque() {
+        return 0;
+    }
+
+    public void EnablePrismaticSpring(boolean enabled) {
+    }
+
+    public boolean IsPrismaticSpringEnabled() {
+        return false;
+    }
+
+    public void SetPrismaticSpringHertz(float hertz) {
+    }
+
+    public float GetPrismaticSpringHertz() {
+        return 0;
+    }
+
+    public void SetPrismaticSpringDampingRatio(float dampingRatio) {
+    }
+
+    public float GetPrismaticSpringDampingRatio() {
+        return 0;
+    }
+
+    public void SetPrismaticTargetTranslation(float translation) {
+    }
+
+    public float GetPrismaticTargetTranslation() {
+        return 0;
+    }
+
+    public void EnablePrismaticLimit(boolean enabled) {
+    }
+
+    public boolean IsPrismaticLimitEnabled() {
+        return false;
+    }
+
+    public float GetPrismaticLowerLimit() {
+        return 0;
+    }
+
+    public float GetPrismaticUpperLimit() {
+        return 0;
+    }
+
+    public void SetPrismaticLimits(float lower, float upper) {
+    }
+
+    public void EnablePrismaticMotor(boolean enabled) {
+    }
+
+    public boolean IsPrismaticMotorEnabled() {
+        return false;
     }
 
     public float GetPrismaticTranslation() {
@@ -65,24 +361,347 @@ public final class B3Joint extends NativeObject {
     public void SetPrismaticMotorSpeed(float speed) {
     }
 
+    public float GetPrismaticMotorSpeed() {
+        return 0;
+    }
+
+    public void SetPrismaticMaxMotorForce(float force) {
+    }
+
+    public float GetPrismaticMaxMotorForce() {
+        return 0;
+    }
+
+    public float GetPrismaticMotorForce() {
+        return 0;
+    }
+
+    public float GetPrismaticSpeed() {
+        return 0;
+    }
+
+    public void EnableRevoluteSpring(boolean enabled) {
+    }
+
+    public boolean IsRevoluteSpringEnabled() {
+        return false;
+    }
+
     public void SetRevoluteTargetAngle(float radians) {
+    }
+
+    public float GetRevoluteTargetAngle() {
+        return 0;
+    }
+
+    public float GetRevoluteAngle() {
+        return 0;
+    }
+
+    public void EnableRevoluteLimit(boolean enabled) {
+    }
+
+    public boolean IsRevoluteLimitEnabled() {
+        return false;
+    }
+
+    public float GetRevoluteLowerLimit() {
+        return 0;
+    }
+
+    public float GetRevoluteUpperLimit() {
+        return 0;
+    }
+
+    public void SetRevoluteLimits(float lowerRadians, float upperRadians) {
+    }
+
+    public void EnableRevoluteMotor(boolean enabled) {
+    }
+
+    public boolean IsRevoluteMotorEnabled() {
+        return false;
+    }
+
+    public void SetRevoluteMotorSpeed(float speed) {
+    }
+
+    public float GetRevoluteMotorSpeed() {
+        return 0;
+    }
+
+    public float GetRevoluteMotorTorque() {
+        return 0;
     }
 
     public void SetRevoluteMaxMotorTorque(float torque) {
     }
 
+    public float GetRevoluteMaxMotorTorque() {
+        return 0;
+    }
+
     public void SetRevoluteSpringHertz(float hertz) {
+    }
+
+    public float GetRevoluteSpringHertz() {
+        return 0;
     }
 
     public void SetRevoluteSpringDampingRatio(float dampingRatio) {
     }
 
+    public float GetRevoluteSpringDampingRatio() {
+        return 0;
+    }
+
+    public void EnableSphericalConeLimit(boolean enabled) {
+    }
+
+    public boolean IsSphericalConeLimitEnabled() {
+        return false;
+    }
+
+    public float GetSphericalConeLimit() {
+        return 0;
+    }
+
+    public void SetSphericalConeLimit(float radians) {
+    }
+
+    public float GetSphericalConeAngle() {
+        return 0;
+    }
+
+    public void EnableSphericalTwistLimit(boolean enabled) {
+    }
+
+    public boolean IsSphericalTwistLimitEnabled() {
+        return false;
+    }
+
+    public float GetSphericalLowerTwistLimit() {
+        return 0;
+    }
+
+    public float GetSphericalUpperTwistLimit() {
+        return 0;
+    }
+
+    public void SetSphericalTwistLimits(float lowerRadians, float upperRadians) {
+    }
+
+    public float GetSphericalTwistAngle() {
+        return 0;
+    }
+
+    public void EnableSphericalSpring(boolean enabled) {
+    }
+
+    public boolean IsSphericalSpringEnabled() {
+        return false;
+    }
+
     public void SetSphericalMaxMotorTorque(float torque) {
+    }
+
+    public float GetSphericalMaxMotorTorque() {
+        return 0;
     }
 
     public void SetSphericalSpringHertz(float hertz) {
     }
 
+    public float GetSphericalSpringHertz() {
+        return 0;
+    }
+
     public void SetSphericalSpringDampingRatio(float dampingRatio) {
+    }
+
+    public float GetSphericalSpringDampingRatio() {
+        return 0;
+    }
+
+    public void SetSphericalTargetRotation(B3Quat rotation) {
+    }
+
+    public B3Quat GetSphericalTargetRotation() {
+        return null;
+    }
+
+    public void EnableSphericalMotor(boolean enabled) {
+    }
+
+    public boolean IsSphericalMotorEnabled() {
+        return false;
+    }
+
+    public void SetSphericalMotorVelocity(B3Vec3 velocity) {
+    }
+
+    public B3Vec3 GetSphericalMotorVelocity() {
+        return null;
+    }
+
+    public B3Vec3 GetSphericalMotorTorque() {
+        return null;
+    }
+
+    public void SetWeldLinearHertz(float hertz) {
+    }
+
+    public float GetWeldLinearHertz() {
+        return 0;
+    }
+
+    public void SetWeldLinearDampingRatio(float dampingRatio) {
+    }
+
+    public float GetWeldLinearDampingRatio() {
+        return 0;
+    }
+
+    public void SetWeldAngularHertz(float hertz) {
+    }
+
+    public float GetWeldAngularHertz() {
+        return 0;
+    }
+
+    public void SetWeldAngularDampingRatio(float dampingRatio) {
+    }
+
+    public float GetWeldAngularDampingRatio() {
+        return 0;
+    }
+
+    public void EnableWheelSuspension(boolean enabled) {
+    }
+
+    public boolean IsWheelSuspensionEnabled() {
+        return false;
+    }
+
+    public void SetWheelSuspensionHertz(float hertz) {
+    }
+
+    public float GetWheelSuspensionHertz() {
+        return 0;
+    }
+
+    public void SetWheelSuspensionDampingRatio(float dampingRatio) {
+    }
+
+    public float GetWheelSuspensionDampingRatio() {
+        return 0;
+    }
+
+    public void EnableWheelSuspensionLimit(boolean enabled) {
+    }
+
+    public boolean IsWheelSuspensionLimitEnabled() {
+        return false;
+    }
+
+    public float GetWheelLowerSuspensionLimit() {
+        return 0;
+    }
+
+    public float GetWheelUpperSuspensionLimit() {
+        return 0;
+    }
+
+    public void SetWheelSuspensionLimits(float lower, float upper) {
+    }
+
+    public void EnableWheelSpinMotor(boolean enabled) {
+    }
+
+    public boolean IsWheelSpinMotorEnabled() {
+        return false;
+    }
+
+    public void SetWheelTargetSteeringAngle(float radians) {
+    }
+
+    public float GetWheelTargetSteeringAngle() {
+        return 0;
+    }
+
+    public void SetWheelSpinMotorSpeed(float speed) {
+    }
+
+    public float GetWheelSpinMotorSpeed() {
+        return 0;
+    }
+
+    public void SetWheelMaxSpinTorque(float torque) {
+    }
+
+    public float GetWheelMaxSpinTorque() {
+        return 0;
+    }
+
+    public float GetWheelSpinSpeed() {
+        return 0;
+    }
+
+    public float GetWheelSpinTorque() {
+        return 0;
+    }
+
+    public void EnableWheelSteering(boolean enabled) {
+    }
+
+    public boolean IsWheelSteeringEnabled() {
+        return false;
+    }
+
+    public void SetWheelSteeringHertz(float hertz) {
+    }
+
+    public float GetWheelSteeringHertz() {
+        return 0;
+    }
+
+    public void SetWheelSteeringDampingRatio(float dampingRatio) {
+    }
+
+    public float GetWheelSteeringDampingRatio() {
+        return 0;
+    }
+
+    public void SetWheelMaxSteeringTorque(float torque) {
+    }
+
+    public float GetWheelMaxSteeringTorque() {
+        return 0;
+    }
+
+    public void EnableWheelSteeringLimit(boolean enabled) {
+    }
+
+    public boolean IsWheelSteeringLimitEnabled() {
+        return false;
+    }
+
+    public float GetWheelLowerSteeringLimit() {
+        return 0;
+    }
+
+    public float GetWheelUpperSteeringLimit() {
+        return 0;
+    }
+
+    public void SetWheelSteeringLimits(float lowerRadians, float upperRadians) {
+    }
+
+    public float GetWheelSteeringAngle() {
+        return 0;
+    }
+
+    public float GetWheelSteeringTorque() {
+        return 0;
     }
 }

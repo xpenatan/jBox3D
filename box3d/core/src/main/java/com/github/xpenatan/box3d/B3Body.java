@@ -7,6 +7,7 @@
 package com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
+import com.github.xpenatan.jparser.runtime.helper.NativeString;
 
 public final class B3Body extends NativeObject {
 
@@ -50,6 +51,12 @@ public final class B3Body extends NativeObject {
     public void SetType(int type) {
     }
 
+    public void GetName(NativeString name) {
+    }
+
+    public void SetName(String name) {
+    }
+
     public B3Vec3 GetPosition() {
         return null;
     }
@@ -66,7 +73,23 @@ public final class B3Body extends NativeObject {
         return null;
     }
 
+    public B3Vec3 GetLocalCenter() {
+        return null;
+    }
+
     public B3Vec3 GetLocalPoint(B3Vec3 worldPoint) {
+        return null;
+    }
+
+    public B3Vec3 GetWorldPoint(B3Vec3 localPoint) {
+        return null;
+    }
+
+    public B3Vec3 GetLocalVector(B3Vec3 worldVector) {
+        return null;
+    }
+
+    public B3Vec3 GetWorldVector(B3Vec3 localVector) {
         return null;
     }
 
@@ -88,6 +111,14 @@ public final class B3Body extends NativeObject {
     }
 
     public void SetAngularVelocity(B3Vec3 velocity) {
+    }
+
+    public B3Vec3 GetLocalPointVelocity(B3Vec3 localPoint) {
+        return null;
+    }
+
+    public B3Vec3 GetWorldPointVelocity(B3Vec3 worldPoint) {
+        return null;
     }
 
     public void ApplyForce(B3Vec3 force, B3Vec3 point, boolean wake) {
@@ -134,6 +165,25 @@ public final class B3Body extends NativeObject {
     public void SetMassData(float mass, B3Vec3 center, B3Vec3 inertiaColumnX, B3Vec3 inertiaColumnY, B3Vec3 inertiaColumnZ) {
     }
 
+    public B3MassData GetMassData() {
+        return null;
+    }
+
+    public void SetMassDataValue(B3MassData massData) {
+    }
+
+    public B3Vec3 GetWorldInverseRotationalInertiaColumnX() {
+        return null;
+    }
+
+    public B3Vec3 GetWorldInverseRotationalInertiaColumnY() {
+        return null;
+    }
+
+    public B3Vec3 GetWorldInverseRotationalInertiaColumnZ() {
+        return null;
+    }
+
     public float GetLinearDamping() {
         return 0;
     }
@@ -160,6 +210,20 @@ public final class B3Body extends NativeObject {
     }
 
     public void SetAwake(boolean awake) {
+    }
+
+    public boolean IsSleepEnabled() {
+        return false;
+    }
+
+    public void EnableSleep(boolean enabled) {
+    }
+
+    public float GetSleepThreshold() {
+        return 0;
+    }
+
+    public void SetSleepThreshold(float threshold) {
     }
 
     public B3RayResult CastRay(B3Vec3 origin, B3Vec3 translation, B3QueryFilter filter, float maxFraction, B3Transform bodyTransform) {
@@ -190,11 +254,64 @@ public final class B3Body extends NativeObject {
     public void SetBullet(boolean bullet) {
     }
 
+    public boolean IsFastRotationAllowed() {
+        return false;
+    }
+
+    public void AllowFastRotation(boolean allowed) {
+    }
+
+    public boolean IsContactRecyclingEnabled() {
+        return false;
+    }
+
+    public void EnableContactRecycling(boolean enabled) {
+    }
+
+    public void EnableHitEvents(boolean enabled) {
+    }
+
+    public long GetWorldId() {
+        return 0;
+    }
+
     public int GetShapeCount() {
         return 0;
     }
 
+    public long GetShapeId(int index) {
+        return 0;
+    }
+
+    public int GetJointCount() {
+        return 0;
+    }
+
+    public long GetJointId(int index) {
+        return 0;
+    }
+
     public B3AABB ComputeAABB() {
+        return null;
+    }
+
+    public B3Vec3 GetClosestPoint(B3Vec3 target) {
+        return null;
+    }
+
+    public float GetClosestPointDistance(B3Vec3 target) {
+        return 0;
+    }
+
+    public B3RayResult CastShape(B3Vec3 origin, B3ShapeProxy proxy, B3Vec3 translation, B3QueryFilter filter, float maxFraction, boolean canEncroach, B3Transform bodyTransform) {
+        return null;
+    }
+
+    public boolean OverlapShape(B3Vec3 origin, B3ShapeProxy proxy, B3QueryFilter filter, B3Transform bodyTransform) {
+        return false;
+    }
+
+    public B3MoverCollision CollideMover(B3Vec3 origin, B3Capsule mover, B3QueryFilter filter, B3Transform bodyTransform, int capacity) {
         return null;
     }
 

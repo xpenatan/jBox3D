@@ -26,6 +26,121 @@ public final class B3Collision extends NativeObject {
         return new B3Collision((byte) 0, (char) 0);
     }
 
+    public static void ScaleBox(B3Vec3 halfWidths, B3Transform transform, B3Vec3 postScale, float minHalfWidth) {
+    }
+
+    public static B3MassData ComputeSphereMass(B3Sphere sphere, float density) {
+        return null;
+    }
+
+    public static B3MassData ComputeCapsuleMass(B3Capsule capsule, float density) {
+        return null;
+    }
+
+    public static B3MassData ComputeHullMass(B3Hull hull, float density) {
+        return null;
+    }
+
+    public static B3AABB ComputeSphereAABB(B3Sphere sphere, B3Transform transform) {
+        return null;
+    }
+
+    public static B3AABB ComputeCapsuleAABB(B3Capsule capsule, B3Transform transform) {
+        return null;
+    }
+
+    public static B3AABB ComputeHullAABB(B3Hull hull, B3Transform transform) {
+        return null;
+    }
+
+    public static B3AABB ComputeMeshAABB(B3Mesh mesh, B3Transform transform, B3Vec3 scale) {
+        return null;
+    }
+
+    public static B3AABB ComputeHeightFieldAABB(B3HeightField heightField, B3Transform transform) {
+        return null;
+    }
+
+    public static B3AABB ComputeCompoundAABB(B3Compound compound, B3Transform transform) {
+        return null;
+    }
+
+    public static boolean OverlapSphere(B3Sphere sphere, B3Transform transform, B3ShapeProxy proxy) {
+        return false;
+    }
+
+    public static boolean OverlapCapsule(B3Capsule capsule, B3Transform transform, B3ShapeProxy proxy) {
+        return false;
+    }
+
+    public static boolean OverlapHull(B3Hull hull, B3Transform transform, B3ShapeProxy proxy) {
+        return false;
+    }
+
+    public static boolean OverlapMesh(B3Mesh mesh, B3Vec3 scale, B3Transform transform, B3ShapeProxy proxy) {
+        return false;
+    }
+
+    public static boolean OverlapHeightField(B3HeightField heightField, B3Transform transform, B3ShapeProxy proxy) {
+        return false;
+    }
+
+    public static boolean OverlapCompound(B3Compound compound, B3Transform transform, B3ShapeProxy proxy) {
+        return false;
+    }
+
+    public static B3CastOutput RayCastSphere(B3Sphere sphere, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput RayCastHollowSphere(B3Sphere sphere, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput RayCastCapsule(B3Capsule capsule, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput RayCastHull(B3Hull hull, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput RayCastMesh(B3Mesh mesh, B3Vec3 scale, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput RayCastHeightField(B3HeightField heightField, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput RayCastCompound(B3Compound compound, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        return null;
+    }
+
+    public static B3CastOutput ShapeCastSphere(B3Sphere sphere, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        return null;
+    }
+
+    public static B3CastOutput ShapeCastCapsule(B3Capsule capsule, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        return null;
+    }
+
+    public static B3CastOutput ShapeCastHull(B3Hull hull, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        return null;
+    }
+
+    public static B3CastOutput ShapeCastMesh(B3Mesh mesh, B3Vec3 scale, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        return null;
+    }
+
+    public static B3CastOutput ShapeCastHeightField(B3HeightField heightField, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        return null;
+    }
+
+    public static B3CastOutput ShapeCastCompound(B3Compound compound, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        return null;
+    }
+
     public static B3LocalManifold CollideSpheres(int capacity, B3Sphere sphereA, B3Sphere sphereB, B3Transform transformBtoA) {
         return null;
     }

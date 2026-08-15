@@ -451,18 +451,30 @@ abstract class AbstractBox3DSample implements Box3DSample {
     }
 
     protected B3Quat rotationX(float radians) {
-        float half = radians * 0.5f;
-        return new B3Quat((float)Math.sin(half), 0.0f, 0.0f, (float)Math.cos(half));
+        long cosSin = SampleMath.computeCosSin(0.5f * radians);
+        return new B3Quat(SampleMath.sine(cosSin), 0.0f, 0.0f, SampleMath.cosine(cosSin));
     }
 
     protected B3Quat rotationY(float radians) {
-        float half = radians * 0.5f;
-        return new B3Quat(0.0f, (float)Math.sin(half), 0.0f, (float)Math.cos(half));
+        long cosSin = SampleMath.computeCosSin(0.5f * radians);
+        return new B3Quat(0.0f, SampleMath.sine(cosSin), 0.0f, SampleMath.cosine(cosSin));
     }
 
     protected B3Quat rotationZ(float radians) {
-        float half = radians * 0.5f;
-        return new B3Quat(0.0f, 0.0f, (float)Math.sin(half), (float)Math.cos(half));
+        long cosSin = SampleMath.computeCosSin(0.5f * radians);
+        return new B3Quat(0.0f, 0.0f, SampleMath.sine(cosSin), SampleMath.cosine(cosSin));
+    }
+
+    protected B3Quat rotationAxis(float axisX, float axisY, float axisZ, float radians) {
+        long cosSin = SampleMath.computeCosSin(0.5f * radians);
+        float sine = SampleMath.sine(cosSin);
+        return new B3Quat(sine * axisX, sine * axisY, sine * axisZ, SampleMath.cosine(cosSin));
+    }
+
+    /** Copies the generated temporary so consecutive native vector operations cannot alias it. */
+    protected B3Vec3 rotatedVector(B3Quat rotation, B3Vec3 vector) {
+        B3Vec3 temporary = rotation.RotateVector(vector);
+        return new B3Vec3(temporary.GetX(), temporary.GetY(), temporary.GetZ());
     }
 
     protected void addDebugAxes(float x, float y, float z, float size) {

@@ -351,6 +351,52 @@ void B3MotionLocks::SetAngularZ(bool locked) {
     value.angularZ = locked;
 }
 
+B3MassData::B3MassData() : value{} {
+}
+
+B3MassData::B3MassData(b3MassData value) : value(value) {
+}
+
+float B3MassData::GetMass() const {
+    return value.mass;
+}
+
+void B3MassData::SetMass(float mass) {
+    value.mass = mass;
+}
+
+B3Vec3 B3MassData::GetCenter() const {
+    return B3Vec3(value.center);
+}
+
+void B3MassData::SetCenter(const B3Vec3& center) {
+    value.center = center.value;
+}
+
+B3Vec3 B3MassData::GetInertiaColumnX() const {
+    return B3Vec3(value.inertia.cx);
+}
+
+void B3MassData::SetInertiaColumnX(const B3Vec3& column) {
+    value.inertia.cx = column.value;
+}
+
+B3Vec3 B3MassData::GetInertiaColumnY() const {
+    return B3Vec3(value.inertia.cy);
+}
+
+void B3MassData::SetInertiaColumnY(const B3Vec3& column) {
+    value.inertia.cy = column.value;
+}
+
+B3Vec3 B3MassData::GetInertiaColumnZ() const {
+    return B3Vec3(value.inertia.cz);
+}
+
+void B3MassData::SetInertiaColumnZ(const B3Vec3& column) {
+    value.inertia.cz = column.value;
+}
+
 #define DEFINE_B3_JOINT_BASE_ACCESSORS(Type) \
 long long Type::GetBodyIdA() const { \
     return static_cast<long long>(b3StoreBodyId(value.base.bodyIdA)); \
@@ -2942,6 +2988,229 @@ static const b3Vec3* getTriangle(const B3Vec3Array& triangle) {
     return triangle.GetSize() >= 3 ? triangle.GetData() : nullptr;
 }
 
+static b3RayCastInput makeRayCastInput(const B3Vec3& origin, const B3Vec3& translation, float maxFraction) {
+    b3RayCastInput input{};
+    input.origin = origin.value;
+    input.translation = translation.value;
+    input.maxFraction = maxFraction;
+    return input;
+}
+
+static b3ShapeCastInput makeShapeCastInput(const B3ShapeProxy& proxy, const B3Vec3& translation,
+                                            float maxFraction, bool canEncroach) {
+    b3ShapeCastInput input{};
+    input.proxy = proxy.GetHandle();
+    input.translation = translation.value;
+    input.maxFraction = maxFraction;
+    input.canEncroach = canEncroach;
+    return input;
+}
+
+static b3Mesh makeMesh(const B3Mesh& mesh, const B3Vec3& scale) {
+    b3Mesh value{};
+    value.data = mesh.GetHandle();
+    value.scale = scale.value;
+    return value;
+}
+
+void B3Collision::ScaleBox(B3Vec3& halfWidths, B3Transform& transform, const B3Vec3& postScale,
+                           float minHalfWidth) {
+    b3ScaleBox(&halfWidths.value, &transform.value, postScale.value, minHalfWidth);
+}
+
+B3MassData B3Collision::ComputeSphereMass(const B3Sphere& sphere, float density) {
+    return B3MassData(b3ComputeSphereMass(&sphere.value, density));
+}
+
+B3MassData B3Collision::ComputeCapsuleMass(const B3Capsule& capsule, float density) {
+    return B3MassData(b3ComputeCapsuleMass(&capsule.value, density));
+}
+
+B3MassData B3Collision::ComputeHullMass(const B3Hull& hull, float density) {
+    const b3HullData* data = hull.GetHandle();
+    return data != nullptr ? B3MassData(b3ComputeHullMass(data, density)) : B3MassData();
+}
+
+B3AABB B3Collision::ComputeSphereAABB(const B3Sphere& sphere, const B3Transform& transform) {
+    return B3AABB(b3ComputeSphereAABB(&sphere.value, transform.value));
+}
+
+B3AABB B3Collision::ComputeCapsuleAABB(const B3Capsule& capsule, const B3Transform& transform) {
+    return B3AABB(b3ComputeCapsuleAABB(&capsule.value, transform.value));
+}
+
+B3AABB B3Collision::ComputeHullAABB(const B3Hull& hull, const B3Transform& transform) {
+    const b3HullData* data = hull.GetHandle();
+    return data != nullptr ? B3AABB(b3ComputeHullAABB(data, transform.value)) : B3AABB();
+}
+
+B3AABB B3Collision::ComputeMeshAABB(const B3Mesh& mesh, const B3Transform& transform, const B3Vec3& scale) {
+    const b3MeshData* data = mesh.GetHandle();
+    return data != nullptr ? B3AABB(b3ComputeMeshAABB(data, transform.value, scale.value)) : B3AABB();
+}
+
+B3AABB B3Collision::ComputeHeightFieldAABB(const B3HeightField& heightField, const B3Transform& transform) {
+    const b3HeightFieldData* data = heightField.GetHandle();
+    return data != nullptr ? B3AABB(b3ComputeHeightFieldAABB(data, transform.value)) : B3AABB();
+}
+
+B3AABB B3Collision::ComputeCompoundAABB(const B3Compound& compound, const B3Transform& transform) {
+    const b3CompoundData* data = compound.GetHandle();
+    return data != nullptr ? B3AABB(b3ComputeCompoundAABB(data, transform.value)) : B3AABB();
+}
+
+bool B3Collision::OverlapSphere(const B3Sphere& sphere, const B3Transform& transform,
+                                const B3ShapeProxy& proxy) {
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return b3OverlapSphere(&sphere.value, transform.value, &nativeProxy);
+}
+
+bool B3Collision::OverlapCapsule(const B3Capsule& capsule, const B3Transform& transform,
+                                 const B3ShapeProxy& proxy) {
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return b3OverlapCapsule(&capsule.value, transform.value, &nativeProxy);
+}
+
+bool B3Collision::OverlapHull(const B3Hull& hull, const B3Transform& transform,
+                              const B3ShapeProxy& proxy) {
+    const b3HullData* data = hull.GetHandle();
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return data != nullptr && b3OverlapHull(data, transform.value, &nativeProxy);
+}
+
+bool B3Collision::OverlapMesh(const B3Mesh& mesh, const B3Vec3& scale, const B3Transform& transform,
+                              const B3ShapeProxy& proxy) {
+    b3Mesh nativeMesh = makeMesh(mesh, scale);
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return nativeMesh.data != nullptr && b3OverlapMesh(&nativeMesh, transform.value, &nativeProxy);
+}
+
+bool B3Collision::OverlapHeightField(const B3HeightField& heightField, const B3Transform& transform,
+                                     const B3ShapeProxy& proxy) {
+    const b3HeightFieldData* data = heightField.GetHandle();
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return data != nullptr && b3OverlapHeightField(data, transform.value, &nativeProxy);
+}
+
+bool B3Collision::OverlapCompound(const B3Compound& compound, const B3Transform& transform,
+                                  const B3ShapeProxy& proxy) {
+    const b3CompoundData* data = compound.GetHandle();
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return data != nullptr && b3OverlapCompound(data, transform.value, &nativeProxy);
+}
+
+B3CastOutput B3Collision::RayCastSphere(const B3Sphere& sphere, const B3Vec3& origin,
+                                        const B3Vec3& translation, float maxFraction) {
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastSphere(&sphere.value, &input));
+}
+
+B3CastOutput B3Collision::RayCastHollowSphere(const B3Sphere& sphere, const B3Vec3& origin,
+                                              const B3Vec3& translation, float maxFraction) {
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastHollowSphere(&sphere.value, &input));
+}
+
+B3CastOutput B3Collision::RayCastCapsule(const B3Capsule& capsule, const B3Vec3& origin,
+                                         const B3Vec3& translation, float maxFraction) {
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastCapsule(&capsule.value, &input));
+}
+
+B3CastOutput B3Collision::RayCastHull(const B3Hull& hull, const B3Vec3& origin,
+                                      const B3Vec3& translation, float maxFraction) {
+    const b3HullData* data = hull.GetHandle();
+    if(data == nullptr) {
+        return B3CastOutput();
+    }
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastHull(data, &input));
+}
+
+B3CastOutput B3Collision::RayCastMesh(const B3Mesh& mesh, const B3Vec3& scale, const B3Vec3& origin,
+                                      const B3Vec3& translation, float maxFraction) {
+    b3Mesh nativeMesh = makeMesh(mesh, scale);
+    if(nativeMesh.data == nullptr) {
+        return B3CastOutput();
+    }
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastMesh(&nativeMesh, &input));
+}
+
+B3CastOutput B3Collision::RayCastHeightField(const B3HeightField& heightField, const B3Vec3& origin,
+                                             const B3Vec3& translation, float maxFraction) {
+    const b3HeightFieldData* data = heightField.GetHandle();
+    if(data == nullptr) {
+        return B3CastOutput();
+    }
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastHeightField(data, &input));
+}
+
+B3CastOutput B3Collision::RayCastCompound(const B3Compound& compound, const B3Vec3& origin,
+                                          const B3Vec3& translation, float maxFraction) {
+    const b3CompoundData* data = compound.GetHandle();
+    if(data == nullptr) {
+        return B3CastOutput();
+    }
+    b3RayCastInput input = makeRayCastInput(origin, translation, maxFraction);
+    return B3CastOutput(b3RayCastCompound(data, &input));
+}
+
+B3CastOutput B3Collision::ShapeCastSphere(const B3Sphere& sphere, const B3ShapeProxy& proxy,
+                                          const B3Vec3& translation, float maxFraction, bool canEncroach) {
+    b3ShapeCastInput input = makeShapeCastInput(proxy, translation, maxFraction, canEncroach);
+    return B3CastOutput(b3ShapeCastSphere(&sphere.value, &input));
+}
+
+B3CastOutput B3Collision::ShapeCastCapsule(const B3Capsule& capsule, const B3ShapeProxy& proxy,
+                                           const B3Vec3& translation, float maxFraction, bool canEncroach) {
+    b3ShapeCastInput input = makeShapeCastInput(proxy, translation, maxFraction, canEncroach);
+    return B3CastOutput(b3ShapeCastCapsule(&capsule.value, &input));
+}
+
+B3CastOutput B3Collision::ShapeCastHull(const B3Hull& hull, const B3ShapeProxy& proxy,
+                                        const B3Vec3& translation, float maxFraction, bool canEncroach) {
+    const b3HullData* data = hull.GetHandle();
+    if(data == nullptr) {
+        return B3CastOutput();
+    }
+    b3ShapeCastInput input = makeShapeCastInput(proxy, translation, maxFraction, canEncroach);
+    return B3CastOutput(b3ShapeCastHull(data, &input));
+}
+
+B3CastOutput B3Collision::ShapeCastMesh(const B3Mesh& mesh, const B3Vec3& scale,
+                                        const B3ShapeProxy& proxy, const B3Vec3& translation,
+                                        float maxFraction, bool canEncroach) {
+    b3Mesh nativeMesh = makeMesh(mesh, scale);
+    if(nativeMesh.data == nullptr) {
+        return B3CastOutput();
+    }
+    b3ShapeCastInput input = makeShapeCastInput(proxy, translation, maxFraction, canEncroach);
+    return B3CastOutput(b3ShapeCastMesh(&nativeMesh, &input));
+}
+
+B3CastOutput B3Collision::ShapeCastHeightField(const B3HeightField& heightField,
+                                               const B3ShapeProxy& proxy, const B3Vec3& translation,
+                                               float maxFraction, bool canEncroach) {
+    const b3HeightFieldData* data = heightField.GetHandle();
+    if(data == nullptr) {
+        return B3CastOutput();
+    }
+    b3ShapeCastInput input = makeShapeCastInput(proxy, translation, maxFraction, canEncroach);
+    return B3CastOutput(b3ShapeCastHeightField(data, &input));
+}
+
+B3CastOutput B3Collision::ShapeCastCompound(const B3Compound& compound, const B3ShapeProxy& proxy,
+                                            const B3Vec3& translation, float maxFraction, bool canEncroach) {
+    const b3CompoundData* data = compound.GetHandle();
+    if(data == nullptr) {
+        return B3CastOutput();
+    }
+    b3ShapeCastInput input = makeShapeCastInput(proxy, translation, maxFraction, canEncroach);
+    return B3CastOutput(b3ShapeCastCompound(data, &input));
+}
+
 B3LocalManifold* B3Collision::CollideSpheres(int capacity, const B3Sphere& sphereA, const B3Sphere& sphereB,
                                               const B3Transform& transformBtoA) {
     B3LocalManifold* manifold = new B3LocalManifold(capacity);
@@ -3434,6 +3703,15 @@ void B3Body::SetType(int type) {
     b3Body_SetType(m_bodyId, static_cast<b3BodyType>(type));
 }
 
+void B3Body::GetName(NativeString& name) const {
+    const char* value = b3Body_GetName(m_bodyId);
+    name = value != nullptr ? value : "";
+}
+
+void B3Body::SetName(const char* name) {
+    b3Body_SetName(m_bodyId, name != nullptr ? name : "");
+}
+
 B3Vec3 B3Body::GetPosition() const {
     return B3Vec3(b3Body_GetPosition(m_bodyId));
 }
@@ -3450,8 +3728,24 @@ B3Vec3 B3Body::GetWorldCenter() const {
     return B3Vec3(b3Body_GetWorldCenter(m_bodyId));
 }
 
+B3Vec3 B3Body::GetLocalCenter() const {
+    return B3Vec3(b3Body_GetLocalCenter(m_bodyId));
+}
+
 B3Vec3 B3Body::GetLocalPoint(const B3Vec3& worldPoint) const {
     return B3Vec3(b3Body_GetLocalPoint(m_bodyId, worldPoint.value));
+}
+
+B3Vec3 B3Body::GetWorldPoint(const B3Vec3& localPoint) const {
+    return B3Vec3(b3Body_GetWorldPoint(m_bodyId, localPoint.value));
+}
+
+B3Vec3 B3Body::GetLocalVector(const B3Vec3& worldVector) const {
+    return B3Vec3(b3Body_GetLocalVector(m_bodyId, worldVector.value));
+}
+
+B3Vec3 B3Body::GetWorldVector(const B3Vec3& localVector) const {
+    return B3Vec3(b3Body_GetWorldVector(m_bodyId, localVector.value));
 }
 
 void B3Body::SetTransform(const B3Vec3& position, const B3Quat& rotation) {
@@ -3477,6 +3771,14 @@ B3Vec3 B3Body::GetAngularVelocity() const {
 
 void B3Body::SetAngularVelocity(const B3Vec3& velocity) {
     b3Body_SetAngularVelocity(m_bodyId, velocity.value);
+}
+
+B3Vec3 B3Body::GetLocalPointVelocity(const B3Vec3& localPoint) const {
+    return B3Vec3(b3Body_GetLocalPointVelocity(m_bodyId, localPoint.value));
+}
+
+B3Vec3 B3Body::GetWorldPointVelocity(const B3Vec3& worldPoint) const {
+    return B3Vec3(b3Body_GetWorldPointVelocity(m_bodyId, worldPoint.value));
 }
 
 void B3Body::ApplyForce(const B3Vec3& force, const B3Vec3& point, bool wake) {
@@ -3538,6 +3840,26 @@ void B3Body::SetMassData(float mass, const B3Vec3& center, const B3Vec3& inertia
     b3Body_SetMassData(m_bodyId, massData);
 }
 
+B3MassData B3Body::GetMassData() const {
+    return B3MassData(b3Body_GetMassData(m_bodyId));
+}
+
+void B3Body::SetMassDataValue(const B3MassData& massData) {
+    b3Body_SetMassData(m_bodyId, massData.value);
+}
+
+B3Vec3 B3Body::GetWorldInverseRotationalInertiaColumnX() const {
+    return B3Vec3(b3Body_GetWorldInverseRotationalInertia(m_bodyId).cx);
+}
+
+B3Vec3 B3Body::GetWorldInverseRotationalInertiaColumnY() const {
+    return B3Vec3(b3Body_GetWorldInverseRotationalInertia(m_bodyId).cy);
+}
+
+B3Vec3 B3Body::GetWorldInverseRotationalInertiaColumnZ() const {
+    return B3Vec3(b3Body_GetWorldInverseRotationalInertia(m_bodyId).cz);
+}
+
 float B3Body::GetLinearDamping() const {
     return b3Body_GetLinearDamping(m_bodyId);
 }
@@ -3568,6 +3890,22 @@ bool B3Body::IsAwake() const {
 
 void B3Body::SetAwake(bool awake) {
     b3Body_SetAwake(m_bodyId, awake);
+}
+
+bool B3Body::IsSleepEnabled() const {
+    return b3Body_IsSleepEnabled(m_bodyId);
+}
+
+void B3Body::EnableSleep(bool enabled) {
+    b3Body_EnableSleep(m_bodyId, enabled);
+}
+
+float B3Body::GetSleepThreshold() const {
+    return b3Body_GetSleepThreshold(m_bodyId);
+}
+
+void B3Body::SetSleepThreshold(float threshold) {
+    b3Body_SetSleepThreshold(m_bodyId, threshold);
 }
 
 B3RayResult B3Body::CastRay(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter,
@@ -3614,12 +3952,118 @@ void B3Body::SetBullet(bool bullet) {
     b3Body_SetBullet(m_bodyId, bullet);
 }
 
+bool B3Body::IsFastRotationAllowed() const {
+    return b3Body_IsFastRotationAllowed(m_bodyId);
+}
+
+void B3Body::AllowFastRotation(bool allowed) {
+    b3Body_AllowFastRotation(m_bodyId, allowed);
+}
+
+bool B3Body::IsContactRecyclingEnabled() const {
+    return b3Body_IsContactRecyclingEnabled(m_bodyId);
+}
+
+void B3Body::EnableContactRecycling(bool enabled) {
+    b3Body_EnableContactRecycling(m_bodyId, enabled);
+}
+
+void B3Body::EnableHitEvents(bool enabled) {
+    b3Body_EnableHitEvents(m_bodyId, enabled);
+}
+
+long long B3Body::GetWorldId() const {
+    return static_cast<long long>(b3StoreWorldId(b3Body_GetWorld(m_bodyId)));
+}
+
 int B3Body::GetShapeCount() const {
     return b3Body_GetShapeCount(m_bodyId);
 }
 
+long long B3Body::GetShapeId(int index) const {
+    int capacity = b3Body_GetShapeCount(m_bodyId);
+    if(index < 0 || index >= capacity) {
+        return static_cast<long long>(b3StoreShapeId(b3_nullShapeId));
+    }
+    std::vector<b3ShapeId> shapes(static_cast<size_t>(capacity));
+    int count = b3Body_GetShapes(m_bodyId, shapes.data(), capacity);
+    if(index >= count) {
+        return static_cast<long long>(b3StoreShapeId(b3_nullShapeId));
+    }
+    return static_cast<long long>(b3StoreShapeId(shapes[static_cast<size_t>(index)]));
+}
+
+int B3Body::GetJointCount() const {
+    return b3Body_GetJointCount(m_bodyId);
+}
+
+long long B3Body::GetJointId(int index) const {
+    int capacity = b3Body_GetJointCount(m_bodyId);
+    if(index < 0 || index >= capacity) {
+        return static_cast<long long>(b3StoreJointId(b3_nullJointId));
+    }
+    std::vector<b3JointId> joints(static_cast<size_t>(capacity));
+    int count = b3Body_GetJoints(m_bodyId, joints.data(), capacity);
+    if(index >= count) {
+        return static_cast<long long>(b3StoreJointId(b3_nullJointId));
+    }
+    return static_cast<long long>(b3StoreJointId(joints[static_cast<size_t>(index)]));
+}
+
 B3AABB B3Body::ComputeAABB() const {
     return B3AABB(b3Body_ComputeAABB(m_bodyId));
+}
+
+B3Vec3 B3Body::GetClosestPoint(const B3Vec3& target) const {
+    b3Vec3 result = b3Vec3_zero;
+    b3Body_GetClosestPoint(m_bodyId, &result, target.value);
+    return B3Vec3(result);
+}
+
+float B3Body::GetClosestPointDistance(const B3Vec3& target) const {
+    b3Vec3 result = b3Vec3_zero;
+    return b3Body_GetClosestPoint(m_bodyId, &result, target.value);
+}
+
+B3RayResult B3Body::CastShape(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3Vec3& translation,
+                              const B3QueryFilter& filter, float maxFraction, bool canEncroach,
+                              const B3Transform& bodyTransform) const {
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    b3BodyCastResult bodyResult = b3Body_CastShape(m_bodyId, origin.value, &nativeProxy, translation.value,
+                                                   filter.value, maxFraction, canEncroach,
+                                                   b3MakeWorldTransform(bodyTransform.value));
+    b3RayResult result{};
+    result.shapeId = bodyResult.shapeId;
+    result.point = bodyResult.point;
+    result.normal = bodyResult.normal;
+    result.userMaterialId = bodyResult.userMaterialId;
+    result.fraction = bodyResult.fraction;
+    result.triangleIndex = bodyResult.triangleIndex;
+    result.childIndex = -1;
+    result.hit = bodyResult.hit;
+    return B3RayResult(result);
+}
+
+bool B3Body::OverlapShape(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3QueryFilter& filter,
+                          const B3Transform& bodyTransform) const {
+    b3ShapeProxy nativeProxy = proxy.GetHandle();
+    return b3Body_OverlapShape(m_bodyId, origin.value, &nativeProxy, filter.value,
+                               b3MakeWorldTransform(bodyTransform.value));
+}
+
+B3MoverCollision* B3Body::CollideMover(const B3Vec3& origin, const B3Capsule& mover,
+                                        const B3QueryFilter& filter, const B3Transform& bodyTransform,
+                                        int capacity) const {
+    B3MoverCollision* collision = new B3MoverCollision();
+    if(capacity <= 0) {
+        return collision;
+    }
+    collision->m_results.resize(static_cast<size_t>(capacity));
+    int count = b3Body_CollideMover(m_bodyId, collision->m_results.data(), capacity, origin.value, &mover.value,
+                                    filter.value, b3MakeWorldTransform(bodyTransform.value));
+    count = b3MaxInt(0, b3MinInt(count, capacity));
+    collision->m_results.resize(static_cast<size_t>(count));
+    return collision;
 }
 
 B3Shape* B3Body::CreateSphereShape(const B3ShapeDef& def, const B3Sphere& sphere) {
@@ -3704,6 +4148,10 @@ void B3Joint::Destroy(bool wakeAttached) {
     }
 }
 
+int B3Joint::GetType() const {
+    return static_cast<int>(b3Joint_GetType(m_jointId));
+}
+
 long long B3Joint::GetBodyIdA() const {
     return static_cast<long long>(b3StoreBodyId(b3Joint_GetBodyA(m_jointId)));
 }
@@ -3712,12 +4160,352 @@ long long B3Joint::GetBodyIdB() const {
     return static_cast<long long>(b3StoreBodyId(b3Joint_GetBodyB(m_jointId)));
 }
 
+long long B3Joint::GetWorldId() const {
+    return static_cast<long long>(b3StoreWorldId(b3Joint_GetWorld(m_jointId)));
+}
+
+B3Transform B3Joint::GetLocalFrameA() const {
+    return B3Transform(b3Joint_GetLocalFrameA(m_jointId));
+}
+
+void B3Joint::SetLocalFrameA(const B3Transform& localFrame) {
+    b3Joint_SetLocalFrameA(m_jointId, localFrame.value);
+}
+
+B3Transform B3Joint::GetLocalFrameB() const {
+    return B3Transform(b3Joint_GetLocalFrameB(m_jointId));
+}
+
+void B3Joint::SetLocalFrameB(const B3Transform& localFrame) {
+    b3Joint_SetLocalFrameB(m_jointId, localFrame.value);
+}
+
+bool B3Joint::GetCollideConnected() const {
+    return b3Joint_GetCollideConnected(m_jointId);
+}
+
+void B3Joint::SetCollideConnected(bool collideConnected) {
+    b3Joint_SetCollideConnected(m_jointId, collideConnected);
+}
+
 void B3Joint::WakeBodies() {
     b3Joint_WakeBodies(m_jointId);
 }
 
+B3Vec3 B3Joint::GetConstraintForce() const {
+    return B3Vec3(b3Joint_GetConstraintForce(m_jointId));
+}
+
+B3Vec3 B3Joint::GetConstraintTorque() const {
+    return B3Vec3(b3Joint_GetConstraintTorque(m_jointId));
+}
+
 float B3Joint::GetLinearSeparation() const {
     return b3Joint_GetLinearSeparation(m_jointId);
+}
+
+float B3Joint::GetAngularSeparation() const {
+    return b3Joint_GetAngularSeparation(m_jointId);
+}
+
+void B3Joint::SetConstraintTuning(float hertz, float dampingRatio) {
+    b3Joint_SetConstraintTuning(m_jointId, hertz, dampingRatio);
+}
+
+float B3Joint::GetConstraintHertz() const {
+    float hertz = 0.0f;
+    float dampingRatio = 0.0f;
+    b3Joint_GetConstraintTuning(m_jointId, &hertz, &dampingRatio);
+    return hertz;
+}
+
+float B3Joint::GetConstraintDampingRatio() const {
+    float hertz = 0.0f;
+    float dampingRatio = 0.0f;
+    b3Joint_GetConstraintTuning(m_jointId, &hertz, &dampingRatio);
+    return dampingRatio;
+}
+
+void B3Joint::SetForceThreshold(float threshold) {
+    b3Joint_SetForceThreshold(m_jointId, threshold);
+}
+
+float B3Joint::GetForceThreshold() const {
+    return b3Joint_GetForceThreshold(m_jointId);
+}
+
+void B3Joint::SetTorqueThreshold(float threshold) {
+    b3Joint_SetTorqueThreshold(m_jointId, threshold);
+}
+
+float B3Joint::GetTorqueThreshold() const {
+    return b3Joint_GetTorqueThreshold(m_jointId);
+}
+
+void B3Joint::SetParallelSpringHertz(float hertz) {
+    b3ParallelJoint_SetSpringHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetParallelSpringHertz() const {
+    return b3ParallelJoint_GetSpringHertz(m_jointId);
+}
+
+void B3Joint::SetParallelSpringDampingRatio(float dampingRatio) {
+    b3ParallelJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetParallelSpringDampingRatio() const {
+    return b3ParallelJoint_GetSpringDampingRatio(m_jointId);
+}
+
+void B3Joint::SetParallelMaxTorque(float torque) {
+    b3ParallelJoint_SetMaxTorque(m_jointId, torque);
+}
+
+float B3Joint::GetParallelMaxTorque() const {
+    return b3ParallelJoint_GetMaxTorque(m_jointId);
+}
+
+void B3Joint::SetDistanceLength(float length) {
+    b3DistanceJoint_SetLength(m_jointId, length);
+}
+
+float B3Joint::GetDistanceLength() const {
+    return b3DistanceJoint_GetLength(m_jointId);
+}
+
+void B3Joint::EnableDistanceSpring(bool enabled) {
+    b3DistanceJoint_EnableSpring(m_jointId, enabled);
+}
+
+bool B3Joint::IsDistanceSpringEnabled() const {
+    return b3DistanceJoint_IsSpringEnabled(m_jointId);
+}
+
+void B3Joint::SetDistanceSpringForceRange(float lowerForce, float upperForce) {
+    b3DistanceJoint_SetSpringForceRange(m_jointId, lowerForce, upperForce);
+}
+
+float B3Joint::GetDistanceLowerSpringForce() const {
+    float lowerForce = 0.0f;
+    float upperForce = 0.0f;
+    b3DistanceJoint_GetSpringForceRange(m_jointId, &lowerForce, &upperForce);
+    return lowerForce;
+}
+
+float B3Joint::GetDistanceUpperSpringForce() const {
+    float lowerForce = 0.0f;
+    float upperForce = 0.0f;
+    b3DistanceJoint_GetSpringForceRange(m_jointId, &lowerForce, &upperForce);
+    return upperForce;
+}
+
+void B3Joint::SetDistanceSpringHertz(float hertz) {
+    b3DistanceJoint_SetSpringHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetDistanceSpringHertz() const {
+    return b3DistanceJoint_GetSpringHertz(m_jointId);
+}
+
+void B3Joint::SetDistanceSpringDampingRatio(float dampingRatio) {
+    b3DistanceJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetDistanceSpringDampingRatio() const {
+    return b3DistanceJoint_GetSpringDampingRatio(m_jointId);
+}
+
+void B3Joint::EnableDistanceLimit(bool enabled) {
+    b3DistanceJoint_EnableLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsDistanceLimitEnabled() const {
+    return b3DistanceJoint_IsLimitEnabled(m_jointId);
+}
+
+void B3Joint::SetDistanceLengthRange(float minLength, float maxLength) {
+    b3DistanceJoint_SetLengthRange(m_jointId, minLength, maxLength);
+}
+
+float B3Joint::GetDistanceMinLength() const {
+    return b3DistanceJoint_GetMinLength(m_jointId);
+}
+
+float B3Joint::GetDistanceMaxLength() const {
+    return b3DistanceJoint_GetMaxLength(m_jointId);
+}
+
+float B3Joint::GetDistanceCurrentLength() const {
+    return b3DistanceJoint_GetCurrentLength(m_jointId);
+}
+
+void B3Joint::EnableDistanceMotor(bool enabled) {
+    b3DistanceJoint_EnableMotor(m_jointId, enabled);
+}
+
+bool B3Joint::IsDistanceMotorEnabled() const {
+    return b3DistanceJoint_IsMotorEnabled(m_jointId);
+}
+
+void B3Joint::SetDistanceMotorSpeed(float speed) {
+    b3DistanceJoint_SetMotorSpeed(m_jointId, speed);
+}
+
+float B3Joint::GetDistanceMotorSpeed() const {
+    return b3DistanceJoint_GetMotorSpeed(m_jointId);
+}
+
+void B3Joint::SetDistanceMaxMotorForce(float force) {
+    b3DistanceJoint_SetMaxMotorForce(m_jointId, force);
+}
+
+float B3Joint::GetDistanceMaxMotorForce() const {
+    return b3DistanceJoint_GetMaxMotorForce(m_jointId);
+}
+
+float B3Joint::GetDistanceMotorForce() const {
+    return b3DistanceJoint_GetMotorForce(m_jointId);
+}
+
+void B3Joint::SetMotorLinearVelocity(const B3Vec3& velocity) {
+    b3MotorJoint_SetLinearVelocity(m_jointId, velocity.value);
+}
+
+B3Vec3 B3Joint::GetMotorLinearVelocity() const {
+    return B3Vec3(b3MotorJoint_GetLinearVelocity(m_jointId));
+}
+
+void B3Joint::SetMotorAngularVelocity(const B3Vec3& velocity) {
+    b3MotorJoint_SetAngularVelocity(m_jointId, velocity.value);
+}
+
+B3Vec3 B3Joint::GetMotorAngularVelocity() const {
+    return B3Vec3(b3MotorJoint_GetAngularVelocity(m_jointId));
+}
+
+void B3Joint::SetMotorMaxVelocityForce(float force) {
+    b3MotorJoint_SetMaxVelocityForce(m_jointId, force);
+}
+
+float B3Joint::GetMotorMaxVelocityForce() const {
+    return b3MotorJoint_GetMaxVelocityForce(m_jointId);
+}
+
+void B3Joint::SetMotorMaxVelocityTorque(float torque) {
+    b3MotorJoint_SetMaxVelocityTorque(m_jointId, torque);
+}
+
+float B3Joint::GetMotorMaxVelocityTorque() const {
+    return b3MotorJoint_GetMaxVelocityTorque(m_jointId);
+}
+
+void B3Joint::SetMotorLinearHertz(float hertz) {
+    b3MotorJoint_SetLinearHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetMotorLinearHertz() const {
+    return b3MotorJoint_GetLinearHertz(m_jointId);
+}
+
+void B3Joint::SetMotorLinearDampingRatio(float dampingRatio) {
+    b3MotorJoint_SetLinearDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetMotorLinearDampingRatio() const {
+    return b3MotorJoint_GetLinearDampingRatio(m_jointId);
+}
+
+void B3Joint::SetMotorAngularHertz(float hertz) {
+    b3MotorJoint_SetAngularHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetMotorAngularHertz() const {
+    return b3MotorJoint_GetAngularHertz(m_jointId);
+}
+
+void B3Joint::SetMotorAngularDampingRatio(float dampingRatio) {
+    b3MotorJoint_SetAngularDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetMotorAngularDampingRatio() const {
+    return b3MotorJoint_GetAngularDampingRatio(m_jointId);
+}
+
+void B3Joint::SetMotorMaxSpringForce(float force) {
+    b3MotorJoint_SetMaxSpringForce(m_jointId, force);
+}
+
+float B3Joint::GetMotorMaxSpringForce() const {
+    return b3MotorJoint_GetMaxSpringForce(m_jointId);
+}
+
+void B3Joint::SetMotorMaxSpringTorque(float torque) {
+    b3MotorJoint_SetMaxSpringTorque(m_jointId, torque);
+}
+
+float B3Joint::GetMotorMaxSpringTorque() const {
+    return b3MotorJoint_GetMaxSpringTorque(m_jointId);
+}
+
+void B3Joint::EnablePrismaticSpring(bool enabled) {
+    b3PrismaticJoint_EnableSpring(m_jointId, enabled);
+}
+
+bool B3Joint::IsPrismaticSpringEnabled() const {
+    return b3PrismaticJoint_IsSpringEnabled(m_jointId);
+}
+
+void B3Joint::SetPrismaticSpringHertz(float hertz) {
+    b3PrismaticJoint_SetSpringHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetPrismaticSpringHertz() const {
+    return b3PrismaticJoint_GetSpringHertz(m_jointId);
+}
+
+void B3Joint::SetPrismaticSpringDampingRatio(float dampingRatio) {
+    b3PrismaticJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetPrismaticSpringDampingRatio() const {
+    return b3PrismaticJoint_GetSpringDampingRatio(m_jointId);
+}
+
+void B3Joint::SetPrismaticTargetTranslation(float translation) {
+    b3PrismaticJoint_SetTargetTranslation(m_jointId, translation);
+}
+
+float B3Joint::GetPrismaticTargetTranslation() const {
+    return b3PrismaticJoint_GetTargetTranslation(m_jointId);
+}
+
+void B3Joint::EnablePrismaticLimit(bool enabled) {
+    b3PrismaticJoint_EnableLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsPrismaticLimitEnabled() const {
+    return b3PrismaticJoint_IsLimitEnabled(m_jointId);
+}
+
+float B3Joint::GetPrismaticLowerLimit() const {
+    return b3PrismaticJoint_GetLowerLimit(m_jointId);
+}
+
+float B3Joint::GetPrismaticUpperLimit() const {
+    return b3PrismaticJoint_GetUpperLimit(m_jointId);
+}
+
+void B3Joint::SetPrismaticLimits(float lower, float upper) {
+    b3PrismaticJoint_SetLimits(m_jointId, lower, upper);
+}
+
+void B3Joint::EnablePrismaticMotor(bool enabled) {
+    b3PrismaticJoint_EnableMotor(m_jointId, enabled);
+}
+
+bool B3Joint::IsPrismaticMotorEnabled() const {
+    return b3PrismaticJoint_IsMotorEnabled(m_jointId);
 }
 
 float B3Joint::GetPrismaticTranslation() const {
@@ -3728,32 +4516,388 @@ void B3Joint::SetPrismaticMotorSpeed(float speed) {
     b3PrismaticJoint_SetMotorSpeed(m_jointId, speed);
 }
 
+float B3Joint::GetPrismaticMotorSpeed() const {
+    return b3PrismaticJoint_GetMotorSpeed(m_jointId);
+}
+
+void B3Joint::SetPrismaticMaxMotorForce(float force) {
+    b3PrismaticJoint_SetMaxMotorForce(m_jointId, force);
+}
+
+float B3Joint::GetPrismaticMaxMotorForce() const {
+    return b3PrismaticJoint_GetMaxMotorForce(m_jointId);
+}
+
+float B3Joint::GetPrismaticMotorForce() const {
+    return b3PrismaticJoint_GetMotorForce(m_jointId);
+}
+
+float B3Joint::GetPrismaticSpeed() const {
+    return b3PrismaticJoint_GetSpeed(m_jointId);
+}
+
+void B3Joint::EnableRevoluteSpring(bool enabled) {
+    b3RevoluteJoint_EnableSpring(m_jointId, enabled);
+}
+
+bool B3Joint::IsRevoluteSpringEnabled() const {
+    return b3RevoluteJoint_IsSpringEnabled(m_jointId);
+}
+
 void B3Joint::SetRevoluteTargetAngle(float radians) {
     b3RevoluteJoint_SetTargetAngle(m_jointId, radians);
+}
+
+float B3Joint::GetRevoluteTargetAngle() const {
+    return b3RevoluteJoint_GetTargetAngle(m_jointId);
+}
+
+float B3Joint::GetRevoluteAngle() const {
+    return b3RevoluteJoint_GetAngle(m_jointId);
+}
+
+void B3Joint::EnableRevoluteLimit(bool enabled) {
+    b3RevoluteJoint_EnableLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsRevoluteLimitEnabled() const {
+    return b3RevoluteJoint_IsLimitEnabled(m_jointId);
+}
+
+float B3Joint::GetRevoluteLowerLimit() const {
+    return b3RevoluteJoint_GetLowerLimit(m_jointId);
+}
+
+float B3Joint::GetRevoluteUpperLimit() const {
+    return b3RevoluteJoint_GetUpperLimit(m_jointId);
+}
+
+void B3Joint::SetRevoluteLimits(float lowerRadians, float upperRadians) {
+    b3RevoluteJoint_SetLimits(m_jointId, lowerRadians, upperRadians);
+}
+
+void B3Joint::EnableRevoluteMotor(bool enabled) {
+    b3RevoluteJoint_EnableMotor(m_jointId, enabled);
+}
+
+bool B3Joint::IsRevoluteMotorEnabled() const {
+    return b3RevoluteJoint_IsMotorEnabled(m_jointId);
+}
+
+void B3Joint::SetRevoluteMotorSpeed(float speed) {
+    b3RevoluteJoint_SetMotorSpeed(m_jointId, speed);
+}
+
+float B3Joint::GetRevoluteMotorSpeed() const {
+    return b3RevoluteJoint_GetMotorSpeed(m_jointId);
+}
+
+float B3Joint::GetRevoluteMotorTorque() const {
+    return b3RevoluteJoint_GetMotorTorque(m_jointId);
 }
 
 void B3Joint::SetRevoluteMaxMotorTorque(float torque) {
     b3RevoluteJoint_SetMaxMotorTorque(m_jointId, torque);
 }
 
+float B3Joint::GetRevoluteMaxMotorTorque() const {
+    return b3RevoluteJoint_GetMaxMotorTorque(m_jointId);
+}
+
 void B3Joint::SetRevoluteSpringHertz(float hertz) {
     b3RevoluteJoint_SetSpringHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetRevoluteSpringHertz() const {
+    return b3RevoluteJoint_GetSpringHertz(m_jointId);
 }
 
 void B3Joint::SetRevoluteSpringDampingRatio(float dampingRatio) {
     b3RevoluteJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
 }
 
+float B3Joint::GetRevoluteSpringDampingRatio() const {
+    return b3RevoluteJoint_GetSpringDampingRatio(m_jointId);
+}
+
+void B3Joint::EnableSphericalConeLimit(bool enabled) {
+    b3SphericalJoint_EnableConeLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsSphericalConeLimitEnabled() const {
+    return b3SphericalJoint_IsConeLimitEnabled(m_jointId);
+}
+
+float B3Joint::GetSphericalConeLimit() const {
+    return b3SphericalJoint_GetConeLimit(m_jointId);
+}
+
+void B3Joint::SetSphericalConeLimit(float radians) {
+    b3SphericalJoint_SetConeLimit(m_jointId, radians);
+}
+
+float B3Joint::GetSphericalConeAngle() const {
+    return b3SphericalJoint_GetConeAngle(m_jointId);
+}
+
+void B3Joint::EnableSphericalTwistLimit(bool enabled) {
+    b3SphericalJoint_EnableTwistLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsSphericalTwistLimitEnabled() const {
+    return b3SphericalJoint_IsTwistLimitEnabled(m_jointId);
+}
+
+float B3Joint::GetSphericalLowerTwistLimit() const {
+    return b3SphericalJoint_GetLowerTwistLimit(m_jointId);
+}
+
+float B3Joint::GetSphericalUpperTwistLimit() const {
+    return b3SphericalJoint_GetUpperTwistLimit(m_jointId);
+}
+
+void B3Joint::SetSphericalTwistLimits(float lowerRadians, float upperRadians) {
+    b3SphericalJoint_SetTwistLimits(m_jointId, lowerRadians, upperRadians);
+}
+
+float B3Joint::GetSphericalTwistAngle() const {
+    return b3SphericalJoint_GetTwistAngle(m_jointId);
+}
+
+void B3Joint::EnableSphericalSpring(bool enabled) {
+    b3SphericalJoint_EnableSpring(m_jointId, enabled);
+}
+
+bool B3Joint::IsSphericalSpringEnabled() const {
+    return b3SphericalJoint_IsSpringEnabled(m_jointId);
+}
+
 void B3Joint::SetSphericalMaxMotorTorque(float torque) {
     b3SphericalJoint_SetMaxMotorTorque(m_jointId, torque);
+}
+
+float B3Joint::GetSphericalMaxMotorTorque() const {
+    return b3SphericalJoint_GetMaxMotorTorque(m_jointId);
 }
 
 void B3Joint::SetSphericalSpringHertz(float hertz) {
     b3SphericalJoint_SetSpringHertz(m_jointId, hertz);
 }
 
+float B3Joint::GetSphericalSpringHertz() const {
+    return b3SphericalJoint_GetSpringHertz(m_jointId);
+}
+
 void B3Joint::SetSphericalSpringDampingRatio(float dampingRatio) {
     b3SphericalJoint_SetSpringDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetSphericalSpringDampingRatio() const {
+    return b3SphericalJoint_GetSpringDampingRatio(m_jointId);
+}
+
+void B3Joint::SetSphericalTargetRotation(const B3Quat& rotation) {
+    b3SphericalJoint_SetTargetRotation(m_jointId, rotation.value);
+}
+
+B3Quat B3Joint::GetSphericalTargetRotation() const {
+    return B3Quat(b3SphericalJoint_GetTargetRotation(m_jointId));
+}
+
+void B3Joint::EnableSphericalMotor(bool enabled) {
+    b3SphericalJoint_EnableMotor(m_jointId, enabled);
+}
+
+bool B3Joint::IsSphericalMotorEnabled() const {
+    return b3SphericalJoint_IsMotorEnabled(m_jointId);
+}
+
+void B3Joint::SetSphericalMotorVelocity(const B3Vec3& velocity) {
+    b3SphericalJoint_SetMotorVelocity(m_jointId, velocity.value);
+}
+
+B3Vec3 B3Joint::GetSphericalMotorVelocity() const {
+    return B3Vec3(b3SphericalJoint_GetMotorVelocity(m_jointId));
+}
+
+B3Vec3 B3Joint::GetSphericalMotorTorque() const {
+    return B3Vec3(b3SphericalJoint_GetMotorTorque(m_jointId));
+}
+
+void B3Joint::SetWeldLinearHertz(float hertz) {
+    b3WeldJoint_SetLinearHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetWeldLinearHertz() const {
+    return b3WeldJoint_GetLinearHertz(m_jointId);
+}
+
+void B3Joint::SetWeldLinearDampingRatio(float dampingRatio) {
+    b3WeldJoint_SetLinearDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetWeldLinearDampingRatio() const {
+    return b3WeldJoint_GetLinearDampingRatio(m_jointId);
+}
+
+void B3Joint::SetWeldAngularHertz(float hertz) {
+    b3WeldJoint_SetAngularHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetWeldAngularHertz() const {
+    return b3WeldJoint_GetAngularHertz(m_jointId);
+}
+
+void B3Joint::SetWeldAngularDampingRatio(float dampingRatio) {
+    b3WeldJoint_SetAngularDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetWeldAngularDampingRatio() const {
+    return b3WeldJoint_GetAngularDampingRatio(m_jointId);
+}
+
+void B3Joint::EnableWheelSuspension(bool enabled) {
+    b3WheelJoint_EnableSuspension(m_jointId, enabled);
+}
+
+bool B3Joint::IsWheelSuspensionEnabled() const {
+    return b3WheelJoint_IsSuspensionEnabled(m_jointId);
+}
+
+void B3Joint::SetWheelSuspensionHertz(float hertz) {
+    b3WheelJoint_SetSuspensionHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetWheelSuspensionHertz() const {
+    return b3WheelJoint_GetSuspensionHertz(m_jointId);
+}
+
+void B3Joint::SetWheelSuspensionDampingRatio(float dampingRatio) {
+    b3WheelJoint_SetSuspensionDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetWheelSuspensionDampingRatio() const {
+    return b3WheelJoint_GetSuspensionDampingRatio(m_jointId);
+}
+
+void B3Joint::EnableWheelSuspensionLimit(bool enabled) {
+    b3WheelJoint_EnableSuspensionLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsWheelSuspensionLimitEnabled() const {
+    return b3WheelJoint_IsSuspensionLimitEnabled(m_jointId);
+}
+
+float B3Joint::GetWheelLowerSuspensionLimit() const {
+    return b3WheelJoint_GetLowerSuspensionLimit(m_jointId);
+}
+
+float B3Joint::GetWheelUpperSuspensionLimit() const {
+    return b3WheelJoint_GetUpperSuspensionLimit(m_jointId);
+}
+
+void B3Joint::SetWheelSuspensionLimits(float lower, float upper) {
+    b3WheelJoint_SetSuspensionLimits(m_jointId, lower, upper);
+}
+
+void B3Joint::EnableWheelSpinMotor(bool enabled) {
+    b3WheelJoint_EnableSpinMotor(m_jointId, enabled);
+}
+
+bool B3Joint::IsWheelSpinMotorEnabled() const {
+    return b3WheelJoint_IsSpinMotorEnabled(m_jointId);
+}
+
+void B3Joint::SetWheelTargetSteeringAngle(float radians) {
+    b3WheelJoint_SetTargetSteeringAngle(m_jointId, radians);
+}
+
+float B3Joint::GetWheelTargetSteeringAngle() const {
+    return b3WheelJoint_GetTargetSteeringAngle(m_jointId);
+}
+
+void B3Joint::SetWheelSpinMotorSpeed(float speed) {
+    b3WheelJoint_SetSpinMotorSpeed(m_jointId, speed);
+}
+
+float B3Joint::GetWheelSpinMotorSpeed() const {
+    return b3WheelJoint_GetSpinMotorSpeed(m_jointId);
+}
+
+void B3Joint::SetWheelMaxSpinTorque(float torque) {
+    b3WheelJoint_SetMaxSpinTorque(m_jointId, torque);
+}
+
+float B3Joint::GetWheelMaxSpinTorque() const {
+    return b3WheelJoint_GetMaxSpinTorque(m_jointId);
+}
+
+float B3Joint::GetWheelSpinSpeed() const {
+    return b3WheelJoint_GetSpinSpeed(m_jointId);
+}
+
+float B3Joint::GetWheelSpinTorque() const {
+    return b3WheelJoint_GetSpinTorque(m_jointId);
+}
+
+void B3Joint::EnableWheelSteering(bool enabled) {
+    b3WheelJoint_EnableSteering(m_jointId, enabled);
+}
+
+bool B3Joint::IsWheelSteeringEnabled() const {
+    return b3WheelJoint_IsSteeringEnabled(m_jointId);
+}
+
+void B3Joint::SetWheelSteeringHertz(float hertz) {
+    b3WheelJoint_SetSteeringHertz(m_jointId, hertz);
+}
+
+float B3Joint::GetWheelSteeringHertz() const {
+    return b3WheelJoint_GetSteeringHertz(m_jointId);
+}
+
+void B3Joint::SetWheelSteeringDampingRatio(float dampingRatio) {
+    b3WheelJoint_SetSteeringDampingRatio(m_jointId, dampingRatio);
+}
+
+float B3Joint::GetWheelSteeringDampingRatio() const {
+    return b3WheelJoint_GetSteeringDampingRatio(m_jointId);
+}
+
+void B3Joint::SetWheelMaxSteeringTorque(float torque) {
+    b3WheelJoint_SetMaxSteeringTorque(m_jointId, torque);
+}
+
+float B3Joint::GetWheelMaxSteeringTorque() const {
+    return b3WheelJoint_GetMaxSteeringTorque(m_jointId);
+}
+
+void B3Joint::EnableWheelSteeringLimit(bool enabled) {
+    b3WheelJoint_EnableSteeringLimit(m_jointId, enabled);
+}
+
+bool B3Joint::IsWheelSteeringLimitEnabled() const {
+    return b3WheelJoint_IsSteeringLimitEnabled(m_jointId);
+}
+
+float B3Joint::GetWheelLowerSteeringLimit() const {
+    return b3WheelJoint_GetLowerSteeringLimit(m_jointId);
+}
+
+float B3Joint::GetWheelUpperSteeringLimit() const {
+    return b3WheelJoint_GetUpperSteeringLimit(m_jointId);
+}
+
+void B3Joint::SetWheelSteeringLimits(float lowerRadians, float upperRadians) {
+    b3WheelJoint_SetSteeringLimits(m_jointId, lowerRadians, upperRadians);
+}
+
+float B3Joint::GetWheelSteeringAngle() const {
+    return b3WheelJoint_GetSteeringAngle(m_jointId);
+}
+
+float B3Joint::GetWheelSteeringTorque() const {
+    return b3WheelJoint_GetSteeringTorque(m_jointId);
 }
 
 B3Shape::B3Shape() : m_shapeId(b3_nullShapeId) {
@@ -3788,8 +4932,21 @@ long long B3Shape::GetBodyId() const {
     return static_cast<long long>(b3StoreBodyId(b3Shape_GetBody(m_shapeId)));
 }
 
+long long B3Shape::GetWorldId() const {
+    return static_cast<long long>(b3StoreWorldId(b3Shape_GetWorld(m_shapeId)));
+}
+
 bool B3Shape::IsSensor() const {
     return b3Shape_IsSensor(m_shapeId);
+}
+
+void B3Shape::GetName(NativeString& name) const {
+    const char* value = b3Shape_GetName(m_shapeId);
+    name = value != nullptr ? value : "";
+}
+
+void B3Shape::SetName(const char* name) {
+    b3Shape_SetName(m_shapeId, name != nullptr ? name : "");
 }
 
 float B3Shape::GetDensity() const {
@@ -3824,6 +4981,18 @@ void B3Shape::SetSurfaceMaterial(const B3SurfaceMaterial& material) {
     b3Shape_SetSurfaceMaterial(m_shapeId, material.value);
 }
 
+int B3Shape::GetMeshMaterialCount() const {
+    return b3Shape_GetMeshMaterialCount(m_shapeId);
+}
+
+B3SurfaceMaterial B3Shape::GetMeshSurfaceMaterial(int index) const {
+    return B3SurfaceMaterial(b3Shape_GetMeshSurfaceMaterial(m_shapeId, index));
+}
+
+void B3Shape::SetMeshMaterial(const B3SurfaceMaterial& material, int index) {
+    b3Shape_SetMeshMaterial(m_shapeId, material.value, index);
+}
+
 B3Filter B3Shape::GetFilter() const {
     return B3Filter(b3Shape_GetFilter(m_shapeId));
 }
@@ -3846,6 +5015,14 @@ void B3Shape::EnableContactEvents(bool enabled) {
 
 bool B3Shape::AreContactEventsEnabled() const {
     return b3Shape_AreContactEventsEnabled(m_shapeId);
+}
+
+void B3Shape::EnablePreSolveEvents(bool enabled) {
+    b3Shape_EnablePreSolveEvents(m_shapeId, enabled);
+}
+
+bool B3Shape::ArePreSolveEventsEnabled() const {
+    return b3Shape_ArePreSolveEventsEnabled(m_shapeId);
 }
 
 void B3Shape::EnableHitEvents(bool enabled) {
@@ -3885,8 +5062,52 @@ void B3Shape::SetCapsule(const B3Capsule& capsule) {
     b3Shape_SetCapsule(m_shapeId, &capsule.value);
 }
 
+B3Hull* B3Shape::GetHull() const {
+    const b3HullData* hull = b3Shape_GetHull(m_shapeId);
+    return new B3Hull(hull != nullptr ? b3CloneHull(hull) : nullptr);
+}
+
+void B3Shape::SetHull(const B3Hull& hull) {
+    const b3HullData* hullData = hull.GetHandle();
+    if(hullData != nullptr) {
+        b3Shape_SetHull(m_shapeId, hullData);
+    }
+}
+
+void B3Shape::SetMesh(const B3Mesh& mesh, const B3Vec3& scale) {
+    const b3MeshData* meshData = mesh.GetHandle();
+    if(meshData != nullptr) {
+        b3Shape_SetMesh(m_shapeId, meshData, scale.value);
+    }
+}
+
+int B3Shape::GetContactCapacity() const {
+    return b3Shape_GetContactCapacity(m_shapeId);
+}
+
+int B3Shape::GetSensorCapacity() const {
+    return b3Shape_GetSensorCapacity(m_shapeId);
+}
+
+long long B3Shape::GetSensorShapeId(int index) const {
+    int capacity = b3Shape_GetSensorCapacity(m_shapeId);
+    if(index < 0 || index >= capacity) {
+        return static_cast<long long>(b3StoreShapeId(b3_nullShapeId));
+    }
+    std::vector<b3ShapeId> shapes(static_cast<size_t>(capacity));
+    int count = b3Shape_GetSensorData(m_shapeId, shapes.data(), capacity);
+    if(index >= count) {
+        return static_cast<long long>(b3StoreShapeId(b3_nullShapeId));
+    }
+    return static_cast<long long>(b3StoreShapeId(shapes[static_cast<size_t>(index)]));
+}
+
 B3AABB B3Shape::GetAABB() const {
     return B3AABB(b3Shape_GetAABB(m_shapeId));
+}
+
+B3MassData B3Shape::ComputeMassData() const {
+    return B3MassData(b3Shape_ComputeMassData(m_shapeId));
 }
 
 B3Vec3 B3Shape::GetClosestPoint(const B3Vec3& target) const {
@@ -4213,6 +5434,30 @@ void B3World::SetContactRecycleDistance(float recycleDistance) {
     b3World_SetContactRecycleDistance(m_worldId, recycleDistance);
 }
 
+float B3World::GetRestitutionThreshold() const {
+    return b3World_GetRestitutionThreshold(m_worldId);
+}
+
+void B3World::SetRestitutionThreshold(float threshold) {
+    b3World_SetRestitutionThreshold(m_worldId, threshold);
+}
+
+float B3World::GetHitEventThreshold() const {
+    return b3World_GetHitEventThreshold(m_worldId);
+}
+
+void B3World::SetHitEventThreshold(float threshold) {
+    b3World_SetHitEventThreshold(m_worldId, threshold);
+}
+
+float B3World::GetMaximumLinearSpeed() const {
+    return b3World_GetMaximumLinearSpeed(m_worldId);
+}
+
+void B3World::SetMaximumLinearSpeed(float speed) {
+    b3World_SetMaximumLinearSpeed(m_worldId, speed);
+}
+
 void B3World::SetContactTuning(float hertz, float dampingRatio, float contactSpeed) {
     b3World_SetContactTuning(m_worldId, hertz, dampingRatio, contactSpeed);
 }
@@ -4229,8 +5474,24 @@ int B3World::GetAwakeBodyCount() const {
     return b3World_GetAwakeBodyCount(m_worldId);
 }
 
+B3Capacity B3World::GetMaxCapacity() const {
+    return B3Capacity(b3World_GetMaxCapacity(m_worldId));
+}
+
 void B3World::Explode(const B3ExplosionDef& def) {
     b3World_Explode(m_worldId, &def.value);
+}
+
+void B3World::DumpMemoryStats() {
+    b3World_DumpMemoryStats(m_worldId);
+}
+
+void B3World::RebuildStaticTree() {
+    b3World_RebuildStaticTree(m_worldId);
+}
+
+void B3World::EnableSpeculative(bool enabled) {
+    b3World_EnableSpeculative(m_worldId, enabled);
 }
 
 void B3World::SetCustomFilterCallback(B3CustomFilterEm* callback) {
@@ -4511,6 +5772,62 @@ b3WorldId B3World::GetHandle() const {
 
 bool B3::IsDoublePrecision() {
     return b3IsDoublePrecision();
+}
+
+float B3::Atan2(float y, float x) {
+    return b3Atan2(y, x);
+}
+
+bool B3::IsValidFloat(float value) {
+    return b3IsValidFloat(value);
+}
+
+bool B3::IsValidVec3(const B3Vec3& value) {
+    return b3IsValidVec3(value.value);
+}
+
+bool B3::IsValidQuat(const B3Quat& value) {
+    return b3IsValidQuat(value.value);
+}
+
+bool B3::IsValidTransform(const B3Transform& value) {
+    return b3IsValidTransform(value.value);
+}
+
+bool B3::IsValidAABB(const B3AABB& value) {
+    return b3IsValidAABB(value.value);
+}
+
+bool B3::IsBoundedAABB(const B3AABB& value) {
+    return b3IsBoundedAABB(value.value);
+}
+
+bool B3::IsSaneAABB(const B3AABB& value) {
+    return b3IsSaneAABB(value.value);
+}
+
+int B3::GetGraphColor(int index) {
+    return static_cast<int>(b3GetGraphColor(index));
+}
+
+int B3::GetVersionMajor() {
+    return b3GetVersion().major;
+}
+
+int B3::GetVersionMinor() {
+    return b3GetVersion().minor;
+}
+
+int B3::GetVersionRevision() {
+    return b3GetVersion().revision;
+}
+
+float B3::GetLengthUnitsPerMeter() {
+    return b3GetLengthUnitsPerMeter();
+}
+
+void B3::SetLengthUnitsPerMeter(float lengthUnits) {
+    b3SetLengthUnitsPerMeter(lengthUnits);
 }
 
 int B3::StaticBody() {

@@ -36,35 +36,43 @@ final class SampleRandom {
     }
 
     float nextFloat() {
-        return 2.0f * nextInt() / LIMIT - 1.0f;
+        float value = nextInt();
+        value /= LIMIT;
+        return 2.0f * value - 1.0f;
     }
 
     float nextFloat(float minimum, float maximum) {
-        return (maximum - minimum) * nextInt() / LIMIT + minimum;
+        float value = nextInt();
+        value /= LIMIT;
+        return (maximum - minimum) * value + minimum;
     }
 
     B3Quat nextQuaternion() {
         float u1 = nextFloat(0.0f, 1.0f);
-        float u2 = nextFloat(0.0f, 2.0f * (float)Math.PI);
-        float u3 = nextFloat(0.0f, 2.0f * (float)Math.PI);
+        float u2 = nextFloat(0.0f, 2.0f * SampleMath.PI);
+        float u3 = nextFloat(0.0f, 2.0f * SampleMath.PI);
         float sqrt1MinusU1 = (float)Math.sqrt(1.0f - u1);
         float sqrtU1 = (float)Math.sqrt(u1);
+        long cosSin2 = SampleMath.computeCosSin(u2);
+        long cosSin3 = SampleMath.computeCosSin(u3);
         return new B3Quat(
-                sqrt1MinusU1 * (float)Math.sin(u2),
-                sqrt1MinusU1 * (float)Math.cos(u2),
-                sqrtU1 * (float)Math.sin(u3),
-                sqrtU1 * (float)Math.cos(u3));
+                sqrt1MinusU1 * SampleMath.sine(cosSin2),
+                sqrt1MinusU1 * SampleMath.cosine(cosSin2),
+                sqrtU1 * SampleMath.sine(cosSin3),
+                sqrtU1 * SampleMath.cosine(cosSin3));
     }
 
     B3Vec3 nextUnitVector() {
         float u1 = nextFloat(0.0f, 1.0f);
-        float u2 = nextFloat(0.0f, 2.0f * (float)Math.PI);
-        float u3 = nextFloat(0.0f, 2.0f * (float)Math.PI);
+        float u2 = nextFloat(0.0f, 2.0f * SampleMath.PI);
+        float u3 = nextFloat(0.0f, 2.0f * SampleMath.PI);
         float sqrt1MinusU1 = (float)Math.sqrt(1.0f - u1);
         float sqrtU1 = (float)Math.sqrt(u1);
+        long cosSin2 = SampleMath.computeCosSin(u2);
+        long cosSin3 = SampleMath.computeCosSin(u3);
         return new B3Vec3(
-                sqrt1MinusU1 * (float)Math.sin(u2),
-                sqrt1MinusU1 * (float)Math.cos(u2),
-                sqrtU1 * (float)Math.sin(u3));
+                sqrt1MinusU1 * SampleMath.sine(cosSin2),
+                sqrt1MinusU1 * SampleMath.cosine(cosSin2),
+                sqrtU1 * SampleMath.sine(cosSin3));
     }
 }

@@ -6,13 +6,20 @@
 #include <cstdint>
 #include <limits>
 #include <memory>
+#include <string>
 #include <vector>
 
 #define TINYOBJLOADER_USE_MAPBOX_EARCUT
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "samples/tiny_obj_loader.h"
 
+using NativeString = std::string;
+
 namespace JBox3D {
+
+class B3Mesh;
+class B3HeightField;
+class B3Compound;
 
 class B3Vec3 {
 public:
@@ -130,6 +137,25 @@ public:
     void SetAngularY(bool locked);
     bool GetAngularZ() const;
     void SetAngularZ(bool locked);
+};
+
+class B3MassData {
+public:
+    b3MassData value;
+
+    B3MassData();
+    explicit B3MassData(b3MassData value);
+
+    float GetMass() const;
+    void SetMass(float mass);
+    B3Vec3 GetCenter() const;
+    void SetCenter(const B3Vec3& center);
+    B3Vec3 GetInertiaColumnX() const;
+    void SetInertiaColumnX(const B3Vec3& column);
+    B3Vec3 GetInertiaColumnY() const;
+    void SetInertiaColumnY(const B3Vec3& column);
+    B3Vec3 GetInertiaColumnZ() const;
+    void SetInertiaColumnZ(const B3Vec3& column);
 };
 
 class B3DistanceJointDef {
@@ -1139,6 +1165,7 @@ public:
     B3MoverPlaneResult GetResult(int index) const;
 
 private:
+    friend class B3Body;
     friend class B3World;
     friend class B3Collision;
     std::vector<b3BodyPlaneResult> m_results;
@@ -1158,6 +1185,51 @@ private:
 
 class B3Collision {
 public:
+    static void ScaleBox(B3Vec3& halfWidths, B3Transform& transform, const B3Vec3& postScale, float minHalfWidth);
+    static B3MassData ComputeSphereMass(const B3Sphere& sphere, float density);
+    static B3MassData ComputeCapsuleMass(const B3Capsule& capsule, float density);
+    static B3MassData ComputeHullMass(const B3Hull& hull, float density);
+    static B3AABB ComputeSphereAABB(const B3Sphere& sphere, const B3Transform& transform);
+    static B3AABB ComputeCapsuleAABB(const B3Capsule& capsule, const B3Transform& transform);
+    static B3AABB ComputeHullAABB(const B3Hull& hull, const B3Transform& transform);
+    static B3AABB ComputeMeshAABB(const B3Mesh& mesh, const B3Transform& transform, const B3Vec3& scale);
+    static B3AABB ComputeHeightFieldAABB(const B3HeightField& heightField, const B3Transform& transform);
+    static B3AABB ComputeCompoundAABB(const B3Compound& compound, const B3Transform& transform);
+    static bool OverlapSphere(const B3Sphere& sphere, const B3Transform& transform, const B3ShapeProxy& proxy);
+    static bool OverlapCapsule(const B3Capsule& capsule, const B3Transform& transform, const B3ShapeProxy& proxy);
+    static bool OverlapHull(const B3Hull& hull, const B3Transform& transform, const B3ShapeProxy& proxy);
+    static bool OverlapMesh(const B3Mesh& mesh, const B3Vec3& scale, const B3Transform& transform,
+                            const B3ShapeProxy& proxy);
+    static bool OverlapHeightField(const B3HeightField& heightField, const B3Transform& transform,
+                                   const B3ShapeProxy& proxy);
+    static bool OverlapCompound(const B3Compound& compound, const B3Transform& transform,
+                                const B3ShapeProxy& proxy);
+    static B3CastOutput RayCastSphere(const B3Sphere& sphere, const B3Vec3& origin,
+                                      const B3Vec3& translation, float maxFraction);
+    static B3CastOutput RayCastHollowSphere(const B3Sphere& sphere, const B3Vec3& origin,
+                                            const B3Vec3& translation, float maxFraction);
+    static B3CastOutput RayCastCapsule(const B3Capsule& capsule, const B3Vec3& origin,
+                                       const B3Vec3& translation, float maxFraction);
+    static B3CastOutput RayCastHull(const B3Hull& hull, const B3Vec3& origin,
+                                    const B3Vec3& translation, float maxFraction);
+    static B3CastOutput RayCastMesh(const B3Mesh& mesh, const B3Vec3& scale, const B3Vec3& origin,
+                                    const B3Vec3& translation, float maxFraction);
+    static B3CastOutput RayCastHeightField(const B3HeightField& heightField, const B3Vec3& origin,
+                                           const B3Vec3& translation, float maxFraction);
+    static B3CastOutput RayCastCompound(const B3Compound& compound, const B3Vec3& origin,
+                                        const B3Vec3& translation, float maxFraction);
+    static B3CastOutput ShapeCastSphere(const B3Sphere& sphere, const B3ShapeProxy& proxy,
+                                        const B3Vec3& translation, float maxFraction, bool canEncroach);
+    static B3CastOutput ShapeCastCapsule(const B3Capsule& capsule, const B3ShapeProxy& proxy,
+                                         const B3Vec3& translation, float maxFraction, bool canEncroach);
+    static B3CastOutput ShapeCastHull(const B3Hull& hull, const B3ShapeProxy& proxy,
+                                      const B3Vec3& translation, float maxFraction, bool canEncroach);
+    static B3CastOutput ShapeCastMesh(const B3Mesh& mesh, const B3Vec3& scale, const B3ShapeProxy& proxy,
+                                      const B3Vec3& translation, float maxFraction, bool canEncroach);
+    static B3CastOutput ShapeCastHeightField(const B3HeightField& heightField, const B3ShapeProxy& proxy,
+                                             const B3Vec3& translation, float maxFraction, bool canEncroach);
+    static B3CastOutput ShapeCastCompound(const B3Compound& compound, const B3ShapeProxy& proxy,
+                                          const B3Vec3& translation, float maxFraction, bool canEncroach);
     static B3LocalManifold* CollideSpheres(int capacity, const B3Sphere& sphereA, const B3Sphere& sphereB,
                                            const B3Transform& transformBtoA);
     static B3LocalManifold* CollideCapsuleAndSphere(int capacity, const B3Capsule& capsuleA,
@@ -1338,17 +1410,25 @@ public:
     void Destroy();
     int GetType() const;
     void SetType(int type);
+    void GetName(NativeString& name) const;
+    void SetName(const char* name);
     B3Vec3 GetPosition() const;
     B3Quat GetRotation() const;
     B3Transform GetTransform() const;
     B3Vec3 GetWorldCenter() const;
+    B3Vec3 GetLocalCenter() const;
     B3Vec3 GetLocalPoint(const B3Vec3& worldPoint) const;
+    B3Vec3 GetWorldPoint(const B3Vec3& localPoint) const;
+    B3Vec3 GetLocalVector(const B3Vec3& worldVector) const;
+    B3Vec3 GetWorldVector(const B3Vec3& localVector) const;
     void SetTransform(const B3Vec3& position, const B3Quat& rotation);
     void SetTargetTransform(const B3Vec3& position, const B3Quat& rotation, float timeStep, bool wake);
     B3Vec3 GetLinearVelocity() const;
     void SetLinearVelocity(const B3Vec3& velocity);
     B3Vec3 GetAngularVelocity() const;
     void SetAngularVelocity(const B3Vec3& velocity);
+    B3Vec3 GetLocalPointVelocity(const B3Vec3& localPoint) const;
+    B3Vec3 GetWorldPointVelocity(const B3Vec3& worldPoint) const;
     void ApplyForce(const B3Vec3& force, const B3Vec3& point, bool wake);
     void ApplyForceToCenter(const B3Vec3& force, bool wake);
     void ApplyTorque(const B3Vec3& torque, bool wake);
@@ -1363,6 +1443,11 @@ public:
     B3Vec3 GetLocalRotationalInertiaColumnZ() const;
     void SetMassData(float mass, const B3Vec3& center, const B3Vec3& inertiaColumnX,
                      const B3Vec3& inertiaColumnY, const B3Vec3& inertiaColumnZ);
+    B3MassData GetMassData() const;
+    void SetMassDataValue(const B3MassData& massData);
+    B3Vec3 GetWorldInverseRotationalInertiaColumnX() const;
+    B3Vec3 GetWorldInverseRotationalInertiaColumnY() const;
+    B3Vec3 GetWorldInverseRotationalInertiaColumnZ() const;
     float GetLinearDamping() const;
     void SetLinearDamping(float damping);
     float GetAngularDamping() const;
@@ -1371,6 +1456,10 @@ public:
     void SetGravityScale(float scale);
     bool IsAwake() const;
     void SetAwake(bool awake);
+    bool IsSleepEnabled() const;
+    void EnableSleep(bool enabled);
+    float GetSleepThreshold() const;
+    void SetSleepThreshold(float threshold);
     B3RayResult CastRay(const B3Vec3& origin, const B3Vec3& translation, const B3QueryFilter& filter,
                         float maxFraction, const B3Transform& bodyTransform) const;
     bool IsEnabled() const;
@@ -1380,8 +1469,26 @@ public:
     void SetMotionLocks(const B3MotionLocks& locks);
     bool IsBullet() const;
     void SetBullet(bool bullet);
+    bool IsFastRotationAllowed() const;
+    void AllowFastRotation(bool allowed);
+    bool IsContactRecyclingEnabled() const;
+    void EnableContactRecycling(bool enabled);
+    void EnableHitEvents(bool enabled);
+    long long GetWorldId() const;
     int GetShapeCount() const;
+    long long GetShapeId(int index) const;
+    int GetJointCount() const;
+    long long GetJointId(int index) const;
     B3AABB ComputeAABB() const;
+    B3Vec3 GetClosestPoint(const B3Vec3& target) const;
+    float GetClosestPointDistance(const B3Vec3& target) const;
+    B3RayResult CastShape(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3Vec3& translation,
+                          const B3QueryFilter& filter, float maxFraction, bool canEncroach,
+                          const B3Transform& bodyTransform) const;
+    bool OverlapShape(const B3Vec3& origin, const B3ShapeProxy& proxy, const B3QueryFilter& filter,
+                      const B3Transform& bodyTransform) const;
+    B3MoverCollision* CollideMover(const B3Vec3& origin, const B3Capsule& mover, const B3QueryFilter& filter,
+                                   const B3Transform& bodyTransform, int capacity) const;
     B3Shape* CreateSphereShape(const B3ShapeDef& def, const B3Sphere& sphere);
     B3Shape* CreateCapsuleShape(const B3ShapeDef& def, const B3Capsule& capsule);
     B3Shape* CreateHullShape(const B3ShapeDef& def, const B3Hull& hull);
@@ -1406,19 +1513,199 @@ public:
     long long GetId() const;
     bool IsValid() const;
     void Destroy(bool wakeAttached);
+    int GetType() const;
     long long GetBodyIdA() const;
     long long GetBodyIdB() const;
+    long long GetWorldId() const;
+    B3Transform GetLocalFrameA() const;
+    void SetLocalFrameA(const B3Transform& localFrame);
+    B3Transform GetLocalFrameB() const;
+    void SetLocalFrameB(const B3Transform& localFrame);
+    bool GetCollideConnected() const;
+    void SetCollideConnected(bool collideConnected);
     void WakeBodies();
+    B3Vec3 GetConstraintForce() const;
+    B3Vec3 GetConstraintTorque() const;
     float GetLinearSeparation() const;
+    float GetAngularSeparation() const;
+    void SetConstraintTuning(float hertz, float dampingRatio);
+    float GetConstraintHertz() const;
+    float GetConstraintDampingRatio() const;
+    void SetForceThreshold(float threshold);
+    float GetForceThreshold() const;
+    void SetTorqueThreshold(float threshold);
+    float GetTorqueThreshold() const;
+
+    void SetParallelSpringHertz(float hertz);
+    float GetParallelSpringHertz() const;
+    void SetParallelSpringDampingRatio(float dampingRatio);
+    float GetParallelSpringDampingRatio() const;
+    void SetParallelMaxTorque(float torque);
+    float GetParallelMaxTorque() const;
+
+    void SetDistanceLength(float length);
+    float GetDistanceLength() const;
+    void EnableDistanceSpring(bool enabled);
+    bool IsDistanceSpringEnabled() const;
+    void SetDistanceSpringForceRange(float lowerForce, float upperForce);
+    float GetDistanceLowerSpringForce() const;
+    float GetDistanceUpperSpringForce() const;
+    void SetDistanceSpringHertz(float hertz);
+    float GetDistanceSpringHertz() const;
+    void SetDistanceSpringDampingRatio(float dampingRatio);
+    float GetDistanceSpringDampingRatio() const;
+    void EnableDistanceLimit(bool enabled);
+    bool IsDistanceLimitEnabled() const;
+    void SetDistanceLengthRange(float minLength, float maxLength);
+    float GetDistanceMinLength() const;
+    float GetDistanceMaxLength() const;
+    float GetDistanceCurrentLength() const;
+    void EnableDistanceMotor(bool enabled);
+    bool IsDistanceMotorEnabled() const;
+    void SetDistanceMotorSpeed(float speed);
+    float GetDistanceMotorSpeed() const;
+    void SetDistanceMaxMotorForce(float force);
+    float GetDistanceMaxMotorForce() const;
+    float GetDistanceMotorForce() const;
+
+    void SetMotorLinearVelocity(const B3Vec3& velocity);
+    B3Vec3 GetMotorLinearVelocity() const;
+    void SetMotorAngularVelocity(const B3Vec3& velocity);
+    B3Vec3 GetMotorAngularVelocity() const;
+    void SetMotorMaxVelocityForce(float force);
+    float GetMotorMaxVelocityForce() const;
+    void SetMotorMaxVelocityTorque(float torque);
+    float GetMotorMaxVelocityTorque() const;
+    void SetMotorLinearHertz(float hertz);
+    float GetMotorLinearHertz() const;
+    void SetMotorLinearDampingRatio(float dampingRatio);
+    float GetMotorLinearDampingRatio() const;
+    void SetMotorAngularHertz(float hertz);
+    float GetMotorAngularHertz() const;
+    void SetMotorAngularDampingRatio(float dampingRatio);
+    float GetMotorAngularDampingRatio() const;
+    void SetMotorMaxSpringForce(float force);
+    float GetMotorMaxSpringForce() const;
+    void SetMotorMaxSpringTorque(float torque);
+    float GetMotorMaxSpringTorque() const;
+
+    void EnablePrismaticSpring(bool enabled);
+    bool IsPrismaticSpringEnabled() const;
+    void SetPrismaticSpringHertz(float hertz);
+    float GetPrismaticSpringHertz() const;
+    void SetPrismaticSpringDampingRatio(float dampingRatio);
+    float GetPrismaticSpringDampingRatio() const;
+    void SetPrismaticTargetTranslation(float translation);
+    float GetPrismaticTargetTranslation() const;
+    void EnablePrismaticLimit(bool enabled);
+    bool IsPrismaticLimitEnabled() const;
+    float GetPrismaticLowerLimit() const;
+    float GetPrismaticUpperLimit() const;
+    void SetPrismaticLimits(float lower, float upper);
+    void EnablePrismaticMotor(bool enabled);
+    bool IsPrismaticMotorEnabled() const;
     float GetPrismaticTranslation() const;
     void SetPrismaticMotorSpeed(float speed);
+    float GetPrismaticMotorSpeed() const;
+    void SetPrismaticMaxMotorForce(float force);
+    float GetPrismaticMaxMotorForce() const;
+    float GetPrismaticMotorForce() const;
+    float GetPrismaticSpeed() const;
+
+    void EnableRevoluteSpring(bool enabled);
+    bool IsRevoluteSpringEnabled() const;
     void SetRevoluteTargetAngle(float radians);
+    float GetRevoluteTargetAngle() const;
+    float GetRevoluteAngle() const;
+    void EnableRevoluteLimit(bool enabled);
+    bool IsRevoluteLimitEnabled() const;
+    float GetRevoluteLowerLimit() const;
+    float GetRevoluteUpperLimit() const;
+    void SetRevoluteLimits(float lowerRadians, float upperRadians);
+    void EnableRevoluteMotor(bool enabled);
+    bool IsRevoluteMotorEnabled() const;
+    void SetRevoluteMotorSpeed(float speed);
+    float GetRevoluteMotorSpeed() const;
+    float GetRevoluteMotorTorque() const;
     void SetRevoluteMaxMotorTorque(float torque);
+    float GetRevoluteMaxMotorTorque() const;
     void SetRevoluteSpringHertz(float hertz);
+    float GetRevoluteSpringHertz() const;
     void SetRevoluteSpringDampingRatio(float dampingRatio);
+    float GetRevoluteSpringDampingRatio() const;
+
+    void EnableSphericalConeLimit(bool enabled);
+    bool IsSphericalConeLimitEnabled() const;
+    float GetSphericalConeLimit() const;
+    void SetSphericalConeLimit(float radians);
+    float GetSphericalConeAngle() const;
+    void EnableSphericalTwistLimit(bool enabled);
+    bool IsSphericalTwistLimitEnabled() const;
+    float GetSphericalLowerTwistLimit() const;
+    float GetSphericalUpperTwistLimit() const;
+    void SetSphericalTwistLimits(float lowerRadians, float upperRadians);
+    float GetSphericalTwistAngle() const;
+    void EnableSphericalSpring(bool enabled);
+    bool IsSphericalSpringEnabled() const;
     void SetSphericalMaxMotorTorque(float torque);
+    float GetSphericalMaxMotorTorque() const;
     void SetSphericalSpringHertz(float hertz);
+    float GetSphericalSpringHertz() const;
     void SetSphericalSpringDampingRatio(float dampingRatio);
+    float GetSphericalSpringDampingRatio() const;
+    void SetSphericalTargetRotation(const B3Quat& rotation);
+    B3Quat GetSphericalTargetRotation() const;
+    void EnableSphericalMotor(bool enabled);
+    bool IsSphericalMotorEnabled() const;
+    void SetSphericalMotorVelocity(const B3Vec3& velocity);
+    B3Vec3 GetSphericalMotorVelocity() const;
+    B3Vec3 GetSphericalMotorTorque() const;
+
+    void SetWeldLinearHertz(float hertz);
+    float GetWeldLinearHertz() const;
+    void SetWeldLinearDampingRatio(float dampingRatio);
+    float GetWeldLinearDampingRatio() const;
+    void SetWeldAngularHertz(float hertz);
+    float GetWeldAngularHertz() const;
+    void SetWeldAngularDampingRatio(float dampingRatio);
+    float GetWeldAngularDampingRatio() const;
+
+    void EnableWheelSuspension(bool enabled);
+    bool IsWheelSuspensionEnabled() const;
+    void SetWheelSuspensionHertz(float hertz);
+    float GetWheelSuspensionHertz() const;
+    void SetWheelSuspensionDampingRatio(float dampingRatio);
+    float GetWheelSuspensionDampingRatio() const;
+    void EnableWheelSuspensionLimit(bool enabled);
+    bool IsWheelSuspensionLimitEnabled() const;
+    float GetWheelLowerSuspensionLimit() const;
+    float GetWheelUpperSuspensionLimit() const;
+    void SetWheelSuspensionLimits(float lower, float upper);
+    void EnableWheelSpinMotor(bool enabled);
+    bool IsWheelSpinMotorEnabled() const;
+    void SetWheelTargetSteeringAngle(float radians);
+    float GetWheelTargetSteeringAngle() const;
+    void SetWheelSpinMotorSpeed(float speed);
+    float GetWheelSpinMotorSpeed() const;
+    void SetWheelMaxSpinTorque(float torque);
+    float GetWheelMaxSpinTorque() const;
+    float GetWheelSpinSpeed() const;
+    float GetWheelSpinTorque() const;
+    void EnableWheelSteering(bool enabled);
+    bool IsWheelSteeringEnabled() const;
+    void SetWheelSteeringHertz(float hertz);
+    float GetWheelSteeringHertz() const;
+    void SetWheelSteeringDampingRatio(float dampingRatio);
+    float GetWheelSteeringDampingRatio() const;
+    void SetWheelMaxSteeringTorque(float torque);
+    float GetWheelMaxSteeringTorque() const;
+    void EnableWheelSteeringLimit(bool enabled);
+    bool IsWheelSteeringLimitEnabled() const;
+    float GetWheelLowerSteeringLimit() const;
+    float GetWheelUpperSteeringLimit() const;
+    void SetWheelSteeringLimits(float lowerRadians, float upperRadians);
+    float GetWheelSteeringAngle() const;
+    float GetWheelSteeringTorque() const;
 
 private:
     b3JointId m_jointId;
@@ -1435,7 +1722,10 @@ public:
     void Destroy(bool updateBodyMass);
     int GetType() const;
     long long GetBodyId() const;
+    long long GetWorldId() const;
     bool IsSensor() const;
+    void GetName(NativeString& name) const;
+    void SetName(const char* name);
     float GetDensity() const;
     void SetDensity(float density, bool updateBodyMass);
     float GetFriction() const;
@@ -1444,12 +1734,17 @@ public:
     void SetRestitution(float restitution);
     B3SurfaceMaterial GetSurfaceMaterial() const;
     void SetSurfaceMaterial(const B3SurfaceMaterial& material);
+    int GetMeshMaterialCount() const;
+    B3SurfaceMaterial GetMeshSurfaceMaterial(int index) const;
+    void SetMeshMaterial(const B3SurfaceMaterial& material, int index);
     B3Filter GetFilter() const;
     void SetFilter(const B3Filter& filter, bool invokeContacts);
     void EnableSensorEvents(bool enabled);
     bool AreSensorEventsEnabled() const;
     void EnableContactEvents(bool enabled);
     bool AreContactEventsEnabled() const;
+    void EnablePreSolveEvents(bool enabled);
+    bool ArePreSolveEventsEnabled() const;
     void EnableHitEvents(bool enabled);
     bool AreHitEventsEnabled() const;
     B3RayResult RayCast(const B3Vec3& origin, const B3Vec3& translation) const;
@@ -1457,7 +1752,14 @@ public:
     void SetSphere(const B3Sphere& sphere);
     B3Capsule GetCapsule() const;
     void SetCapsule(const B3Capsule& capsule);
+    B3Hull* GetHull() const;
+    void SetHull(const B3Hull& hull);
+    void SetMesh(const B3Mesh& mesh, const B3Vec3& scale);
+    int GetContactCapacity() const;
+    int GetSensorCapacity() const;
+    long long GetSensorShapeId(int index) const;
     B3AABB GetAABB() const;
+    B3MassData ComputeMassData() const;
     B3Vec3 GetClosestPoint(const B3Vec3& target) const;
     void ApplyWind(const B3Vec3& wind, float drag, float lift, float maxSpeed, bool wake);
 
@@ -1555,11 +1857,21 @@ public:
     void EnableContinuous(bool enabled);
     float GetContactRecycleDistance() const;
     void SetContactRecycleDistance(float recycleDistance);
+    float GetRestitutionThreshold() const;
+    void SetRestitutionThreshold(float threshold);
+    float GetHitEventThreshold() const;
+    void SetHitEventThreshold(float threshold);
+    float GetMaximumLinearSpeed() const;
+    void SetMaximumLinearSpeed(float speed);
     void SetContactTuning(float hertz, float dampingRatio, float contactSpeed);
     int GetWorkerCount() const;
     void SetWorkerCount(long workerCount);
     int GetAwakeBodyCount() const;
+    B3Capacity GetMaxCapacity() const;
     void Explode(const B3ExplosionDef& def);
+    void DumpMemoryStats();
+    void RebuildStaticTree();
+    void EnableSpeculative(bool enabled);
     void SetCustomFilterCallback(B3CustomFilterEm* callback);
     void ClearDebugOverlay();
     void AddDebugSegment(const B3Vec3& p1, const B3Vec3& p2, long color);
@@ -1653,6 +1965,20 @@ private:
 class B3 {
 public:
     static bool IsDoublePrecision();
+    static float Atan2(float y, float x);
+    static bool IsValidFloat(float value);
+    static bool IsValidVec3(const B3Vec3& value);
+    static bool IsValidQuat(const B3Quat& value);
+    static bool IsValidTransform(const B3Transform& value);
+    static bool IsValidAABB(const B3AABB& value);
+    static bool IsBoundedAABB(const B3AABB& value);
+    static bool IsSaneAABB(const B3AABB& value);
+    static int GetGraphColor(int index);
+    static int GetVersionMajor();
+    static int GetVersionMinor();
+    static int GetVersionRevision();
+    static float GetLengthUnitsPerMeter();
+    static void SetLengthUnitsPerMeter(float lengthUnits);
     static int StaticBody();
     static int KinematicBody();
     static int DynamicBody();

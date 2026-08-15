@@ -12,6 +12,64 @@ final public class JNI_B3Collision {
 
     public static native void internal_native_deleteNative(long this_addr);
 
+    public static native void internal_native_ScaleBox(long halfWidths_addr, long transform_addr, long postScale_addr, float minHalfWidth);
+
+    public static native long internal_native_ComputeSphereMass_addr(long sphere_addr, float density);
+
+    public static native long internal_native_ComputeCapsuleMass_addr(long capsule_addr, float density);
+
+    public static native long internal_native_ComputeHullMass_addr(long hull_addr, float density);
+
+    public static native long internal_native_ComputeSphereAABB_addr(long sphere_addr, long transform_addr);
+
+    public static native long internal_native_ComputeCapsuleAABB_addr(long capsule_addr, long transform_addr);
+
+    public static native long internal_native_ComputeHullAABB_addr(long hull_addr, long transform_addr);
+
+    public static native long internal_native_ComputeMeshAABB_addr(long mesh_addr, long transform_addr, long scale_addr);
+
+    public static native long internal_native_ComputeHeightFieldAABB_addr(long heightField_addr, long transform_addr);
+
+    public static native long internal_native_ComputeCompoundAABB_addr(long compound_addr, long transform_addr);
+
+    public static native boolean internal_native_OverlapSphere(long sphere_addr, long transform_addr, long proxy_addr);
+
+    public static native boolean internal_native_OverlapCapsule(long capsule_addr, long transform_addr, long proxy_addr);
+
+    public static native boolean internal_native_OverlapHull(long hull_addr, long transform_addr, long proxy_addr);
+
+    public static native boolean internal_native_OverlapMesh(long mesh_addr, long scale_addr, long transform_addr, long proxy_addr);
+
+    public static native boolean internal_native_OverlapHeightField(long heightField_addr, long transform_addr, long proxy_addr);
+
+    public static native boolean internal_native_OverlapCompound(long compound_addr, long transform_addr, long proxy_addr);
+
+    public static native long internal_native_RayCastSphere_addr(long sphere_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_RayCastHollowSphere_addr(long sphere_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_RayCastCapsule_addr(long capsule_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_RayCastHull_addr(long hull_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_RayCastMesh_addr(long mesh_addr, long scale_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_RayCastHeightField_addr(long heightField_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_RayCastCompound_addr(long compound_addr, long origin_addr, long translation_addr, float maxFraction);
+
+    public static native long internal_native_ShapeCastSphere_addr(long sphere_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach);
+
+    public static native long internal_native_ShapeCastCapsule_addr(long capsule_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach);
+
+    public static native long internal_native_ShapeCastHull_addr(long hull_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach);
+
+    public static native long internal_native_ShapeCastMesh_addr(long mesh_addr, long scale_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach);
+
+    public static native long internal_native_ShapeCastHeightField_addr(long heightField_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach);
+
+    public static native long internal_native_ShapeCastCompound_addr(long compound_addr, long proxy_addr, long translation_addr, float maxFraction, boolean canEncroach);
+
     public static native long internal_native_CollideSpheres_addr(int capacity, long sphereA_addr, long sphereB_addr, long transformBtoA_addr);
 
     public static native long internal_native_CollideCapsuleAndSphere_addr(int capacity, long capsuleA_addr, long sphereB_addr, long transformBtoA_addr);

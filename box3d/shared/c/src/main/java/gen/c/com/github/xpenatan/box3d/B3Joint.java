@@ -10,6 +10,24 @@ import com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Joint extends NativeObject {
 
+    private B3Transform B3Transform_TEMP_GEN_0;
+
+    private B3Transform B3Transform_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_2;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_3;
+
+    private B3Quat B3Quat_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_4;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_5;
+
     static public final B3Joint NULL = B3Joint.native_new();
 
     public B3Joint() {
@@ -70,6 +88,13 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_destroy")
     public static native void internal_native_Destroy(long this_addr, boolean wakeAttached);
 
+    public int GetType() {
+        return internal_native_GetType(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_gettype")
+    public static native int internal_native_GetType(long this_addr);
+
     public long GetBodyIdA() {
         return internal_native_GetBodyIdA(native_address);
     }
@@ -84,6 +109,67 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getbodyidb")
     public static native long internal_native_GetBodyIdB(long this_addr);
 
+    public long GetWorldId() {
+        return internal_native_GetWorldId(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getworldid")
+    public static native long internal_native_GetWorldId(long this_addr);
+
+    public B3Transform GetLocalFrameA() {
+        long addr = internal_native_GetLocalFrameA_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_0 == null)
+            B3Transform_TEMP_GEN_0 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getlocalframea_addr")
+    public static native long internal_native_GetLocalFrameA_addr(long this_addr);
+
+    public void SetLocalFrameA(B3Transform localFrame) {
+        internal_native_SetLocalFrameA(native_address, localFrame.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setlocalframea")
+    public static native void internal_native_SetLocalFrameA(long this_addr, long localFrame_addr);
+
+    public B3Transform GetLocalFrameB() {
+        long addr = internal_native_GetLocalFrameB_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_1 == null)
+            B3Transform_TEMP_GEN_1 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_1;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getlocalframeb_addr")
+    public static native long internal_native_GetLocalFrameB_addr(long this_addr);
+
+    public void SetLocalFrameB(B3Transform localFrame) {
+        internal_native_SetLocalFrameB(native_address, localFrame.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setlocalframeb")
+    public static native void internal_native_SetLocalFrameB(long this_addr, long localFrame_addr);
+
+    public boolean GetCollideConnected() {
+        return internal_native_GetCollideConnected(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getcollideconnected")
+    public static native boolean internal_native_GetCollideConnected(long this_addr);
+
+    public void SetCollideConnected(boolean collideConnected) {
+        internal_native_SetCollideConnected(native_address, collideConnected);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setcollideconnected")
+    public static native void internal_native_SetCollideConnected(long this_addr, boolean collideConnected);
+
     public void WakeBodies() {
         internal_native_WakeBodies(native_address);
     }
@@ -91,12 +177,561 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_wakebodies")
     public static native void internal_native_WakeBodies(long this_addr);
 
+    public B3Vec3 GetConstraintForce() {
+        long addr = internal_native_GetConstraintForce_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getconstraintforce_addr")
+    public static native long internal_native_GetConstraintForce_addr(long this_addr);
+
+    public B3Vec3 GetConstraintTorque() {
+        long addr = internal_native_GetConstraintTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getconstrainttorque_addr")
+    public static native long internal_native_GetConstraintTorque_addr(long this_addr);
+
     public float GetLinearSeparation() {
         return internal_native_GetLinearSeparation(native_address);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getlinearseparation")
     public static native float internal_native_GetLinearSeparation(long this_addr);
+
+    public float GetAngularSeparation() {
+        return internal_native_GetAngularSeparation(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getangularseparation")
+    public static native float internal_native_GetAngularSeparation(long this_addr);
+
+    public void SetConstraintTuning(float hertz, float dampingRatio) {
+        internal_native_SetConstraintTuning(native_address, hertz, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setconstrainttuning")
+    public static native void internal_native_SetConstraintTuning(long this_addr, float hertz, float dampingRatio);
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getconstrainthertz")
+    public static native float internal_native_GetConstraintHertz(long this_addr);
+
+    public float GetConstraintDampingRatio() {
+        return internal_native_GetConstraintDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getconstraintdampingratio")
+    public static native float internal_native_GetConstraintDampingRatio(long this_addr);
+
+    public void SetForceThreshold(float threshold) {
+        internal_native_SetForceThreshold(native_address, threshold);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setforcethreshold")
+    public static native void internal_native_SetForceThreshold(long this_addr, float threshold);
+
+    public float GetForceThreshold() {
+        return internal_native_GetForceThreshold(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getforcethreshold")
+    public static native float internal_native_GetForceThreshold(long this_addr);
+
+    public void SetTorqueThreshold(float threshold) {
+        internal_native_SetTorqueThreshold(native_address, threshold);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_settorquethreshold")
+    public static native void internal_native_SetTorqueThreshold(long this_addr, float threshold);
+
+    public float GetTorqueThreshold() {
+        return internal_native_GetTorqueThreshold(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_gettorquethreshold")
+    public static native float internal_native_GetTorqueThreshold(long this_addr);
+
+    public void SetParallelSpringHertz(float hertz) {
+        internal_native_SetParallelSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setparallelspringhertz")
+    public static native void internal_native_SetParallelSpringHertz(long this_addr, float hertz);
+
+    public float GetParallelSpringHertz() {
+        return internal_native_GetParallelSpringHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getparallelspringhertz")
+    public static native float internal_native_GetParallelSpringHertz(long this_addr);
+
+    public void SetParallelSpringDampingRatio(float dampingRatio) {
+        internal_native_SetParallelSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setparallelspringdampingratio")
+    public static native void internal_native_SetParallelSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetParallelSpringDampingRatio() {
+        return internal_native_GetParallelSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getparallelspringdampingratio")
+    public static native float internal_native_GetParallelSpringDampingRatio(long this_addr);
+
+    public void SetParallelMaxTorque(float torque) {
+        internal_native_SetParallelMaxTorque(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setparallelmaxtorque")
+    public static native void internal_native_SetParallelMaxTorque(long this_addr, float torque);
+
+    public float GetParallelMaxTorque() {
+        return internal_native_GetParallelMaxTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getparallelmaxtorque")
+    public static native float internal_native_GetParallelMaxTorque(long this_addr);
+
+    public void SetDistanceLength(float length) {
+        internal_native_SetDistanceLength(native_address, length);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancelength")
+    public static native void internal_native_SetDistanceLength(long this_addr, float length);
+
+    public float GetDistanceLength() {
+        return internal_native_GetDistanceLength(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancelength")
+    public static native float internal_native_GetDistanceLength(long this_addr);
+
+    public void EnableDistanceSpring(boolean enabled) {
+        internal_native_EnableDistanceSpring(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enabledistancespring")
+    public static native void internal_native_EnableDistanceSpring(long this_addr, boolean enabled);
+
+    public boolean IsDistanceSpringEnabled() {
+        return internal_native_IsDistanceSpringEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isdistancespringenabled")
+    public static native boolean internal_native_IsDistanceSpringEnabled(long this_addr);
+
+    public void SetDistanceSpringForceRange(float lowerForce, float upperForce) {
+        internal_native_SetDistanceSpringForceRange(native_address, lowerForce, upperForce);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancespringforcerange")
+    public static native void internal_native_SetDistanceSpringForceRange(long this_addr, float lowerForce, float upperForce);
+
+    public float GetDistanceLowerSpringForce() {
+        return internal_native_GetDistanceLowerSpringForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancelowerspringforce")
+    public static native float internal_native_GetDistanceLowerSpringForce(long this_addr);
+
+    public float GetDistanceUpperSpringForce() {
+        return internal_native_GetDistanceUpperSpringForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistanceupperspringforce")
+    public static native float internal_native_GetDistanceUpperSpringForce(long this_addr);
+
+    public void SetDistanceSpringHertz(float hertz) {
+        internal_native_SetDistanceSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancespringhertz")
+    public static native void internal_native_SetDistanceSpringHertz(long this_addr, float hertz);
+
+    public float GetDistanceSpringHertz() {
+        return internal_native_GetDistanceSpringHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancespringhertz")
+    public static native float internal_native_GetDistanceSpringHertz(long this_addr);
+
+    public void SetDistanceSpringDampingRatio(float dampingRatio) {
+        internal_native_SetDistanceSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancespringdampingratio")
+    public static native void internal_native_SetDistanceSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetDistanceSpringDampingRatio() {
+        return internal_native_GetDistanceSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancespringdampingratio")
+    public static native float internal_native_GetDistanceSpringDampingRatio(long this_addr);
+
+    public void EnableDistanceLimit(boolean enabled) {
+        internal_native_EnableDistanceLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enabledistancelimit")
+    public static native void internal_native_EnableDistanceLimit(long this_addr, boolean enabled);
+
+    public boolean IsDistanceLimitEnabled() {
+        return internal_native_IsDistanceLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isdistancelimitenabled")
+    public static native boolean internal_native_IsDistanceLimitEnabled(long this_addr);
+
+    public void SetDistanceLengthRange(float minLength, float maxLength) {
+        internal_native_SetDistanceLengthRange(native_address, minLength, maxLength);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancelengthrange")
+    public static native void internal_native_SetDistanceLengthRange(long this_addr, float minLength, float maxLength);
+
+    public float GetDistanceMinLength() {
+        return internal_native_GetDistanceMinLength(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistanceminlength")
+    public static native float internal_native_GetDistanceMinLength(long this_addr);
+
+    public float GetDistanceMaxLength() {
+        return internal_native_GetDistanceMaxLength(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancemaxlength")
+    public static native float internal_native_GetDistanceMaxLength(long this_addr);
+
+    public float GetDistanceCurrentLength() {
+        return internal_native_GetDistanceCurrentLength(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancecurrentlength")
+    public static native float internal_native_GetDistanceCurrentLength(long this_addr);
+
+    public void EnableDistanceMotor(boolean enabled) {
+        internal_native_EnableDistanceMotor(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enabledistancemotor")
+    public static native void internal_native_EnableDistanceMotor(long this_addr, boolean enabled);
+
+    public boolean IsDistanceMotorEnabled() {
+        return internal_native_IsDistanceMotorEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isdistancemotorenabled")
+    public static native boolean internal_native_IsDistanceMotorEnabled(long this_addr);
+
+    public void SetDistanceMotorSpeed(float speed) {
+        internal_native_SetDistanceMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancemotorspeed")
+    public static native void internal_native_SetDistanceMotorSpeed(long this_addr, float speed);
+
+    public float GetDistanceMotorSpeed() {
+        return internal_native_GetDistanceMotorSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancemotorspeed")
+    public static native float internal_native_GetDistanceMotorSpeed(long this_addr);
+
+    public void SetDistanceMaxMotorForce(float force) {
+        internal_native_SetDistanceMaxMotorForce(native_address, force);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setdistancemaxmotorforce")
+    public static native void internal_native_SetDistanceMaxMotorForce(long this_addr, float force);
+
+    public float GetDistanceMaxMotorForce() {
+        return internal_native_GetDistanceMaxMotorForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancemaxmotorforce")
+    public static native float internal_native_GetDistanceMaxMotorForce(long this_addr);
+
+    public float GetDistanceMotorForce() {
+        return internal_native_GetDistanceMotorForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getdistancemotorforce")
+    public static native float internal_native_GetDistanceMotorForce(long this_addr);
+
+    public void SetMotorLinearVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorLinearVelocity(native_address, velocity.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotorlinearvelocity")
+    public static native void internal_native_SetMotorLinearVelocity(long this_addr, long velocity_addr);
+
+    public B3Vec3 GetMotorLinearVelocity() {
+        long addr = internal_native_GetMotorLinearVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_2 == null)
+            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_2;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotorlinearvelocity_addr")
+    public static native long internal_native_GetMotorLinearVelocity_addr(long this_addr);
+
+    public void SetMotorAngularVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorAngularVelocity(native_address, velocity.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotorangularvelocity")
+    public static native void internal_native_SetMotorAngularVelocity(long this_addr, long velocity_addr);
+
+    public B3Vec3 GetMotorAngularVelocity() {
+        long addr = internal_native_GetMotorAngularVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_3 == null)
+            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_3;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotorangularvelocity_addr")
+    public static native long internal_native_GetMotorAngularVelocity_addr(long this_addr);
+
+    public void SetMotorMaxVelocityForce(float force) {
+        internal_native_SetMotorMaxVelocityForce(native_address, force);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotormaxvelocityforce")
+    public static native void internal_native_SetMotorMaxVelocityForce(long this_addr, float force);
+
+    public float GetMotorMaxVelocityForce() {
+        return internal_native_GetMotorMaxVelocityForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotormaxvelocityforce")
+    public static native float internal_native_GetMotorMaxVelocityForce(long this_addr);
+
+    public void SetMotorMaxVelocityTorque(float torque) {
+        internal_native_SetMotorMaxVelocityTorque(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotormaxvelocitytorque")
+    public static native void internal_native_SetMotorMaxVelocityTorque(long this_addr, float torque);
+
+    public float GetMotorMaxVelocityTorque() {
+        return internal_native_GetMotorMaxVelocityTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotormaxvelocitytorque")
+    public static native float internal_native_GetMotorMaxVelocityTorque(long this_addr);
+
+    public void SetMotorLinearHertz(float hertz) {
+        internal_native_SetMotorLinearHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotorlinearhertz")
+    public static native void internal_native_SetMotorLinearHertz(long this_addr, float hertz);
+
+    public float GetMotorLinearHertz() {
+        return internal_native_GetMotorLinearHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotorlinearhertz")
+    public static native float internal_native_GetMotorLinearHertz(long this_addr);
+
+    public void SetMotorLinearDampingRatio(float dampingRatio) {
+        internal_native_SetMotorLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotorlineardampingratio")
+    public static native void internal_native_SetMotorLinearDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetMotorLinearDampingRatio() {
+        return internal_native_GetMotorLinearDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotorlineardampingratio")
+    public static native float internal_native_GetMotorLinearDampingRatio(long this_addr);
+
+    public void SetMotorAngularHertz(float hertz) {
+        internal_native_SetMotorAngularHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotorangularhertz")
+    public static native void internal_native_SetMotorAngularHertz(long this_addr, float hertz);
+
+    public float GetMotorAngularHertz() {
+        return internal_native_GetMotorAngularHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotorangularhertz")
+    public static native float internal_native_GetMotorAngularHertz(long this_addr);
+
+    public void SetMotorAngularDampingRatio(float dampingRatio) {
+        internal_native_SetMotorAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotorangulardampingratio")
+    public static native void internal_native_SetMotorAngularDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetMotorAngularDampingRatio() {
+        return internal_native_GetMotorAngularDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotorangulardampingratio")
+    public static native float internal_native_GetMotorAngularDampingRatio(long this_addr);
+
+    public void SetMotorMaxSpringForce(float force) {
+        internal_native_SetMotorMaxSpringForce(native_address, force);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotormaxspringforce")
+    public static native void internal_native_SetMotorMaxSpringForce(long this_addr, float force);
+
+    public float GetMotorMaxSpringForce() {
+        return internal_native_GetMotorMaxSpringForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotormaxspringforce")
+    public static native float internal_native_GetMotorMaxSpringForce(long this_addr);
+
+    public void SetMotorMaxSpringTorque(float torque) {
+        internal_native_SetMotorMaxSpringTorque(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setmotormaxspringtorque")
+    public static native void internal_native_SetMotorMaxSpringTorque(long this_addr, float torque);
+
+    public float GetMotorMaxSpringTorque() {
+        return internal_native_GetMotorMaxSpringTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getmotormaxspringtorque")
+    public static native float internal_native_GetMotorMaxSpringTorque(long this_addr);
+
+    public void EnablePrismaticSpring(boolean enabled) {
+        internal_native_EnablePrismaticSpring(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enableprismaticspring")
+    public static native void internal_native_EnablePrismaticSpring(long this_addr, boolean enabled);
+
+    public boolean IsPrismaticSpringEnabled() {
+        return internal_native_IsPrismaticSpringEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isprismaticspringenabled")
+    public static native boolean internal_native_IsPrismaticSpringEnabled(long this_addr);
+
+    public void SetPrismaticSpringHertz(float hertz) {
+        internal_native_SetPrismaticSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setprismaticspringhertz")
+    public static native void internal_native_SetPrismaticSpringHertz(long this_addr, float hertz);
+
+    public float GetPrismaticSpringHertz() {
+        return internal_native_GetPrismaticSpringHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticspringhertz")
+    public static native float internal_native_GetPrismaticSpringHertz(long this_addr);
+
+    public void SetPrismaticSpringDampingRatio(float dampingRatio) {
+        internal_native_SetPrismaticSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setprismaticspringdampingratio")
+    public static native void internal_native_SetPrismaticSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetPrismaticSpringDampingRatio() {
+        return internal_native_GetPrismaticSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticspringdampingratio")
+    public static native float internal_native_GetPrismaticSpringDampingRatio(long this_addr);
+
+    public void SetPrismaticTargetTranslation(float translation) {
+        internal_native_SetPrismaticTargetTranslation(native_address, translation);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setprismatictargettranslation")
+    public static native void internal_native_SetPrismaticTargetTranslation(long this_addr, float translation);
+
+    public float GetPrismaticTargetTranslation() {
+        return internal_native_GetPrismaticTargetTranslation(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismatictargettranslation")
+    public static native float internal_native_GetPrismaticTargetTranslation(long this_addr);
+
+    public void EnablePrismaticLimit(boolean enabled) {
+        internal_native_EnablePrismaticLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enableprismaticlimit")
+    public static native void internal_native_EnablePrismaticLimit(long this_addr, boolean enabled);
+
+    public boolean IsPrismaticLimitEnabled() {
+        return internal_native_IsPrismaticLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isprismaticlimitenabled")
+    public static native boolean internal_native_IsPrismaticLimitEnabled(long this_addr);
+
+    public float GetPrismaticLowerLimit() {
+        return internal_native_GetPrismaticLowerLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticlowerlimit")
+    public static native float internal_native_GetPrismaticLowerLimit(long this_addr);
+
+    public float GetPrismaticUpperLimit() {
+        return internal_native_GetPrismaticUpperLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticupperlimit")
+    public static native float internal_native_GetPrismaticUpperLimit(long this_addr);
+
+    public void SetPrismaticLimits(float lower, float upper) {
+        internal_native_SetPrismaticLimits(native_address, lower, upper);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setprismaticlimits")
+    public static native void internal_native_SetPrismaticLimits(long this_addr, float lower, float upper);
+
+    public void EnablePrismaticMotor(boolean enabled) {
+        internal_native_EnablePrismaticMotor(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enableprismaticmotor")
+    public static native void internal_native_EnablePrismaticMotor(long this_addr, boolean enabled);
+
+    public boolean IsPrismaticMotorEnabled() {
+        return internal_native_IsPrismaticMotorEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isprismaticmotorenabled")
+    public static native boolean internal_native_IsPrismaticMotorEnabled(long this_addr);
 
     public float GetPrismaticTranslation() {
         return internal_native_GetPrismaticTranslation(native_address);
@@ -112,12 +747,145 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setprismaticmotorspeed")
     public static native void internal_native_SetPrismaticMotorSpeed(long this_addr, float speed);
 
+    public float GetPrismaticMotorSpeed() {
+        return internal_native_GetPrismaticMotorSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticmotorspeed")
+    public static native float internal_native_GetPrismaticMotorSpeed(long this_addr);
+
+    public void SetPrismaticMaxMotorForce(float force) {
+        internal_native_SetPrismaticMaxMotorForce(native_address, force);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setprismaticmaxmotorforce")
+    public static native void internal_native_SetPrismaticMaxMotorForce(long this_addr, float force);
+
+    public float GetPrismaticMaxMotorForce() {
+        return internal_native_GetPrismaticMaxMotorForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticmaxmotorforce")
+    public static native float internal_native_GetPrismaticMaxMotorForce(long this_addr);
+
+    public float GetPrismaticMotorForce() {
+        return internal_native_GetPrismaticMotorForce(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticmotorforce")
+    public static native float internal_native_GetPrismaticMotorForce(long this_addr);
+
+    public float GetPrismaticSpeed() {
+        return internal_native_GetPrismaticSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getprismaticspeed")
+    public static native float internal_native_GetPrismaticSpeed(long this_addr);
+
+    public void EnableRevoluteSpring(boolean enabled) {
+        internal_native_EnableRevoluteSpring(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablerevolutespring")
+    public static native void internal_native_EnableRevoluteSpring(long this_addr, boolean enabled);
+
+    public boolean IsRevoluteSpringEnabled() {
+        return internal_native_IsRevoluteSpringEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isrevolutespringenabled")
+    public static native boolean internal_native_IsRevoluteSpringEnabled(long this_addr);
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setrevolutetargetangle")
     public static native void internal_native_SetRevoluteTargetAngle(long this_addr, float radians);
+
+    public float GetRevoluteTargetAngle() {
+        return internal_native_GetRevoluteTargetAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutetargetangle")
+    public static native float internal_native_GetRevoluteTargetAngle(long this_addr);
+
+    public float GetRevoluteAngle() {
+        return internal_native_GetRevoluteAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevoluteangle")
+    public static native float internal_native_GetRevoluteAngle(long this_addr);
+
+    public void EnableRevoluteLimit(boolean enabled) {
+        internal_native_EnableRevoluteLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablerevolutelimit")
+    public static native void internal_native_EnableRevoluteLimit(long this_addr, boolean enabled);
+
+    public boolean IsRevoluteLimitEnabled() {
+        return internal_native_IsRevoluteLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isrevolutelimitenabled")
+    public static native boolean internal_native_IsRevoluteLimitEnabled(long this_addr);
+
+    public float GetRevoluteLowerLimit() {
+        return internal_native_GetRevoluteLowerLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutelowerlimit")
+    public static native float internal_native_GetRevoluteLowerLimit(long this_addr);
+
+    public float GetRevoluteUpperLimit() {
+        return internal_native_GetRevoluteUpperLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevoluteupperlimit")
+    public static native float internal_native_GetRevoluteUpperLimit(long this_addr);
+
+    public void SetRevoluteLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetRevoluteLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setrevolutelimits")
+    public static native void internal_native_SetRevoluteLimits(long this_addr, float lowerRadians, float upperRadians);
+
+    public void EnableRevoluteMotor(boolean enabled) {
+        internal_native_EnableRevoluteMotor(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablerevolutemotor")
+    public static native void internal_native_EnableRevoluteMotor(long this_addr, boolean enabled);
+
+    public boolean IsRevoluteMotorEnabled() {
+        return internal_native_IsRevoluteMotorEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_isrevolutemotorenabled")
+    public static native boolean internal_native_IsRevoluteMotorEnabled(long this_addr);
+
+    public void SetRevoluteMotorSpeed(float speed) {
+        internal_native_SetRevoluteMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setrevolutemotorspeed")
+    public static native void internal_native_SetRevoluteMotorSpeed(long this_addr, float speed);
+
+    public float GetRevoluteMotorSpeed() {
+        return internal_native_GetRevoluteMotorSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutemotorspeed")
+    public static native float internal_native_GetRevoluteMotorSpeed(long this_addr);
+
+    public float GetRevoluteMotorTorque() {
+        return internal_native_GetRevoluteMotorTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutemotortorque")
+    public static native float internal_native_GetRevoluteMotorTorque(long this_addr);
 
     public void SetRevoluteMaxMotorTorque(float torque) {
         internal_native_SetRevoluteMaxMotorTorque(native_address, torque);
@@ -126,12 +894,26 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setrevolutemaxmotortorque")
     public static native void internal_native_SetRevoluteMaxMotorTorque(long this_addr, float torque);
 
+    public float GetRevoluteMaxMotorTorque() {
+        return internal_native_GetRevoluteMaxMotorTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutemaxmotortorque")
+    public static native float internal_native_GetRevoluteMaxMotorTorque(long this_addr);
+
     public void SetRevoluteSpringHertz(float hertz) {
         internal_native_SetRevoluteSpringHertz(native_address, hertz);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setrevolutespringhertz")
     public static native void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz);
+
+    public float GetRevoluteSpringHertz() {
+        return internal_native_GetRevoluteSpringHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutespringhertz")
+    public static native float internal_native_GetRevoluteSpringHertz(long this_addr);
 
     public void SetRevoluteSpringDampingRatio(float dampingRatio) {
         internal_native_SetRevoluteSpringDampingRatio(native_address, dampingRatio);
@@ -140,12 +922,117 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setrevolutespringdampingratio")
     public static native void internal_native_SetRevoluteSpringDampingRatio(long this_addr, float dampingRatio);
 
+    public float GetRevoluteSpringDampingRatio() {
+        return internal_native_GetRevoluteSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getrevolutespringdampingratio")
+    public static native float internal_native_GetRevoluteSpringDampingRatio(long this_addr);
+
+    public void EnableSphericalConeLimit(boolean enabled) {
+        internal_native_EnableSphericalConeLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablesphericalconelimit")
+    public static native void internal_native_EnableSphericalConeLimit(long this_addr, boolean enabled);
+
+    public boolean IsSphericalConeLimitEnabled() {
+        return internal_native_IsSphericalConeLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_issphericalconelimitenabled")
+    public static native boolean internal_native_IsSphericalConeLimitEnabled(long this_addr);
+
+    public float GetSphericalConeLimit() {
+        return internal_native_GetSphericalConeLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalconelimit")
+    public static native float internal_native_GetSphericalConeLimit(long this_addr);
+
+    public void SetSphericalConeLimit(float radians) {
+        internal_native_SetSphericalConeLimit(native_address, radians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericalconelimit")
+    public static native void internal_native_SetSphericalConeLimit(long this_addr, float radians);
+
+    public float GetSphericalConeAngle() {
+        return internal_native_GetSphericalConeAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalconeangle")
+    public static native float internal_native_GetSphericalConeAngle(long this_addr);
+
+    public void EnableSphericalTwistLimit(boolean enabled) {
+        internal_native_EnableSphericalTwistLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablesphericaltwistlimit")
+    public static native void internal_native_EnableSphericalTwistLimit(long this_addr, boolean enabled);
+
+    public boolean IsSphericalTwistLimitEnabled() {
+        return internal_native_IsSphericalTwistLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_issphericaltwistlimitenabled")
+    public static native boolean internal_native_IsSphericalTwistLimitEnabled(long this_addr);
+
+    public float GetSphericalLowerTwistLimit() {
+        return internal_native_GetSphericalLowerTwistLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericallowertwistlimit")
+    public static native float internal_native_GetSphericalLowerTwistLimit(long this_addr);
+
+    public float GetSphericalUpperTwistLimit() {
+        return internal_native_GetSphericalUpperTwistLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericaluppertwistlimit")
+    public static native float internal_native_GetSphericalUpperTwistLimit(long this_addr);
+
+    public void SetSphericalTwistLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetSphericalTwistLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericaltwistlimits")
+    public static native void internal_native_SetSphericalTwistLimits(long this_addr, float lowerRadians, float upperRadians);
+
+    public float GetSphericalTwistAngle() {
+        return internal_native_GetSphericalTwistAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericaltwistangle")
+    public static native float internal_native_GetSphericalTwistAngle(long this_addr);
+
+    public void EnableSphericalSpring(boolean enabled) {
+        internal_native_EnableSphericalSpring(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablesphericalspring")
+    public static native void internal_native_EnableSphericalSpring(long this_addr, boolean enabled);
+
+    public boolean IsSphericalSpringEnabled() {
+        return internal_native_IsSphericalSpringEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_issphericalspringenabled")
+    public static native boolean internal_native_IsSphericalSpringEnabled(long this_addr);
+
     public void SetSphericalMaxMotorTorque(float torque) {
         internal_native_SetSphericalMaxMotorTorque(native_address, torque);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericalmaxmotortorque")
     public static native void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque);
+
+    public float GetSphericalMaxMotorTorque() {
+        return internal_native_GetSphericalMaxMotorTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalmaxmotortorque")
+    public static native float internal_native_GetSphericalMaxMotorTorque(long this_addr);
 
     public void SetSphericalSpringHertz(float hertz) {
         internal_native_SetSphericalSpringHertz(native_address, hertz);
@@ -154,10 +1041,399 @@ public final class B3Joint extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericalspringhertz")
     public static native void internal_native_SetSphericalSpringHertz(long this_addr, float hertz);
 
+    public float GetSphericalSpringHertz() {
+        return internal_native_GetSphericalSpringHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalspringhertz")
+    public static native float internal_native_GetSphericalSpringHertz(long this_addr);
+
     public void SetSphericalSpringDampingRatio(float dampingRatio) {
         internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericalspringdampingratio")
     public static native void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetSphericalSpringDampingRatio() {
+        return internal_native_GetSphericalSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalspringdampingratio")
+    public static native float internal_native_GetSphericalSpringDampingRatio(long this_addr);
+
+    public void SetSphericalTargetRotation(B3Quat rotation) {
+        internal_native_SetSphericalTargetRotation(native_address, rotation.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericaltargetrotation")
+    public static native void internal_native_SetSphericalTargetRotation(long this_addr, long rotation_addr);
+
+    public B3Quat GetSphericalTargetRotation() {
+        long addr = internal_native_GetSphericalTargetRotation_addr(native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_GEN_0 == null)
+            B3Quat_TEMP_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericaltargetrotation_addr")
+    public static native long internal_native_GetSphericalTargetRotation_addr(long this_addr);
+
+    public void EnableSphericalMotor(boolean enabled) {
+        internal_native_EnableSphericalMotor(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablesphericalmotor")
+    public static native void internal_native_EnableSphericalMotor(long this_addr, boolean enabled);
+
+    public boolean IsSphericalMotorEnabled() {
+        return internal_native_IsSphericalMotorEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_issphericalmotorenabled")
+    public static native boolean internal_native_IsSphericalMotorEnabled(long this_addr);
+
+    public void SetSphericalMotorVelocity(B3Vec3 velocity) {
+        internal_native_SetSphericalMotorVelocity(native_address, velocity.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setsphericalmotorvelocity")
+    public static native void internal_native_SetSphericalMotorVelocity(long this_addr, long velocity_addr);
+
+    public B3Vec3 GetSphericalMotorVelocity() {
+        long addr = internal_native_GetSphericalMotorVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_4 == null)
+            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_4;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalmotorvelocity_addr")
+    public static native long internal_native_GetSphericalMotorVelocity_addr(long this_addr);
+
+    public B3Vec3 GetSphericalMotorTorque() {
+        long addr = internal_native_GetSphericalMotorTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_5 == null)
+            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_5;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getsphericalmotortorque_addr")
+    public static native long internal_native_GetSphericalMotorTorque_addr(long this_addr);
+
+    public void SetWeldLinearHertz(float hertz) {
+        internal_native_SetWeldLinearHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setweldlinearhertz")
+    public static native void internal_native_SetWeldLinearHertz(long this_addr, float hertz);
+
+    public float GetWeldLinearHertz() {
+        return internal_native_GetWeldLinearHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getweldlinearhertz")
+    public static native float internal_native_GetWeldLinearHertz(long this_addr);
+
+    public void SetWeldLinearDampingRatio(float dampingRatio) {
+        internal_native_SetWeldLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setweldlineardampingratio")
+    public static native void internal_native_SetWeldLinearDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetWeldLinearDampingRatio() {
+        return internal_native_GetWeldLinearDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getweldlineardampingratio")
+    public static native float internal_native_GetWeldLinearDampingRatio(long this_addr);
+
+    public void SetWeldAngularHertz(float hertz) {
+        internal_native_SetWeldAngularHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setweldangularhertz")
+    public static native void internal_native_SetWeldAngularHertz(long this_addr, float hertz);
+
+    public float GetWeldAngularHertz() {
+        return internal_native_GetWeldAngularHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getweldangularhertz")
+    public static native float internal_native_GetWeldAngularHertz(long this_addr);
+
+    public void SetWeldAngularDampingRatio(float dampingRatio) {
+        internal_native_SetWeldAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setweldangulardampingratio")
+    public static native void internal_native_SetWeldAngularDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetWeldAngularDampingRatio() {
+        return internal_native_GetWeldAngularDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getweldangulardampingratio")
+    public static native float internal_native_GetWeldAngularDampingRatio(long this_addr);
+
+    public void EnableWheelSuspension(boolean enabled) {
+        internal_native_EnableWheelSuspension(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablewheelsuspension")
+    public static native void internal_native_EnableWheelSuspension(long this_addr, boolean enabled);
+
+    public boolean IsWheelSuspensionEnabled() {
+        return internal_native_IsWheelSuspensionEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_iswheelsuspensionenabled")
+    public static native boolean internal_native_IsWheelSuspensionEnabled(long this_addr);
+
+    public void SetWheelSuspensionHertz(float hertz) {
+        internal_native_SetWheelSuspensionHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelsuspensionhertz")
+    public static native void internal_native_SetWheelSuspensionHertz(long this_addr, float hertz);
+
+    public float GetWheelSuspensionHertz() {
+        return internal_native_GetWheelSuspensionHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelsuspensionhertz")
+    public static native float internal_native_GetWheelSuspensionHertz(long this_addr);
+
+    public void SetWheelSuspensionDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSuspensionDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelsuspensiondampingratio")
+    public static native void internal_native_SetWheelSuspensionDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetWheelSuspensionDampingRatio() {
+        return internal_native_GetWheelSuspensionDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelsuspensiondampingratio")
+    public static native float internal_native_GetWheelSuspensionDampingRatio(long this_addr);
+
+    public void EnableWheelSuspensionLimit(boolean enabled) {
+        internal_native_EnableWheelSuspensionLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablewheelsuspensionlimit")
+    public static native void internal_native_EnableWheelSuspensionLimit(long this_addr, boolean enabled);
+
+    public boolean IsWheelSuspensionLimitEnabled() {
+        return internal_native_IsWheelSuspensionLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_iswheelsuspensionlimitenabled")
+    public static native boolean internal_native_IsWheelSuspensionLimitEnabled(long this_addr);
+
+    public float GetWheelLowerSuspensionLimit() {
+        return internal_native_GetWheelLowerSuspensionLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheellowersuspensionlimit")
+    public static native float internal_native_GetWheelLowerSuspensionLimit(long this_addr);
+
+    public float GetWheelUpperSuspensionLimit() {
+        return internal_native_GetWheelUpperSuspensionLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheeluppersuspensionlimit")
+    public static native float internal_native_GetWheelUpperSuspensionLimit(long this_addr);
+
+    public void SetWheelSuspensionLimits(float lower, float upper) {
+        internal_native_SetWheelSuspensionLimits(native_address, lower, upper);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelsuspensionlimits")
+    public static native void internal_native_SetWheelSuspensionLimits(long this_addr, float lower, float upper);
+
+    public void EnableWheelSpinMotor(boolean enabled) {
+        internal_native_EnableWheelSpinMotor(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablewheelspinmotor")
+    public static native void internal_native_EnableWheelSpinMotor(long this_addr, boolean enabled);
+
+    public boolean IsWheelSpinMotorEnabled() {
+        return internal_native_IsWheelSpinMotorEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_iswheelspinmotorenabled")
+    public static native boolean internal_native_IsWheelSpinMotorEnabled(long this_addr);
+
+    public void SetWheelTargetSteeringAngle(float radians) {
+        internal_native_SetWheelTargetSteeringAngle(native_address, radians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheeltargetsteeringangle")
+    public static native void internal_native_SetWheelTargetSteeringAngle(long this_addr, float radians);
+
+    public float GetWheelTargetSteeringAngle() {
+        return internal_native_GetWheelTargetSteeringAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheeltargetsteeringangle")
+    public static native float internal_native_GetWheelTargetSteeringAngle(long this_addr);
+
+    public void SetWheelSpinMotorSpeed(float speed) {
+        internal_native_SetWheelSpinMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelspinmotorspeed")
+    public static native void internal_native_SetWheelSpinMotorSpeed(long this_addr, float speed);
+
+    public float GetWheelSpinMotorSpeed() {
+        return internal_native_GetWheelSpinMotorSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelspinmotorspeed")
+    public static native float internal_native_GetWheelSpinMotorSpeed(long this_addr);
+
+    public void SetWheelMaxSpinTorque(float torque) {
+        internal_native_SetWheelMaxSpinTorque(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelmaxspintorque")
+    public static native void internal_native_SetWheelMaxSpinTorque(long this_addr, float torque);
+
+    public float GetWheelMaxSpinTorque() {
+        return internal_native_GetWheelMaxSpinTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelmaxspintorque")
+    public static native float internal_native_GetWheelMaxSpinTorque(long this_addr);
+
+    public float GetWheelSpinSpeed() {
+        return internal_native_GetWheelSpinSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelspinspeed")
+    public static native float internal_native_GetWheelSpinSpeed(long this_addr);
+
+    public float GetWheelSpinTorque() {
+        return internal_native_GetWheelSpinTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelspintorque")
+    public static native float internal_native_GetWheelSpinTorque(long this_addr);
+
+    public void EnableWheelSteering(boolean enabled) {
+        internal_native_EnableWheelSteering(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablewheelsteering")
+    public static native void internal_native_EnableWheelSteering(long this_addr, boolean enabled);
+
+    public boolean IsWheelSteeringEnabled() {
+        return internal_native_IsWheelSteeringEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_iswheelsteeringenabled")
+    public static native boolean internal_native_IsWheelSteeringEnabled(long this_addr);
+
+    public void SetWheelSteeringHertz(float hertz) {
+        internal_native_SetWheelSteeringHertz(native_address, hertz);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelsteeringhertz")
+    public static native void internal_native_SetWheelSteeringHertz(long this_addr, float hertz);
+
+    public float GetWheelSteeringHertz() {
+        return internal_native_GetWheelSteeringHertz(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelsteeringhertz")
+    public static native float internal_native_GetWheelSteeringHertz(long this_addr);
+
+    public void SetWheelSteeringDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSteeringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelsteeringdampingratio")
+    public static native void internal_native_SetWheelSteeringDampingRatio(long this_addr, float dampingRatio);
+
+    public float GetWheelSteeringDampingRatio() {
+        return internal_native_GetWheelSteeringDampingRatio(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelsteeringdampingratio")
+    public static native float internal_native_GetWheelSteeringDampingRatio(long this_addr);
+
+    public void SetWheelMaxSteeringTorque(float torque) {
+        internal_native_SetWheelMaxSteeringTorque(native_address, torque);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelmaxsteeringtorque")
+    public static native void internal_native_SetWheelMaxSteeringTorque(long this_addr, float torque);
+
+    public float GetWheelMaxSteeringTorque() {
+        return internal_native_GetWheelMaxSteeringTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelmaxsteeringtorque")
+    public static native float internal_native_GetWheelMaxSteeringTorque(long this_addr);
+
+    public void EnableWheelSteeringLimit(boolean enabled) {
+        internal_native_EnableWheelSteeringLimit(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_enablewheelsteeringlimit")
+    public static native void internal_native_EnableWheelSteeringLimit(long this_addr, boolean enabled);
+
+    public boolean IsWheelSteeringLimitEnabled() {
+        return internal_native_IsWheelSteeringLimitEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_iswheelsteeringlimitenabled")
+    public static native boolean internal_native_IsWheelSteeringLimitEnabled(long this_addr);
+
+    public float GetWheelLowerSteeringLimit() {
+        return internal_native_GetWheelLowerSteeringLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheellowersteeringlimit")
+    public static native float internal_native_GetWheelLowerSteeringLimit(long this_addr);
+
+    public float GetWheelUpperSteeringLimit() {
+        return internal_native_GetWheelUpperSteeringLimit(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheeluppersteeringlimit")
+    public static native float internal_native_GetWheelUpperSteeringLimit(long this_addr);
+
+    public void SetWheelSteeringLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetWheelSteeringLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_setwheelsteeringlimits")
+    public static native void internal_native_SetWheelSteeringLimits(long this_addr, float lowerRadians, float upperRadians);
+
+    public float GetWheelSteeringAngle() {
+        return internal_native_GetWheelSteeringAngle(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelsteeringangle")
+    public static native float internal_native_GetWheelSteeringAngle(long this_addr);
+
+    public float GetWheelSteeringTorque() {
+        return internal_native_GetWheelSteeringTorque(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3joint_getwheelsteeringtorque")
+    public static native float internal_native_GetWheelSteeringTorque(long this_addr);
 }

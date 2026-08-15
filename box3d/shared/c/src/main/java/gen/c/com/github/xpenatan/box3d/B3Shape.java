@@ -7,10 +7,13 @@
 package gen.c.com.github.xpenatan.box3d;
 
 import com.github.xpenatan.jParser.api.NativeObject;
+import com.github.xpenatan.jparser.runtime.helper.NativeString;
 
 public final class B3Shape extends NativeObject {
 
     private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_0;
+
+    private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_1;
 
     private B3Filter B3Filter_TEMP_GEN_0;
 
@@ -21,6 +24,8 @@ public final class B3Shape extends NativeObject {
     private B3Capsule B3Capsule_TEMP_GEN_0;
 
     private B3AABB B3AABB_TEMP_GEN_0;
+
+    private B3MassData B3MassData_TEMP_GEN_0;
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
@@ -98,12 +103,33 @@ public final class B3Shape extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getbodyid")
     public static native long internal_native_GetBodyId(long this_addr);
 
+    public long GetWorldId() {
+        return internal_native_GetWorldId(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getworldid")
+    public static native long internal_native_GetWorldId(long this_addr);
+
     public boolean IsSensor() {
         return internal_native_IsSensor(native_address);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_issensor")
     public static native boolean internal_native_IsSensor(long this_addr);
+
+    public void GetName(NativeString name) {
+        internal_native_GetName(native_address, name.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getname")
+    public static native void internal_native_GetName(long this_addr, long name_addr);
+
+    public void SetName(String name) {
+        internal_native_SetName(native_address, name);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_setname")
+    public static native void internal_native_SetName(long this_addr, String name);
 
     public float GetDensity() {
         return internal_native_GetDensity(native_address);
@@ -167,6 +193,33 @@ public final class B3Shape extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_setsurfacematerial")
     public static native void internal_native_SetSurfaceMaterial(long this_addr, long material_addr);
 
+    public int GetMeshMaterialCount() {
+        return internal_native_GetMeshMaterialCount(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getmeshmaterialcount")
+    public static native int internal_native_GetMeshMaterialCount(long this_addr);
+
+    public B3SurfaceMaterial GetMeshSurfaceMaterial(int index) {
+        long addr = internal_native_GetMeshSurfaceMaterial_addr(native_address, index);
+        if (addr == 0)
+            return B3SurfaceMaterial.NULL;
+        if (B3SurfaceMaterial_TEMP_GEN_1 == null)
+            B3SurfaceMaterial_TEMP_GEN_1 = B3SurfaceMaterial.native_new();
+        B3SurfaceMaterial_TEMP_GEN_1.internal_reset(addr, false);
+        return B3SurfaceMaterial_TEMP_GEN_1;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getmeshsurfacematerial_addr")
+    public static native long internal_native_GetMeshSurfaceMaterial_addr(long this_addr, int index);
+
+    public void SetMeshMaterial(B3SurfaceMaterial material, int index) {
+        internal_native_SetMeshMaterial(native_address, material.native_address, index);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_setmeshmaterial")
+    public static native void internal_native_SetMeshMaterial(long this_addr, long material_addr, int index);
+
     public B3Filter GetFilter() {
         long addr = internal_native_GetFilter_addr(native_address);
         if (addr == 0)
@@ -214,6 +267,20 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_arecontacteventsenabled")
     public static native boolean internal_native_AreContactEventsEnabled(long this_addr);
+
+    public void EnablePreSolveEvents(boolean enabled) {
+        internal_native_EnablePreSolveEvents(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_enablepresolveevents")
+    public static native void internal_native_EnablePreSolveEvents(long this_addr, boolean enabled);
+
+    public boolean ArePreSolveEventsEnabled() {
+        return internal_native_ArePreSolveEventsEnabled(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_arepresolveeventsenabled")
+    public static native boolean internal_native_ArePreSolveEventsEnabled(long this_addr);
 
     public void EnableHitEvents(boolean enabled) {
         internal_native_EnableHitEvents(native_address, enabled);
@@ -282,6 +349,53 @@ public final class B3Shape extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_setcapsule")
     public static native void internal_native_SetCapsule(long this_addr, long capsule_addr);
 
+    public B3Hull GetHull() {
+        long addr = internal_native_GetHull_addr(native_address);
+        if (addr == 0)
+            return B3Hull.NULL;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_gethull_addr")
+    public static native long internal_native_GetHull_addr(long this_addr);
+
+    public void SetHull(B3Hull hull) {
+        internal_native_SetHull(native_address, hull.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_sethull")
+    public static native void internal_native_SetHull(long this_addr, long hull_addr);
+
+    public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
+        internal_native_SetMesh(native_address, mesh.native_address, scale.native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_setmesh")
+    public static native void internal_native_SetMesh(long this_addr, long mesh_addr, long scale_addr);
+
+    public int GetContactCapacity() {
+        return internal_native_GetContactCapacity(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getcontactcapacity")
+    public static native int internal_native_GetContactCapacity(long this_addr);
+
+    public int GetSensorCapacity() {
+        return internal_native_GetSensorCapacity(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getsensorcapacity")
+    public static native int internal_native_GetSensorCapacity(long this_addr);
+
+    public long GetSensorShapeId(int index) {
+        return internal_native_GetSensorShapeId(native_address, index);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getsensorshapeid")
+    public static native long internal_native_GetSensorShapeId(long this_addr, int index);
+
     public B3AABB GetAABB() {
         long addr = internal_native_GetAABB_addr(native_address);
         if (addr == 0)
@@ -294,6 +408,19 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_getaabb_addr")
     public static native long internal_native_GetAABB_addr(long this_addr);
+
+    public B3MassData ComputeMassData() {
+        long addr = internal_native_ComputeMassData_addr(native_address);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_GEN_0 == null)
+            B3MassData_TEMP_GEN_0 = B3MassData.native_new();
+        B3MassData_TEMP_GEN_0.internal_reset(addr, false);
+        return B3MassData_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3shape_computemassdata_addr")
+    public static native long internal_native_ComputeMassData_addr(long this_addr);
 
     public B3Vec3 GetClosestPoint(B3Vec3 target) {
         long addr = internal_native_GetClosestPoint_addr(native_address, target.native_address);

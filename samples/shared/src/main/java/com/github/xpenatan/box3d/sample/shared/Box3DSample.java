@@ -13,6 +13,21 @@ public interface Box3DSample {
             float directionY, float directionZ, float speed) {
     }
 
+    default boolean supportsPlayerControl() {
+        return false;
+    }
+
+    default boolean startsInThirdPerson() {
+        return false;
+    }
+
+    default void setPlayerInput(Box3DPlayerInput input, boolean thirdPerson) {
+    }
+
+    default boolean getCameraTarget(Box3DPlayerTarget target) {
+        return false;
+    }
+
     B3World world();
 
     void dispose();

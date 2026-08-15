@@ -10,9 +10,53 @@ import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Collision extends NativeObject {
 
-    static private B3DistanceOutput B3DistanceOutput_TEMP_STATIC_GEN_0;
+    static private B3MassData B3MassData_TEMP_STATIC_GEN_0;
+
+    static private B3MassData B3MassData_TEMP_STATIC_GEN_1;
+
+    static private B3MassData B3MassData_TEMP_STATIC_GEN_2;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_0;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_1;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_2;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_3;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_4;
+
+    static private B3AABB B3AABB_TEMP_STATIC_GEN_5;
 
     static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_0;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_1;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_2;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_3;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_4;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_5;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_6;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_7;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_8;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_9;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_10;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_11;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_12;
+
+    static private B3DistanceOutput B3DistanceOutput_TEMP_STATIC_GEN_0;
+
+    static private B3CastOutput B3CastOutput_TEMP_STATIC_GEN_13;
 
     static private B3TOIOutput B3TOIOutput_TEMP_STATIC_GEN_0;
 
@@ -42,6 +86,341 @@ public final class B3Collision extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Collision);box3d.destroy(jsObj);")
     public static native void internal_native_deleteNative(int this_addr);
+
+    public static void ScaleBox(B3Vec3 halfWidths, B3Transform transform, B3Vec3 postScale, float minHalfWidth) {
+        internal_native_ScaleBox(halfWidths.native_address, transform.native_address, postScale.native_address, minHalfWidth);
+    }
+
+    @org.teavm.jso.JSBody(params = {"halfWidths_addr", "transform_addr", "postScale_addr", "minHalfWidth"}, script = "box3d.B3Collision.prototype.ScaleBox(halfWidths_addr, transform_addr, postScale_addr, minHalfWidth);")
+    public static native void internal_native_ScaleBox(int halfWidths_addr, int transform_addr, int postScale_addr, float minHalfWidth);
+
+    public static B3MassData ComputeSphereMass(B3Sphere sphere, float density) {
+        int addr = internal_native_ComputeSphereMass_addr(sphere.native_address, density);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_STATIC_GEN_0 == null)
+            B3MassData_TEMP_STATIC_GEN_0 = B3MassData.native_new();
+        B3MassData_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3MassData_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"sphere_addr", "density"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeSphereMass(sphere_addr, density);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeSphereMass_addr(int sphere_addr, float density);
+
+    public static B3MassData ComputeCapsuleMass(B3Capsule capsule, float density) {
+        int addr = internal_native_ComputeCapsuleMass_addr(capsule.native_address, density);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_STATIC_GEN_1 == null)
+            B3MassData_TEMP_STATIC_GEN_1 = B3MassData.native_new();
+        B3MassData_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3MassData_TEMP_STATIC_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"capsule_addr", "density"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeCapsuleMass(capsule_addr, density);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeCapsuleMass_addr(int capsule_addr, float density);
+
+    public static B3MassData ComputeHullMass(B3Hull hull, float density) {
+        int addr = internal_native_ComputeHullMass_addr(hull.native_address, density);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_STATIC_GEN_2 == null)
+            B3MassData_TEMP_STATIC_GEN_2 = B3MassData.native_new();
+        B3MassData_TEMP_STATIC_GEN_2.internal_reset(addr, false);
+        return B3MassData_TEMP_STATIC_GEN_2;
+    }
+
+    @org.teavm.jso.JSBody(params = {"hull_addr", "density"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeHullMass(hull_addr, density);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeHullMass_addr(int hull_addr, float density);
+
+    public static B3AABB ComputeSphereAABB(B3Sphere sphere, B3Transform transform) {
+        int addr = internal_native_ComputeSphereAABB_addr(sphere.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_0 == null)
+            B3AABB_TEMP_STATIC_GEN_0 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"sphere_addr", "transform_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeSphereAABB(sphere_addr, transform_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeSphereAABB_addr(int sphere_addr, int transform_addr);
+
+    public static B3AABB ComputeCapsuleAABB(B3Capsule capsule, B3Transform transform) {
+        int addr = internal_native_ComputeCapsuleAABB_addr(capsule.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_1 == null)
+            B3AABB_TEMP_STATIC_GEN_1 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"capsule_addr", "transform_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeCapsuleAABB(capsule_addr, transform_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeCapsuleAABB_addr(int capsule_addr, int transform_addr);
+
+    public static B3AABB ComputeHullAABB(B3Hull hull, B3Transform transform) {
+        int addr = internal_native_ComputeHullAABB_addr(hull.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_2 == null)
+            B3AABB_TEMP_STATIC_GEN_2 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_2.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_2;
+    }
+
+    @org.teavm.jso.JSBody(params = {"hull_addr", "transform_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeHullAABB(hull_addr, transform_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeHullAABB_addr(int hull_addr, int transform_addr);
+
+    public static B3AABB ComputeMeshAABB(B3Mesh mesh, B3Transform transform, B3Vec3 scale) {
+        int addr = internal_native_ComputeMeshAABB_addr(mesh.native_address, transform.native_address, scale.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_3 == null)
+            B3AABB_TEMP_STATIC_GEN_3 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_3.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_3;
+    }
+
+    @org.teavm.jso.JSBody(params = {"mesh_addr", "transform_addr", "scale_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeMeshAABB(mesh_addr, transform_addr, scale_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeMeshAABB_addr(int mesh_addr, int transform_addr, int scale_addr);
+
+    public static B3AABB ComputeHeightFieldAABB(B3HeightField heightField, B3Transform transform) {
+        int addr = internal_native_ComputeHeightFieldAABB_addr(heightField.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_4 == null)
+            B3AABB_TEMP_STATIC_GEN_4 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_4.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_4;
+    }
+
+    @org.teavm.jso.JSBody(params = {"heightField_addr", "transform_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeHeightFieldAABB(heightField_addr, transform_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeHeightFieldAABB_addr(int heightField_addr, int transform_addr);
+
+    public static B3AABB ComputeCompoundAABB(B3Compound compound, B3Transform transform) {
+        int addr = internal_native_ComputeCompoundAABB_addr(compound.native_address, transform.native_address);
+        if (addr == 0)
+            return B3AABB.NULL;
+        if (B3AABB_TEMP_STATIC_GEN_5 == null)
+            B3AABB_TEMP_STATIC_GEN_5 = B3AABB.native_new();
+        B3AABB_TEMP_STATIC_GEN_5.internal_reset(addr, false);
+        return B3AABB_TEMP_STATIC_GEN_5;
+    }
+
+    @org.teavm.jso.JSBody(params = {"compound_addr", "transform_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ComputeCompoundAABB(compound_addr, transform_addr);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeCompoundAABB_addr(int compound_addr, int transform_addr);
+
+    public static boolean OverlapSphere(B3Sphere sphere, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapSphere(sphere.native_address, transform.native_address, proxy.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"sphere_addr", "transform_addr", "proxy_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.OverlapSphere(sphere_addr, transform_addr, proxy_addr);return returnedJSObj;")
+    public static native boolean internal_native_OverlapSphere(int sphere_addr, int transform_addr, int proxy_addr);
+
+    public static boolean OverlapCapsule(B3Capsule capsule, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapCapsule(capsule.native_address, transform.native_address, proxy.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"capsule_addr", "transform_addr", "proxy_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.OverlapCapsule(capsule_addr, transform_addr, proxy_addr);return returnedJSObj;")
+    public static native boolean internal_native_OverlapCapsule(int capsule_addr, int transform_addr, int proxy_addr);
+
+    public static boolean OverlapHull(B3Hull hull, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapHull(hull.native_address, transform.native_address, proxy.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"hull_addr", "transform_addr", "proxy_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.OverlapHull(hull_addr, transform_addr, proxy_addr);return returnedJSObj;")
+    public static native boolean internal_native_OverlapHull(int hull_addr, int transform_addr, int proxy_addr);
+
+    public static boolean OverlapMesh(B3Mesh mesh, B3Vec3 scale, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapMesh(mesh.native_address, scale.native_address, transform.native_address, proxy.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"mesh_addr", "scale_addr", "transform_addr", "proxy_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.OverlapMesh(mesh_addr, scale_addr, transform_addr, proxy_addr);return returnedJSObj;")
+    public static native boolean internal_native_OverlapMesh(int mesh_addr, int scale_addr, int transform_addr, int proxy_addr);
+
+    public static boolean OverlapHeightField(B3HeightField heightField, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapHeightField(heightField.native_address, transform.native_address, proxy.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"heightField_addr", "transform_addr", "proxy_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.OverlapHeightField(heightField_addr, transform_addr, proxy_addr);return returnedJSObj;")
+    public static native boolean internal_native_OverlapHeightField(int heightField_addr, int transform_addr, int proxy_addr);
+
+    public static boolean OverlapCompound(B3Compound compound, B3Transform transform, B3ShapeProxy proxy) {
+        return internal_native_OverlapCompound(compound.native_address, transform.native_address, proxy.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"compound_addr", "transform_addr", "proxy_addr"}, script = "var returnedJSObj = box3d.B3Collision.prototype.OverlapCompound(compound_addr, transform_addr, proxy_addr);return returnedJSObj;")
+    public static native boolean internal_native_OverlapCompound(int compound_addr, int transform_addr, int proxy_addr);
+
+    public static B3CastOutput RayCastSphere(B3Sphere sphere, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastSphere_addr(sphere.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_0 == null)
+            B3CastOutput_TEMP_STATIC_GEN_0 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_0.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"sphere_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastSphere(sphere_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastSphere_addr(int sphere_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput RayCastHollowSphere(B3Sphere sphere, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastHollowSphere_addr(sphere.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_1 == null)
+            B3CastOutput_TEMP_STATIC_GEN_1 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_1.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"sphere_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastHollowSphere(sphere_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastHollowSphere_addr(int sphere_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput RayCastCapsule(B3Capsule capsule, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastCapsule_addr(capsule.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_2 == null)
+            B3CastOutput_TEMP_STATIC_GEN_2 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_2.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_2;
+    }
+
+    @org.teavm.jso.JSBody(params = {"capsule_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastCapsule(capsule_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastCapsule_addr(int capsule_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput RayCastHull(B3Hull hull, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastHull_addr(hull.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_3 == null)
+            B3CastOutput_TEMP_STATIC_GEN_3 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_3.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_3;
+    }
+
+    @org.teavm.jso.JSBody(params = {"hull_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastHull(hull_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastHull_addr(int hull_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput RayCastMesh(B3Mesh mesh, B3Vec3 scale, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastMesh_addr(mesh.native_address, scale.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_4 == null)
+            B3CastOutput_TEMP_STATIC_GEN_4 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_4.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_4;
+    }
+
+    @org.teavm.jso.JSBody(params = {"mesh_addr", "scale_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastMesh(mesh_addr, scale_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastMesh_addr(int mesh_addr, int scale_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput RayCastHeightField(B3HeightField heightField, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastHeightField_addr(heightField.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_5 == null)
+            B3CastOutput_TEMP_STATIC_GEN_5 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_5.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_5;
+    }
+
+    @org.teavm.jso.JSBody(params = {"heightField_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastHeightField(heightField_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastHeightField_addr(int heightField_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput RayCastCompound(B3Compound compound, B3Vec3 origin, B3Vec3 translation, float maxFraction) {
+        int addr = internal_native_RayCastCompound_addr(compound.native_address, origin.native_address, translation.native_address, maxFraction);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_6 == null)
+            B3CastOutput_TEMP_STATIC_GEN_6 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_6.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_6;
+    }
+
+    @org.teavm.jso.JSBody(params = {"compound_addr", "origin_addr", "translation_addr", "maxFraction"}, script = "var returnedJSObj = box3d.B3Collision.prototype.RayCastCompound(compound_addr, origin_addr, translation_addr, maxFraction);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_RayCastCompound_addr(int compound_addr, int origin_addr, int translation_addr, float maxFraction);
+
+    public static B3CastOutput ShapeCastSphere(B3Sphere sphere, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        int addr = internal_native_ShapeCastSphere_addr(sphere.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_7 == null)
+            B3CastOutput_TEMP_STATIC_GEN_7 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_7.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_7;
+    }
+
+    @org.teavm.jso.JSBody(params = {"sphere_addr", "proxy_addr", "translation_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCastSphere(sphere_addr, proxy_addr, translation_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ShapeCastSphere_addr(int sphere_addr, int proxy_addr, int translation_addr, float maxFraction, boolean canEncroach);
+
+    public static B3CastOutput ShapeCastCapsule(B3Capsule capsule, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        int addr = internal_native_ShapeCastCapsule_addr(capsule.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_8 == null)
+            B3CastOutput_TEMP_STATIC_GEN_8 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_8.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_8;
+    }
+
+    @org.teavm.jso.JSBody(params = {"capsule_addr", "proxy_addr", "translation_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCastCapsule(capsule_addr, proxy_addr, translation_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ShapeCastCapsule_addr(int capsule_addr, int proxy_addr, int translation_addr, float maxFraction, boolean canEncroach);
+
+    public static B3CastOutput ShapeCastHull(B3Hull hull, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        int addr = internal_native_ShapeCastHull_addr(hull.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_9 == null)
+            B3CastOutput_TEMP_STATIC_GEN_9 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_9.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_9;
+    }
+
+    @org.teavm.jso.JSBody(params = {"hull_addr", "proxy_addr", "translation_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCastHull(hull_addr, proxy_addr, translation_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ShapeCastHull_addr(int hull_addr, int proxy_addr, int translation_addr, float maxFraction, boolean canEncroach);
+
+    public static B3CastOutput ShapeCastMesh(B3Mesh mesh, B3Vec3 scale, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        int addr = internal_native_ShapeCastMesh_addr(mesh.native_address, scale.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_10 == null)
+            B3CastOutput_TEMP_STATIC_GEN_10 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_10.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_10;
+    }
+
+    @org.teavm.jso.JSBody(params = {"mesh_addr", "scale_addr", "proxy_addr", "translation_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCastMesh(mesh_addr, scale_addr, proxy_addr, translation_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ShapeCastMesh_addr(int mesh_addr, int scale_addr, int proxy_addr, int translation_addr, float maxFraction, boolean canEncroach);
+
+    public static B3CastOutput ShapeCastHeightField(B3HeightField heightField, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        int addr = internal_native_ShapeCastHeightField_addr(heightField.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_11 == null)
+            B3CastOutput_TEMP_STATIC_GEN_11 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_11.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_11;
+    }
+
+    @org.teavm.jso.JSBody(params = {"heightField_addr", "proxy_addr", "translation_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCastHeightField(heightField_addr, proxy_addr, translation_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ShapeCastHeightField_addr(int heightField_addr, int proxy_addr, int translation_addr, float maxFraction, boolean canEncroach);
+
+    public static B3CastOutput ShapeCastCompound(B3Compound compound, B3ShapeProxy proxy, B3Vec3 translation, float maxFraction, boolean canEncroach) {
+        int addr = internal_native_ShapeCastCompound_addr(compound.native_address, proxy.native_address, translation.native_address, maxFraction, canEncroach);
+        if (addr == 0)
+            return B3CastOutput.NULL;
+        if (B3CastOutput_TEMP_STATIC_GEN_12 == null)
+            B3CastOutput_TEMP_STATIC_GEN_12 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_12.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_12;
+    }
+
+    @org.teavm.jso.JSBody(params = {"compound_addr", "proxy_addr", "translation_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCastCompound(compound_addr, proxy_addr, translation_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ShapeCastCompound_addr(int compound_addr, int proxy_addr, int translation_addr, float maxFraction, boolean canEncroach);
 
     public static B3LocalManifold CollideSpheres(int capacity, B3Sphere sphereA, B3Sphere sphereB, B3Transform transformBtoA) {
         int addr = internal_native_CollideSpheres_addr(capacity, sphereA.native_address, sphereB.native_address, transformBtoA.native_address);
@@ -168,10 +547,10 @@ public final class B3Collision extends NativeObject {
         int addr = internal_native_ShapeCast_addr(proxyA.native_address, proxyB.native_address, transformBtoA.native_address, translationB.native_address, maxFraction, canEncroach);
         if (addr == 0)
             return B3CastOutput.NULL;
-        if (B3CastOutput_TEMP_STATIC_GEN_0 == null)
-            B3CastOutput_TEMP_STATIC_GEN_0 = B3CastOutput.native_new();
-        B3CastOutput_TEMP_STATIC_GEN_0.internal_reset(addr, false);
-        return B3CastOutput_TEMP_STATIC_GEN_0;
+        if (B3CastOutput_TEMP_STATIC_GEN_13 == null)
+            B3CastOutput_TEMP_STATIC_GEN_13 = B3CastOutput.native_new();
+        B3CastOutput_TEMP_STATIC_GEN_13.internal_reset(addr, false);
+        return B3CastOutput_TEMP_STATIC_GEN_13;
     }
 
     @org.teavm.jso.JSBody(params = {"proxyA_addr", "proxyB_addr", "transformBtoA_addr", "translationB_addr", "maxFraction", "canEncroach"}, script = "var returnedJSObj = box3d.B3Collision.prototype.ShapeCast(proxyA_addr, proxyB_addr, transformBtoA_addr, translationB_addr, maxFraction, canEncroach);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")

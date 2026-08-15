@@ -7,10 +7,13 @@
 package gen.web.com.github.xpenatan.box3d;
 
 import gen.web.com.github.xpenatan.jParser.api.NativeObject;
+import gen.web.com.github.xpenatan.jparser.runtime.helper.NativeString;
 
 public final class B3Shape extends NativeObject {
 
     private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_0;
+
+    private B3SurfaceMaterial B3SurfaceMaterial_TEMP_GEN_1;
 
     private B3Filter B3Filter_TEMP_GEN_0;
 
@@ -21,6 +24,8 @@ public final class B3Shape extends NativeObject {
     private B3Capsule B3Capsule_TEMP_GEN_0;
 
     private B3AABB B3AABB_TEMP_GEN_0;
+
+    private B3MassData B3MassData_TEMP_GEN_0;
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
@@ -98,12 +103,33 @@ public final class B3Shape extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetBodyId();return returnedJSObj;")
     public static native long internal_native_GetBodyId(int this_addr);
 
+    public long GetWorldId() {
+        return internal_native_GetWorldId(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetWorldId();return returnedJSObj;")
+    public static native long internal_native_GetWorldId(int this_addr);
+
     public boolean IsSensor() {
         return internal_native_IsSensor(native_address);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.IsSensor();return returnedJSObj;")
     public static native boolean internal_native_IsSensor(int this_addr);
+
+    public void GetName(NativeString name) {
+        internal_native_GetName(native_address, name.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "name_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.GetName(name_addr);")
+    public static native void internal_native_GetName(int this_addr, int name_addr);
+
+    public void SetName(String name) {
+        internal_native_SetName(native_address, name);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "name"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetName(name);")
+    public static native void internal_native_SetName(int this_addr, String name);
 
     public float GetDensity() {
         return internal_native_GetDensity(native_address);
@@ -167,6 +193,33 @@ public final class B3Shape extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "material_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetSurfaceMaterial(material_addr);")
     public static native void internal_native_SetSurfaceMaterial(int this_addr, int material_addr);
 
+    public int GetMeshMaterialCount() {
+        return internal_native_GetMeshMaterialCount(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetMeshMaterialCount();return returnedJSObj;")
+    public static native int internal_native_GetMeshMaterialCount(int this_addr);
+
+    public B3SurfaceMaterial GetMeshSurfaceMaterial(int index) {
+        int addr = internal_native_GetMeshSurfaceMaterial_addr(native_address, index);
+        if (addr == 0)
+            return B3SurfaceMaterial.NULL;
+        if (B3SurfaceMaterial_TEMP_GEN_1 == null)
+            B3SurfaceMaterial_TEMP_GEN_1 = B3SurfaceMaterial.native_new();
+        B3SurfaceMaterial_TEMP_GEN_1.internal_reset(addr, false);
+        return B3SurfaceMaterial_TEMP_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "index"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetMeshSurfaceMaterial(index);if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetMeshSurfaceMaterial_addr(int this_addr, int index);
+
+    public void SetMeshMaterial(B3SurfaceMaterial material, int index) {
+        internal_native_SetMeshMaterial(native_address, material.native_address, index);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "material_addr", "index"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetMeshMaterial(material_addr, index);")
+    public static native void internal_native_SetMeshMaterial(int this_addr, int material_addr, int index);
+
     public B3Filter GetFilter() {
         int addr = internal_native_GetFilter_addr(native_address);
         if (addr == 0)
@@ -214,6 +267,20 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.AreContactEventsEnabled();return returnedJSObj;")
     public static native boolean internal_native_AreContactEventsEnabled(int this_addr);
+
+    public void EnablePreSolveEvents(boolean enabled) {
+        internal_native_EnablePreSolveEvents(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.EnablePreSolveEvents(enabled);")
+    public static native void internal_native_EnablePreSolveEvents(int this_addr, boolean enabled);
+
+    public boolean ArePreSolveEventsEnabled() {
+        return internal_native_ArePreSolveEventsEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.ArePreSolveEventsEnabled();return returnedJSObj;")
+    public static native boolean internal_native_ArePreSolveEventsEnabled(int this_addr);
 
     public void EnableHitEvents(boolean enabled) {
         internal_native_EnableHitEvents(native_address, enabled);
@@ -282,6 +349,53 @@ public final class B3Shape extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "capsule_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetCapsule(capsule_addr);")
     public static native void internal_native_SetCapsule(int this_addr, int capsule_addr);
 
+    public B3Hull GetHull() {
+        int addr = internal_native_GetHull_addr(native_address);
+        if (addr == 0)
+            return B3Hull.NULL;
+        B3Hull B3Hull_NEW = B3Hull.native_new();
+        B3Hull_NEW.internal_reset(addr, true);
+        return B3Hull_NEW;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetHull();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetHull_addr(int this_addr);
+
+    public void SetHull(B3Hull hull) {
+        internal_native_SetHull(native_address, hull.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hull_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetHull(hull_addr);")
+    public static native void internal_native_SetHull(int this_addr, int hull_addr);
+
+    public void SetMesh(B3Mesh mesh, B3Vec3 scale) {
+        internal_native_SetMesh(native_address, mesh.native_address, scale.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "mesh_addr", "scale_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);jsObj.SetMesh(mesh_addr, scale_addr);")
+    public static native void internal_native_SetMesh(int this_addr, int mesh_addr, int scale_addr);
+
+    public int GetContactCapacity() {
+        return internal_native_GetContactCapacity(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetContactCapacity();return returnedJSObj;")
+    public static native int internal_native_GetContactCapacity(int this_addr);
+
+    public int GetSensorCapacity() {
+        return internal_native_GetSensorCapacity(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetSensorCapacity();return returnedJSObj;")
+    public static native int internal_native_GetSensorCapacity(int this_addr);
+
+    public long GetSensorShapeId(int index) {
+        return internal_native_GetSensorShapeId(native_address, index);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "index"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetSensorShapeId(index);return returnedJSObj;")
+    public static native long internal_native_GetSensorShapeId(int this_addr, int index);
+
     public B3AABB GetAABB() {
         int addr = internal_native_GetAABB_addr(native_address);
         if (addr == 0)
@@ -294,6 +408,19 @@ public final class B3Shape extends NativeObject {
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.GetAABB();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
     public static native int internal_native_GetAABB_addr(int this_addr);
+
+    public B3MassData ComputeMassData() {
+        int addr = internal_native_ComputeMassData_addr(native_address);
+        if (addr == 0)
+            return B3MassData.NULL;
+        if (B3MassData_TEMP_GEN_0 == null)
+            B3MassData_TEMP_GEN_0 = B3MassData.native_new();
+        B3MassData_TEMP_GEN_0.internal_reset(addr, false);
+        return B3MassData_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Shape);var returnedJSObj = jsObj.ComputeMassData();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_ComputeMassData_addr(int this_addr);
 
     public B3Vec3 GetClosestPoint(B3Vec3 target) {
         int addr = internal_native_GetClosestPoint_addr(native_address, target.native_address);

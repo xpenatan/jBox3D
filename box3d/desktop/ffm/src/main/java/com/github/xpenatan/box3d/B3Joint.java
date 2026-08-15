@@ -17,6 +17,24 @@ import java.lang.invoke.MethodHandle;
 
 public final class B3Joint extends NativeObject {
 
+    private B3Transform B3Transform_TEMP_GEN_0;
+
+    private B3Transform B3Transform_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_2;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_3;
+
+    private B3Quat B3Quat_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_4;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_5;
+
     static public final B3Joint NULL = B3Joint.native_new();
 
     public B3Joint() {
@@ -107,6 +125,18 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public int GetType() {
+        return internal_native_GetType(native_address);
+    }
+
+    public static int internal_native_GetType(long this_addr) {
+        try {
+            return (int) FFMHandles.internal_native_GetType__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public long GetBodyIdA() {
         return internal_native_GetBodyIdA(native_address);
     }
@@ -131,6 +161,102 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public long GetWorldId() {
+        return internal_native_GetWorldId(native_address);
+    }
+
+    public static long internal_native_GetWorldId(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetWorldId__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Transform GetLocalFrameA() {
+        long addr = internal_native_GetLocalFrameA_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_0 == null)
+            B3Transform_TEMP_GEN_0 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetLocalFrameA_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetLocalFrameA_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetLocalFrameA(B3Transform localFrame) {
+        internal_native_SetLocalFrameA(native_address, localFrame.native_address);
+    }
+
+    public static void internal_native_SetLocalFrameA(long this_addr, long localFrame_addr) {
+        try {
+            FFMHandles.internal_native_SetLocalFrameA__JJ.invokeExact(this_addr, localFrame_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Transform GetLocalFrameB() {
+        long addr = internal_native_GetLocalFrameB_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_1 == null)
+            B3Transform_TEMP_GEN_1 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_1;
+    }
+
+    public static long internal_native_GetLocalFrameB_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetLocalFrameB_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetLocalFrameB(B3Transform localFrame) {
+        internal_native_SetLocalFrameB(native_address, localFrame.native_address);
+    }
+
+    public static void internal_native_SetLocalFrameB(long this_addr, long localFrame_addr) {
+        try {
+            FFMHandles.internal_native_SetLocalFrameB__JJ.invokeExact(this_addr, localFrame_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean GetCollideConnected() {
+        return internal_native_GetCollideConnected(native_address);
+    }
+
+    public static boolean internal_native_GetCollideConnected(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_GetCollideConnected__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetCollideConnected(boolean collideConnected) {
+        internal_native_SetCollideConnected(native_address, collideConnected);
+    }
+
+    public static void internal_native_SetCollideConnected(long this_addr, boolean collideConnected) {
+        try {
+            FFMHandles.internal_native_SetCollideConnected__JZ.invokeExact(this_addr, collideConnected);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void WakeBodies() {
         internal_native_WakeBodies(native_address);
     }
@@ -143,6 +269,42 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public B3Vec3 GetConstraintForce() {
+        long addr = internal_native_GetConstraintForce_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetConstraintForce_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetConstraintForce_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetConstraintTorque() {
+        long addr = internal_native_GetConstraintTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    public static long internal_native_GetConstraintTorque_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetConstraintTorque_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public float GetLinearSeparation() {
         return internal_native_GetLinearSeparation(native_address);
     }
@@ -150,6 +312,894 @@ public final class B3Joint extends NativeObject {
     public static float internal_native_GetLinearSeparation(long this_addr) {
         try {
             return (float) FFMHandles.internal_native_GetLinearSeparation__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetAngularSeparation() {
+        return internal_native_GetAngularSeparation(native_address);
+    }
+
+    public static float internal_native_GetAngularSeparation(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetAngularSeparation__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetConstraintTuning(float hertz, float dampingRatio) {
+        internal_native_SetConstraintTuning(native_address, hertz, dampingRatio);
+    }
+
+    public static void internal_native_SetConstraintTuning(long this_addr, float hertz, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetConstraintTuning__JFF.invokeExact(this_addr, hertz, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    public static float internal_native_GetConstraintHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetConstraintHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetConstraintDampingRatio() {
+        return internal_native_GetConstraintDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetConstraintDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetConstraintDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetForceThreshold(float threshold) {
+        internal_native_SetForceThreshold(native_address, threshold);
+    }
+
+    public static void internal_native_SetForceThreshold(long this_addr, float threshold) {
+        try {
+            FFMHandles.internal_native_SetForceThreshold__JF.invokeExact(this_addr, threshold);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetForceThreshold() {
+        return internal_native_GetForceThreshold(native_address);
+    }
+
+    public static float internal_native_GetForceThreshold(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetForceThreshold__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetTorqueThreshold(float threshold) {
+        internal_native_SetTorqueThreshold(native_address, threshold);
+    }
+
+    public static void internal_native_SetTorqueThreshold(long this_addr, float threshold) {
+        try {
+            FFMHandles.internal_native_SetTorqueThreshold__JF.invokeExact(this_addr, threshold);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetTorqueThreshold() {
+        return internal_native_GetTorqueThreshold(native_address);
+    }
+
+    public static float internal_native_GetTorqueThreshold(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetTorqueThreshold__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetParallelSpringHertz(float hertz) {
+        internal_native_SetParallelSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetParallelSpringHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetParallelSpringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetParallelSpringHertz() {
+        return internal_native_GetParallelSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetParallelSpringHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetParallelSpringHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetParallelSpringDampingRatio(float dampingRatio) {
+        internal_native_SetParallelSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetParallelSpringDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetParallelSpringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetParallelSpringDampingRatio() {
+        return internal_native_GetParallelSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetParallelSpringDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetParallelSpringDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetParallelMaxTorque(float torque) {
+        internal_native_SetParallelMaxTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetParallelMaxTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetParallelMaxTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetParallelMaxTorque() {
+        return internal_native_GetParallelMaxTorque(native_address);
+    }
+
+    public static float internal_native_GetParallelMaxTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetParallelMaxTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceLength(float length) {
+        internal_native_SetDistanceLength(native_address, length);
+    }
+
+    public static void internal_native_SetDistanceLength(long this_addr, float length) {
+        try {
+            FFMHandles.internal_native_SetDistanceLength__JF.invokeExact(this_addr, length);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceLength() {
+        return internal_native_GetDistanceLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceLength(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceLength__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableDistanceSpring(boolean enabled) {
+        internal_native_EnableDistanceSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnableDistanceSpring(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableDistanceSpring__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsDistanceSpringEnabled() {
+        return internal_native_IsDistanceSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsDistanceSpringEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsDistanceSpringEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceSpringForceRange(float lowerForce, float upperForce) {
+        internal_native_SetDistanceSpringForceRange(native_address, lowerForce, upperForce);
+    }
+
+    public static void internal_native_SetDistanceSpringForceRange(long this_addr, float lowerForce, float upperForce) {
+        try {
+            FFMHandles.internal_native_SetDistanceSpringForceRange__JFF.invokeExact(this_addr, lowerForce, upperForce);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceLowerSpringForce() {
+        return internal_native_GetDistanceLowerSpringForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceLowerSpringForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceLowerSpringForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceUpperSpringForce() {
+        return internal_native_GetDistanceUpperSpringForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceUpperSpringForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceUpperSpringForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceSpringHertz(float hertz) {
+        internal_native_SetDistanceSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetDistanceSpringHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetDistanceSpringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceSpringHertz() {
+        return internal_native_GetDistanceSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetDistanceSpringHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceSpringHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceSpringDampingRatio(float dampingRatio) {
+        internal_native_SetDistanceSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetDistanceSpringDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetDistanceSpringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceSpringDampingRatio() {
+        return internal_native_GetDistanceSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetDistanceSpringDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceSpringDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableDistanceLimit(boolean enabled) {
+        internal_native_EnableDistanceLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableDistanceLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableDistanceLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsDistanceLimitEnabled() {
+        return internal_native_IsDistanceLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsDistanceLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsDistanceLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceLengthRange(float minLength, float maxLength) {
+        internal_native_SetDistanceLengthRange(native_address, minLength, maxLength);
+    }
+
+    public static void internal_native_SetDistanceLengthRange(long this_addr, float minLength, float maxLength) {
+        try {
+            FFMHandles.internal_native_SetDistanceLengthRange__JFF.invokeExact(this_addr, minLength, maxLength);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceMinLength() {
+        return internal_native_GetDistanceMinLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceMinLength(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceMinLength__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceMaxLength() {
+        return internal_native_GetDistanceMaxLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceMaxLength(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceMaxLength__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceCurrentLength() {
+        return internal_native_GetDistanceCurrentLength(native_address);
+    }
+
+    public static float internal_native_GetDistanceCurrentLength(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceCurrentLength__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableDistanceMotor(boolean enabled) {
+        internal_native_EnableDistanceMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableDistanceMotor(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableDistanceMotor__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsDistanceMotorEnabled() {
+        return internal_native_IsDistanceMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsDistanceMotorEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsDistanceMotorEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceMotorSpeed(float speed) {
+        internal_native_SetDistanceMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetDistanceMotorSpeed(long this_addr, float speed) {
+        try {
+            FFMHandles.internal_native_SetDistanceMotorSpeed__JF.invokeExact(this_addr, speed);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceMotorSpeed() {
+        return internal_native_GetDistanceMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetDistanceMotorSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceMotorSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetDistanceMaxMotorForce(float force) {
+        internal_native_SetDistanceMaxMotorForce(native_address, force);
+    }
+
+    public static void internal_native_SetDistanceMaxMotorForce(long this_addr, float force) {
+        try {
+            FFMHandles.internal_native_SetDistanceMaxMotorForce__JF.invokeExact(this_addr, force);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceMaxMotorForce() {
+        return internal_native_GetDistanceMaxMotorForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceMaxMotorForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceMaxMotorForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetDistanceMotorForce() {
+        return internal_native_GetDistanceMotorForce(native_address);
+    }
+
+    public static float internal_native_GetDistanceMotorForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetDistanceMotorForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorLinearVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorLinearVelocity(native_address, velocity.native_address);
+    }
+
+    public static void internal_native_SetMotorLinearVelocity(long this_addr, long velocity_addr) {
+        try {
+            FFMHandles.internal_native_SetMotorLinearVelocity__JJ.invokeExact(this_addr, velocity_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetMotorLinearVelocity() {
+        long addr = internal_native_GetMotorLinearVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_2 == null)
+            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_2;
+    }
+
+    public static long internal_native_GetMotorLinearVelocity_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetMotorLinearVelocity_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorAngularVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorAngularVelocity(native_address, velocity.native_address);
+    }
+
+    public static void internal_native_SetMotorAngularVelocity(long this_addr, long velocity_addr) {
+        try {
+            FFMHandles.internal_native_SetMotorAngularVelocity__JJ.invokeExact(this_addr, velocity_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetMotorAngularVelocity() {
+        long addr = internal_native_GetMotorAngularVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_3 == null)
+            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_3;
+    }
+
+    public static long internal_native_GetMotorAngularVelocity_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetMotorAngularVelocity_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorMaxVelocityForce(float force) {
+        internal_native_SetMotorMaxVelocityForce(native_address, force);
+    }
+
+    public static void internal_native_SetMotorMaxVelocityForce(long this_addr, float force) {
+        try {
+            FFMHandles.internal_native_SetMotorMaxVelocityForce__JF.invokeExact(this_addr, force);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorMaxVelocityForce() {
+        return internal_native_GetMotorMaxVelocityForce(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxVelocityForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorMaxVelocityForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorMaxVelocityTorque(float torque) {
+        internal_native_SetMotorMaxVelocityTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetMotorMaxVelocityTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetMotorMaxVelocityTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorMaxVelocityTorque() {
+        return internal_native_GetMotorMaxVelocityTorque(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxVelocityTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorMaxVelocityTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorLinearHertz(float hertz) {
+        internal_native_SetMotorLinearHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetMotorLinearHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetMotorLinearHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorLinearHertz() {
+        return internal_native_GetMotorLinearHertz(native_address);
+    }
+
+    public static float internal_native_GetMotorLinearHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorLinearHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorLinearDampingRatio(float dampingRatio) {
+        internal_native_SetMotorLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetMotorLinearDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetMotorLinearDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorLinearDampingRatio() {
+        return internal_native_GetMotorLinearDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetMotorLinearDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorLinearDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorAngularHertz(float hertz) {
+        internal_native_SetMotorAngularHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetMotorAngularHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetMotorAngularHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorAngularHertz() {
+        return internal_native_GetMotorAngularHertz(native_address);
+    }
+
+    public static float internal_native_GetMotorAngularHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorAngularHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorAngularDampingRatio(float dampingRatio) {
+        internal_native_SetMotorAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetMotorAngularDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetMotorAngularDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorAngularDampingRatio() {
+        return internal_native_GetMotorAngularDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetMotorAngularDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorAngularDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorMaxSpringForce(float force) {
+        internal_native_SetMotorMaxSpringForce(native_address, force);
+    }
+
+    public static void internal_native_SetMotorMaxSpringForce(long this_addr, float force) {
+        try {
+            FFMHandles.internal_native_SetMotorMaxSpringForce__JF.invokeExact(this_addr, force);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorMaxSpringForce() {
+        return internal_native_GetMotorMaxSpringForce(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxSpringForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorMaxSpringForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMotorMaxSpringTorque(float torque) {
+        internal_native_SetMotorMaxSpringTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetMotorMaxSpringTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetMotorMaxSpringTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMotorMaxSpringTorque() {
+        return internal_native_GetMotorMaxSpringTorque(native_address);
+    }
+
+    public static float internal_native_GetMotorMaxSpringTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMotorMaxSpringTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnablePrismaticSpring(boolean enabled) {
+        internal_native_EnablePrismaticSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnablePrismaticSpring(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnablePrismaticSpring__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsPrismaticSpringEnabled() {
+        return internal_native_IsPrismaticSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsPrismaticSpringEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsPrismaticSpringEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetPrismaticSpringHertz(float hertz) {
+        internal_native_SetPrismaticSpringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetPrismaticSpringHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetPrismaticSpringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticSpringHertz() {
+        return internal_native_GetPrismaticSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetPrismaticSpringHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticSpringHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetPrismaticSpringDampingRatio(float dampingRatio) {
+        internal_native_SetPrismaticSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetPrismaticSpringDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetPrismaticSpringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticSpringDampingRatio() {
+        return internal_native_GetPrismaticSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetPrismaticSpringDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticSpringDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetPrismaticTargetTranslation(float translation) {
+        internal_native_SetPrismaticTargetTranslation(native_address, translation);
+    }
+
+    public static void internal_native_SetPrismaticTargetTranslation(long this_addr, float translation) {
+        try {
+            FFMHandles.internal_native_SetPrismaticTargetTranslation__JF.invokeExact(this_addr, translation);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticTargetTranslation() {
+        return internal_native_GetPrismaticTargetTranslation(native_address);
+    }
+
+    public static float internal_native_GetPrismaticTargetTranslation(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticTargetTranslation__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnablePrismaticLimit(boolean enabled) {
+        internal_native_EnablePrismaticLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnablePrismaticLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnablePrismaticLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsPrismaticLimitEnabled() {
+        return internal_native_IsPrismaticLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsPrismaticLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsPrismaticLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticLowerLimit() {
+        return internal_native_GetPrismaticLowerLimit(native_address);
+    }
+
+    public static float internal_native_GetPrismaticLowerLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticLowerLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticUpperLimit() {
+        return internal_native_GetPrismaticUpperLimit(native_address);
+    }
+
+    public static float internal_native_GetPrismaticUpperLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticUpperLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetPrismaticLimits(float lower, float upper) {
+        internal_native_SetPrismaticLimits(native_address, lower, upper);
+    }
+
+    public static void internal_native_SetPrismaticLimits(long this_addr, float lower, float upper) {
+        try {
+            FFMHandles.internal_native_SetPrismaticLimits__JFF.invokeExact(this_addr, lower, upper);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnablePrismaticMotor(boolean enabled) {
+        internal_native_EnablePrismaticMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnablePrismaticMotor(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnablePrismaticMotor__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsPrismaticMotorEnabled() {
+        return internal_native_IsPrismaticMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsPrismaticMotorEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsPrismaticMotorEnabled__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -179,6 +1229,90 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public float GetPrismaticMotorSpeed() {
+        return internal_native_GetPrismaticMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetPrismaticMotorSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticMotorSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetPrismaticMaxMotorForce(float force) {
+        internal_native_SetPrismaticMaxMotorForce(native_address, force);
+    }
+
+    public static void internal_native_SetPrismaticMaxMotorForce(long this_addr, float force) {
+        try {
+            FFMHandles.internal_native_SetPrismaticMaxMotorForce__JF.invokeExact(this_addr, force);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticMaxMotorForce() {
+        return internal_native_GetPrismaticMaxMotorForce(native_address);
+    }
+
+    public static float internal_native_GetPrismaticMaxMotorForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticMaxMotorForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticMotorForce() {
+        return internal_native_GetPrismaticMotorForce(native_address);
+    }
+
+    public static float internal_native_GetPrismaticMotorForce(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticMotorForce__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetPrismaticSpeed() {
+        return internal_native_GetPrismaticSpeed(native_address);
+    }
+
+    public static float internal_native_GetPrismaticSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetPrismaticSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableRevoluteSpring(boolean enabled) {
+        internal_native_EnableRevoluteSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnableRevoluteSpring(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableRevoluteSpring__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsRevoluteSpringEnabled() {
+        return internal_native_IsRevoluteSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsRevoluteSpringEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsRevoluteSpringEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
@@ -186,6 +1320,150 @@ public final class B3Joint extends NativeObject {
     public static void internal_native_SetRevoluteTargetAngle(long this_addr, float radians) {
         try {
             FFMHandles.internal_native_SetRevoluteTargetAngle__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteTargetAngle() {
+        return internal_native_GetRevoluteTargetAngle(native_address);
+    }
+
+    public static float internal_native_GetRevoluteTargetAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteTargetAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteAngle() {
+        return internal_native_GetRevoluteAngle(native_address);
+    }
+
+    public static float internal_native_GetRevoluteAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableRevoluteLimit(boolean enabled) {
+        internal_native_EnableRevoluteLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableRevoluteLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableRevoluteLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsRevoluteLimitEnabled() {
+        return internal_native_IsRevoluteLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsRevoluteLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsRevoluteLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteLowerLimit() {
+        return internal_native_GetRevoluteLowerLimit(native_address);
+    }
+
+    public static float internal_native_GetRevoluteLowerLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteLowerLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteUpperLimit() {
+        return internal_native_GetRevoluteUpperLimit(native_address);
+    }
+
+    public static float internal_native_GetRevoluteUpperLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteUpperLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetRevoluteLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetRevoluteLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    public static void internal_native_SetRevoluteLimits(long this_addr, float lowerRadians, float upperRadians) {
+        try {
+            FFMHandles.internal_native_SetRevoluteLimits__JFF.invokeExact(this_addr, lowerRadians, upperRadians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableRevoluteMotor(boolean enabled) {
+        internal_native_EnableRevoluteMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableRevoluteMotor(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableRevoluteMotor__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsRevoluteMotorEnabled() {
+        return internal_native_IsRevoluteMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsRevoluteMotorEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsRevoluteMotorEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetRevoluteMotorSpeed(float speed) {
+        internal_native_SetRevoluteMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetRevoluteMotorSpeed(long this_addr, float speed) {
+        try {
+            FFMHandles.internal_native_SetRevoluteMotorSpeed__JF.invokeExact(this_addr, speed);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteMotorSpeed() {
+        return internal_native_GetRevoluteMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetRevoluteMotorSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteMotorSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteMotorTorque() {
+        return internal_native_GetRevoluteMotorTorque(native_address);
+    }
+
+    public static float internal_native_GetRevoluteMotorTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteMotorTorque__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -203,6 +1481,18 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public float GetRevoluteMaxMotorTorque() {
+        return internal_native_GetRevoluteMaxMotorTorque(native_address);
+    }
+
+    public static float internal_native_GetRevoluteMaxMotorTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteMaxMotorTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void SetRevoluteSpringHertz(float hertz) {
         internal_native_SetRevoluteSpringHertz(native_address, hertz);
     }
@@ -210,6 +1500,18 @@ public final class B3Joint extends NativeObject {
     public static void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz) {
         try {
             FFMHandles.internal_native_SetRevoluteSpringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetRevoluteSpringHertz() {
+        return internal_native_GetRevoluteSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetRevoluteSpringHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteSpringHertz__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -227,6 +1529,174 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public float GetRevoluteSpringDampingRatio() {
+        return internal_native_GetRevoluteSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetRevoluteSpringDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRevoluteSpringDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableSphericalConeLimit(boolean enabled) {
+        internal_native_EnableSphericalConeLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalConeLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableSphericalConeLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsSphericalConeLimitEnabled() {
+        return internal_native_IsSphericalConeLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalConeLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsSphericalConeLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalConeLimit() {
+        return internal_native_GetSphericalConeLimit(native_address);
+    }
+
+    public static float internal_native_GetSphericalConeLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalConeLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalConeLimit(float radians) {
+        internal_native_SetSphericalConeLimit(native_address, radians);
+    }
+
+    public static void internal_native_SetSphericalConeLimit(long this_addr, float radians) {
+        try {
+            FFMHandles.internal_native_SetSphericalConeLimit__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalConeAngle() {
+        return internal_native_GetSphericalConeAngle(native_address);
+    }
+
+    public static float internal_native_GetSphericalConeAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalConeAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableSphericalTwistLimit(boolean enabled) {
+        internal_native_EnableSphericalTwistLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalTwistLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableSphericalTwistLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsSphericalTwistLimitEnabled() {
+        return internal_native_IsSphericalTwistLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalTwistLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsSphericalTwistLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalLowerTwistLimit() {
+        return internal_native_GetSphericalLowerTwistLimit(native_address);
+    }
+
+    public static float internal_native_GetSphericalLowerTwistLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalLowerTwistLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalUpperTwistLimit() {
+        return internal_native_GetSphericalUpperTwistLimit(native_address);
+    }
+
+    public static float internal_native_GetSphericalUpperTwistLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalUpperTwistLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalTwistLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetSphericalTwistLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    public static void internal_native_SetSphericalTwistLimits(long this_addr, float lowerRadians, float upperRadians) {
+        try {
+            FFMHandles.internal_native_SetSphericalTwistLimits__JFF.invokeExact(this_addr, lowerRadians, upperRadians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalTwistAngle() {
+        return internal_native_GetSphericalTwistAngle(native_address);
+    }
+
+    public static float internal_native_GetSphericalTwistAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalTwistAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableSphericalSpring(boolean enabled) {
+        internal_native_EnableSphericalSpring(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalSpring(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableSphericalSpring__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsSphericalSpringEnabled() {
+        return internal_native_IsSphericalSpringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalSpringEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsSphericalSpringEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void SetSphericalMaxMotorTorque(float torque) {
         internal_native_SetSphericalMaxMotorTorque(native_address, torque);
     }
@@ -234,6 +1704,18 @@ public final class B3Joint extends NativeObject {
     public static void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque) {
         try {
             FFMHandles.internal_native_SetSphericalMaxMotorTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalMaxMotorTorque() {
+        return internal_native_GetSphericalMaxMotorTorque(native_address);
+    }
+
+    public static float internal_native_GetSphericalMaxMotorTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalMaxMotorTorque__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -251,6 +1733,18 @@ public final class B3Joint extends NativeObject {
         }
     }
 
+    public float GetSphericalSpringHertz() {
+        return internal_native_GetSphericalSpringHertz(native_address);
+    }
+
+    public static float internal_native_GetSphericalSpringHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalSpringHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void SetSphericalSpringDampingRatio(float dampingRatio) {
         internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
     }
@@ -258,6 +1752,648 @@ public final class B3Joint extends NativeObject {
     public static void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio) {
         try {
             FFMHandles.internal_native_SetSphericalSpringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetSphericalSpringDampingRatio() {
+        return internal_native_GetSphericalSpringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetSphericalSpringDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetSphericalSpringDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalTargetRotation(B3Quat rotation) {
+        internal_native_SetSphericalTargetRotation(native_address, rotation.native_address);
+    }
+
+    public static void internal_native_SetSphericalTargetRotation(long this_addr, long rotation_addr) {
+        try {
+            FFMHandles.internal_native_SetSphericalTargetRotation__JJ.invokeExact(this_addr, rotation_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Quat GetSphericalTargetRotation() {
+        long addr = internal_native_GetSphericalTargetRotation_addr(native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_GEN_0 == null)
+            B3Quat_TEMP_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetSphericalTargetRotation_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetSphericalTargetRotation_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableSphericalMotor(boolean enabled) {
+        internal_native_EnableSphericalMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSphericalMotor(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableSphericalMotor__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsSphericalMotorEnabled() {
+        return internal_native_IsSphericalMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsSphericalMotorEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsSphericalMotorEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetSphericalMotorVelocity(B3Vec3 velocity) {
+        internal_native_SetSphericalMotorVelocity(native_address, velocity.native_address);
+    }
+
+    public static void internal_native_SetSphericalMotorVelocity(long this_addr, long velocity_addr) {
+        try {
+            FFMHandles.internal_native_SetSphericalMotorVelocity__JJ.invokeExact(this_addr, velocity_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetSphericalMotorVelocity() {
+        long addr = internal_native_GetSphericalMotorVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_4 == null)
+            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_4;
+    }
+
+    public static long internal_native_GetSphericalMotorVelocity_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetSphericalMotorVelocity_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public B3Vec3 GetSphericalMotorTorque() {
+        long addr = internal_native_GetSphericalMotorTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_5 == null)
+            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_5;
+    }
+
+    public static long internal_native_GetSphericalMotorTorque_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetSphericalMotorTorque_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWeldLinearHertz(float hertz) {
+        internal_native_SetWeldLinearHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWeldLinearHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetWeldLinearHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWeldLinearHertz() {
+        return internal_native_GetWeldLinearHertz(native_address);
+    }
+
+    public static float internal_native_GetWeldLinearHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWeldLinearHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWeldLinearDampingRatio(float dampingRatio) {
+        internal_native_SetWeldLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWeldLinearDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetWeldLinearDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWeldLinearDampingRatio() {
+        return internal_native_GetWeldLinearDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWeldLinearDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWeldLinearDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWeldAngularHertz(float hertz) {
+        internal_native_SetWeldAngularHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWeldAngularHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetWeldAngularHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWeldAngularHertz() {
+        return internal_native_GetWeldAngularHertz(native_address);
+    }
+
+    public static float internal_native_GetWeldAngularHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWeldAngularHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWeldAngularDampingRatio(float dampingRatio) {
+        internal_native_SetWeldAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWeldAngularDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetWeldAngularDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWeldAngularDampingRatio() {
+        return internal_native_GetWeldAngularDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWeldAngularDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWeldAngularDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableWheelSuspension(boolean enabled) {
+        internal_native_EnableWheelSuspension(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSuspension(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableWheelSuspension__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsWheelSuspensionEnabled() {
+        return internal_native_IsWheelSuspensionEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSuspensionEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsWheelSuspensionEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSuspensionHertz(float hertz) {
+        internal_native_SetWheelSuspensionHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWheelSuspensionHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetWheelSuspensionHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSuspensionHertz() {
+        return internal_native_GetWheelSuspensionHertz(native_address);
+    }
+
+    public static float internal_native_GetWheelSuspensionHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSuspensionHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSuspensionDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSuspensionDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWheelSuspensionDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetWheelSuspensionDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSuspensionDampingRatio() {
+        return internal_native_GetWheelSuspensionDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWheelSuspensionDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSuspensionDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableWheelSuspensionLimit(boolean enabled) {
+        internal_native_EnableWheelSuspensionLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSuspensionLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableWheelSuspensionLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsWheelSuspensionLimitEnabled() {
+        return internal_native_IsWheelSuspensionLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSuspensionLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsWheelSuspensionLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelLowerSuspensionLimit() {
+        return internal_native_GetWheelLowerSuspensionLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelLowerSuspensionLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelLowerSuspensionLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelUpperSuspensionLimit() {
+        return internal_native_GetWheelUpperSuspensionLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelUpperSuspensionLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelUpperSuspensionLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSuspensionLimits(float lower, float upper) {
+        internal_native_SetWheelSuspensionLimits(native_address, lower, upper);
+    }
+
+    public static void internal_native_SetWheelSuspensionLimits(long this_addr, float lower, float upper) {
+        try {
+            FFMHandles.internal_native_SetWheelSuspensionLimits__JFF.invokeExact(this_addr, lower, upper);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableWheelSpinMotor(boolean enabled) {
+        internal_native_EnableWheelSpinMotor(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSpinMotor(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableWheelSpinMotor__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsWheelSpinMotorEnabled() {
+        return internal_native_IsWheelSpinMotorEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSpinMotorEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsWheelSpinMotorEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelTargetSteeringAngle(float radians) {
+        internal_native_SetWheelTargetSteeringAngle(native_address, radians);
+    }
+
+    public static void internal_native_SetWheelTargetSteeringAngle(long this_addr, float radians) {
+        try {
+            FFMHandles.internal_native_SetWheelTargetSteeringAngle__JF.invokeExact(this_addr, radians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelTargetSteeringAngle() {
+        return internal_native_GetWheelTargetSteeringAngle(native_address);
+    }
+
+    public static float internal_native_GetWheelTargetSteeringAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelTargetSteeringAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSpinMotorSpeed(float speed) {
+        internal_native_SetWheelSpinMotorSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetWheelSpinMotorSpeed(long this_addr, float speed) {
+        try {
+            FFMHandles.internal_native_SetWheelSpinMotorSpeed__JF.invokeExact(this_addr, speed);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSpinMotorSpeed() {
+        return internal_native_GetWheelSpinMotorSpeed(native_address);
+    }
+
+    public static float internal_native_GetWheelSpinMotorSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSpinMotorSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelMaxSpinTorque(float torque) {
+        internal_native_SetWheelMaxSpinTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetWheelMaxSpinTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetWheelMaxSpinTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelMaxSpinTorque() {
+        return internal_native_GetWheelMaxSpinTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelMaxSpinTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelMaxSpinTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSpinSpeed() {
+        return internal_native_GetWheelSpinSpeed(native_address);
+    }
+
+    public static float internal_native_GetWheelSpinSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSpinSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSpinTorque() {
+        return internal_native_GetWheelSpinTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelSpinTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSpinTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableWheelSteering(boolean enabled) {
+        internal_native_EnableWheelSteering(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSteering(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableWheelSteering__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsWheelSteeringEnabled() {
+        return internal_native_IsWheelSteeringEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSteeringEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsWheelSteeringEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSteeringHertz(float hertz) {
+        internal_native_SetWheelSteeringHertz(native_address, hertz);
+    }
+
+    public static void internal_native_SetWheelSteeringHertz(long this_addr, float hertz) {
+        try {
+            FFMHandles.internal_native_SetWheelSteeringHertz__JF.invokeExact(this_addr, hertz);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSteeringHertz() {
+        return internal_native_GetWheelSteeringHertz(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringHertz(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSteeringHertz__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSteeringDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSteeringDampingRatio(native_address, dampingRatio);
+    }
+
+    public static void internal_native_SetWheelSteeringDampingRatio(long this_addr, float dampingRatio) {
+        try {
+            FFMHandles.internal_native_SetWheelSteeringDampingRatio__JF.invokeExact(this_addr, dampingRatio);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSteeringDampingRatio() {
+        return internal_native_GetWheelSteeringDampingRatio(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringDampingRatio(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSteeringDampingRatio__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelMaxSteeringTorque(float torque) {
+        internal_native_SetWheelMaxSteeringTorque(native_address, torque);
+    }
+
+    public static void internal_native_SetWheelMaxSteeringTorque(long this_addr, float torque) {
+        try {
+            FFMHandles.internal_native_SetWheelMaxSteeringTorque__JF.invokeExact(this_addr, torque);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelMaxSteeringTorque() {
+        return internal_native_GetWheelMaxSteeringTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelMaxSteeringTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelMaxSteeringTorque__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableWheelSteeringLimit(boolean enabled) {
+        internal_native_EnableWheelSteeringLimit(native_address, enabled);
+    }
+
+    public static void internal_native_EnableWheelSteeringLimit(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableWheelSteeringLimit__JZ.invokeExact(this_addr, enabled);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public boolean IsWheelSteeringLimitEnabled() {
+        return internal_native_IsWheelSteeringLimitEnabled(native_address);
+    }
+
+    public static boolean internal_native_IsWheelSteeringLimitEnabled(long this_addr) {
+        try {
+            return (boolean) FFMHandles.internal_native_IsWheelSteeringLimitEnabled__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelLowerSteeringLimit() {
+        return internal_native_GetWheelLowerSteeringLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelLowerSteeringLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelLowerSteeringLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelUpperSteeringLimit() {
+        return internal_native_GetWheelUpperSteeringLimit(native_address);
+    }
+
+    public static float internal_native_GetWheelUpperSteeringLimit(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelUpperSteeringLimit__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetWheelSteeringLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetWheelSteeringLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    public static void internal_native_SetWheelSteeringLimits(long this_addr, float lowerRadians, float upperRadians) {
+        try {
+            FFMHandles.internal_native_SetWheelSteeringLimits__JFF.invokeExact(this_addr, lowerRadians, upperRadians);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSteeringAngle() {
+        return internal_native_GetWheelSteeringAngle(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringAngle(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSteeringAngle__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetWheelSteeringTorque() {
+        return internal_native_GetWheelSteeringTorque(native_address);
+    }
+
+    public static float internal_native_GetWheelSteeringTorque(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetWheelSteeringTorque__J.invokeExact(this_addr);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -277,30 +2413,374 @@ public final class B3Joint extends NativeObject {
 
         static final java.lang.invoke.MethodHandle internal_native_Destroy__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_destroy", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetType__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_gettype", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_GetBodyIdA__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getbodyida", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetBodyIdB__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getbodyidb", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetWorldId__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getworldid", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetLocalFrameA_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getlocalframea_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetLocalFrameA__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setlocalframea", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetLocalFrameB_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getlocalframeb_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetLocalFrameB__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setlocalframeb", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetCollideConnected__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getcollideconnected", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetCollideConnected__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setcollideconnected", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
         static final java.lang.invoke.MethodHandle internal_native_WakeBodies__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_wakebodies", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetConstraintForce_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getconstraintforce_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetConstraintTorque_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getconstrainttorque_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_GetLinearSeparation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getlinearseparation", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetAngularSeparation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getangularseparation", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetConstraintTuning__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setconstrainttuning", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetConstraintHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getconstrainthertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetConstraintDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getconstraintdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetForceThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setforcethreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetForceThreshold__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getforcethreshold", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetTorqueThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_settorquethreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetTorqueThreshold__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_gettorquethreshold", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetParallelSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setparallelspringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetParallelSpringHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getparallelspringhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetParallelSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setparallelspringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetParallelSpringDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getparallelspringdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetParallelMaxTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setparallelmaxtorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetParallelMaxTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getparallelmaxtorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceLength__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancelength", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceLength__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancelength", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableDistanceSpring__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enabledistancespring", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsDistanceSpringEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isdistancespringenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceSpringForceRange__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancespringforcerange", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceLowerSpringForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancelowerspringforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceUpperSpringForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistanceupperspringforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancespringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceSpringHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancespringhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancespringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceSpringDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancespringdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableDistanceLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enabledistancelimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsDistanceLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isdistancelimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceLengthRange__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancelengthrange", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceMinLength__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistanceminlength", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceMaxLength__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancemaxlength", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceCurrentLength__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancecurrentlength", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableDistanceMotor__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enabledistancemotor", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsDistanceMotorEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isdistancemotorenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceMotorSpeed__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancemotorspeed", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceMotorSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancemotorspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetDistanceMaxMotorForce__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setdistancemaxmotorforce", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceMaxMotorForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancemaxmotorforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetDistanceMotorForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getdistancemotorforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorLinearVelocity__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotorlinearvelocity", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorLinearVelocity_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getmotorlinearvelocity_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorAngularVelocity__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotorangularvelocity", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorAngularVelocity_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getmotorangularvelocity_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorMaxVelocityForce__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotormaxvelocityforce", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorMaxVelocityForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotormaxvelocityforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorMaxVelocityTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotormaxvelocitytorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorMaxVelocityTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotormaxvelocitytorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorLinearHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotorlinearhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorLinearHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotorlinearhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorLinearDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotorlineardampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorLinearDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotorlineardampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorAngularHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotorangularhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorAngularHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotorangularhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorAngularDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotorangulardampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorAngularDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotorangulardampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorMaxSpringForce__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotormaxspringforce", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorMaxSpringForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotormaxspringforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMotorMaxSpringTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setmotormaxspringtorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMotorMaxSpringTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getmotormaxspringtorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnablePrismaticSpring__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enableprismaticspring", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsPrismaticSpringEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isprismaticspringenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetPrismaticSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismaticspringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticSpringHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticspringhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetPrismaticSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismaticspringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticSpringDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticspringdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetPrismaticTargetTranslation__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismatictargettranslation", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticTargetTranslation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismatictargettranslation", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnablePrismaticLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enableprismaticlimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsPrismaticLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isprismaticlimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticLowerLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticlowerlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticUpperLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticupperlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetPrismaticLimits__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismaticlimits", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnablePrismaticMotor__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enableprismaticmotor", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsPrismaticMotorEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isprismaticmotorenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_GetPrismaticTranslation__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismatictranslation", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetPrismaticMotorSpeed__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismaticmotorspeed", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticMotorSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticmotorspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetPrismaticMaxMotorForce__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setprismaticmaxmotorforce", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticMaxMotorForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticmaxmotorforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticMotorForce__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticmotorforce", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetPrismaticSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getprismaticspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableRevoluteSpring__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablerevolutespring", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsRevoluteSpringEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isrevolutespringenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_SetRevoluteTargetAngle__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutetargetangle", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteTargetAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutetargetangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevoluteangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableRevoluteLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablerevolutelimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsRevoluteLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isrevolutelimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteLowerLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutelowerlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteUpperLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevoluteupperlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetRevoluteLimits__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutelimits", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableRevoluteMotor__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablerevolutemotor", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsRevoluteMotorEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_isrevolutemotorenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetRevoluteMotorSpeed__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutemotorspeed", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteMotorSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutemotorspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteMotorTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutemotortorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetRevoluteMaxMotorTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutemaxmotortorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteMaxMotorTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutemaxmotortorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_SetRevoluteSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutespringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteSpringHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutespringhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetRevoluteSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setrevolutespringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetRevoluteSpringDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getrevolutespringdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableSphericalConeLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablesphericalconelimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsSphericalConeLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_issphericalconelimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalConeLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericalconelimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalConeLimit__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalconelimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalConeAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericalconeangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableSphericalTwistLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablesphericaltwistlimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsSphericalTwistLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_issphericaltwistlimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalLowerTwistLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericallowertwistlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalUpperTwistLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericaluppertwistlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalTwistLimits__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericaltwistlimits", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalTwistAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericaltwistangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableSphericalSpring__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablesphericalspring", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsSphericalSpringEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_issphericalspringenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_SetSphericalMaxMotorTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalmaxmotortorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalMaxMotorTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericalmaxmotortorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
 
         static final java.lang.invoke.MethodHandle internal_native_SetSphericalSpringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalspringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalSpringHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericalspringhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_SetSphericalSpringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalspringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalSpringDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getsphericalspringdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalTargetRotation__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericaltargetrotation", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalTargetRotation_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getsphericaltargetrotation_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableSphericalMotor__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablesphericalmotor", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsSphericalMotorEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_issphericalmotorenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetSphericalMotorVelocity__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setsphericalmotorvelocity", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalMotorVelocity_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getsphericalmotorvelocity_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetSphericalMotorTorque_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3joint_getsphericalmotortorque_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWeldLinearHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setweldlinearhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWeldLinearHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getweldlinearhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWeldLinearDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setweldlineardampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWeldLinearDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getweldlineardampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWeldAngularHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setweldangularhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWeldAngularHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getweldangularhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWeldAngularDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setweldangulardampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWeldAngularDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getweldangulardampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableWheelSuspension__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablewheelsuspension", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsWheelSuspensionEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_iswheelsuspensionenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSuspensionHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelsuspensionhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSuspensionHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelsuspensionhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSuspensionDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelsuspensiondampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSuspensionDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelsuspensiondampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableWheelSuspensionLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablewheelsuspensionlimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsWheelSuspensionLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_iswheelsuspensionlimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelLowerSuspensionLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheellowersuspensionlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelUpperSuspensionLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheeluppersuspensionlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSuspensionLimits__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelsuspensionlimits", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableWheelSpinMotor__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablewheelspinmotor", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsWheelSpinMotorEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_iswheelspinmotorenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelTargetSteeringAngle__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheeltargetsteeringangle", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelTargetSteeringAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheeltargetsteeringangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSpinMotorSpeed__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelspinmotorspeed", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSpinMotorSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelspinmotorspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelMaxSpinTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelmaxspintorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelMaxSpinTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelmaxspintorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSpinSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelspinspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSpinTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelspintorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableWheelSteering__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablewheelsteering", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsWheelSteeringEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_iswheelsteeringenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSteeringHertz__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelsteeringhertz", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSteeringHertz__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelsteeringhertz", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSteeringDampingRatio__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelsteeringdampingratio", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSteeringDampingRatio__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelsteeringdampingratio", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelMaxSteeringTorque__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelmaxsteeringtorque", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelMaxSteeringTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelmaxsteeringtorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableWheelSteeringLimit__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_enablewheelsteeringlimit", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
+
+        static final java.lang.invoke.MethodHandle internal_native_IsWheelSteeringLimitEnabled__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_iswheelsteeringlimitenabled", FunctionDescriptor.of(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelLowerSteeringLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheellowersteeringlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelUpperSteeringLimit__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheeluppersteeringlimit", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetWheelSteeringLimits__JFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_setwheelsteeringlimits", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSteeringAngle__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelsteeringangle", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetWheelSteeringTorque__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3joint_getwheelsteeringtorque", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
     }
 }

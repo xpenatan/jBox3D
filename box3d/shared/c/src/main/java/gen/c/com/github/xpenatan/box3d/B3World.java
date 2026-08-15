@@ -14,6 +14,8 @@ public final class B3World extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     private B3RayResult B3RayResult_TEMP_GEN_0;
 
     private B3RayResult B3RayResult_TEMP_GEN_1;
@@ -176,6 +178,48 @@ public final class B3World extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_setcontactrecycledistance")
     public static native void internal_native_SetContactRecycleDistance(long this_addr, float recycleDistance);
 
+    public float GetRestitutionThreshold() {
+        return internal_native_GetRestitutionThreshold(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_getrestitutionthreshold")
+    public static native float internal_native_GetRestitutionThreshold(long this_addr);
+
+    public void SetRestitutionThreshold(float threshold) {
+        internal_native_SetRestitutionThreshold(native_address, threshold);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_setrestitutionthreshold")
+    public static native void internal_native_SetRestitutionThreshold(long this_addr, float threshold);
+
+    public float GetHitEventThreshold() {
+        return internal_native_GetHitEventThreshold(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_gethiteventthreshold")
+    public static native float internal_native_GetHitEventThreshold(long this_addr);
+
+    public void SetHitEventThreshold(float threshold) {
+        internal_native_SetHitEventThreshold(native_address, threshold);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_sethiteventthreshold")
+    public static native void internal_native_SetHitEventThreshold(long this_addr, float threshold);
+
+    public float GetMaximumLinearSpeed() {
+        return internal_native_GetMaximumLinearSpeed(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_getmaximumlinearspeed")
+    public static native float internal_native_GetMaximumLinearSpeed(long this_addr);
+
+    public void SetMaximumLinearSpeed(float speed) {
+        internal_native_SetMaximumLinearSpeed(native_address, speed);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_setmaximumlinearspeed")
+    public static native void internal_native_SetMaximumLinearSpeed(long this_addr, float speed);
+
     public void SetContactTuning(float hertz, float dampingRatio, float contactSpeed) {
         internal_native_SetContactTuning(native_address, hertz, dampingRatio, contactSpeed);
     }
@@ -204,12 +248,46 @@ public final class B3World extends NativeObject {
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_getawakebodycount")
     public static native int internal_native_GetAwakeBodyCount(long this_addr);
 
+    public B3Capacity GetMaxCapacity() {
+        long addr = internal_native_GetMaxCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_getmaxcapacity_addr")
+    public static native long internal_native_GetMaxCapacity_addr(long this_addr);
+
     public void Explode(B3ExplosionDef def) {
         internal_native_Explode(native_address, def.native_address);
     }
 
     @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_explode")
     public static native void internal_native_Explode(long this_addr, long def_addr);
+
+    public void DumpMemoryStats() {
+        internal_native_DumpMemoryStats(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_dumpmemorystats")
+    public static native void internal_native_DumpMemoryStats(long this_addr);
+
+    public void RebuildStaticTree() {
+        internal_native_RebuildStaticTree(native_address);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_rebuildstatictree")
+    public static native void internal_native_RebuildStaticTree(long this_addr);
+
+    public void EnableSpeculative(boolean enabled) {
+        internal_native_EnableSpeculative(native_address, enabled);
+    }
+
+    @org.teavm.interop.Import(name = "com_github_xpenatan_box3d_b3world_enablespeculative")
+    public static native void internal_native_EnableSpeculative(long this_addr, boolean enabled);
 
     public void SetCustomFilterCallback(B3CustomFilterEm callback) {
         internal_native_SetCustomFilterCallback(native_address, callback.native_address);

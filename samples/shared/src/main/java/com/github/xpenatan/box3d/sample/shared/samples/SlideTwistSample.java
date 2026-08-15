@@ -11,10 +11,11 @@ final class SlideTwistSample extends AbstractBox3DSample {
         B3Quat orientation = rotationX(angle);
         addStaticBox(0.0f, 4.0f, 0.0f, 10.0f, 0.5f, 10.0f, orientation);
 
-        B3Vec3 angularVelocity = new B3Vec3(0.0f, 25.0f * (float)Math.cos(angle), 25.0f * (float)Math.sin(angle));
+        B3Vec3 localAngularVelocity = new B3Vec3(0.0f, 25.0f, 0.0f);
+        B3Vec3 angularVelocity = rotatedVector(orientation, localAngularVelocity);
         addDynamicBox(0.0f, 5.0f, 0.0f, 1.0f, 0.5f, 1.0f, orientation, 1.0f, 0.3f, 0.0f, 0.0f, null,
                 angularVelocity);
-        dispose(angularVelocity, orientation);
+        dispose(angularVelocity, localAngularVelocity, orientation);
     }
 
     private static float radians(float degrees) {

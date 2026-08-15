@@ -49,8 +49,9 @@ final class NeedleMeshSample extends AbstractBox3DSample {
         float deltaAlpha = 2.0f * (float)Math.PI / slices;
         for(int index = 1; index <= slices; index++) {
             float alpha = (index - 1) * deltaAlpha;
-            vertex.Set(centerX + radius * (float)Math.cos(alpha), centerY,
-                    centerZ + radius * (float)Math.sin(alpha));
+            long cosSin = SampleMath.computeCosSin(alpha);
+            vertex.Set(centerX + radius * SampleMath.cosine(cosSin), centerY,
+                    centerZ + radius * SampleMath.sine(cosSin));
             meshDef.AddVertex(vertex);
         }
         int index1 = slices;

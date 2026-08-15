@@ -26,8 +26,8 @@ final class GyroscopicPrecessionSample extends AbstractBox3DSample {
         B3ShapeDef shapeDef = new B3ShapeDef();
         float tilt = 15.0f * (float)Math.PI / 180.0f;
         B3Quat rotation = rotationZ(tilt);
-        B3Vec3 angularVelocity = new B3Vec3(-75.0f * (float)Math.sin(tilt),
-                75.0f * (float)Math.cos(tilt), 0.0f);
+        B3Vec3 localAngularVelocity = new B3Vec3(0.0f, 75.0f, 0.0f);
+        B3Vec3 angularVelocity = rotatedVector(rotation, localAngularVelocity);
 
         int count = 8;
         float separation = 6.0f;
@@ -42,6 +42,6 @@ final class GyroscopicPrecessionSample extends AbstractBox3DSample {
                 dispose(bodyDef);
             }
         }
-        dispose(angularVelocity, rotation, shapeDef, hull);
+        dispose(angularVelocity, localAngularVelocity, rotation, shapeDef, hull);
     }
 }

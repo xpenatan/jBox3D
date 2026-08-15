@@ -4,6 +4,7 @@ import com.github.xpenatan.box3d.B3;
 import com.github.xpenatan.box3d.B3Body;
 import com.github.xpenatan.box3d.B3BodyDef;
 import com.github.xpenatan.box3d.B3Hull;
+import com.github.xpenatan.box3d.B3Quat;
 import com.github.xpenatan.box3d.B3ShapeDef;
 import com.github.xpenatan.box3d.B3Vec3;
 
@@ -28,15 +29,24 @@ final class BenchmarkWasherSample extends AbstractBox3DSample {
         float r1 = 16.0f;
         float r2 = 18.0f;
         float angle = (float)Math.PI / 18.0f;
+        B3Quat rotation = rotationZ(angle);
+        B3Quat overlapRotation = rotationZ(0.1f * angle);
+        B3Quat inverseOverlapRotation = rotationZ(-0.1f * angle);
+        B3Vec3 direction1 = new B3Vec3(1.0f, 0.0f, 0.0f);
         for(int i = 0; i < 36; ++i) {
-            float theta1 = i * angle;
-            float theta2 = i == 35 ? 0.0f : (i + 1) * angle;
-            createRingSegment(washer, shapeDef, r1, r2, theta1 - 0.1f * angle,
-                    theta2 + 0.1f * angle);
+            B3Vec3 direction2 = i == 35
+                    ? new B3Vec3(1.0f, 0.0f, 0.0f)
+                    : rotatedVector(rotation, direction1);
+            B3Vec3 overlapDirection1 = rotatedVector(inverseOverlapRotation, direction1);
+            B3Vec3 overlapDirection2 = rotatedVector(overlapRotation, direction2);
+            createRingSegment(washer, shapeDef, r1, r2, overlapDirection1, overlapDirection2);
             if(i % 9 == 0) {
-                createRingSegment(washer, shapeDef, r0, r1, theta1, theta2);
+                createRingSegment(washer, shapeDef, r0, r1, direction1, direction2);
             }
+            dispose(overlapDirection2, overlapDirection1, direction1);
+            direction1 = direction2;
         }
+        dispose(direction1, inverseOverlapRotation, overlapRotation, rotation);
         dispose(washer, shapeDef, linearVelocity, angularVelocity, washerPosition, washerDef);
 
         int gridCount = 20;
@@ -66,11 +76,11 @@ final class BenchmarkWasherSample extends AbstractBox3DSample {
     }
 
     private void createRingSegment(B3Body washer, B3ShapeDef shapeDef, float innerRadius, float outerRadius,
-            float angle1, float angle2) {
-        float x1 = (float)Math.cos(angle1);
-        float y1 = (float)Math.sin(angle1);
-        float x2 = (float)Math.cos(angle2);
-        float y2 = (float)Math.sin(angle2);
+            B3Vec3 direction1, B3Vec3 direction2) {
+        float x1 = direction1.GetX();
+        float y1 = direction1.GetY();
+        float x2 = direction2.GetX();
+        float y2 = direction2.GetY();
         float[][] points = {
                 { innerRadius * x1, innerRadius * y1, -10.0f },
                 { outerRadius * x1, outerRadius * y1, -10.0f },

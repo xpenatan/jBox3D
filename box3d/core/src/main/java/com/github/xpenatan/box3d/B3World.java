@@ -85,6 +85,27 @@ public final class B3World extends NativeObject {
     public void SetContactRecycleDistance(float recycleDistance) {
     }
 
+    public float GetRestitutionThreshold() {
+        return 0;
+    }
+
+    public void SetRestitutionThreshold(float threshold) {
+    }
+
+    public float GetHitEventThreshold() {
+        return 0;
+    }
+
+    public void SetHitEventThreshold(float threshold) {
+    }
+
+    public float GetMaximumLinearSpeed() {
+        return 0;
+    }
+
+    public void SetMaximumLinearSpeed(float speed) {
+    }
+
     public void SetContactTuning(float hertz, float dampingRatio, float contactSpeed) {
     }
 
@@ -99,7 +120,20 @@ public final class B3World extends NativeObject {
         return 0;
     }
 
+    public B3Capacity GetMaxCapacity() {
+        return null;
+    }
+
     public void Explode(B3ExplosionDef def) {
+    }
+
+    public void DumpMemoryStats() {
+    }
+
+    public void RebuildStaticTree() {
+    }
+
+    public void EnableSpeculative(boolean enabled) {
     }
 
     public void SetCustomFilterCallback(B3CustomFilterEm callback) {

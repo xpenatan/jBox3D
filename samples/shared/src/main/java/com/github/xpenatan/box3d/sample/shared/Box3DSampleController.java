@@ -13,6 +13,7 @@ public final class Box3DSampleController {
     private final long exitAfterFrames;
     private final List<Box3DSampleEntry> entries;
     private final Box3DSampleSettings settings;
+    private final Box3DPlayerInput playerInput = new Box3DPlayerInput();
     private Box3DSample sample;
     private volatile boolean box3dLoaded;
     private volatile Throwable box3dLoadError;
@@ -21,6 +22,8 @@ public final class Box3DSampleController {
     private long renderedFrames;
     private float stepAccumulator;
     private Box3DSampleStepListener stepListener;
+    private boolean thirdPerson;
+    private long sampleStepCount;
 
     public Box3DSampleController(Box3DSampleHost host, long exitAfterFrames, int workerCount) {
         if(host == null) {
@@ -96,6 +99,34 @@ public final class Box3DSampleController {
         this.stepListener = stepListener;
     }
 
+    public void setPlayerInput(float moveForward, float moveRight, float cameraForwardX, float cameraForwardZ,
+            float cameraRightX, float cameraRightZ, boolean jump, boolean sprint) {
+        playerInput.set(moveForward, moveRight, cameraForwardX, cameraForwardZ, cameraRightX, cameraRightZ,
+                jump, sprint);
+    }
+
+    public boolean isPlayerControlled() {
+        return sample != null && sample.supportsPlayerControl();
+    }
+
+    public boolean isThirdPerson() {
+        return isPlayerControlled() && thirdPerson;
+    }
+
+    public void toggleThirdPerson() {
+        if(isPlayerControlled()) {
+            thirdPerson = !thirdPerson;
+            if(!thirdPerson) {
+                playerInput.clearMovement();
+            }
+            sample.setPlayerInput(playerInput, thirdPerson);
+        }
+    }
+
+    public boolean getCameraTarget(Box3DPlayerTarget target) {
+        return isThirdPerson() && sample.getCameraTarget(target);
+    }
+
     public List<Box3DSampleEntry> entries() {
         return entries;
     }
@@ -114,6 +145,10 @@ public final class Box3DSampleController {
 
     public long renderedFrames() {
         return renderedFrames;
+    }
+
+    public long sampleStepCount() {
+        return sampleStepCount;
     }
 
     public boolean isReady() {
@@ -143,8 +178,12 @@ public final class Box3DSampleController {
     private void createSelectedSample() {
         disposeSample();
         stepAccumulator = 0.0f;
+        sampleStepCount = 0L;
         Box3DSampleEntry entry = selectedEntry();
         sample = entry.create(settings);
+        thirdPerson = sample.startsInThirdPerson();
+        playerInput.clearMovement();
+        sample.setPlayerInput(playerInput, thirdPerson);
         host.onSampleChanged(entry, sample);
     }
 
@@ -157,7 +196,9 @@ public final class Box3DSampleController {
             if(stepListener != null) {
                 stepListener.beforePhysicsStep(step);
             }
+            sample.setPlayerInput(playerInput, thirdPerson);
             sample.step(step, settings);
+            sampleStepCount++;
             stepAccumulator -= step;
             stepCount++;
         }

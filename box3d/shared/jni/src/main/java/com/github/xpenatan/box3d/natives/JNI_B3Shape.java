@@ -26,7 +26,13 @@ final public class JNI_B3Shape {
 
     public static native long internal_native_GetBodyId(long this_addr);
 
+    public static native long internal_native_GetWorldId(long this_addr);
+
     public static native boolean internal_native_IsSensor(long this_addr);
+
+    public static native void internal_native_GetName(long this_addr, long name_addr);
+
+    public static native void internal_native_SetName(long this_addr, String name);
 
     public static native float internal_native_GetDensity(long this_addr);
 
@@ -44,6 +50,12 @@ final public class JNI_B3Shape {
 
     public static native void internal_native_SetSurfaceMaterial(long this_addr, long material_addr);
 
+    public static native int internal_native_GetMeshMaterialCount(long this_addr);
+
+    public static native long internal_native_GetMeshSurfaceMaterial_addr(long this_addr, int index);
+
+    public static native void internal_native_SetMeshMaterial(long this_addr, long material_addr, int index);
+
     public static native long internal_native_GetFilter_addr(long this_addr);
 
     public static native void internal_native_SetFilter(long this_addr, long filter_addr, boolean invokeContacts);
@@ -55,6 +67,10 @@ final public class JNI_B3Shape {
     public static native void internal_native_EnableContactEvents(long this_addr, boolean enabled);
 
     public static native boolean internal_native_AreContactEventsEnabled(long this_addr);
+
+    public static native void internal_native_EnablePreSolveEvents(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_ArePreSolveEventsEnabled(long this_addr);
 
     public static native void internal_native_EnableHitEvents(long this_addr, boolean enabled);
 
@@ -70,7 +86,21 @@ final public class JNI_B3Shape {
 
     public static native void internal_native_SetCapsule(long this_addr, long capsule_addr);
 
+    public static native long internal_native_GetHull_addr(long this_addr);
+
+    public static native void internal_native_SetHull(long this_addr, long hull_addr);
+
+    public static native void internal_native_SetMesh(long this_addr, long mesh_addr, long scale_addr);
+
+    public static native int internal_native_GetContactCapacity(long this_addr);
+
+    public static native int internal_native_GetSensorCapacity(long this_addr);
+
+    public static native long internal_native_GetSensorShapeId(long this_addr, int index);
+
     public static native long internal_native_GetAABB_addr(long this_addr);
+
+    public static native long internal_native_ComputeMassData_addr(long this_addr);
 
     public static native long internal_native_GetClosestPoint_addr(long this_addr, long target_addr);
 

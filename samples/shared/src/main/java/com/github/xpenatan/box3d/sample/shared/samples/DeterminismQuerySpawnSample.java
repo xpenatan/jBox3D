@@ -115,12 +115,6 @@ final class DeterminismQuerySpawnSample extends AbstractBox3DSample {
     }
 
     private B3Vec3 randomUnitVector() {
-        float u1 = random.nextFloat(0.0f, 1.0f);
-        float u2 = random.nextFloat(0.0f, 2.0f * (float)Math.PI);
-        float u3 = random.nextFloat(0.0f, 2.0f * (float)Math.PI);
-        float sqrt1MinusU1 = (float)Math.sqrt(1.0f - u1);
-        float sqrtU1 = (float)Math.sqrt(u1);
-        return new B3Vec3(sqrt1MinusU1 * (float)Math.sin(u2), sqrt1MinusU1 * (float)Math.cos(u2),
-                sqrtU1 * (float)Math.sin(u3));
+        return random.nextUnitVector();
     }
 }

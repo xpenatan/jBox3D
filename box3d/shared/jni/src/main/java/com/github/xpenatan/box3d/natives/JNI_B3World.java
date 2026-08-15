@@ -46,6 +46,18 @@ final public class JNI_B3World {
 
     public static native void internal_native_SetContactRecycleDistance(long this_addr, float recycleDistance);
 
+    public static native float internal_native_GetRestitutionThreshold(long this_addr);
+
+    public static native void internal_native_SetRestitutionThreshold(long this_addr, float threshold);
+
+    public static native float internal_native_GetHitEventThreshold(long this_addr);
+
+    public static native void internal_native_SetHitEventThreshold(long this_addr, float threshold);
+
+    public static native float internal_native_GetMaximumLinearSpeed(long this_addr);
+
+    public static native void internal_native_SetMaximumLinearSpeed(long this_addr, float speed);
+
     public static native void internal_native_SetContactTuning(long this_addr, float hertz, float dampingRatio, float contactSpeed);
 
     public static native int internal_native_GetWorkerCount(long this_addr);
@@ -54,7 +66,15 @@ final public class JNI_B3World {
 
     public static native int internal_native_GetAwakeBodyCount(long this_addr);
 
+    public static native long internal_native_GetMaxCapacity_addr(long this_addr);
+
     public static native void internal_native_Explode(long this_addr, long def_addr);
+
+    public static native void internal_native_DumpMemoryStats(long this_addr);
+
+    public static native void internal_native_RebuildStaticTree(long this_addr);
+
+    public static native void internal_native_EnableSpeculative(long this_addr, boolean enabled);
 
     public static native void internal_native_SetCustomFilterCallback(long this_addr, long callback_addr);
 

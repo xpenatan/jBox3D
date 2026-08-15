@@ -14,6 +14,8 @@ public final class B3World extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     private B3RayResult B3RayResult_TEMP_GEN_0;
 
     private B3RayResult B3RayResult_TEMP_GEN_1;
@@ -176,6 +178,48 @@ public final class B3World extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "recycleDistance"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.SetContactRecycleDistance(recycleDistance);")
     public static native void internal_native_SetContactRecycleDistance(int this_addr, float recycleDistance);
 
+    public float GetRestitutionThreshold() {
+        return internal_native_GetRestitutionThreshold(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);var returnedJSObj = jsObj.GetRestitutionThreshold();return returnedJSObj;")
+    public static native float internal_native_GetRestitutionThreshold(int this_addr);
+
+    public void SetRestitutionThreshold(float threshold) {
+        internal_native_SetRestitutionThreshold(native_address, threshold);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "threshold"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.SetRestitutionThreshold(threshold);")
+    public static native void internal_native_SetRestitutionThreshold(int this_addr, float threshold);
+
+    public float GetHitEventThreshold() {
+        return internal_native_GetHitEventThreshold(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);var returnedJSObj = jsObj.GetHitEventThreshold();return returnedJSObj;")
+    public static native float internal_native_GetHitEventThreshold(int this_addr);
+
+    public void SetHitEventThreshold(float threshold) {
+        internal_native_SetHitEventThreshold(native_address, threshold);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "threshold"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.SetHitEventThreshold(threshold);")
+    public static native void internal_native_SetHitEventThreshold(int this_addr, float threshold);
+
+    public float GetMaximumLinearSpeed() {
+        return internal_native_GetMaximumLinearSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);var returnedJSObj = jsObj.GetMaximumLinearSpeed();return returnedJSObj;")
+    public static native float internal_native_GetMaximumLinearSpeed(int this_addr);
+
+    public void SetMaximumLinearSpeed(float speed) {
+        internal_native_SetMaximumLinearSpeed(native_address, speed);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "speed"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.SetMaximumLinearSpeed(speed);")
+    public static native void internal_native_SetMaximumLinearSpeed(int this_addr, float speed);
+
     public void SetContactTuning(float hertz, float dampingRatio, float contactSpeed) {
         internal_native_SetContactTuning(native_address, hertz, dampingRatio, contactSpeed);
     }
@@ -204,12 +248,46 @@ public final class B3World extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);var returnedJSObj = jsObj.GetAwakeBodyCount();return returnedJSObj;")
     public static native int internal_native_GetAwakeBodyCount(int this_addr);
 
+    public B3Capacity GetMaxCapacity() {
+        int addr = internal_native_GetMaxCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);var returnedJSObj = jsObj.GetMaxCapacity();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetMaxCapacity_addr(int this_addr);
+
     public void Explode(B3ExplosionDef def) {
         internal_native_Explode(native_address, def.native_address);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr", "def_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.Explode(def_addr);")
     public static native void internal_native_Explode(int this_addr, int def_addr);
+
+    public void DumpMemoryStats() {
+        internal_native_DumpMemoryStats(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.DumpMemoryStats();")
+    public static native void internal_native_DumpMemoryStats(int this_addr);
+
+    public void RebuildStaticTree() {
+        internal_native_RebuildStaticTree(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.RebuildStaticTree();")
+    public static native void internal_native_RebuildStaticTree(int this_addr);
+
+    public void EnableSpeculative(boolean enabled) {
+        internal_native_EnableSpeculative(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3World);jsObj.EnableSpeculative(enabled);")
+    public static native void internal_native_EnableSpeculative(int this_addr, boolean enabled);
 
     public void SetCustomFilterCallback(B3CustomFilterEm callback) {
         internal_native_SetCustomFilterCallback(native_address, callback.native_address);

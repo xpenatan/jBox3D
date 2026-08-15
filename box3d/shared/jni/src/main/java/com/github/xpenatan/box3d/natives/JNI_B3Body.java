@@ -26,6 +26,10 @@ final public class JNI_B3Body {
 
     public static native void internal_native_SetType(long this_addr, int type);
 
+    public static native void internal_native_GetName(long this_addr, long name_addr);
+
+    public static native void internal_native_SetName(long this_addr, String name);
+
     public static native long internal_native_GetPosition_addr(long this_addr);
 
     public static native long internal_native_GetRotation_addr(long this_addr);
@@ -34,7 +38,15 @@ final public class JNI_B3Body {
 
     public static native long internal_native_GetWorldCenter_addr(long this_addr);
 
+    public static native long internal_native_GetLocalCenter_addr(long this_addr);
+
     public static native long internal_native_GetLocalPoint_addr(long this_addr, long worldPoint_addr);
+
+    public static native long internal_native_GetWorldPoint_addr(long this_addr, long localPoint_addr);
+
+    public static native long internal_native_GetLocalVector_addr(long this_addr, long worldVector_addr);
+
+    public static native long internal_native_GetWorldVector_addr(long this_addr, long localVector_addr);
 
     public static native void internal_native_SetTransform(long this_addr, long position_addr, long rotation_addr);
 
@@ -47,6 +59,10 @@ final public class JNI_B3Body {
     public static native long internal_native_GetAngularVelocity_addr(long this_addr);
 
     public static native void internal_native_SetAngularVelocity(long this_addr, long velocity_addr);
+
+    public static native long internal_native_GetLocalPointVelocity_addr(long this_addr, long localPoint_addr);
+
+    public static native long internal_native_GetWorldPointVelocity_addr(long this_addr, long worldPoint_addr);
 
     public static native void internal_native_ApplyForce(long this_addr, long force_addr, long point_addr, boolean wake);
 
@@ -74,6 +90,16 @@ final public class JNI_B3Body {
 
     public static native void internal_native_SetMassData(long this_addr, float mass, long center_addr, long inertiaColumnX_addr, long inertiaColumnY_addr, long inertiaColumnZ_addr);
 
+    public static native long internal_native_GetMassData_addr(long this_addr);
+
+    public static native void internal_native_SetMassDataValue(long this_addr, long massData_addr);
+
+    public static native long internal_native_GetWorldInverseRotationalInertiaColumnX_addr(long this_addr);
+
+    public static native long internal_native_GetWorldInverseRotationalInertiaColumnY_addr(long this_addr);
+
+    public static native long internal_native_GetWorldInverseRotationalInertiaColumnZ_addr(long this_addr);
+
     public static native float internal_native_GetLinearDamping(long this_addr);
 
     public static native void internal_native_SetLinearDamping(long this_addr, float damping);
@@ -89,6 +115,14 @@ final public class JNI_B3Body {
     public static native boolean internal_native_IsAwake(long this_addr);
 
     public static native void internal_native_SetAwake(long this_addr, boolean awake);
+
+    public static native boolean internal_native_IsSleepEnabled(long this_addr);
+
+    public static native void internal_native_EnableSleep(long this_addr, boolean enabled);
+
+    public static native float internal_native_GetSleepThreshold(long this_addr);
+
+    public static native void internal_native_SetSleepThreshold(long this_addr, float threshold);
 
     public static native long internal_native_CastRay_addr(long this_addr, long origin_addr, long translation_addr, long filter_addr, float maxFraction, long bodyTransform_addr);
 
@@ -106,9 +140,37 @@ final public class JNI_B3Body {
 
     public static native void internal_native_SetBullet(long this_addr, boolean bullet);
 
+    public static native boolean internal_native_IsFastRotationAllowed(long this_addr);
+
+    public static native void internal_native_AllowFastRotation(long this_addr, boolean allowed);
+
+    public static native boolean internal_native_IsContactRecyclingEnabled(long this_addr);
+
+    public static native void internal_native_EnableContactRecycling(long this_addr, boolean enabled);
+
+    public static native void internal_native_EnableHitEvents(long this_addr, boolean enabled);
+
+    public static native long internal_native_GetWorldId(long this_addr);
+
     public static native int internal_native_GetShapeCount(long this_addr);
 
+    public static native long internal_native_GetShapeId(long this_addr, int index);
+
+    public static native int internal_native_GetJointCount(long this_addr);
+
+    public static native long internal_native_GetJointId(long this_addr, int index);
+
     public static native long internal_native_ComputeAABB_addr(long this_addr);
+
+    public static native long internal_native_GetClosestPoint_addr(long this_addr, long target_addr);
+
+    public static native float internal_native_GetClosestPointDistance(long this_addr, long target_addr);
+
+    public static native long internal_native_CastShape_addr(long this_addr, long origin_addr, long proxy_addr, long translation_addr, long filter_addr, float maxFraction, boolean canEncroach, long bodyTransform_addr);
+
+    public static native boolean internal_native_OverlapShape(long this_addr, long origin_addr, long proxy_addr, long filter_addr, long bodyTransform_addr);
+
+    public static native long internal_native_CollideMover_addr(long this_addr, long origin_addr, long mover_addr, long filter_addr, long bodyTransform_addr, int capacity);
 
     public static native long internal_native_CreateSphereShape_addr(long this_addr, long def_addr, long sphere_addr);
 

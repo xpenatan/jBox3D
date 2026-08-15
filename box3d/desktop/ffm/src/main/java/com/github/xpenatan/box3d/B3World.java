@@ -21,6 +21,8 @@ public final class B3World extends NativeObject {
 
     private B3Vec3 B3Vec3_TEMP_GEN_0;
 
+    private B3Capacity B3Capacity_TEMP_GEN_0;
+
     private B3RayResult B3RayResult_TEMP_GEN_0;
 
     private B3RayResult B3RayResult_TEMP_GEN_1;
@@ -273,6 +275,78 @@ public final class B3World extends NativeObject {
         }
     }
 
+    public float GetRestitutionThreshold() {
+        return internal_native_GetRestitutionThreshold(native_address);
+    }
+
+    public static float internal_native_GetRestitutionThreshold(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetRestitutionThreshold__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetRestitutionThreshold(float threshold) {
+        internal_native_SetRestitutionThreshold(native_address, threshold);
+    }
+
+    public static void internal_native_SetRestitutionThreshold(long this_addr, float threshold) {
+        try {
+            FFMHandles.internal_native_SetRestitutionThreshold__JF.invokeExact(this_addr, threshold);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetHitEventThreshold() {
+        return internal_native_GetHitEventThreshold(native_address);
+    }
+
+    public static float internal_native_GetHitEventThreshold(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetHitEventThreshold__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetHitEventThreshold(float threshold) {
+        internal_native_SetHitEventThreshold(native_address, threshold);
+    }
+
+    public static void internal_native_SetHitEventThreshold(long this_addr, float threshold) {
+        try {
+            FFMHandles.internal_native_SetHitEventThreshold__JF.invokeExact(this_addr, threshold);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public float GetMaximumLinearSpeed() {
+        return internal_native_GetMaximumLinearSpeed(native_address);
+    }
+
+    public static float internal_native_GetMaximumLinearSpeed(long this_addr) {
+        try {
+            return (float) FFMHandles.internal_native_GetMaximumLinearSpeed__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void SetMaximumLinearSpeed(float speed) {
+        internal_native_SetMaximumLinearSpeed(native_address, speed);
+    }
+
+    public static void internal_native_SetMaximumLinearSpeed(long this_addr, float speed) {
+        try {
+            FFMHandles.internal_native_SetMaximumLinearSpeed__JF.invokeExact(this_addr, speed);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void SetContactTuning(float hertz, float dampingRatio, float contactSpeed) {
         internal_native_SetContactTuning(native_address, hertz, dampingRatio, contactSpeed);
     }
@@ -321,6 +395,24 @@ public final class B3World extends NativeObject {
         }
     }
 
+    public B3Capacity GetMaxCapacity() {
+        long addr = internal_native_GetMaxCapacity_addr(native_address);
+        if (addr == 0)
+            return B3Capacity.NULL;
+        if (B3Capacity_TEMP_GEN_0 == null)
+            B3Capacity_TEMP_GEN_0 = B3Capacity.native_new();
+        B3Capacity_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Capacity_TEMP_GEN_0;
+    }
+
+    public static long internal_native_GetMaxCapacity_addr(long this_addr) {
+        try {
+            return (long) FFMHandles.internal_native_GetMaxCapacity_addr__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
     public void Explode(B3ExplosionDef def) {
         internal_native_Explode(native_address, def.native_address);
     }
@@ -328,6 +420,42 @@ public final class B3World extends NativeObject {
     public static void internal_native_Explode(long this_addr, long def_addr) {
         try {
             FFMHandles.internal_native_Explode__JJ.invokeExact(this_addr, def_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void DumpMemoryStats() {
+        internal_native_DumpMemoryStats(native_address);
+    }
+
+    public static void internal_native_DumpMemoryStats(long this_addr) {
+        try {
+            FFMHandles.internal_native_DumpMemoryStats__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void RebuildStaticTree() {
+        internal_native_RebuildStaticTree(native_address);
+    }
+
+    public static void internal_native_RebuildStaticTree(long this_addr) {
+        try {
+            FFMHandles.internal_native_RebuildStaticTree__J.invokeExact(this_addr);
+        } catch (Throwable e) {
+            throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
+        }
+    }
+
+    public void EnableSpeculative(boolean enabled) {
+        internal_native_EnableSpeculative(native_address, enabled);
+    }
+
+    public static void internal_native_EnableSpeculative(long this_addr, boolean enabled) {
+        try {
+            FFMHandles.internal_native_EnableSpeculative__JZ.invokeExact(this_addr, enabled);
         } catch (Throwable e) {
             throw com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.rethrow(e);
         }
@@ -848,6 +976,18 @@ public final class B3World extends NativeObject {
 
         static final java.lang.invoke.MethodHandle internal_native_SetContactRecycleDistance__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_setcontactrecycledistance", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetRestitutionThreshold__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_getrestitutionthreshold", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetRestitutionThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_setrestitutionthreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetHitEventThreshold__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_gethiteventthreshold", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetHitEventThreshold__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_sethiteventthreshold", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
+        static final java.lang.invoke.MethodHandle internal_native_GetMaximumLinearSpeed__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_getmaximumlinearspeed", FunctionDescriptor.of(ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_SetMaximumLinearSpeed__JF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_setmaximumlinearspeed", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT));
+
         static final java.lang.invoke.MethodHandle internal_native_SetContactTuning__JFFF = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_setcontacttuning", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT, ValueLayout.JAVA_FLOAT));
 
         static final java.lang.invoke.MethodHandle internal_native_GetWorkerCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_getworkercount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
@@ -856,7 +996,15 @@ public final class B3World extends NativeObject {
 
         static final java.lang.invoke.MethodHandle internal_native_GetAwakeBodyCount__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_getawakebodycount", FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG));
 
+        static final java.lang.invoke.MethodHandle internal_native_GetMaxCapacity_addr__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallCritical("com_github_xpenatan_box3d_b3world_getmaxcapacity_addr", FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
         static final java.lang.invoke.MethodHandle internal_native_Explode__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_explode", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_DumpMemoryStats__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_dumpmemorystats", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_RebuildStaticTree__J = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_rebuildstatictree", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
+
+        static final java.lang.invoke.MethodHandle internal_native_EnableSpeculative__JZ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_enablespeculative", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_BOOLEAN));
 
         static final java.lang.invoke.MethodHandle internal_native_SetCustomFilterCallback__JJ = com.github.xpenatan.jparser.runtime.helper.FFMDowncallHelper.downcallDefault("com_github_xpenatan_box3d_b3world_setcustomfiltercallback", FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG, ValueLayout.JAVA_LONG));
 

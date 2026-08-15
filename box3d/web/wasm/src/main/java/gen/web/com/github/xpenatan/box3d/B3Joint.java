@@ -10,6 +10,24 @@ import gen.web.com.github.xpenatan.jParser.api.NativeObject;
 
 public final class B3Joint extends NativeObject {
 
+    private B3Transform B3Transform_TEMP_GEN_0;
+
+    private B3Transform B3Transform_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_1;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_2;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_3;
+
+    private B3Quat B3Quat_TEMP_GEN_0;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_4;
+
+    private B3Vec3 B3Vec3_TEMP_GEN_5;
+
     static public final B3Joint NULL = B3Joint.native_new();
 
     public B3Joint() {
@@ -70,6 +88,13 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "wakeAttached"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.Destroy(wakeAttached);")
     public static native void internal_native_Destroy(int this_addr, boolean wakeAttached);
 
+    public int GetType() {
+        return internal_native_GetType(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetType();return returnedJSObj;")
+    public static native int internal_native_GetType(int this_addr);
+
     public long GetBodyIdA() {
         return internal_native_GetBodyIdA(native_address);
     }
@@ -84,6 +109,67 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetBodyIdB();return returnedJSObj;")
     public static native long internal_native_GetBodyIdB(int this_addr);
 
+    public long GetWorldId() {
+        return internal_native_GetWorldId(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWorldId();return returnedJSObj;")
+    public static native long internal_native_GetWorldId(int this_addr);
+
+    public B3Transform GetLocalFrameA() {
+        int addr = internal_native_GetLocalFrameA_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_0 == null)
+            B3Transform_TEMP_GEN_0 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetLocalFrameA();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetLocalFrameA_addr(int this_addr);
+
+    public void SetLocalFrameA(B3Transform localFrame) {
+        internal_native_SetLocalFrameA(native_address, localFrame.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "localFrame_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetLocalFrameA(localFrame_addr);")
+    public static native void internal_native_SetLocalFrameA(int this_addr, int localFrame_addr);
+
+    public B3Transform GetLocalFrameB() {
+        int addr = internal_native_GetLocalFrameB_addr(native_address);
+        if (addr == 0)
+            return B3Transform.NULL;
+        if (B3Transform_TEMP_GEN_1 == null)
+            B3Transform_TEMP_GEN_1 = B3Transform.native_new();
+        B3Transform_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Transform_TEMP_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetLocalFrameB();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetLocalFrameB_addr(int this_addr);
+
+    public void SetLocalFrameB(B3Transform localFrame) {
+        internal_native_SetLocalFrameB(native_address, localFrame.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "localFrame_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetLocalFrameB(localFrame_addr);")
+    public static native void internal_native_SetLocalFrameB(int this_addr, int localFrame_addr);
+
+    public boolean GetCollideConnected() {
+        return internal_native_GetCollideConnected(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetCollideConnected();return returnedJSObj;")
+    public static native boolean internal_native_GetCollideConnected(int this_addr);
+
+    public void SetCollideConnected(boolean collideConnected) {
+        internal_native_SetCollideConnected(native_address, collideConnected);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "collideConnected"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetCollideConnected(collideConnected);")
+    public static native void internal_native_SetCollideConnected(int this_addr, boolean collideConnected);
+
     public void WakeBodies() {
         internal_native_WakeBodies(native_address);
     }
@@ -91,12 +177,561 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.WakeBodies();")
     public static native void internal_native_WakeBodies(int this_addr);
 
+    public B3Vec3 GetConstraintForce() {
+        int addr = internal_native_GetConstraintForce_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_0 == null)
+            B3Vec3_TEMP_GEN_0 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetConstraintForce();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetConstraintForce_addr(int this_addr);
+
+    public B3Vec3 GetConstraintTorque() {
+        int addr = internal_native_GetConstraintTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_1 == null)
+            B3Vec3_TEMP_GEN_1 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_1.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_1;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetConstraintTorque();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetConstraintTorque_addr(int this_addr);
+
     public float GetLinearSeparation() {
         return internal_native_GetLinearSeparation(native_address);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetLinearSeparation();return returnedJSObj;")
     public static native float internal_native_GetLinearSeparation(int this_addr);
+
+    public float GetAngularSeparation() {
+        return internal_native_GetAngularSeparation(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetAngularSeparation();return returnedJSObj;")
+    public static native float internal_native_GetAngularSeparation(int this_addr);
+
+    public void SetConstraintTuning(float hertz, float dampingRatio) {
+        internal_native_SetConstraintTuning(native_address, hertz, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetConstraintTuning(hertz, dampingRatio);")
+    public static native void internal_native_SetConstraintTuning(int this_addr, float hertz, float dampingRatio);
+
+    public float GetConstraintHertz() {
+        return internal_native_GetConstraintHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetConstraintHertz();return returnedJSObj;")
+    public static native float internal_native_GetConstraintHertz(int this_addr);
+
+    public float GetConstraintDampingRatio() {
+        return internal_native_GetConstraintDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetConstraintDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetConstraintDampingRatio(int this_addr);
+
+    public void SetForceThreshold(float threshold) {
+        internal_native_SetForceThreshold(native_address, threshold);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "threshold"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetForceThreshold(threshold);")
+    public static native void internal_native_SetForceThreshold(int this_addr, float threshold);
+
+    public float GetForceThreshold() {
+        return internal_native_GetForceThreshold(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetForceThreshold();return returnedJSObj;")
+    public static native float internal_native_GetForceThreshold(int this_addr);
+
+    public void SetTorqueThreshold(float threshold) {
+        internal_native_SetTorqueThreshold(native_address, threshold);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "threshold"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetTorqueThreshold(threshold);")
+    public static native void internal_native_SetTorqueThreshold(int this_addr, float threshold);
+
+    public float GetTorqueThreshold() {
+        return internal_native_GetTorqueThreshold(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetTorqueThreshold();return returnedJSObj;")
+    public static native float internal_native_GetTorqueThreshold(int this_addr);
+
+    public void SetParallelSpringHertz(float hertz) {
+        internal_native_SetParallelSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetParallelSpringHertz(hertz);")
+    public static native void internal_native_SetParallelSpringHertz(int this_addr, float hertz);
+
+    public float GetParallelSpringHertz() {
+        return internal_native_GetParallelSpringHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetParallelSpringHertz();return returnedJSObj;")
+    public static native float internal_native_GetParallelSpringHertz(int this_addr);
+
+    public void SetParallelSpringDampingRatio(float dampingRatio) {
+        internal_native_SetParallelSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetParallelSpringDampingRatio(dampingRatio);")
+    public static native void internal_native_SetParallelSpringDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetParallelSpringDampingRatio() {
+        return internal_native_GetParallelSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetParallelSpringDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetParallelSpringDampingRatio(int this_addr);
+
+    public void SetParallelMaxTorque(float torque) {
+        internal_native_SetParallelMaxTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetParallelMaxTorque(torque);")
+    public static native void internal_native_SetParallelMaxTorque(int this_addr, float torque);
+
+    public float GetParallelMaxTorque() {
+        return internal_native_GetParallelMaxTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetParallelMaxTorque();return returnedJSObj;")
+    public static native float internal_native_GetParallelMaxTorque(int this_addr);
+
+    public void SetDistanceLength(float length) {
+        internal_native_SetDistanceLength(native_address, length);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "length"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceLength(length);")
+    public static native void internal_native_SetDistanceLength(int this_addr, float length);
+
+    public float GetDistanceLength() {
+        return internal_native_GetDistanceLength(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceLength();return returnedJSObj;")
+    public static native float internal_native_GetDistanceLength(int this_addr);
+
+    public void EnableDistanceSpring(boolean enabled) {
+        internal_native_EnableDistanceSpring(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableDistanceSpring(enabled);")
+    public static native void internal_native_EnableDistanceSpring(int this_addr, boolean enabled);
+
+    public boolean IsDistanceSpringEnabled() {
+        return internal_native_IsDistanceSpringEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsDistanceSpringEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsDistanceSpringEnabled(int this_addr);
+
+    public void SetDistanceSpringForceRange(float lowerForce, float upperForce) {
+        internal_native_SetDistanceSpringForceRange(native_address, lowerForce, upperForce);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "lowerForce", "upperForce"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceSpringForceRange(lowerForce, upperForce);")
+    public static native void internal_native_SetDistanceSpringForceRange(int this_addr, float lowerForce, float upperForce);
+
+    public float GetDistanceLowerSpringForce() {
+        return internal_native_GetDistanceLowerSpringForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceLowerSpringForce();return returnedJSObj;")
+    public static native float internal_native_GetDistanceLowerSpringForce(int this_addr);
+
+    public float GetDistanceUpperSpringForce() {
+        return internal_native_GetDistanceUpperSpringForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceUpperSpringForce();return returnedJSObj;")
+    public static native float internal_native_GetDistanceUpperSpringForce(int this_addr);
+
+    public void SetDistanceSpringHertz(float hertz) {
+        internal_native_SetDistanceSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceSpringHertz(hertz);")
+    public static native void internal_native_SetDistanceSpringHertz(int this_addr, float hertz);
+
+    public float GetDistanceSpringHertz() {
+        return internal_native_GetDistanceSpringHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceSpringHertz();return returnedJSObj;")
+    public static native float internal_native_GetDistanceSpringHertz(int this_addr);
+
+    public void SetDistanceSpringDampingRatio(float dampingRatio) {
+        internal_native_SetDistanceSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceSpringDampingRatio(dampingRatio);")
+    public static native void internal_native_SetDistanceSpringDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetDistanceSpringDampingRatio() {
+        return internal_native_GetDistanceSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceSpringDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetDistanceSpringDampingRatio(int this_addr);
+
+    public void EnableDistanceLimit(boolean enabled) {
+        internal_native_EnableDistanceLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableDistanceLimit(enabled);")
+    public static native void internal_native_EnableDistanceLimit(int this_addr, boolean enabled);
+
+    public boolean IsDistanceLimitEnabled() {
+        return internal_native_IsDistanceLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsDistanceLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsDistanceLimitEnabled(int this_addr);
+
+    public void SetDistanceLengthRange(float minLength, float maxLength) {
+        internal_native_SetDistanceLengthRange(native_address, minLength, maxLength);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "minLength", "maxLength"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceLengthRange(minLength, maxLength);")
+    public static native void internal_native_SetDistanceLengthRange(int this_addr, float minLength, float maxLength);
+
+    public float GetDistanceMinLength() {
+        return internal_native_GetDistanceMinLength(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceMinLength();return returnedJSObj;")
+    public static native float internal_native_GetDistanceMinLength(int this_addr);
+
+    public float GetDistanceMaxLength() {
+        return internal_native_GetDistanceMaxLength(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceMaxLength();return returnedJSObj;")
+    public static native float internal_native_GetDistanceMaxLength(int this_addr);
+
+    public float GetDistanceCurrentLength() {
+        return internal_native_GetDistanceCurrentLength(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceCurrentLength();return returnedJSObj;")
+    public static native float internal_native_GetDistanceCurrentLength(int this_addr);
+
+    public void EnableDistanceMotor(boolean enabled) {
+        internal_native_EnableDistanceMotor(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableDistanceMotor(enabled);")
+    public static native void internal_native_EnableDistanceMotor(int this_addr, boolean enabled);
+
+    public boolean IsDistanceMotorEnabled() {
+        return internal_native_IsDistanceMotorEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsDistanceMotorEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsDistanceMotorEnabled(int this_addr);
+
+    public void SetDistanceMotorSpeed(float speed) {
+        internal_native_SetDistanceMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "speed"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceMotorSpeed(speed);")
+    public static native void internal_native_SetDistanceMotorSpeed(int this_addr, float speed);
+
+    public float GetDistanceMotorSpeed() {
+        return internal_native_GetDistanceMotorSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceMotorSpeed();return returnedJSObj;")
+    public static native float internal_native_GetDistanceMotorSpeed(int this_addr);
+
+    public void SetDistanceMaxMotorForce(float force) {
+        internal_native_SetDistanceMaxMotorForce(native_address, force);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "force"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetDistanceMaxMotorForce(force);")
+    public static native void internal_native_SetDistanceMaxMotorForce(int this_addr, float force);
+
+    public float GetDistanceMaxMotorForce() {
+        return internal_native_GetDistanceMaxMotorForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceMaxMotorForce();return returnedJSObj;")
+    public static native float internal_native_GetDistanceMaxMotorForce(int this_addr);
+
+    public float GetDistanceMotorForce() {
+        return internal_native_GetDistanceMotorForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetDistanceMotorForce();return returnedJSObj;")
+    public static native float internal_native_GetDistanceMotorForce(int this_addr);
+
+    public void SetMotorLinearVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorLinearVelocity(native_address, velocity.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "velocity_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorLinearVelocity(velocity_addr);")
+    public static native void internal_native_SetMotorLinearVelocity(int this_addr, int velocity_addr);
+
+    public B3Vec3 GetMotorLinearVelocity() {
+        int addr = internal_native_GetMotorLinearVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_2 == null)
+            B3Vec3_TEMP_GEN_2 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_2.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_2;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorLinearVelocity();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetMotorLinearVelocity_addr(int this_addr);
+
+    public void SetMotorAngularVelocity(B3Vec3 velocity) {
+        internal_native_SetMotorAngularVelocity(native_address, velocity.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "velocity_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorAngularVelocity(velocity_addr);")
+    public static native void internal_native_SetMotorAngularVelocity(int this_addr, int velocity_addr);
+
+    public B3Vec3 GetMotorAngularVelocity() {
+        int addr = internal_native_GetMotorAngularVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_3 == null)
+            B3Vec3_TEMP_GEN_3 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_3.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_3;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorAngularVelocity();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetMotorAngularVelocity_addr(int this_addr);
+
+    public void SetMotorMaxVelocityForce(float force) {
+        internal_native_SetMotorMaxVelocityForce(native_address, force);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "force"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorMaxVelocityForce(force);")
+    public static native void internal_native_SetMotorMaxVelocityForce(int this_addr, float force);
+
+    public float GetMotorMaxVelocityForce() {
+        return internal_native_GetMotorMaxVelocityForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorMaxVelocityForce();return returnedJSObj;")
+    public static native float internal_native_GetMotorMaxVelocityForce(int this_addr);
+
+    public void SetMotorMaxVelocityTorque(float torque) {
+        internal_native_SetMotorMaxVelocityTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorMaxVelocityTorque(torque);")
+    public static native void internal_native_SetMotorMaxVelocityTorque(int this_addr, float torque);
+
+    public float GetMotorMaxVelocityTorque() {
+        return internal_native_GetMotorMaxVelocityTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorMaxVelocityTorque();return returnedJSObj;")
+    public static native float internal_native_GetMotorMaxVelocityTorque(int this_addr);
+
+    public void SetMotorLinearHertz(float hertz) {
+        internal_native_SetMotorLinearHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorLinearHertz(hertz);")
+    public static native void internal_native_SetMotorLinearHertz(int this_addr, float hertz);
+
+    public float GetMotorLinearHertz() {
+        return internal_native_GetMotorLinearHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorLinearHertz();return returnedJSObj;")
+    public static native float internal_native_GetMotorLinearHertz(int this_addr);
+
+    public void SetMotorLinearDampingRatio(float dampingRatio) {
+        internal_native_SetMotorLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorLinearDampingRatio(dampingRatio);")
+    public static native void internal_native_SetMotorLinearDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetMotorLinearDampingRatio() {
+        return internal_native_GetMotorLinearDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorLinearDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetMotorLinearDampingRatio(int this_addr);
+
+    public void SetMotorAngularHertz(float hertz) {
+        internal_native_SetMotorAngularHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorAngularHertz(hertz);")
+    public static native void internal_native_SetMotorAngularHertz(int this_addr, float hertz);
+
+    public float GetMotorAngularHertz() {
+        return internal_native_GetMotorAngularHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorAngularHertz();return returnedJSObj;")
+    public static native float internal_native_GetMotorAngularHertz(int this_addr);
+
+    public void SetMotorAngularDampingRatio(float dampingRatio) {
+        internal_native_SetMotorAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorAngularDampingRatio(dampingRatio);")
+    public static native void internal_native_SetMotorAngularDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetMotorAngularDampingRatio() {
+        return internal_native_GetMotorAngularDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorAngularDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetMotorAngularDampingRatio(int this_addr);
+
+    public void SetMotorMaxSpringForce(float force) {
+        internal_native_SetMotorMaxSpringForce(native_address, force);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "force"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorMaxSpringForce(force);")
+    public static native void internal_native_SetMotorMaxSpringForce(int this_addr, float force);
+
+    public float GetMotorMaxSpringForce() {
+        return internal_native_GetMotorMaxSpringForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorMaxSpringForce();return returnedJSObj;")
+    public static native float internal_native_GetMotorMaxSpringForce(int this_addr);
+
+    public void SetMotorMaxSpringTorque(float torque) {
+        internal_native_SetMotorMaxSpringTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetMotorMaxSpringTorque(torque);")
+    public static native void internal_native_SetMotorMaxSpringTorque(int this_addr, float torque);
+
+    public float GetMotorMaxSpringTorque() {
+        return internal_native_GetMotorMaxSpringTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetMotorMaxSpringTorque();return returnedJSObj;")
+    public static native float internal_native_GetMotorMaxSpringTorque(int this_addr);
+
+    public void EnablePrismaticSpring(boolean enabled) {
+        internal_native_EnablePrismaticSpring(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnablePrismaticSpring(enabled);")
+    public static native void internal_native_EnablePrismaticSpring(int this_addr, boolean enabled);
+
+    public boolean IsPrismaticSpringEnabled() {
+        return internal_native_IsPrismaticSpringEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsPrismaticSpringEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsPrismaticSpringEnabled(int this_addr);
+
+    public void SetPrismaticSpringHertz(float hertz) {
+        internal_native_SetPrismaticSpringHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticSpringHertz(hertz);")
+    public static native void internal_native_SetPrismaticSpringHertz(int this_addr, float hertz);
+
+    public float GetPrismaticSpringHertz() {
+        return internal_native_GetPrismaticSpringHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticSpringHertz();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticSpringHertz(int this_addr);
+
+    public void SetPrismaticSpringDampingRatio(float dampingRatio) {
+        internal_native_SetPrismaticSpringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticSpringDampingRatio(dampingRatio);")
+    public static native void internal_native_SetPrismaticSpringDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetPrismaticSpringDampingRatio() {
+        return internal_native_GetPrismaticSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticSpringDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticSpringDampingRatio(int this_addr);
+
+    public void SetPrismaticTargetTranslation(float translation) {
+        internal_native_SetPrismaticTargetTranslation(native_address, translation);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "translation"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticTargetTranslation(translation);")
+    public static native void internal_native_SetPrismaticTargetTranslation(int this_addr, float translation);
+
+    public float GetPrismaticTargetTranslation() {
+        return internal_native_GetPrismaticTargetTranslation(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticTargetTranslation();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticTargetTranslation(int this_addr);
+
+    public void EnablePrismaticLimit(boolean enabled) {
+        internal_native_EnablePrismaticLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnablePrismaticLimit(enabled);")
+    public static native void internal_native_EnablePrismaticLimit(int this_addr, boolean enabled);
+
+    public boolean IsPrismaticLimitEnabled() {
+        return internal_native_IsPrismaticLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsPrismaticLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsPrismaticLimitEnabled(int this_addr);
+
+    public float GetPrismaticLowerLimit() {
+        return internal_native_GetPrismaticLowerLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticLowerLimit();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticLowerLimit(int this_addr);
+
+    public float GetPrismaticUpperLimit() {
+        return internal_native_GetPrismaticUpperLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticUpperLimit();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticUpperLimit(int this_addr);
+
+    public void SetPrismaticLimits(float lower, float upper) {
+        internal_native_SetPrismaticLimits(native_address, lower, upper);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "lower", "upper"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticLimits(lower, upper);")
+    public static native void internal_native_SetPrismaticLimits(int this_addr, float lower, float upper);
+
+    public void EnablePrismaticMotor(boolean enabled) {
+        internal_native_EnablePrismaticMotor(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnablePrismaticMotor(enabled);")
+    public static native void internal_native_EnablePrismaticMotor(int this_addr, boolean enabled);
+
+    public boolean IsPrismaticMotorEnabled() {
+        return internal_native_IsPrismaticMotorEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsPrismaticMotorEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsPrismaticMotorEnabled(int this_addr);
 
     public float GetPrismaticTranslation() {
         return internal_native_GetPrismaticTranslation(native_address);
@@ -112,12 +747,145 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "speed"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticMotorSpeed(speed);")
     public static native void internal_native_SetPrismaticMotorSpeed(int this_addr, float speed);
 
+    public float GetPrismaticMotorSpeed() {
+        return internal_native_GetPrismaticMotorSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticMotorSpeed();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticMotorSpeed(int this_addr);
+
+    public void SetPrismaticMaxMotorForce(float force) {
+        internal_native_SetPrismaticMaxMotorForce(native_address, force);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "force"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetPrismaticMaxMotorForce(force);")
+    public static native void internal_native_SetPrismaticMaxMotorForce(int this_addr, float force);
+
+    public float GetPrismaticMaxMotorForce() {
+        return internal_native_GetPrismaticMaxMotorForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticMaxMotorForce();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticMaxMotorForce(int this_addr);
+
+    public float GetPrismaticMotorForce() {
+        return internal_native_GetPrismaticMotorForce(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticMotorForce();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticMotorForce(int this_addr);
+
+    public float GetPrismaticSpeed() {
+        return internal_native_GetPrismaticSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetPrismaticSpeed();return returnedJSObj;")
+    public static native float internal_native_GetPrismaticSpeed(int this_addr);
+
+    public void EnableRevoluteSpring(boolean enabled) {
+        internal_native_EnableRevoluteSpring(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableRevoluteSpring(enabled);")
+    public static native void internal_native_EnableRevoluteSpring(int this_addr, boolean enabled);
+
+    public boolean IsRevoluteSpringEnabled() {
+        return internal_native_IsRevoluteSpringEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsRevoluteSpringEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsRevoluteSpringEnabled(int this_addr);
+
     public void SetRevoluteTargetAngle(float radians) {
         internal_native_SetRevoluteTargetAngle(native_address, radians);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteTargetAngle(radians);")
     public static native void internal_native_SetRevoluteTargetAngle(int this_addr, float radians);
+
+    public float GetRevoluteTargetAngle() {
+        return internal_native_GetRevoluteTargetAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteTargetAngle();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteTargetAngle(int this_addr);
+
+    public float GetRevoluteAngle() {
+        return internal_native_GetRevoluteAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteAngle();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteAngle(int this_addr);
+
+    public void EnableRevoluteLimit(boolean enabled) {
+        internal_native_EnableRevoluteLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableRevoluteLimit(enabled);")
+    public static native void internal_native_EnableRevoluteLimit(int this_addr, boolean enabled);
+
+    public boolean IsRevoluteLimitEnabled() {
+        return internal_native_IsRevoluteLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsRevoluteLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsRevoluteLimitEnabled(int this_addr);
+
+    public float GetRevoluteLowerLimit() {
+        return internal_native_GetRevoluteLowerLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteLowerLimit();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteLowerLimit(int this_addr);
+
+    public float GetRevoluteUpperLimit() {
+        return internal_native_GetRevoluteUpperLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteUpperLimit();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteUpperLimit(int this_addr);
+
+    public void SetRevoluteLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetRevoluteLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "lowerRadians", "upperRadians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteLimits(lowerRadians, upperRadians);")
+    public static native void internal_native_SetRevoluteLimits(int this_addr, float lowerRadians, float upperRadians);
+
+    public void EnableRevoluteMotor(boolean enabled) {
+        internal_native_EnableRevoluteMotor(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableRevoluteMotor(enabled);")
+    public static native void internal_native_EnableRevoluteMotor(int this_addr, boolean enabled);
+
+    public boolean IsRevoluteMotorEnabled() {
+        return internal_native_IsRevoluteMotorEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsRevoluteMotorEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsRevoluteMotorEnabled(int this_addr);
+
+    public void SetRevoluteMotorSpeed(float speed) {
+        internal_native_SetRevoluteMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "speed"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteMotorSpeed(speed);")
+    public static native void internal_native_SetRevoluteMotorSpeed(int this_addr, float speed);
+
+    public float GetRevoluteMotorSpeed() {
+        return internal_native_GetRevoluteMotorSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteMotorSpeed();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteMotorSpeed(int this_addr);
+
+    public float GetRevoluteMotorTorque() {
+        return internal_native_GetRevoluteMotorTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteMotorTorque();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteMotorTorque(int this_addr);
 
     public void SetRevoluteMaxMotorTorque(float torque) {
         internal_native_SetRevoluteMaxMotorTorque(native_address, torque);
@@ -126,12 +894,26 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteMaxMotorTorque(torque);")
     public static native void internal_native_SetRevoluteMaxMotorTorque(int this_addr, float torque);
 
+    public float GetRevoluteMaxMotorTorque() {
+        return internal_native_GetRevoluteMaxMotorTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteMaxMotorTorque();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteMaxMotorTorque(int this_addr);
+
     public void SetRevoluteSpringHertz(float hertz) {
         internal_native_SetRevoluteSpringHertz(native_address, hertz);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteSpringHertz(hertz);")
     public static native void internal_native_SetRevoluteSpringHertz(int this_addr, float hertz);
+
+    public float GetRevoluteSpringHertz() {
+        return internal_native_GetRevoluteSpringHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteSpringHertz();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteSpringHertz(int this_addr);
 
     public void SetRevoluteSpringDampingRatio(float dampingRatio) {
         internal_native_SetRevoluteSpringDampingRatio(native_address, dampingRatio);
@@ -140,12 +922,117 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetRevoluteSpringDampingRatio(dampingRatio);")
     public static native void internal_native_SetRevoluteSpringDampingRatio(int this_addr, float dampingRatio);
 
+    public float GetRevoluteSpringDampingRatio() {
+        return internal_native_GetRevoluteSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetRevoluteSpringDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetRevoluteSpringDampingRatio(int this_addr);
+
+    public void EnableSphericalConeLimit(boolean enabled) {
+        internal_native_EnableSphericalConeLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableSphericalConeLimit(enabled);")
+    public static native void internal_native_EnableSphericalConeLimit(int this_addr, boolean enabled);
+
+    public boolean IsSphericalConeLimitEnabled() {
+        return internal_native_IsSphericalConeLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsSphericalConeLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsSphericalConeLimitEnabled(int this_addr);
+
+    public float GetSphericalConeLimit() {
+        return internal_native_GetSphericalConeLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalConeLimit();return returnedJSObj;")
+    public static native float internal_native_GetSphericalConeLimit(int this_addr);
+
+    public void SetSphericalConeLimit(float radians) {
+        internal_native_SetSphericalConeLimit(native_address, radians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalConeLimit(radians);")
+    public static native void internal_native_SetSphericalConeLimit(int this_addr, float radians);
+
+    public float GetSphericalConeAngle() {
+        return internal_native_GetSphericalConeAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalConeAngle();return returnedJSObj;")
+    public static native float internal_native_GetSphericalConeAngle(int this_addr);
+
+    public void EnableSphericalTwistLimit(boolean enabled) {
+        internal_native_EnableSphericalTwistLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableSphericalTwistLimit(enabled);")
+    public static native void internal_native_EnableSphericalTwistLimit(int this_addr, boolean enabled);
+
+    public boolean IsSphericalTwistLimitEnabled() {
+        return internal_native_IsSphericalTwistLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsSphericalTwistLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsSphericalTwistLimitEnabled(int this_addr);
+
+    public float GetSphericalLowerTwistLimit() {
+        return internal_native_GetSphericalLowerTwistLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalLowerTwistLimit();return returnedJSObj;")
+    public static native float internal_native_GetSphericalLowerTwistLimit(int this_addr);
+
+    public float GetSphericalUpperTwistLimit() {
+        return internal_native_GetSphericalUpperTwistLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalUpperTwistLimit();return returnedJSObj;")
+    public static native float internal_native_GetSphericalUpperTwistLimit(int this_addr);
+
+    public void SetSphericalTwistLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetSphericalTwistLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "lowerRadians", "upperRadians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalTwistLimits(lowerRadians, upperRadians);")
+    public static native void internal_native_SetSphericalTwistLimits(int this_addr, float lowerRadians, float upperRadians);
+
+    public float GetSphericalTwistAngle() {
+        return internal_native_GetSphericalTwistAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalTwistAngle();return returnedJSObj;")
+    public static native float internal_native_GetSphericalTwistAngle(int this_addr);
+
+    public void EnableSphericalSpring(boolean enabled) {
+        internal_native_EnableSphericalSpring(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableSphericalSpring(enabled);")
+    public static native void internal_native_EnableSphericalSpring(int this_addr, boolean enabled);
+
+    public boolean IsSphericalSpringEnabled() {
+        return internal_native_IsSphericalSpringEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsSphericalSpringEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsSphericalSpringEnabled(int this_addr);
+
     public void SetSphericalMaxMotorTorque(float torque) {
         internal_native_SetSphericalMaxMotorTorque(native_address, torque);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalMaxMotorTorque(torque);")
     public static native void internal_native_SetSphericalMaxMotorTorque(int this_addr, float torque);
+
+    public float GetSphericalMaxMotorTorque() {
+        return internal_native_GetSphericalMaxMotorTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalMaxMotorTorque();return returnedJSObj;")
+    public static native float internal_native_GetSphericalMaxMotorTorque(int this_addr);
 
     public void SetSphericalSpringHertz(float hertz) {
         internal_native_SetSphericalSpringHertz(native_address, hertz);
@@ -154,10 +1041,399 @@ public final class B3Joint extends NativeObject {
     @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalSpringHertz(hertz);")
     public static native void internal_native_SetSphericalSpringHertz(int this_addr, float hertz);
 
+    public float GetSphericalSpringHertz() {
+        return internal_native_GetSphericalSpringHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalSpringHertz();return returnedJSObj;")
+    public static native float internal_native_GetSphericalSpringHertz(int this_addr);
+
     public void SetSphericalSpringDampingRatio(float dampingRatio) {
         internal_native_SetSphericalSpringDampingRatio(native_address, dampingRatio);
     }
 
     @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalSpringDampingRatio(dampingRatio);")
     public static native void internal_native_SetSphericalSpringDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetSphericalSpringDampingRatio() {
+        return internal_native_GetSphericalSpringDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalSpringDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetSphericalSpringDampingRatio(int this_addr);
+
+    public void SetSphericalTargetRotation(B3Quat rotation) {
+        internal_native_SetSphericalTargetRotation(native_address, rotation.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "rotation_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalTargetRotation(rotation_addr);")
+    public static native void internal_native_SetSphericalTargetRotation(int this_addr, int rotation_addr);
+
+    public B3Quat GetSphericalTargetRotation() {
+        int addr = internal_native_GetSphericalTargetRotation_addr(native_address);
+        if (addr == 0)
+            return B3Quat.NULL;
+        if (B3Quat_TEMP_GEN_0 == null)
+            B3Quat_TEMP_GEN_0 = B3Quat.native_new();
+        B3Quat_TEMP_GEN_0.internal_reset(addr, false);
+        return B3Quat_TEMP_GEN_0;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalTargetRotation();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetSphericalTargetRotation_addr(int this_addr);
+
+    public void EnableSphericalMotor(boolean enabled) {
+        internal_native_EnableSphericalMotor(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableSphericalMotor(enabled);")
+    public static native void internal_native_EnableSphericalMotor(int this_addr, boolean enabled);
+
+    public boolean IsSphericalMotorEnabled() {
+        return internal_native_IsSphericalMotorEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsSphericalMotorEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsSphericalMotorEnabled(int this_addr);
+
+    public void SetSphericalMotorVelocity(B3Vec3 velocity) {
+        internal_native_SetSphericalMotorVelocity(native_address, velocity.native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "velocity_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetSphericalMotorVelocity(velocity_addr);")
+    public static native void internal_native_SetSphericalMotorVelocity(int this_addr, int velocity_addr);
+
+    public B3Vec3 GetSphericalMotorVelocity() {
+        int addr = internal_native_GetSphericalMotorVelocity_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_4 == null)
+            B3Vec3_TEMP_GEN_4 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_4.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_4;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalMotorVelocity();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetSphericalMotorVelocity_addr(int this_addr);
+
+    public B3Vec3 GetSphericalMotorTorque() {
+        int addr = internal_native_GetSphericalMotorTorque_addr(native_address);
+        if (addr == 0)
+            return B3Vec3.NULL;
+        if (B3Vec3_TEMP_GEN_5 == null)
+            B3Vec3_TEMP_GEN_5 = B3Vec3.native_new();
+        B3Vec3_TEMP_GEN_5.internal_reset(addr, false);
+        return B3Vec3_TEMP_GEN_5;
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetSphericalMotorTorque();if(!returnedJSObj.hasOwnProperty('ptr')) return 0; return box3d.getPointer(returnedJSObj);")
+    public static native int internal_native_GetSphericalMotorTorque_addr(int this_addr);
+
+    public void SetWeldLinearHertz(float hertz) {
+        internal_native_SetWeldLinearHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWeldLinearHertz(hertz);")
+    public static native void internal_native_SetWeldLinearHertz(int this_addr, float hertz);
+
+    public float GetWeldLinearHertz() {
+        return internal_native_GetWeldLinearHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWeldLinearHertz();return returnedJSObj;")
+    public static native float internal_native_GetWeldLinearHertz(int this_addr);
+
+    public void SetWeldLinearDampingRatio(float dampingRatio) {
+        internal_native_SetWeldLinearDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWeldLinearDampingRatio(dampingRatio);")
+    public static native void internal_native_SetWeldLinearDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetWeldLinearDampingRatio() {
+        return internal_native_GetWeldLinearDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWeldLinearDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetWeldLinearDampingRatio(int this_addr);
+
+    public void SetWeldAngularHertz(float hertz) {
+        internal_native_SetWeldAngularHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWeldAngularHertz(hertz);")
+    public static native void internal_native_SetWeldAngularHertz(int this_addr, float hertz);
+
+    public float GetWeldAngularHertz() {
+        return internal_native_GetWeldAngularHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWeldAngularHertz();return returnedJSObj;")
+    public static native float internal_native_GetWeldAngularHertz(int this_addr);
+
+    public void SetWeldAngularDampingRatio(float dampingRatio) {
+        internal_native_SetWeldAngularDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWeldAngularDampingRatio(dampingRatio);")
+    public static native void internal_native_SetWeldAngularDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetWeldAngularDampingRatio() {
+        return internal_native_GetWeldAngularDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWeldAngularDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetWeldAngularDampingRatio(int this_addr);
+
+    public void EnableWheelSuspension(boolean enabled) {
+        internal_native_EnableWheelSuspension(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableWheelSuspension(enabled);")
+    public static native void internal_native_EnableWheelSuspension(int this_addr, boolean enabled);
+
+    public boolean IsWheelSuspensionEnabled() {
+        return internal_native_IsWheelSuspensionEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsWheelSuspensionEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsWheelSuspensionEnabled(int this_addr);
+
+    public void SetWheelSuspensionHertz(float hertz) {
+        internal_native_SetWheelSuspensionHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSuspensionHertz(hertz);")
+    public static native void internal_native_SetWheelSuspensionHertz(int this_addr, float hertz);
+
+    public float GetWheelSuspensionHertz() {
+        return internal_native_GetWheelSuspensionHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSuspensionHertz();return returnedJSObj;")
+    public static native float internal_native_GetWheelSuspensionHertz(int this_addr);
+
+    public void SetWheelSuspensionDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSuspensionDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSuspensionDampingRatio(dampingRatio);")
+    public static native void internal_native_SetWheelSuspensionDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetWheelSuspensionDampingRatio() {
+        return internal_native_GetWheelSuspensionDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSuspensionDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetWheelSuspensionDampingRatio(int this_addr);
+
+    public void EnableWheelSuspensionLimit(boolean enabled) {
+        internal_native_EnableWheelSuspensionLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableWheelSuspensionLimit(enabled);")
+    public static native void internal_native_EnableWheelSuspensionLimit(int this_addr, boolean enabled);
+
+    public boolean IsWheelSuspensionLimitEnabled() {
+        return internal_native_IsWheelSuspensionLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsWheelSuspensionLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsWheelSuspensionLimitEnabled(int this_addr);
+
+    public float GetWheelLowerSuspensionLimit() {
+        return internal_native_GetWheelLowerSuspensionLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelLowerSuspensionLimit();return returnedJSObj;")
+    public static native float internal_native_GetWheelLowerSuspensionLimit(int this_addr);
+
+    public float GetWheelUpperSuspensionLimit() {
+        return internal_native_GetWheelUpperSuspensionLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelUpperSuspensionLimit();return returnedJSObj;")
+    public static native float internal_native_GetWheelUpperSuspensionLimit(int this_addr);
+
+    public void SetWheelSuspensionLimits(float lower, float upper) {
+        internal_native_SetWheelSuspensionLimits(native_address, lower, upper);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "lower", "upper"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSuspensionLimits(lower, upper);")
+    public static native void internal_native_SetWheelSuspensionLimits(int this_addr, float lower, float upper);
+
+    public void EnableWheelSpinMotor(boolean enabled) {
+        internal_native_EnableWheelSpinMotor(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableWheelSpinMotor(enabled);")
+    public static native void internal_native_EnableWheelSpinMotor(int this_addr, boolean enabled);
+
+    public boolean IsWheelSpinMotorEnabled() {
+        return internal_native_IsWheelSpinMotorEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsWheelSpinMotorEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsWheelSpinMotorEnabled(int this_addr);
+
+    public void SetWheelTargetSteeringAngle(float radians) {
+        internal_native_SetWheelTargetSteeringAngle(native_address, radians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "radians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelTargetSteeringAngle(radians);")
+    public static native void internal_native_SetWheelTargetSteeringAngle(int this_addr, float radians);
+
+    public float GetWheelTargetSteeringAngle() {
+        return internal_native_GetWheelTargetSteeringAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelTargetSteeringAngle();return returnedJSObj;")
+    public static native float internal_native_GetWheelTargetSteeringAngle(int this_addr);
+
+    public void SetWheelSpinMotorSpeed(float speed) {
+        internal_native_SetWheelSpinMotorSpeed(native_address, speed);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "speed"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSpinMotorSpeed(speed);")
+    public static native void internal_native_SetWheelSpinMotorSpeed(int this_addr, float speed);
+
+    public float GetWheelSpinMotorSpeed() {
+        return internal_native_GetWheelSpinMotorSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSpinMotorSpeed();return returnedJSObj;")
+    public static native float internal_native_GetWheelSpinMotorSpeed(int this_addr);
+
+    public void SetWheelMaxSpinTorque(float torque) {
+        internal_native_SetWheelMaxSpinTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelMaxSpinTorque(torque);")
+    public static native void internal_native_SetWheelMaxSpinTorque(int this_addr, float torque);
+
+    public float GetWheelMaxSpinTorque() {
+        return internal_native_GetWheelMaxSpinTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelMaxSpinTorque();return returnedJSObj;")
+    public static native float internal_native_GetWheelMaxSpinTorque(int this_addr);
+
+    public float GetWheelSpinSpeed() {
+        return internal_native_GetWheelSpinSpeed(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSpinSpeed();return returnedJSObj;")
+    public static native float internal_native_GetWheelSpinSpeed(int this_addr);
+
+    public float GetWheelSpinTorque() {
+        return internal_native_GetWheelSpinTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSpinTorque();return returnedJSObj;")
+    public static native float internal_native_GetWheelSpinTorque(int this_addr);
+
+    public void EnableWheelSteering(boolean enabled) {
+        internal_native_EnableWheelSteering(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableWheelSteering(enabled);")
+    public static native void internal_native_EnableWheelSteering(int this_addr, boolean enabled);
+
+    public boolean IsWheelSteeringEnabled() {
+        return internal_native_IsWheelSteeringEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsWheelSteeringEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsWheelSteeringEnabled(int this_addr);
+
+    public void SetWheelSteeringHertz(float hertz) {
+        internal_native_SetWheelSteeringHertz(native_address, hertz);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "hertz"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSteeringHertz(hertz);")
+    public static native void internal_native_SetWheelSteeringHertz(int this_addr, float hertz);
+
+    public float GetWheelSteeringHertz() {
+        return internal_native_GetWheelSteeringHertz(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSteeringHertz();return returnedJSObj;")
+    public static native float internal_native_GetWheelSteeringHertz(int this_addr);
+
+    public void SetWheelSteeringDampingRatio(float dampingRatio) {
+        internal_native_SetWheelSteeringDampingRatio(native_address, dampingRatio);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "dampingRatio"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSteeringDampingRatio(dampingRatio);")
+    public static native void internal_native_SetWheelSteeringDampingRatio(int this_addr, float dampingRatio);
+
+    public float GetWheelSteeringDampingRatio() {
+        return internal_native_GetWheelSteeringDampingRatio(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSteeringDampingRatio();return returnedJSObj;")
+    public static native float internal_native_GetWheelSteeringDampingRatio(int this_addr);
+
+    public void SetWheelMaxSteeringTorque(float torque) {
+        internal_native_SetWheelMaxSteeringTorque(native_address, torque);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "torque"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelMaxSteeringTorque(torque);")
+    public static native void internal_native_SetWheelMaxSteeringTorque(int this_addr, float torque);
+
+    public float GetWheelMaxSteeringTorque() {
+        return internal_native_GetWheelMaxSteeringTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelMaxSteeringTorque();return returnedJSObj;")
+    public static native float internal_native_GetWheelMaxSteeringTorque(int this_addr);
+
+    public void EnableWheelSteeringLimit(boolean enabled) {
+        internal_native_EnableWheelSteeringLimit(native_address, enabled);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "enabled"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.EnableWheelSteeringLimit(enabled);")
+    public static native void internal_native_EnableWheelSteeringLimit(int this_addr, boolean enabled);
+
+    public boolean IsWheelSteeringLimitEnabled() {
+        return internal_native_IsWheelSteeringLimitEnabled(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.IsWheelSteeringLimitEnabled();return returnedJSObj;")
+    public static native boolean internal_native_IsWheelSteeringLimitEnabled(int this_addr);
+
+    public float GetWheelLowerSteeringLimit() {
+        return internal_native_GetWheelLowerSteeringLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelLowerSteeringLimit();return returnedJSObj;")
+    public static native float internal_native_GetWheelLowerSteeringLimit(int this_addr);
+
+    public float GetWheelUpperSteeringLimit() {
+        return internal_native_GetWheelUpperSteeringLimit(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelUpperSteeringLimit();return returnedJSObj;")
+    public static native float internal_native_GetWheelUpperSteeringLimit(int this_addr);
+
+    public void SetWheelSteeringLimits(float lowerRadians, float upperRadians) {
+        internal_native_SetWheelSteeringLimits(native_address, lowerRadians, upperRadians);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr", "lowerRadians", "upperRadians"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);jsObj.SetWheelSteeringLimits(lowerRadians, upperRadians);")
+    public static native void internal_native_SetWheelSteeringLimits(int this_addr, float lowerRadians, float upperRadians);
+
+    public float GetWheelSteeringAngle() {
+        return internal_native_GetWheelSteeringAngle(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSteeringAngle();return returnedJSObj;")
+    public static native float internal_native_GetWheelSteeringAngle(int this_addr);
+
+    public float GetWheelSteeringTorque() {
+        return internal_native_GetWheelSteeringTorque(native_address);
+    }
+
+    @org.teavm.jso.JSBody(params = {"this_addr"}, script = "var jsObj = box3d.wrapPointer(this_addr, box3d.B3Joint);var returnedJSObj = jsObj.GetWheelSteeringTorque();return returnedJSObj;")
+    public static native float internal_native_GetWheelSteeringTorque(int this_addr);
 }

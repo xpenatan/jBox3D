@@ -36,9 +36,7 @@ final class EdgeCrossingSample extends AbstractBox3DSample {
             B3Body bottom = createBody(B3.DynamicBody(), x, bottomY, z, null);
             dispose(bottom.CreateHullShape(shapeDef, bottomHull));
 
-            float halfAngle = 0.5f * angle;
-            float sine = (float)Math.sin(halfAngle);
-            B3Quat rotation = new B3Quat(axisX * sine, axisY * sine, 0.0f, (float)Math.cos(halfAngle));
+            B3Quat rotation = rotationAxis(axisX, axisY, 0.0f, angle);
             B3Body top = createBody(B3.DynamicBody(), x, 20.0f * bottomY, z, rotation);
             dispose(top.CreateHullShape(shapeDef, topHull), rotation);
             x += 1.0f;

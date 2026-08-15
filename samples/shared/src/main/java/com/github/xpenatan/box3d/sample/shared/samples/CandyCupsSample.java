@@ -36,8 +36,9 @@ final class CandyCupsSample extends AbstractBox3DSample {
         float alpha = 0.0f;
         float deltaAlpha = 2.0f * (float)Math.PI / sideCount;
         for(int sideIndex = 0; sideIndex < sideCount; ++sideIndex) {
-            float cosine = (float)Math.cos(alpha);
-            float sine = (float)Math.sin(alpha);
+            long cosSin = SampleMath.computeCosSin(alpha);
+            float cosine = SampleMath.cosine(cosSin);
+            float sine = SampleMath.sine(cosSin);
             B3Vec3 lower = new B3Vec3(radius1 * cosine, height1, radius1 * sine);
             B3Vec3 upper = new B3Vec3(radius2 * cosine, height2, radius2 * sine);
             vertices.SetValue(2 * sideIndex, lower);

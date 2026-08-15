@@ -22,29 +22,373 @@ final public class JNI_B3Joint {
 
     public static native void internal_native_Destroy(long this_addr, boolean wakeAttached);
 
+    public static native int internal_native_GetType(long this_addr);
+
     public static native long internal_native_GetBodyIdA(long this_addr);
 
     public static native long internal_native_GetBodyIdB(long this_addr);
 
+    public static native long internal_native_GetWorldId(long this_addr);
+
+    public static native long internal_native_GetLocalFrameA_addr(long this_addr);
+
+    public static native void internal_native_SetLocalFrameA(long this_addr, long localFrame_addr);
+
+    public static native long internal_native_GetLocalFrameB_addr(long this_addr);
+
+    public static native void internal_native_SetLocalFrameB(long this_addr, long localFrame_addr);
+
+    public static native boolean internal_native_GetCollideConnected(long this_addr);
+
+    public static native void internal_native_SetCollideConnected(long this_addr, boolean collideConnected);
+
     public static native void internal_native_WakeBodies(long this_addr);
 
+    public static native long internal_native_GetConstraintForce_addr(long this_addr);
+
+    public static native long internal_native_GetConstraintTorque_addr(long this_addr);
+
     public static native float internal_native_GetLinearSeparation(long this_addr);
+
+    public static native float internal_native_GetAngularSeparation(long this_addr);
+
+    public static native void internal_native_SetConstraintTuning(long this_addr, float hertz, float dampingRatio);
+
+    public static native float internal_native_GetConstraintHertz(long this_addr);
+
+    public static native float internal_native_GetConstraintDampingRatio(long this_addr);
+
+    public static native void internal_native_SetForceThreshold(long this_addr, float threshold);
+
+    public static native float internal_native_GetForceThreshold(long this_addr);
+
+    public static native void internal_native_SetTorqueThreshold(long this_addr, float threshold);
+
+    public static native float internal_native_GetTorqueThreshold(long this_addr);
+
+    public static native void internal_native_SetParallelSpringHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetParallelSpringHertz(long this_addr);
+
+    public static native void internal_native_SetParallelSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetParallelSpringDampingRatio(long this_addr);
+
+    public static native void internal_native_SetParallelMaxTorque(long this_addr, float torque);
+
+    public static native float internal_native_GetParallelMaxTorque(long this_addr);
+
+    public static native void internal_native_SetDistanceLength(long this_addr, float length);
+
+    public static native float internal_native_GetDistanceLength(long this_addr);
+
+    public static native void internal_native_EnableDistanceSpring(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsDistanceSpringEnabled(long this_addr);
+
+    public static native void internal_native_SetDistanceSpringForceRange(long this_addr, float lowerForce, float upperForce);
+
+    public static native float internal_native_GetDistanceLowerSpringForce(long this_addr);
+
+    public static native float internal_native_GetDistanceUpperSpringForce(long this_addr);
+
+    public static native void internal_native_SetDistanceSpringHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetDistanceSpringHertz(long this_addr);
+
+    public static native void internal_native_SetDistanceSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetDistanceSpringDampingRatio(long this_addr);
+
+    public static native void internal_native_EnableDistanceLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsDistanceLimitEnabled(long this_addr);
+
+    public static native void internal_native_SetDistanceLengthRange(long this_addr, float minLength, float maxLength);
+
+    public static native float internal_native_GetDistanceMinLength(long this_addr);
+
+    public static native float internal_native_GetDistanceMaxLength(long this_addr);
+
+    public static native float internal_native_GetDistanceCurrentLength(long this_addr);
+
+    public static native void internal_native_EnableDistanceMotor(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsDistanceMotorEnabled(long this_addr);
+
+    public static native void internal_native_SetDistanceMotorSpeed(long this_addr, float speed);
+
+    public static native float internal_native_GetDistanceMotorSpeed(long this_addr);
+
+    public static native void internal_native_SetDistanceMaxMotorForce(long this_addr, float force);
+
+    public static native float internal_native_GetDistanceMaxMotorForce(long this_addr);
+
+    public static native float internal_native_GetDistanceMotorForce(long this_addr);
+
+    public static native void internal_native_SetMotorLinearVelocity(long this_addr, long velocity_addr);
+
+    public static native long internal_native_GetMotorLinearVelocity_addr(long this_addr);
+
+    public static native void internal_native_SetMotorAngularVelocity(long this_addr, long velocity_addr);
+
+    public static native long internal_native_GetMotorAngularVelocity_addr(long this_addr);
+
+    public static native void internal_native_SetMotorMaxVelocityForce(long this_addr, float force);
+
+    public static native float internal_native_GetMotorMaxVelocityForce(long this_addr);
+
+    public static native void internal_native_SetMotorMaxVelocityTorque(long this_addr, float torque);
+
+    public static native float internal_native_GetMotorMaxVelocityTorque(long this_addr);
+
+    public static native void internal_native_SetMotorLinearHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetMotorLinearHertz(long this_addr);
+
+    public static native void internal_native_SetMotorLinearDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetMotorLinearDampingRatio(long this_addr);
+
+    public static native void internal_native_SetMotorAngularHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetMotorAngularHertz(long this_addr);
+
+    public static native void internal_native_SetMotorAngularDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetMotorAngularDampingRatio(long this_addr);
+
+    public static native void internal_native_SetMotorMaxSpringForce(long this_addr, float force);
+
+    public static native float internal_native_GetMotorMaxSpringForce(long this_addr);
+
+    public static native void internal_native_SetMotorMaxSpringTorque(long this_addr, float torque);
+
+    public static native float internal_native_GetMotorMaxSpringTorque(long this_addr);
+
+    public static native void internal_native_EnablePrismaticSpring(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsPrismaticSpringEnabled(long this_addr);
+
+    public static native void internal_native_SetPrismaticSpringHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetPrismaticSpringHertz(long this_addr);
+
+    public static native void internal_native_SetPrismaticSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetPrismaticSpringDampingRatio(long this_addr);
+
+    public static native void internal_native_SetPrismaticTargetTranslation(long this_addr, float translation);
+
+    public static native float internal_native_GetPrismaticTargetTranslation(long this_addr);
+
+    public static native void internal_native_EnablePrismaticLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsPrismaticLimitEnabled(long this_addr);
+
+    public static native float internal_native_GetPrismaticLowerLimit(long this_addr);
+
+    public static native float internal_native_GetPrismaticUpperLimit(long this_addr);
+
+    public static native void internal_native_SetPrismaticLimits(long this_addr, float lower, float upper);
+
+    public static native void internal_native_EnablePrismaticMotor(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsPrismaticMotorEnabled(long this_addr);
 
     public static native float internal_native_GetPrismaticTranslation(long this_addr);
 
     public static native void internal_native_SetPrismaticMotorSpeed(long this_addr, float speed);
 
+    public static native float internal_native_GetPrismaticMotorSpeed(long this_addr);
+
+    public static native void internal_native_SetPrismaticMaxMotorForce(long this_addr, float force);
+
+    public static native float internal_native_GetPrismaticMaxMotorForce(long this_addr);
+
+    public static native float internal_native_GetPrismaticMotorForce(long this_addr);
+
+    public static native float internal_native_GetPrismaticSpeed(long this_addr);
+
+    public static native void internal_native_EnableRevoluteSpring(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsRevoluteSpringEnabled(long this_addr);
+
     public static native void internal_native_SetRevoluteTargetAngle(long this_addr, float radians);
+
+    public static native float internal_native_GetRevoluteTargetAngle(long this_addr);
+
+    public static native float internal_native_GetRevoluteAngle(long this_addr);
+
+    public static native void internal_native_EnableRevoluteLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsRevoluteLimitEnabled(long this_addr);
+
+    public static native float internal_native_GetRevoluteLowerLimit(long this_addr);
+
+    public static native float internal_native_GetRevoluteUpperLimit(long this_addr);
+
+    public static native void internal_native_SetRevoluteLimits(long this_addr, float lowerRadians, float upperRadians);
+
+    public static native void internal_native_EnableRevoluteMotor(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsRevoluteMotorEnabled(long this_addr);
+
+    public static native void internal_native_SetRevoluteMotorSpeed(long this_addr, float speed);
+
+    public static native float internal_native_GetRevoluteMotorSpeed(long this_addr);
+
+    public static native float internal_native_GetRevoluteMotorTorque(long this_addr);
 
     public static native void internal_native_SetRevoluteMaxMotorTorque(long this_addr, float torque);
 
+    public static native float internal_native_GetRevoluteMaxMotorTorque(long this_addr);
+
     public static native void internal_native_SetRevoluteSpringHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetRevoluteSpringHertz(long this_addr);
 
     public static native void internal_native_SetRevoluteSpringDampingRatio(long this_addr, float dampingRatio);
 
+    public static native float internal_native_GetRevoluteSpringDampingRatio(long this_addr);
+
+    public static native void internal_native_EnableSphericalConeLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsSphericalConeLimitEnabled(long this_addr);
+
+    public static native float internal_native_GetSphericalConeLimit(long this_addr);
+
+    public static native void internal_native_SetSphericalConeLimit(long this_addr, float radians);
+
+    public static native float internal_native_GetSphericalConeAngle(long this_addr);
+
+    public static native void internal_native_EnableSphericalTwistLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsSphericalTwistLimitEnabled(long this_addr);
+
+    public static native float internal_native_GetSphericalLowerTwistLimit(long this_addr);
+
+    public static native float internal_native_GetSphericalUpperTwistLimit(long this_addr);
+
+    public static native void internal_native_SetSphericalTwistLimits(long this_addr, float lowerRadians, float upperRadians);
+
+    public static native float internal_native_GetSphericalTwistAngle(long this_addr);
+
+    public static native void internal_native_EnableSphericalSpring(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsSphericalSpringEnabled(long this_addr);
+
     public static native void internal_native_SetSphericalMaxMotorTorque(long this_addr, float torque);
+
+    public static native float internal_native_GetSphericalMaxMotorTorque(long this_addr);
 
     public static native void internal_native_SetSphericalSpringHertz(long this_addr, float hertz);
 
+    public static native float internal_native_GetSphericalSpringHertz(long this_addr);
+
     public static native void internal_native_SetSphericalSpringDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetSphericalSpringDampingRatio(long this_addr);
+
+    public static native void internal_native_SetSphericalTargetRotation(long this_addr, long rotation_addr);
+
+    public static native long internal_native_GetSphericalTargetRotation_addr(long this_addr);
+
+    public static native void internal_native_EnableSphericalMotor(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsSphericalMotorEnabled(long this_addr);
+
+    public static native void internal_native_SetSphericalMotorVelocity(long this_addr, long velocity_addr);
+
+    public static native long internal_native_GetSphericalMotorVelocity_addr(long this_addr);
+
+    public static native long internal_native_GetSphericalMotorTorque_addr(long this_addr);
+
+    public static native void internal_native_SetWeldLinearHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetWeldLinearHertz(long this_addr);
+
+    public static native void internal_native_SetWeldLinearDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetWeldLinearDampingRatio(long this_addr);
+
+    public static native void internal_native_SetWeldAngularHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetWeldAngularHertz(long this_addr);
+
+    public static native void internal_native_SetWeldAngularDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetWeldAngularDampingRatio(long this_addr);
+
+    public static native void internal_native_EnableWheelSuspension(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsWheelSuspensionEnabled(long this_addr);
+
+    public static native void internal_native_SetWheelSuspensionHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetWheelSuspensionHertz(long this_addr);
+
+    public static native void internal_native_SetWheelSuspensionDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetWheelSuspensionDampingRatio(long this_addr);
+
+    public static native void internal_native_EnableWheelSuspensionLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsWheelSuspensionLimitEnabled(long this_addr);
+
+    public static native float internal_native_GetWheelLowerSuspensionLimit(long this_addr);
+
+    public static native float internal_native_GetWheelUpperSuspensionLimit(long this_addr);
+
+    public static native void internal_native_SetWheelSuspensionLimits(long this_addr, float lower, float upper);
+
+    public static native void internal_native_EnableWheelSpinMotor(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsWheelSpinMotorEnabled(long this_addr);
+
+    public static native void internal_native_SetWheelTargetSteeringAngle(long this_addr, float radians);
+
+    public static native float internal_native_GetWheelTargetSteeringAngle(long this_addr);
+
+    public static native void internal_native_SetWheelSpinMotorSpeed(long this_addr, float speed);
+
+    public static native float internal_native_GetWheelSpinMotorSpeed(long this_addr);
+
+    public static native void internal_native_SetWheelMaxSpinTorque(long this_addr, float torque);
+
+    public static native float internal_native_GetWheelMaxSpinTorque(long this_addr);
+
+    public static native float internal_native_GetWheelSpinSpeed(long this_addr);
+
+    public static native float internal_native_GetWheelSpinTorque(long this_addr);
+
+    public static native void internal_native_EnableWheelSteering(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsWheelSteeringEnabled(long this_addr);
+
+    public static native void internal_native_SetWheelSteeringHertz(long this_addr, float hertz);
+
+    public static native float internal_native_GetWheelSteeringHertz(long this_addr);
+
+    public static native void internal_native_SetWheelSteeringDampingRatio(long this_addr, float dampingRatio);
+
+    public static native float internal_native_GetWheelSteeringDampingRatio(long this_addr);
+
+    public static native void internal_native_SetWheelMaxSteeringTorque(long this_addr, float torque);
+
+    public static native float internal_native_GetWheelMaxSteeringTorque(long this_addr);
+
+    public static native void internal_native_EnableWheelSteeringLimit(long this_addr, boolean enabled);
+
+    public static native boolean internal_native_IsWheelSteeringLimitEnabled(long this_addr);
+
+    public static native float internal_native_GetWheelLowerSteeringLimit(long this_addr);
+
+    public static native float internal_native_GetWheelUpperSteeringLimit(long this_addr);
+
+    public static native void internal_native_SetWheelSteeringLimits(long this_addr, float lowerRadians, float upperRadians);
+
+    public static native float internal_native_GetWheelSteeringAngle(long this_addr);
+
+    public static native float internal_native_GetWheelSteeringTorque(long this_addr);
 }
